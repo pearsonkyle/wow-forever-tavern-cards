@@ -24,6 +24,11 @@ Data\QuestInfo.lua
 
 Engine\Rng.lua
 Engine\Data\Programs.lua
+Engine\Defs.lua
+Engine\Engine.lua
+Engine\Effects.lua
+Engine\Ops.lua
+Engine\Actions.lua
 
 Collection\Collection.lua
 Collection\Decks.lua

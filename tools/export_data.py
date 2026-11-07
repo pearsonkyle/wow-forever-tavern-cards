@@ -18,6 +18,17 @@ from common import WORDING_FIELDS, is_default, load_runtime, lua_string, lua_val
 
 CHUNK = 250  # cards per Lua function, to stay far below per-function constant limits
 
+# Cards the C++ engine creates by id without any program naming them (tc/made_tokens.h, apply_op).
+ENGINE_MADE = {
+    "TAVERN_COIN", "TAVERN_RECRUIT", "TAVERN_GHOUL", "TAVERN_TOTEM", "TAVERN_DAGGER",
+    "WW_001t", "WW_001t2", "WW_001t3", "WW_001t4", "WW_001t18", "DEEP_999t1",
+    "WW_001t5", "WW_001t7", "WW_001t8", "WW_001t9", "WW_001t16", "DEEP_999t2",
+    "WW_001t11", "WW_001t12", "WW_001t13", "WW_001t14", "WW_001t17", "DEEP_999t3",
+    "WW_001t26", "WW_001t24", "DEEP_999t4", "WW_001t23", "DEEP_999t5", "WW_001t25", "WW_001t27",
+    "CATA_780t", "CATA_525t", "CATA_158t", "CATA_565t", "CATA_725t", "CATA_580t",
+    "SC_999t", "GDB_100t2", "CFM_712_t01", "EX1_598", "DRG_238t14t3",
+}
+
 FLAG_COLLECTIBLE, FLAG_DROPPABLE, FLAG_IMPLEMENTED, FLAG_PLAYABLE, FLAG_MADE_ONLY = 1, 2, 4, 8, 16
 
 # Program-level keys that are not runtime data for the Lua engine.
@@ -65,8 +76,18 @@ def main():
     by_id = {c["id"]: c for c in cards}
     playable_set = set(playable)
 
-    # The engine set: implemented cards, plus every card they (transitively) name.
+    # The engine set: implemented cards, plus every card they (transitively) name, plus the cards the
+    # engine itself makes by id (tc/made_tokens.h, hero powers, Invoke, Colossal appendages).
     keep = {cid for cid, c in by_id.items() if c["implemented"]}
+    keep |= {cid for cid in ENGINE_MADE if cid in by_id}
+    for cid, c in by_id.items():
+        if (not c["collectible"] and c["type"] == "MINION" and c["cost"] == 1 and c["attack"] == 1
+                and c["health"] == 1 and c["name"].lower().endswith(" lackey")):
+            keep.add(cid)   # Invoke's Rogue Lackey pool
+    for cid, prog in programs.items():
+        if prog.get("colossal"):
+            keep |= {o for o, oc in by_id.items()
+                     if o.startswith(cid) and o != cid and not oc["collectible"] and oc["type"] == "MINION"}
     frontier = list(keep)
     while frontier:
         cid = frontier.pop()
@@ -118,6 +139,10 @@ def main():
         "-- Trigger -> grammar event kind (event_kind_from_trigger). A card with `abilities` runs each",
         "-- {kind, effectCount} slice of its effects on its own, as TcEngine::run_program_effects does.",
         "TC.TriggerKinds = " + lua_value(programs_doc["abilityKinds"]),
+        "-- CostCount names in enum order (Condition GAME_COUNT stores the number).",
+        "TC.CostCounts = " + lua_value(programs_doc["costCounts"]),
+        "-- Trigger enum numbers (a snapshot stores PendingChoice::trigger as one).",
+        "TC.TriggerNumbers = " + lua_value(programs_doc["triggerNumbers"]),
     ]
     ids = [cid for cid in order if cid in programs]
     for start in range(0, len(ids), CHUNK):
@@ -127,6 +152,8 @@ def main():
             for k, v in programs[cid].items():
                 if k in PROGRAM_SKIP:
                     continue
+                if k == "choices" and by_id[cid].get("choiceLabels"):
+                    prog["choiceLabels"] = by_id[cid]["choiceLabels"]
                 if k == "effects":
                     v = [strip_effect(e) for e in v]
                 elif k == "choices":

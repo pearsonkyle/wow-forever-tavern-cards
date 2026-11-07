@@ -70,6 +70,8 @@ def load_runtime():
     # Grammar cards run ability by ability (TcEngine::run_program_effects). Their flat effect list is the
     # abilities' lowerings laid end to end, so an ability is a (kind, effect count) slice of it.
     programs["abilityKinds"] = abilities["triggerKinds"]
+    programs["costCounts"] = abilities["costCounts"]
+    programs["triggerNumbers"] = abilities["triggerNumbers"]
     for cid, kinds in abilities["kinds"].items():
         lowered = abilities["lowered"]["programs"]
         programs["programs"][cid]["abilities"] = [

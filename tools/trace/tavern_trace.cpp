@@ -211,7 +211,33 @@ int main(int argc, char** argv)
             out << (first ? "" : ",") << quote(name) << ":" << static_cast<int>(tc::event_kind_from_trigger(t));
             first = false;
         }
-        out << "},\n\"kinds\":{";
+        // Trigger enum numbers: PendingChoice::trigger is stored as one in a snapshot.
+        out << "},\n\"triggerNumbers\":{";
+        first = true;
+        for (int i = 0; i < 256; ++i)
+        {
+            tc::Trigger const t = static_cast<tc::Trigger>(i);
+            char const* name = tc::trigger_name(t);
+            tc::Trigger back{};
+            if (name == nullptr || !tc::trigger_from_name(name, back) || back != t)
+                continue;
+            out << (first ? "" : ",") << quote(name) << ":" << i;
+            first = false;
+        }
+        // CostCount names in enum order: Condition::GAME_COUNT stores the enum as a number.
+        out << "},\n\"costCounts\":[";
+        for (int i = 0; i < 256; ++i)
+        {
+            tc::CostCount back{};
+            std::string name = tc::cost_count_name(static_cast<tc::CostCount>(i));
+            if (i == 0)
+                name = "NONE";   // cost_count_name spells NONE as ""
+            (void)back;
+            if (name.empty())   // past the last member (some names are only GAME_COUNT's, not the loader's)
+                break;
+            out << (i ? "," : "") << quote(name);
+        }
+        out << "],\n\"kinds\":{";
         // Each ability lowered alone becomes a card of a scratch catalogue ("<id>#<n>"), so the
         // public programs.json writer encodes its effects exactly as the real data is encoded.
         tc::Catalogue scratch;
@@ -279,7 +305,15 @@ int main(int argc, char** argv)
                     << ",\"collectible\":" << (d->collectible ? "true" : "false")
                     << ",\"droppable\":" << (d->droppable ? "true" : "false")
                     << ",\"implemented\":" << (d->implemented ? "true" : "false")
-                    << ",\"text\":" << quote(d->text) << "}";
+                    << ",\"text\":" << quote(d->text);
+                if (!d->choice_labels.empty())
+                {
+                    out << ",\"choiceLabels\":[";
+                    for (std::size_t i = 0; i < d->choice_labels.size(); ++i)
+                        out << (i ? "," : "") << quote(d->choice_labels[i]);
+                    out << "]";
+                }
+                out << "}";
                 first = false;
             }
             out << "\n]\n";
