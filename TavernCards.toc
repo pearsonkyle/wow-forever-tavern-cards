@@ -19,4 +19,11 @@ Data\QuestMap.lua
 Engine\Rng.lua
 Engine\Data\Programs.lua
 
+Collection\Collection.lua
+
+UI\Art.lua
+UI\Toast.lua
+
+Sources\Quests.lua
+
 Core\Commands.lua

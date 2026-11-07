@@ -4,6 +4,8 @@ local HELP = {
     "/tc status - card data and engine build",
     "/tc probe  - report which UI templates, atlases, events and APIs this client has",
     "/tc rng    - run the RNG self-test (must match the reference engine)",
+    "/tc collection - collection progress and dust",
+    "/tc preview [cardId] - show a card toast without granting anything",
 }
 
 local commands = {}
@@ -35,6 +37,27 @@ function commands.rng()
     else
         TC:Print("RNG self-test |cffff4040FAILED|r: %s", err)
     end
+end
+
+function commands.collection()
+    local owned, total, copies = TC.Collection:Stats()
+    TC:Print("%d of %d cards collected (%d copies), %d dust.", owned, total, copies, TC.db.dust)
+    local ledger = TC.db.ledger
+    for i = math.max(1, #ledger - 4), #ledger do
+        local e = ledger[i]
+        DEFAULT_CHAT_FRAME:AddMessage(("  %s  %s"):format(TC.Art:ColoredName(e.c), e.s or ""))
+    end
+end
+
+function commands.preview(id)
+    if id == "" then
+        id = TC.CardOrder[math.random(#TC.CardOrder)]
+    end
+    if not TC.Cards[id] then
+        TC:Print("Unknown card id '%s'.", id)
+        return
+    end
+    TC.Toast:Preview(id)
 end
 
 SLASH_TAVERNCARDS1 = "/tc"
