@@ -56,7 +56,7 @@ local APIS = {
     "ScrollUtil.InitScrollBoxListWithScrollBar", "MenuUtil.CreateContextMenu", "DoesTemplateExist",
     "SetPortraitToTexture", "C_Texture.GetAtlasInfo", "GetFileIDFromPath", "RaidNotice_AddMessage",
     "C_Item.GetItemQualityColor", "GetItemQualityColor", "ITEM_QUALITY_COLORS", "PlaySoundFile",
-    "debugprofilestop", "C_Timer.NewTicker", "SOUNDKIT",
+    "debugprofilestop", "C_Timer.NewTicker", "SOUNDKIT", "C_Map.GetAreaInfo",
 }
 
 local function templateExists(name)

@@ -149,6 +149,14 @@ class QuestieDB:
                     meta[m.group(1)] = m.group(2)
         return cls(meta)
 
+    def name_of(self, prefix, eid):
+        """Name of one entity ("Object-", "Item-") decoded on demand, without loading the whole table."""
+        row = self._stored("X-%s%d-S" % (prefix, eid))
+        if not row:
+            return None
+        scalars = cbor_decode(base64.b64decode(row))
+        return at(scalars, 1) if isinstance(scalars, (list, dict)) else None
+
     def _stored(self, key):
         value = self.meta.get(key)
         if value is None or not value.startswith("~"):

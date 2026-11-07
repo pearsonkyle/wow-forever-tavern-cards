@@ -20,6 +20,7 @@ Core\Compat.lua
 Data\Cards.lua
 Data\Wave.lua
 Data\QuestMap.lua
+Data\QuestInfo.lua
 
 Engine\Rng.lua
 Engine\Data\Programs.lua

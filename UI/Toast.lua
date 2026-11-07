@@ -155,7 +155,9 @@ function Toast:ShowTooltip(owner)
     GameTooltip:SetOwner(owner, "ANCHOR_BOTTOM")
     if e.id then
         TC:CardTooltip(e.id)
-        if e.source then
+        if e.quest then
+            TC.Quests:AddTooltipLines(GameTooltip, e.quest)
+        elseif e.source then
             GameTooltip:AddLine(e.source, 0.6, 0.6, 0.6)
         end
         if e.dust and e.dust > 0 then
@@ -212,7 +214,7 @@ end
 
 TC.Collection:Subscribe(function(event, p)
     if event == "card" then
-        queue[#queue + 1] = { id = p.id, source = p.source, result = p.result, dust = p.dust }
+        queue[#queue + 1] = { id = p.id, source = p.source, result = p.result, dust = p.dust, quest = p.quest }
     elseif event == "batch" then
         queue[#queue + 1] = { label = p.label, count = #p.cards }
     else

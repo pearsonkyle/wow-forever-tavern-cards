@@ -60,7 +60,7 @@ function commands.collection()
     local ledger = TC.db.ledger
     for i = math.max(1, #ledger - 4), #ledger do
         local e = ledger[i]
-        DEFAULT_CHAT_FRAME:AddMessage(("  %s  %s"):format(TC.Art:ColoredName(e.c), e.s or ""))
+        DEFAULT_CHAT_FRAME:AddMessage(("  %s  %s"):format(TC.Art:ColoredName(e.c), TC.Collection:EntrySource(e)))
     end
 end
 

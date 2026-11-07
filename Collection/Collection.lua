@@ -45,7 +45,7 @@ function Collection:IsPlayable(id)
 end
 
 -- Adds one copy. Returns "new", "copy" (second copy) or "dust" plus the dust gained.
-function Collection:AddCard(id, source, quiet)
+function Collection:AddCard(id, source, quiet, questID)
     local card = TC.Cards[id]
     if not card then
         return nil
@@ -66,25 +66,39 @@ function Collection:AddCard(id, source, quiet)
     end
 
     local ledger = db.ledger
-    ledger[#ledger + 1] = { t = time(), c = id, s = source, d = dust > 0 and dust or nil }
+    ledger[#ledger + 1] = { t = time(), c = id, s = source, d = dust > 0 and dust or nil, q = questID }
     if #ledger > LEDGER_MAX then
         table.remove(ledger, 1)
     end
 
     if not quiet then
-        notify("card", { id = id, source = source, result = result, dust = dust })
+        notify("card", { id = id, source = source, result = result, dust = dust, quest = questID })
     end
     return result, dust
 end
 
 -- Pays a source once per character. `key` identifies the source ("q:176", "lvl:20").
-function Collection:Grant(key, id, source, quiet)
+function Collection:Grant(key, id, source, quiet, questID)
     local granted = TC.char.granted
     if granted[key] then
         return nil
     end
     granted[key] = time()
-    return self:AddCard(id, source, quiet)
+    return self:AddCard(id, source, quiet, questID)
+end
+
+-- A ledger entry's quest, also for entries saved before the quest id was recorded.
+function Collection:EntryQuest(e)
+    return e.q or tonumber((e.s or ""):match("^Quest: Quest #(%d+)$"))
+end
+
+-- What a ledger entry says about its source, with quest names resolved.
+function Collection:EntrySource(e)
+    local q = self:EntryQuest(e)
+    if q and TC.Quests then
+        return "Quest: " .. TC.Quests:Info(q).name
+    end
+    return e.s or ""
 end
 
 function Collection:HasGranted(key)

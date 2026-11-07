@@ -44,18 +44,75 @@ function Quests:CardFor(questID)
     return pool[hash(questID) % #pool + 1]
 end
 
-local function questTitle(questID)
-    local title = C_QuestLog and C_QuestLog.GetTitleForQuestID and C_QuestLog.GetTitleForQuestID(questID)
-    if title and not (issecretvalue and issecretvalue(title)) then
-        return title
+local function areaName(id)
+    id = tonumber(id) or 0
+    if id < 0 then
+        return TC.QuestSorts and TC.QuestSorts[id]
     end
-    return "Quest #" .. questID
+    if id > 0 and C_Map and C_Map.GetAreaInfo then
+        local name = C_Map.GetAreaInfo(id)
+        if name and name ~= "" then
+            return name
+        end
+    end
+end
+
+-- What we know about a quest: { name, level, zone, giver, giverZone } (fields may be nil).
+function Quests:Info(questID)
+    questID = tonumber(questID)
+    if not questID then
+        return nil
+    end
+    local info = {}
+    local raw = TC.QuestInfo and TC.QuestInfo[questID]
+    if raw then
+        local name, level, zone, giver, giverZone = strsplit("\t", raw)
+        info.name = name ~= "" and name or nil
+        info.level = tonumber(level)
+        info.zone = areaName(zone)
+        info.giver = giver ~= "" and giver or nil
+        info.giverZone = areaName(giverZone)
+    end
+    if not info.name then
+        local title = C_QuestLog and C_QuestLog.GetTitleForQuestID and C_QuestLog.GetTitleForQuestID(questID)
+        if title and not (issecretvalue and issecretvalue(title)) then
+            info.name = title
+        end
+    end
+    info.name = info.name or ("Quest #" .. questID)
+    return info
+end
+
+local function questTitle(questID)
+    return Quests:Info(questID).name
+end
+
+-- Tooltip lines for a quest source: where it is and who gives it.
+function Quests:AddTooltipLines(tip, questID)
+    local info = self:Info(questID)
+    if not info then
+        return
+    end
+    tip:AddLine(" ")
+    tip:AddLine(info.name, 1, 0.82, 0)
+    local where = info.zone
+    if info.giverZone and info.giverZone ~= where then
+        where = where and (where .. " (" .. info.giverZone .. ")") or info.giverZone
+    end
+    if info.level and info.level > 0 then
+        tip:AddLine(("Level %d quest%s"):format(info.level, where and (" in " .. where) or ""), 1, 1, 1)
+    elseif where then
+        tip:AddLine(where, 1, 1, 1)
+    end
+    if info.giver then
+        tip:AddLine(info.giver, 0.75, 0.75, 0.75)
+    end
 end
 
 function Quests:OnTurnedIn(questID)
     local id = self:CardFor(questID)
     if id then
-        TC.Collection:Grant("q:" .. questID, id, "Quest: " .. questTitle(questID))
+        TC.Collection:Grant("q:" .. questID, id, "Quest: " .. questTitle(questID), false, questID)
     end
 end
 
@@ -72,7 +129,7 @@ function Quests:Retro()
     for _, questID in ipairs(done) do
         local id = classMap and classMap[questID]
         if id then
-            local result, gained = TC.Collection:Grant("q:" .. questID, id, "Quest: " .. questTitle(questID), true)
+            local result, gained = TC.Collection:Grant("q:" .. questID, id, "Quest: " .. questTitle(questID), true, questID)
             if result then
                 cards[#cards + 1] = id
                 dust = dust + (gained or 0)

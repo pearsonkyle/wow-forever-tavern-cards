@@ -58,6 +58,10 @@ local function buildLedger(parent)
             row:SetScript("OnEnter", function(self)
                 GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
                 TC:CardTooltip(self.id)
+                local q = TC.Collection:EntryQuest(self.entry)
+                if q then
+                    TC.Quests:AddTooltipLines(GameTooltip, q)
+                end
                 GameTooltip:Show()
             end)
             row:SetScript("OnLeave", function() GameTooltip:Hide() end)
@@ -66,7 +70,8 @@ local function buildLedger(parent)
         row.id = e.c
         row.icon:SetTexture(Art:Icon(e.c))
         row.name:SetText(Art:ColoredName(e.c))
-        row.source:SetText((e.s or "") .. (e.d and ("  |cff3060a0(+%d dust)|r"):format(e.d) or ""))
+        row.entry = e
+        row.source:SetText(TC.Collection:EntrySource(e) .. (e.d and ("  |cff3060a0(+%d dust)|r"):format(e.d) or ""))
         row.when:SetText(e.t and date("%b %d %H:%M", e.t) or "")
     end)
     ScrollUtil.InitScrollBoxListWithScrollBar(box, scrollBar, view)
