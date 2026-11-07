@@ -194,6 +194,15 @@ function TC:ShowCard(id)
     end
 end
 
+-- The journey toast opens the book on what was just collected.
+function TC:ShowCollected()
+    self:ShowWindow("collection")
+    local frame = panels.collection and panels.collection.frame
+    if frame and frame.ShowOwned then
+        frame:ShowOwned()
+    end
+end
+
 TC.Collection:Subscribe(function()
     TC:RefreshWindow()
 end)

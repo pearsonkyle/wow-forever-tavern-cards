@@ -299,19 +299,32 @@ local function build(parent)
         self:Draw()
     end
 
+    function panel:ShowOwned()
+        filter.owned, filter.cost, filter.playable = "owned", nil, false
+        for r in pairs(filter.rarity) do filter.rarity[r] = true end
+        page = 1
+        if search:GetText() ~= "" then
+            search:SetText("")  -- OnTextChanged refreshes
+        else
+            self:Refresh()
+        end
+    end
+
     function panel:FocusCard(id)
         local card = TC.Cards[id]
         if not card then return end
         filter.class, filter.owned, filter.cost, filter.playable = "all", "all", nil, false
         for r in pairs(filter.rarity) do filter.rarity[r] = true end
-        search:SetText(card.name)  -- OnTextChanged refreshes
+        search:SetText(card.name)
+        filter.text = card.name:lower()
+        rebuild()  -- also when the box already held this name (no OnTextChanged then)
         for i, other in ipairs(list) do
             if other == id then
                 page = math.floor((i - 1) / (PER_PAGE * 2)) + 1
                 break
             end
         end
-        self:Draw()
+        self:Refresh()
     end
 
     return panel

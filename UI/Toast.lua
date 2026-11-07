@@ -142,8 +142,15 @@ local function build()
         GameTooltip:Hide()
         self.outro:Stop()
         self:Hide()
-        if button == "LeftButton" and TC.ShowCard and self.entry.id then
-            TC:ShowCard(self.entry.id)
+        local entry = self.entry
+        if button == "LeftButton" and entry then
+            TC:Safe("toast click", function()
+                if entry.id then
+                    TC:ShowCard(entry.id)
+                else
+                    TC:ShowCollected()
+                end
+            end)
         end
         Toast:Next()
     end)

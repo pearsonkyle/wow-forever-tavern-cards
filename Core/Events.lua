@@ -37,6 +37,16 @@ local function traceback(e)
     return tostring(e) .. "\n" .. (debugstack and debugstack(2, 8, 0) or "")
 end
 
+-- Runs fn(...) and records any error, for UI scripts (clicks, menus) outside the event dispatcher.
+function TC:Safe(where, fn, ...)
+    local n, args = select("#", ...), { ... }
+    local ok, err = xpcall(function() return fn(unpack(args, 1, n)) end, traceback)
+    if not ok then
+        TC:ReportError(where, err)
+    end
+    return ok
+end
+
 frame:SetScript("OnEvent", function(_, event, ...)
     local list = handlers[event]
     if not list then
