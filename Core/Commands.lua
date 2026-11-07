@@ -70,9 +70,9 @@ function commands.who()
 end
 
 function commands.icons()
-    local missing, total = TC.Art:CheckIcons()
-    TC:Print("%d of %d card icons exist in this client.%s", total - #missing, total,
-        #missing > 0 and (" Missing: " .. table.concat(missing, ", ", 1, math.min(#missing, 12))) or "")
+    local missing, cards = TC.Art:CheckIcons()
+    TC:Print("%d cards have their own game icon; %d icon choices are missing in this client (saved for the next build).",
+        cards, #missing)
 end
 
 function commands.sound()

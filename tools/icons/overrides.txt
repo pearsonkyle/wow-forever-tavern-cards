@@ -1,0 +1,13 @@
+# card id | icon: hand-picked first choices for iconic cards (the assignment keeps these icons for them).
+NEW1_040|inv_misc_head_gnoll_01
+EX1_598|spell_shadow_summonimp
+EX1_319|spell_fire_firebolt
+CS2_065|spell_shadow_summonvoidwalker
+EX1_301|spell_shadow_summonfelguard
+EX1_310|spell_shadow_summoninfernal
+EX1_298|achievement_boss_ragnaros
+VAN_EX1_614|achievement_boss_illidan
+EX1_563|achievement_boss_malygos_01
+Core_CS2_200|inv_misc_monsterhead_01
+EX1_062|inv_misc_head_murloc_01
+EX1_116|achievement_character_human_male

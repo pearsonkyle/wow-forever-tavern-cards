@@ -124,21 +124,46 @@ function Art:ClassIcon(family)
     return icon(CLASS_ICONS[family] or "") or FALLBACK
 end
 
--- /tc icons (and once per login): which assigned card icons this client lacks. Saved in
--- TavernCardsDB.missingIcons for tools/icons/catalog.py to avoid on the next assignment; those cards fall
--- back to the addon's own picks meanwhile.
-function Art:CheckIcons()
-    local missing, seen, total = {}, {}, 0
-    for _, name in pairs(TC.CardIcons or {}) do
-        if not seen[name] then
-            seen[name] = true
-            total = total + 1
-            if not icon(name) then missing[#missing + 1] = name end
+-- Data/Icons.lua ranks up to three icons per card, cards in pick order. Resolved once: each card takes
+-- its first choice this client has and no earlier card took. The misses are kept in
+-- TavernCardsDB.missingIcons (tools/icons/catalog.py import-missing feeds them back).
+local cache = {}   -- card id -> icon path (Art:Icon)
+local resolved, missingList
+local function resolveIcons()
+    resolved, missingList = {}, {}
+    local used = {}
+    for _, row in ipairs(TC.CardIconChoices or {}) do
+        local id = row[1]
+        local cardName = TC.Cards[id] and TC.Cards[id].name or id
+        for i = 2, #row do
+            local name = row[i]
+            local path = icon(name)
+            -- Cards that share a name (a card and its token) share an icon.
+            if path and (not used[name] or used[name] == cardName) then
+                used[name] = cardName
+                resolved[id] = path
+                break
+            elseif not path then
+                missingList[#missingList + 1] = name
+            end
         end
     end
-    table.sort(missing)
-    TC.db.missingIcons = missing
-    return missing, total
+    table.sort(missingList)
+    if TC.db then TC.db.missingIcons = missingList end
+end
+
+function Art:MatchedIcon(id)
+    if not resolved then resolveIcons() end
+    return resolved[id]
+end
+
+-- /tc icons: how many matched icons this client has.
+function Art:CheckIcons()
+    resolveIcons()
+    wipe(cache)
+    local cards = 0
+    for _ in pairs(resolved) do cards = cards + 1 end
+    return missingList, cards
 end
 
 -- An icon path by name if this client has it, else `fallback`.
@@ -146,14 +171,13 @@ function Art:SafeIcon(name, fallback)
     return icon(name) or fallback or FALLBACK
 end
 
-local cache = {}
 function Art:Icon(id)
     if cache[id] then
         return cache[id]
     end
     local card = TC.Cards[id]
-    -- A matched icon (Data/Icons.lua, tools/match_icons.py) when the client has it.
-    local path = TC.CardIcons and TC.CardIcons[id] and icon(TC.CardIcons[id])
+    -- The card's own game icon (Data/Icons.lua), resolved against what this client has.
+    local path = Art:MatchedIcon(id)
     if card and not path then
         if card.type == "SPELL" then
             path = SCHOOL_ICONS[card.school] and icon(SCHOOL_ICONS[card.school])
