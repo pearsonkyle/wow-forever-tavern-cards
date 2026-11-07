@@ -60,6 +60,9 @@ function Collection:AddCard(id, source, quiet)
     else
         db.collection[id] = have + 1
         result = have == 0 and "new" or "copy"
+        if db.unseen then
+            db.unseen[id] = true
+        end
     end
 
     local ledger = db.ledger

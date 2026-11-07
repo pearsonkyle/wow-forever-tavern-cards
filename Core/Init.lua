@@ -16,6 +16,7 @@ local DB_DEFAULTS = {
     collection = {},   -- cardId -> copies (account-wide)
     dust = 0,
     ledger = {},       -- { t, card, source }
+    unseen = {},       -- cardId -> true until hovered in the book ("New")
     settings = { minimap = {}, mute = false, scale = 1 },
 }
 
@@ -63,9 +64,5 @@ function TC:Print(fmt, ...)
 end
 
 function TavernCards_OnAddonCompartmentClick()
-    if TC.ToggleWindow then
-        TC:ToggleWindow()
-    else
-        TC:Print("v%s loaded. Type |cffffffff/tc|r for commands.", TC.VERSION)
-    end
+    TC:ToggleWindow()
 end
