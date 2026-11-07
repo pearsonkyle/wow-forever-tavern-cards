@@ -52,6 +52,7 @@ def load_cards():
             text = re.sub(r"<[^>]+>|\[x\]|[$#@]", "", text)
             tribes = [r for i, r in enumerate(RACES) if races & (1 << i)]
             cards.append({"id": cid, "name": name, "type": ctype, "class": family, "tribe": "/".join(tribes),
+                          "flags": int(m.group(13)),
                           "school": school, "text": text[:90]})
     return cards
 

@@ -7,6 +7,7 @@ icon for every card.
     python3 tools/icons/catalog.py embed       # CLIP image embeddings -> cache/icons/clip.npz
     python3 tools/icons/catalog.py caption     # vision-LLM captions -> cache/icons/captions.jsonl (resumable)
     python3 tools/icons/catalog.py assign      # cards -> unique icons (CLIP text vs image) -> Data/Icons.lua
+    python3 tools/icons/catalog.py import-missing   # icons the game reported missing -> tools/icons/missing.txt
 
 Everything is cached under tools/cache/icons and resumable. Card subjects (what a card's picture should
 show) come from tools/match_icons.py (tools/cache/icon_subjects.json). In game, /tc icons checks the
@@ -53,7 +54,7 @@ def cmd_list():
     if not os.path.exists(raw):
         print("downloading listfile...", flush=True)
         urllib.request.urlretrieve(LISTFILE_URL, raw)
-    names = set()
+    names, fdid = set(), {}
     with open(raw, newline="", encoding="utf-8", errors="replace") as f:
         for row in csv.reader(f, delimiter=";"):
             if len(row) < 2:
@@ -63,6 +64,10 @@ def cmd_list():
                 name = path[len("interface/icons/"):-4]
                 if "/" not in name and not SKIP.search(name):
                     names.add(name)
+                    fdid[name] = int(row[0])
+    # File ids grow with each expansion: low ids are the old icons the Classic+ client surely has.
+    with open(os.path.join(CACHE, "fdid.json"), "w") as f:
+        json.dump(fdid, f)
     with open(NAMES, "w") as f:
         f.write("\n".join(sorted(names)) + "\n")
     print("%d icon names -> %s" % (len(names), NAMES))
@@ -207,78 +212,176 @@ def load_cards():
     return match_icons.load_cards()
 
 
-def cmd_assign():
-    """Each card gets the icon whose picture best matches the card (CLIP), no icon used twice.
+# What an icon shows, in words: its file name (descriptive: ability_hunter_pet_turtle) plus its caption.
+NAME_NOISE = {"inv", "misc", "ability", "spell", "achievement", "character", "icon", "trade", "hunter", "pet", "a", "b",
+              "c", "d", "e", "1h", "2h", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"}
 
-    The text for a card is the LLM's description of its picture (or its name), prefixed for CLIP.
-    Pairs are taken greedily, best first, from each card's 60 nearest icons: a card whose best icons are
-    already taken falls to its next best. Tokens and cards sharing a name share an icon."""
+
+def icon_text(name, caption):
+    words = [w for w in re.split(r"[_\-]+", name) if w and w not in NAME_NOISE and not w.isdigit()]
+    words = [re.sub(r"\d+$", "", w) for w in words]
+    return (" ".join(w for w in words if w) + ". " + (caption or "")).strip()
+
+
+# Icons that fit each card type (a minion is a creature or person, a weapon a weapon...).
+GEAR = r"inv_(sword|axe|mace|staff|knife|bow|polearm|weapon|waepon|shield|offhand|wand|firearm|glaive|thrown|hammer|spear|gun|rifle|crossbow)"
+CLOTHES = (r"inv_(gauntlets|hand|leather|boot|pant|plate|cloth|mail|robe|armor|jewelry|ring|trinket|neck|chest|belt|bracer|"
+           r"shoulder|helmet|helm|cape|shirt|fabric|ingot|ore|gem|jewelcrafting|enchant|alchemy|cooking|fishing|"
+           r"archaeology|misc_food|drink|misc_herb|tailoring|leatherworking|blacksmithing|inscription|profession|"
+           r"\d+_|1\d\d_)|inv\d+_|trade_")
+WEARABLE = (r".*(cape|kilt|cloak|robe|mantle|helm|shoulder|bracer|belt|boot|glove|pant|shirt|tabard|ring_|necklace|"
+            r"trinket|bracelet|chest|legs|wrist|waist|_feet|_hand_|gauntlet|bag_|_bag|_bags)")
+TYPE_RULES = {
+    "MINION": (None, re.compile(GEAR + "|" + CLOTHES + r"|inv_potion")),
+    "SPELL": (None, re.compile(GEAR + "|" + CLOTHES)),
+    "WEAPON": (re.compile(GEAR + r"|inv_gauntlets|inv_misc_weapon"), None),
+    "LOCATION": (None, re.compile(GEAR + "|" + CLOTHES)),
+}
+
+
+def cmd_assign():
+    """Each card gets a unique icon: text similarity between what the card's picture should show (the
+    LLM's description, tools/match_icons.py) and what the icon shows (file name + caption), plus CLIP's
+    image score, plus a bonus for the curated vocabulary pick; filtered by card type; no icon used twice
+    (best pairs first). Cards sharing a name share an icon."""
     import numpy as np
-    import torch
+    from sentence_transformers import SentenceTransformer
+    sys.path.insert(0, os.path.join(REPO, "tools"))
+    import match_icons
+
     z = np.load(os.path.join(CACHE, "clip.npz"), allow_pickle=True)
-    icon_names = z["names"].tolist()
-    vecs = z["vecs"].astype("float32")
+    all_names = z["names"].tolist()
+    clip_vecs = z["vecs"].astype("float32")
     missing = set()
     mpath = os.path.join(HERE, "missing.txt")
     if os.path.exists(mpath):
         with open(mpath) as f:
             missing = {line.strip().lower() for line in f if line.strip()}
-    keep = [i for i, n in enumerate(icon_names) if n not in missing]
-    icon_names = [icon_names[i] for i in keep]
-    vecs = vecs[keep]
+    fdid = {}
+    fp = os.path.join(CACHE, "fdid.json")
+    if os.path.exists(fp):
+        with open(fp) as f:
+            fdid = json.load(f)
+    max_fdid = int(os.environ.get("MAX_FDID", "0") or 0)
+    keep = [i for i, n in enumerate(all_names)
+            if n not in missing and (not max_fdid or fdid.get(n, 0) <= max_fdid)]
+    names_ = [all_names[i] for i in keep]
+    clip_vecs = clip_vecs[keep]
+    captions = {}
+    cp = os.path.join(CACHE, "captions.jsonl")
+    if os.path.exists(cp):
+        with open(cp) as f:
+            for line in f:
+                try:
+                    row = json.loads(line)
+                    captions[row["name"]] = row["caption"]
+                except Exception:  # noqa: BLE001
+                    pass
 
     subjects = {}
     sp = os.path.join(REPO, "tools", "cache", "icon_subjects.json")
     if os.path.exists(sp):
         with open(sp) as f:
             subjects = json.load(f)
-    cards = load_cards()
-    # One icon per distinct name (a token and the card that makes it look alike).
+    vocab = match_icons.load_vocab()
+    cards = match_icons.load_cards()
     by_name = {}
     for c in cards:
         by_name.setdefault(c["name"].lower(), []).append(c)
     groups = list(by_name.values())
-    texts = []
+    texts, curated = [], []
     for group in groups:
         c = group[0]
         subj = subjects.get(c["id"], "")
         subj = subj.split(":", 1)[1].strip() if ":" in subj else subj
-        kind = {"SPELL": "a spell icon", "WEAPON": "a weapon icon", "LOCATION": "a place icon"}.get(c["type"], "a portrait icon")
-        texts.append("%s of %s, %s" % (kind, subj or c["name"], c["name"]))
+        texts.append("%s. %s" % (c["name"], subj or c["tribe"] or c["type"].lower()))
+        pick = match_icons.pick(c, subjects.get(c["id"], ""), vocab)
+        curated.append(pick.lower() if pick else None)
+
+    st = SentenceTransformer("all-MiniLM-L6-v2")
+    card_vec = st.encode(texts, normalize_embeddings=True, batch_size=256, show_progress_bar=False)
+    icon_vec = st.encode([icon_text(n, captions.get(n)) for n in names_], normalize_embeddings=True,
+                         batch_size=256, show_progress_bar=False)
+    text_sim = card_vec @ icon_vec.T
 
     model, _, tokenizer, device = clip_model()
-    tv = []
+    import torch
     with torch.no_grad():
+        tv = []
         for i in range(0, len(texts), 256):
-            t = model.encode_text(tokenizer(texts[i:i + 256]).to(device))
+            t = model.encode_text(tokenizer(["an icon of " + x for x in texts[i:i + 256]]).to(device))
             tv.append((t / t.norm(dim=-1, keepdim=True)).cpu().numpy())
-    tv = np.concatenate(tv).astype("float32")
-    sims = tv @ vecs.T
-    k = 60
-    top = np.argpartition(-sims, k, axis=1)[:, :k]
-    pairs = []
+    clip_sim = np.concatenate(tv).astype("float32") @ clip_vecs.T
+    # CLIP scores sit in a narrow band: standardize per card before mixing.
+    clip_z = (clip_sim - clip_sim.mean(axis=1, keepdims=True)) / (clip_sim.std(axis=1, keepdims=True) + 1e-6)
+    score = text_sim + 0.04 * clip_z
+
+    # Literal words: an icon whose file name says what the card is (boar, turtle, imp) gets a bonus per word.
+    token_index = {}
+    for j, n in enumerate(names_):
+        for w in set(re.split(r"[_\-\d]+", n)):
+            if len(w) >= 3 and w not in NAME_NOISE:
+                token_index.setdefault(w, []).append(j)
+    stop = {"the", "and", "with", "a", "an", "of", "small", "large", "giant", "glowing", "dark", "young", "old"}
     for gi in range(len(groups)):
-        for j in top[gi]:
-            pairs.append((float(sims[gi, j]), gi, int(j)))
+        seen = set()
+        name_words = set(re.findall(r"[a-z]+", groups[gi][0]["name"].lower()))
+        for w in re.findall(r"[a-z]+", texts[gi].lower()):
+            w = w[:-1] if w.endswith("s") and len(w) > 4 else w
+            if len(w) < 3 or w in stop or w in seen:
+                continue
+            seen.add(w)
+            # The card's own name counts double: "Murloc Raider" is a murloc whatever the picture says.
+            bonus = 0.22 if w in name_words else 0.11
+            for j in token_index.get(w, ()):
+                score[gi, j] += bonus
+
+    index = {n: j for j, n in enumerate(names_)}
+    for gi, group in enumerate(groups):
+        allow, deny = TYPE_RULES.get(group[0]["type"], (None, None))
+        mask = np.ones(len(names_), dtype=bool)
+        if allow is not None:
+            mask &= np.array([bool(allow.match(n)) for n in names_])
+        if deny is not None:
+            mask &= ~np.array([bool(deny.match(n)) for n in names_])
+        if group[0]["type"] != "WEAPON":
+            mask &= ~np.array([bool(re.match(WEARABLE, n)) for n in names_])
+        score[gi, ~mask] = -9
+        if curated[gi] in index:
+            score[gi, index[curated[gi]]] += 0.25
+
+    # Who picks first when two cards want one icon: the classic sets players meet first, then other
+    # collectible cards, then tokens.
+    def priority(group):
+        c = group[0]
+        if c["id"].startswith(("CS1_", "CS2_", "CS3_", "EX1_", "NEW1_", "DS1_", "VAN_")):
+            return 0.3
+        return 0.1 if any(x["flags"] & 1 for x in group) else 0.0
+
+    k = 80
+    top = np.argpartition(-score, k, axis=1)[:, :k]
+    pairs = [(float(score[gi, j]) + priority(groups[gi]), gi, int(j)) for gi in range(len(groups)) for j in top[gi]
+             if score[gi, j] > -1]
     pairs.sort(reverse=True)
     used, pick = set(), {}
-    for score, gi, j in pairs:
+    for sc, gi, j in pairs:
         if gi in pick or j in used:
             continue
-        pick[gi] = (icon_names[j], score)
+        pick[gi] = (names_[j], sc)
         used.add(j)
 
-    assigned = {}
+    assigned, report = {}, {}
     for gi, group in enumerate(groups):
-        if gi in pick:
-            for c in group:
-                assigned[c["id"]] = pick[gi][0]
+        name, sc = pick.get(gi, (None, None))
+        for c in group:
+            if name:
+                assigned[c["id"]] = name
+            report[c["id"]] = {"icon": name, "score": sc, "text": texts[gi], "caption": captions.get(name)}
     with open(os.path.join(CACHE, "assigned.json"), "w") as f:
-        json.dump({c["id"]: {"icon": assigned.get(c["id"]), "text": texts[gi]}
-                   for gi, group in enumerate(groups) for c in group}, f, indent=0)
+        json.dump(report, f, indent=0)
 
-    lines = ["-- GENERATED by tools/icons/catalog.py assign: a unique game icon per card, picked by CLIP from",
-             "-- the card's described picture. Do not edit.",
+    lines = ["-- GENERATED by tools/icons/catalog.py assign: a unique game icon per card (what the card shows,",
+             "-- matched to icon names, captions and pictures). Do not edit.",
              "local TC = TavernCards_NS",
              "TC.CardIcons = {"]
     for c in cards:
@@ -290,6 +393,27 @@ def cmd_assign():
     print("assigned %d cards to %d distinct icons" % (len(assigned), len(set(assigned.values()))))
 
 
+def cmd_import_missing():
+    """Reads TavernCardsDB.missingIcons from the game's SavedVariables into tools/icons/missing.txt."""
+    import glob
+    wtf = os.path.join(REPO, "..", "..", "..", "WTF", "Account")
+    found = set()
+    for path in glob.glob(os.path.join(wtf, "*", "SavedVariables", "TavernCards.lua")):
+        with open(path, encoding="utf-8", errors="replace") as f:
+            text = f.read()
+        m = re.search(r'\["missingIcons"\]\s*=\s*\{(.*?)\n\t\}', text, re.S)
+        if m:
+            found.update(n.lower() for n in re.findall(r'"([^"]+)"', m.group(1)))
+    mpath = os.path.join(HERE, "missing.txt")
+    old = set()
+    if os.path.exists(mpath):
+        with open(mpath) as f:
+            old = {line.strip() for line in f if line.strip()}
+    with open(mpath, "w") as f:
+        f.write("\n".join(sorted(old | found)) + "\n")
+    print("missing icons: %d known (+%d new)" % (len(old | found), len(found - old)))
+
+
 if __name__ == "__main__":
     {"list": cmd_list, "download": cmd_download, "embed": cmd_embed, "caption": cmd_caption,
-     "assign": cmd_assign}[sys.argv[1]]()
+     "assign": cmd_assign, "import-missing": cmd_import_missing}[sys.argv[1]]()

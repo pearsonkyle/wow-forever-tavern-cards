@@ -77,6 +77,9 @@ TC:On("PLAYER_LOGIN", function()
     if TC.Compat then
         TC.Compat:Probe()
     end
+    if TC.Art and TC.Art.CheckIcons then
+        TC:Safe("icon check", TC.Art.CheckIcons, TC.Art)
+    end
     if TC.OnLogin then
         TC:OnLogin()
     end

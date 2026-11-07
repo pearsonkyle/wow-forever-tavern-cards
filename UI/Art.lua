@@ -124,14 +124,21 @@ function Art:ClassIcon(family)
     return icon(CLASS_ICONS[family] or "") or FALLBACK
 end
 
--- /tc icons: which vocabulary icons this client lacks (saved for tools/match_icons.py to prune).
+-- /tc icons (and once per login): which assigned card icons this client lacks. Saved in
+-- TavernCardsDB.missingIcons for tools/icons/catalog.py to avoid on the next assignment; those cards fall
+-- back to the addon's own picks meanwhile.
 function Art:CheckIcons()
-    local missing = {}
-    for _, name in ipairs(TC.IconVocab or {}) do
-        if not icon(name) then missing[#missing + 1] = name end
+    local missing, seen, total = {}, {}, 0
+    for _, name in pairs(TC.CardIcons or {}) do
+        if not seen[name] then
+            seen[name] = true
+            total = total + 1
+            if not icon(name) then missing[#missing + 1] = name end
+        end
     end
+    table.sort(missing)
     TC.db.missingIcons = missing
-    return missing, #(TC.IconVocab or {})
+    return missing, total
 end
 
 -- An icon path by name if this client has it, else `fallback`.
