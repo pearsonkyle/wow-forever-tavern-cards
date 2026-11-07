@@ -242,7 +242,7 @@ function TC:CardTooltip(id)
     end
     local have = TC.Collection:Count(id)
     GameTooltip:AddLine(("Owned: %d / %d"):format(have, TC.Collection:Cap(id)), 0.6, 0.6, 0.6)
-    if not TC.PlayableNow[id] then
+    if TC.EngineReady and not TC.PlayableNow[id] then
         GameTooltip:AddLine("Playable in a later update.", 0.5, 0.5, 0.5)
     end
 end

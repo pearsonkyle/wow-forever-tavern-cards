@@ -121,6 +121,20 @@ def main():
         })
     quests.sort(key=lambda q: q["id"])
 
+    # Forever ships one copy of some quests per starting zone ("Camping 101: Cooking" x7) and flags
+    # them all complete together. Copies sharing name, category/zone and level are one quest: the
+    # lowest id is canonical, and only it is assigned a card.
+    canon, seen = {}, {}
+    for q in quests:
+        raw = db.quests[q["id"]]
+        key = ((raw.get("name") or "").strip().lower(), raw.get("zoneOrSort") or 0, q["level"])
+        if key[0] and key in seen:
+            canon[q["id"]] = seen[key]
+        else:
+            seen[key] = q["id"]
+    quests = [q for q in quests if q["id"] not in canon]
+    print("quest copies folded into their canonical quest:", len(canon))
+
     # ---- cards ----------------------------------------------------------------------------------
     pool = []
     for cid in playable:
@@ -223,7 +237,18 @@ def main():
         "-- questID -> card id, per class. Only the player's class is kept after load.",
         "local TC = TavernCards_NS",
         "TC.QuestMap = {}",
+        "-- Copies of one quest (per starting zone) -> the canonical id that pays.",
+        "TC.QuestCanon = {",
     ]
+    row = []
+    for qid in sorted(canon):
+        row.append("[%d]=%d" % (qid, canon[qid]))
+        if len(row) == 16:
+            lines.append(",".join(row) + ",")
+            row = []
+    if row:
+        lines.append(",".join(row) + ",")
+    lines.append("}")
     for family in CLASSES.values():
         lines.append("TC.QuestMap.%s = (function() return {" % family)
         row = []

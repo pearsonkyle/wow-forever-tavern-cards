@@ -70,7 +70,7 @@ local function build(parent)
     -- ---- toolbar -------------------------------------------------------------------------------
     local search = CreateFrame("EditBox", nil, panel, "SearchBoxTemplate")
     search:SetSize(170, 20)
-    search:SetPoint("TOPLEFT", 10, -6)
+    search:SetPoint("TOPLEFT", 58, -6)  -- clear of the window portrait
     search:SetAutoFocus(false)
     search:HookScript("OnTextChanged", function(self)
         filter.text = (self:GetText() or ""):lower()
@@ -121,9 +121,11 @@ local function build(parent)
             function() filter.owned = "owned"; changed() end)
         root:CreateRadio(NOT_COLLECTED or "Not Collected", function() return filter.owned == "missing" end,
             function() filter.owned = "missing"; changed() end)
-        root:CreateDivider()
-        root:CreateCheckbox("Playable now only", function() return filter.playable end,
-            function() filter.playable = not filter.playable; changed() end)
+        if TC.EngineReady then
+            root:CreateDivider()
+            root:CreateCheckbox("Playable now only", function() return filter.playable end,
+                function() filter.playable = not filter.playable; changed() end)
+        end
     end)
 
     -- Mana-cost gems: 0..6 and 7+; click again to clear.
@@ -228,7 +230,7 @@ local function build(parent)
         end
         local have = TC.Collection:Count(id)
         if filter.owned == "owned" and have == 0 or filter.owned == "missing" and have > 0 then return false end
-        if filter.playable and not TC.PlayableNow[id] then return false end
+        if filter.playable and TC.EngineReady and not TC.PlayableNow[id] then return false end
         if filter.text ~= "" then
             local hay = (card.name .. " " .. (card.text or "")):lower()
             if not hay:find(filter.text, 1, true) then return false end

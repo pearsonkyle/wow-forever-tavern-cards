@@ -46,6 +46,70 @@ local TYPE_ICONS = {
     LOCATION = "INV_Misc_Map_01",
 }
 
+-- Words in a card's name -> icon, matched at the start of a word. First match wins.
+local NAME_ICONS = {
+    { "spider", "Ability_Hunter_Pet_Spider" }, { "wolf", "Ability_Hunter_Pet_Wolf" }, { "worg", "Ability_Hunter_Pet_Wolf" },
+    { "hound", "Ability_Hunter_Pet_Wolf" }, { "boar", "Ability_Hunter_Pet_Boar" }, { "bear", "Ability_Hunter_Pet_Bear" },
+    { "raptor", "Ability_Hunter_Pet_Raptor" }, { "panther", "Ability_Hunter_Pet_Cat" }, { "tiger", "Ability_Hunter_Pet_Cat" },
+    { "lion", "Ability_Hunter_Pet_Cat" }, { "cat", "Ability_Hunter_Pet_Cat" }, { "saber", "Ability_Hunter_Pet_Cat" },
+    { "bat", "Ability_Hunter_Pet_Bat" }, { "owl", "Ability_Hunter_Pet_Owl" }, { "crab", "Ability_Hunter_Pet_Crab" },
+    { "turtle", "Ability_Hunter_Pet_Turtle" }, { "tortoise", "Ability_Hunter_Pet_Turtle" },
+    { "gorilla", "Ability_Hunter_Pet_Gorilla" }, { "ape", "Ability_Hunter_Pet_Gorilla" }, { "hyena", "Ability_Hunter_Pet_Hyena" },
+    { "scorpi", "Ability_Hunter_Pet_Scorpid" }, { "vulture", "Ability_Hunter_Pet_Vulture" }, { "buzzard", "Ability_Hunter_Pet_Vulture" },
+    { "croc", "Ability_Hunter_Pet_Crocolisk" }, { "serpent", "Ability_Hunter_Pet_WindSerpent" }, { "snake", "Ability_Hunter_Pet_WindSerpent" },
+    { "strider", "Ability_Hunter_Pet_TallStrider" }, { "hawk", "Ability_Hunter_Pet_DragonHawk" }, { "rat", "INV_Misc_Food_57" },
+    { "rodent", "INV_Misc_Food_57" }, { "sheep", "Spell_Nature_Polymorph" }, { "chicken", "Spell_Magic_PolymorphChicken" },
+    { "frog", "Ability_Hunter_Pet_Turtle" }, { "toad", "Ability_Hunter_Pet_Turtle" }, { "fish", "INV_Misc_Fish_02" },
+    { "shark", "INV_Misc_Fish_35" }, { "ogre", "Achievement_Character_Ogre" }, { "gnoll", "INV_Misc_Head_Gnoll_01" },
+    { "kobold", "INV_Misc_Head_Kobold_01" }, { "troll", "Achievement_Character_Troll_Male" },
+    { "orc", "Achievement_Character_Orc_Male" }, { "tauren", "Achievement_Character_Tauren_Male" },
+    { "dwar", "Achievement_Character_Dwarf_Male" }, { "gnome", "Achievement_Character_Gnome_Male" },
+    { "goblin", "Achievement_Character_Goblin_Male" }, { "elf", "Achievement_Character_Nightelf_Female" },
+    { "draenei", "Achievement_Character_Draenei_Female" }, { "ghost", "Spell_Shadow_Haunting" },
+    { "spirit", "Spell_Shadow_Haunting" }, { "wisp", "Spell_Nature_WispSplode" }, { "treant", "Ability_Druid_ForceofNature" },
+    { "ancient", "Ability_Druid_ForceofNature" }, { "dryad", "Ability_Druid_ForceofNature" },
+    { "faerie", "Spell_Nature_FaerieFire" }, { "sprite", "Spell_Nature_FaerieFire" }, { "ooze", "INV_Misc_Slime_01" },
+    { "slime", "INV_Misc_Slime_01" }, { "golem", "INV_Misc_Gear_08" }, { "giant", "INV_Stone_15" },
+    { "bomb", "INV_Misc_Bomb_05" }, { "explosive", "INV_Misc_Bomb_05" }, { "engineer", "Trade_Engineering" },
+    { "tinker", "Trade_Engineering" }, { "mech", "Trade_Engineering" }, { "mage", "Spell_Holy_MagicalSentry" },
+    { "magus", "Spell_Holy_MagicalSentry" }, { "sorcer", "Spell_Holy_MagicalSentry" }, { "priest", "Spell_Holy_PowerWordShield" },
+    { "cleric", "Spell_Holy_PowerWordShield" }, { "acolyte", "Spell_Holy_PowerWordShield" },
+    { "necromancer", "Spell_Shadow_DeathCoil" }, { "cultist", "Spell_Shadow_DeathCoil" }, { "warlock", "Spell_Shadow_DeathCoil" },
+    { "knight", "Ability_Warrior_DefensiveStance" }, { "champion", "Ability_Warrior_DefensiveStance" },
+    { "guard", "INV_Shield_06" }, { "soldier", "INV_Shield_06" }, { "footman", "INV_Shield_06" }, { "militia", "INV_Shield_06" },
+    { "assassin", "Ability_Rogue_Ambush" }, { "thief", "Ability_Rogue_Ambush" }, { "bandit", "Ability_Rogue_Ambush" },
+    { "ranger", "INV_Weapon_Bow_07" }, { "archer", "INV_Weapon_Bow_07" }, { "hunter", "INV_Weapon_Bow_07" },
+    { "trapper", "INV_Weapon_Bow_07" }, { "cook", "INV_Misc_Food_15" }, { "chef", "INV_Misc_Food_15" },
+    { "brew", "INV_Drink_05" }, { "barkeep", "INV_Drink_05" }, { "innkeeper", "INV_Drink_05" }, { "book", "INV_Misc_Book_09" },
+    { "scroll", "INV_Scroll_03" }, { "dummy", "INV_Misc_Bag_08" }, { "mime", "Spell_Shadow_Charm" },
+    { "imp", "Spell_Shadow_SummonImp" }, { "whelp", "INV_Misc_Head_Dragon_01" }, { "drake", "INV_Misc_Head_Dragon_01" },
+}
+
+-- Untagged minions with no name match get a varied, stable pick instead of one shared face.
+local MINION_POOL = {
+    "Achievement_Character_Human_Male", "Achievement_Character_Human_Female", "Achievement_Character_Dwarf_Male",
+    "Achievement_Character_Gnome_Female", "Achievement_Character_Nightelf_Male", "Achievement_Character_Orc_Female",
+    "Achievement_Character_Troll_Female", "Achievement_Character_Tauren_Female", "Achievement_Character_Undead_Female",
+    "Achievement_Character_Bloodelf_Female", "Achievement_Character_Goblin_Female", "INV_Misc_Head_Human_01",
+    "INV_Misc_Head_Orc_01", "INV_Misc_Head_Troll_01", "INV_Misc_Head_Dwarf_01", "INV_Misc_Head_Gnome_01",
+    "INV_Misc_Head_Elf_01", "INV_Misc_Head_Tauren_01", "INV_Misc_Head_Undead_01",
+}
+
+local WEAPON_WORDS = {
+    { "axe", "INV_Axe_09" }, { "hammer", "INV_Hammer_04" }, { "mace", "INV_Mace_01" }, { "dagger", "INV_Weapon_ShortBlade_05" },
+    { "knife", "INV_Weapon_ShortBlade_05" }, { "blade", "INV_Sword_27" }, { "bow", "INV_Weapon_Bow_07" },
+    { "rifle", "INV_Weapon_Rifle_01" }, { "gun", "INV_Weapon_Rifle_01" }, { "staff", "INV_Staff_08" },
+    { "spear", "INV_Spear_04" }, { "glaive", "INV_Weapon_Glaive_01" }, { "fist", "INV_Gauntlets_04" },
+}
+
+local function stableIndex(id, n)
+    local h = 7
+    for i = 1, #id do
+        h = (h * 31 + id:byte(i)) % 1000003
+    end
+    return h % n + 1
+end
+
 local exists = {}
 local function icon(name)
     local path = "Interface\\Icons\\" .. name
@@ -65,11 +129,35 @@ function Art:Icon(id)
     if card then
         if card.type == "SPELL" then
             path = SCHOOL_ICONS[card.school] and icon(SCHOOL_ICONS[card.school])
-        elseif card.type == "MINION" and card.races ~= 0 then
-            for _, entry in ipairs(RACE_ICONS) do
-                if bit.band(card.races, entry[1]) ~= 0 then
+        elseif card.type == "WEAPON" then
+            local lower = card.name:lower()
+            for _, entry in ipairs(WEAPON_WORDS) do
+                if lower:find("%f[%a]" .. entry[1]) then
                     path = icon(entry[2])
-                    break
+                    if path then break end
+                end
+            end
+        elseif card.type == "MINION" then
+            local lower = card.name:lower()
+            for _, entry in ipairs(NAME_ICONS) do
+                if lower:find("%f[%a]" .. entry[1]) then  -- word start: "rat" is not "pirate"
+                    path = icon(entry[2])
+                    if path then break end
+                end
+            end
+            if not path and card.races ~= 0 then
+                for _, entry in ipairs(RACE_ICONS) do
+                    if bit.band(card.races, entry[1]) ~= 0 then
+                        path = icon(entry[2])
+                        break
+                    end
+                end
+            end
+            if not path then
+                local start = stableIndex(id, #MINION_POOL)
+                for k = 0, #MINION_POOL - 1 do
+                    path = icon(MINION_POOL[(start + k - 1) % #MINION_POOL + 1])
+                    if path then break end
                 end
             end
         end

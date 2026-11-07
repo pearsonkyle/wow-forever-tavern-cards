@@ -57,6 +57,7 @@ TC:On("ADDON_LOADED", function(name)
         return
     end
     TC:BindSavedVariables()
+    TC:OnLoadedEngineCheck()
     if TC.OnLoaded then
         TC:OnLoaded()
     end

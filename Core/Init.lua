@@ -13,6 +13,7 @@ TC.VERSION = (C_AddOns and C_AddOns.GetAddOnMetadata and C_AddOns.GetAddOnMetada
 
 local DB_DEFAULTS = {
     schema = 1,
+    generation = 1,    -- bumped by /tc reset; characters from an older generation start over
     collection = {},   -- cardId -> copies (account-wide)
     dust = 0,
     ledger = {},       -- { t, card, source }
@@ -56,6 +57,28 @@ function TC:BindSavedVariables()
     fill(_G.TavernCardsCharDB, CHAR_DEFAULTS)
     self.db = _G.TavernCardsDB
     self.char = _G.TavernCardsCharDB
+    if self.char.generation ~= self.db.generation then
+        -- The account collection was reset: this character's quests pay again (journey re-runs).
+        wipe(self.char.granted)
+        self.char.retroDone = false
+        self.char.generation = self.db.generation
+    end
+end
+
+-- Wipes the account collection; every character re-earns its quests on its next login.
+function TC:ResetCollection()
+    local db = self.db
+    wipe(db.collection)
+    wipe(db.ledger)
+    wipe(db.unseen)
+    db.dust = 0
+    db.generation = (db.generation or 1) + 1
+    self:BindSavedVariables()
+end
+
+-- True once the rules engine can play at least one card (Data/Wave.lua not empty).
+function TC:OnLoadedEngineCheck()
+    TC.EngineReady = next(TC.PlayableNow or {}) ~= nil
 end
 
 function TC:Print(fmt, ...)

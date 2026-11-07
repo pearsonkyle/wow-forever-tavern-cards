@@ -8,6 +8,7 @@ local HELP = {
     "/tc rng    - run the RNG self-test (must match the reference engine)",
     "/tc collection - collection progress and dust",
     "/tc preview [cardId] - show a card toast without granting anything",
+    "/tc reset  - start the collection over (asks to confirm)",
 }
 
 local commands = {}
@@ -62,6 +63,15 @@ function commands.collection()
         local e = ledger[i]
         DEFAULT_CHAT_FRAME:AddMessage(("  %s  %s"):format(TC.Art:ColoredName(e.c), TC.Collection:EntrySource(e)))
     end
+end
+
+function commands.reset(arg)
+    if arg ~= "confirm" then
+        TC:Print("This wipes your whole card collection, dust and ledger, and every character re-earns its completed quests on its next login. Type |cffffffff/tc reset confirm|r to do it.")
+        return
+    end
+    TC:ResetCollection()
+    TC:Print("Collection reset. |cffffffff/reload|r to re-run your journey.")
 end
 
 function commands.preview(id)

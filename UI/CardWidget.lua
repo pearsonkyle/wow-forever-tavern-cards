@@ -112,6 +112,13 @@ function CardWidget:Create(parent)
     w.art:SetPoint("BOTTOMRIGHT", w.artFrame, -1, 1)
     w.art:SetTexCoord(0.08, 0.92, 0.22, 0.78)
 
+    -- Dark banner behind the name so rarity colors read on parchment.
+    w.banner = w:CreateTexture(nil, "BORDER", nil, 1)
+    w.banner:SetPoint("TOPLEFT", w.artFrame, "BOTTOMLEFT", -5, -2)
+    w.banner:SetPoint("TOPRIGHT", w.artFrame, "BOTTOMRIGHT", 5, -2)
+    w.banner:SetHeight(26)
+    w.banner:SetColorTexture(0.06, 0.04, 0.03, 0.82)
+
     w.name = w:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
     w.name:SetPoint("TOPLEFT", w.artFrame, "BOTTOMLEFT", -3, -3)
     w.name:SetPoint("TOPRIGHT", w.artFrame, "BOTTOMRIGHT", 3, -3)
@@ -124,7 +131,7 @@ function CardWidget:Create(parent)
 
     w.kind = w:CreateFontString(nil, "OVERLAY", "GameFontBlackTiny")
     w.kind:SetPoint("TOP", w.name, "BOTTOM", 0, -1)
-    w.kind:SetTextColor(0.25, 0.18, 0.1)
+    w.kind:SetTextColor(0.2, 0.13, 0.06)
 
     w.cost = gem(w, 24, 0.15, 0.4, 0.95, "GameFontHighlight")
     w.cost:SetPoint("TOPLEFT", -4, 4)
@@ -213,11 +220,13 @@ function CardWidget.SetCard(w, id)
     w.count:SetText(have > 1 and ("x" .. have) or "")
     local owned = have > 0
     w.art:SetDesaturated(not owned)
-    w.face:SetVertexColor(owned and 1 or 0.55, owned and 1 or 0.55, owned and 1 or 0.55)
-    w:SetAlpha(owned and 1 or 0.55)
+    w.art:SetVertexColor(owned and 1 or 0.7, owned and 1 or 0.7, owned and 1 or 0.7)
+    w.face:SetVertexColor(owned and 1 or 0.72, owned and 1 or 0.72, owned and 1 or 0.72)
+    w:SetAlpha(owned and 1 or 0.85)
 
     local unseen = owned and TC.db.unseen and TC.db.unseen[id]
     w.newGlow:SetShown(unseen and true or false)
     w.newText:SetShown(unseen and true or false)
-    w.later:SetShown(not TC.PlayableNow[id])
+    -- Only meaningful once the engine plays some cards; until then every card would carry it.
+    w.later:SetShown(TC.EngineReady and not TC.PlayableNow[id] or false)
 end

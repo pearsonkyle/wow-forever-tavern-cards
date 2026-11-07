@@ -30,7 +30,13 @@ local function hash(n)
     return h
 end
 
+-- Forever's per-starting-zone copies of a quest all pay as their canonical quest, once.
+function Quests:Canon(questID)
+    return TC.QuestCanon and TC.QuestCanon[questID] or questID
+end
+
 function Quests:CardFor(questID)
+    questID = self:Canon(questID)
     local id = classMap and classMap[questID]
     if id then
         return id
@@ -111,6 +117,7 @@ end
 
 function Quests:OnTurnedIn(questID)
     local id = self:CardFor(questID)
+    questID = self:Canon(questID)
     if id then
         TC.Collection:Grant("q:" .. questID, id, "Quest: " .. questTitle(questID), false, questID)
     end
@@ -126,7 +133,8 @@ function Quests:Retro()
         return
     end
     local cards, dust = {}, 0
-    for _, questID in ipairs(done) do
+    for _, completed in ipairs(done) do
+        local questID = self:Canon(completed)
         local id = classMap and classMap[questID]
         if id then
             local result, gained = TC.Collection:Grant("q:" .. questID, id, "Quest: " .. questTitle(questID), true, questID)

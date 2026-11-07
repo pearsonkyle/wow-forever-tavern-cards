@@ -13,6 +13,6 @@ luajit tests/run.lua
 if [ -x tools/trace/tavern-trace ]; then
   python3 tools/export_data.py > /dev/null
   python3 tools/wave_plan.py > /dev/null
-  git diff --quiet -- Data Engine/Data || { echo "check: generated data is stale; commit the regenerated files"; exit 1; }
+  git diff --quiet -- Data/Cards.lua Data/Wave.lua Engine/Data || { echo "check: generated data is stale; commit the regenerated files"; exit 1; }
 fi
 echo "check: ok"
