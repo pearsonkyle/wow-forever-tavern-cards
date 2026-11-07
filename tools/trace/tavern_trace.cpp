@@ -149,6 +149,8 @@ int main(int argc, char** argv)
     std::string dump_path;
     std::string cards_path;
     std::string abilities_path;
+    std::string forced_family;   // --family NAME: both seats play this class (the card sweep)
+    std::vector<std::string> prefer;   // --prefer "Name|Name": take a legal play of these cards when offered
 
     for (int i = 1; i < argc; ++i)
     {
@@ -179,6 +181,23 @@ int main(int argc, char** argv)
             dump_path = next();
         else if (arg == "--no-state")
             with_state = false;
+        else if (arg == "--family")
+            forced_family = next();
+        else if (arg == "--prefer")
+        {
+            std::string list = next();
+            std::size_t start = 0;
+            while (start <= list.size())
+            {
+                std::size_t const bar = list.find('|', start);
+                std::string const name = list.substr(start, bar == std::string::npos ? std::string::npos : bar - start);
+                if (!name.empty())
+                    prefer.push_back(name);
+                if (bar == std::string::npos)
+                    break;
+                start = bar + 1;
+            }
+        }
         else
         {
             std::cerr << "tavern-trace: unknown argument '" << arg << "'\n";
@@ -371,6 +390,10 @@ int main(int argc, char** argv)
             for (int attempt = 0; attempt < 32 && decks[seat].empty(); ++attempt)
             {
                 picked[seat] = families[setup.int_below(family_count)];
+                if (!forced_family.empty())
+                    for (tc::Family f : families)
+                        if (forced_family == tc::family_name(f))
+                            picked[seat] = f;
                 decks[seat] = build_deck(catalogue, picked[seat], setup.next(), pool.empty() ? nullptr : &pool);
             }
             if (decks[seat].empty())
@@ -410,7 +433,16 @@ int main(int argc, char** argv)
             std::vector<simcore::Move> const moves = engine->legal_moves();
             if (moves.empty())
                 break;
-            int const chosen = choose(policy, moves);
+            int chosen = -1;
+            for (std::size_t i = 0; i < moves.size() && chosen < 0; ++i)
+                for (std::string const& name : prefer)
+                    if (moves[i].action == "play" && moves[i].desc.rfind("Play " + name, 0) == 0)
+                    {
+                        chosen = static_cast<int>(i);
+                        break;
+                    }
+            if (chosen < 0)
+                chosen = choose(policy, moves);
 
             std::cout << "{\"t\":\"step\",\"ply\":" << ply << ",\"v\":" << engine->state_version()
                       << ",\"decider\":" << engine->current_player() << ",\"moves\":[";
