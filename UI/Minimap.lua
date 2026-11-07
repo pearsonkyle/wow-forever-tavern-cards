@@ -36,7 +36,7 @@ local function onClick(owner, button)
     if button == "RightButton" then
         menu(owner)
     elseif IsShiftKeyDown() then
-        TC:ShowWindow("play")
+        if TC.Match:Active() then TC.Board:Open() else TC:ShowWindow("play") end
     else
         TC:ToggleWindow()
     end

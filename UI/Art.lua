@@ -119,6 +119,11 @@ local function icon(name)
     return exists[path] and path or nil
 end
 
+-- An icon path by name if this client has it, else `fallback`.
+function Art:SafeIcon(name, fallback)
+    return icon(name) or fallback or FALLBACK
+end
+
 local cache = {}
 function Art:Icon(id)
     if cache[id] then

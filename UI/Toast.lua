@@ -231,7 +231,7 @@ TC.Collection:Subscribe(function(event, p)
 end)
 
 -- Shared card tooltip (also used by the collection UI).
-function TC:CardTooltip(id)
+function TC:CardTooltip(id, inGame)
     local card = TC.Cards[id]
     if not card then
         return
@@ -246,6 +246,9 @@ function TC:CardTooltip(id)
     local text = Art:RulesText(id)
     if text ~= "" then
         GameTooltip:AddLine(text, 1, 0.82, 0, true)
+    end
+    if inGame then
+        return
     end
     local have = TC.Collection:Count(id)
     GameTooltip:AddLine(("Owned: %d / %d"):format(have, TC.Collection:Cap(id)), 0.6, 0.6, 0.6)

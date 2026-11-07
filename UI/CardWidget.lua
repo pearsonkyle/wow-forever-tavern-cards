@@ -43,6 +43,8 @@ local function gem(parent, size, r, g, b, font)
     return f
 end
 
+CardWidget.Gem = gem
+
 local function onEnter(self)
     if not self.id then
         return
@@ -178,6 +180,27 @@ function CardWidget:Create(parent)
     return w
 end
 
+-- A card in a match hand: same face, game tooltip, and clicks go to w.onClick(w, button).
+function CardWidget:CreateGame(parent)
+    local w = self:Create(parent)
+    w.game = true
+    w:SetScript("OnEnter", function(self)
+        if not self.id then return end
+        GameTooltip:SetOwner(self, "ANCHOR_TOP")
+        TC:CardTooltip(self.id, true)
+        GameTooltip:Show()
+        if self.onEnter then self.onEnter(self) end
+    end)
+    w:SetScript("OnLeave", function(self)
+        GameTooltip:Hide()
+        if self.onLeave then self.onLeave(self) end
+    end)
+    w:SetScript("OnClick", function(self, button)
+        if self.onClick then self.onClick(self, button) end
+    end)
+    return w
+end
+
 function CardWidget.SetCard(w, id)
     w.id = id
     local card = id and TC.Cards[id]
@@ -219,6 +242,26 @@ function CardWidget.SetCard(w, id)
     end
     w.kind:SetText(kind)
 
+    if w.game then
+        -- A card in a match: always "owned"; the cost shown is what it costs now.
+        w.count:SetText("")
+        w.cost.text:SetText(w.costNow or card.cost)
+        if w.costNow and w.costNow < card.cost then
+            w.cost.text:SetTextColor(0.3, 1, 0.3)
+        elseif w.costNow and w.costNow > card.cost then
+            w.cost.text:SetTextColor(1, 0.3, 0.3)
+        else
+            w.cost.text:SetTextColor(1, 1, 1)
+        end
+        w.art:SetDesaturated(false)
+        w.art:SetVertexColor(1, 1, 1)
+        w.face:SetVertexColor(1, 1, 1)
+        w:SetAlpha(1)
+        w.newGlow:Hide()
+        w.newText:Hide()
+        w.later:Hide()
+        return
+    end
     w.count:SetText(have > 1 and ("x" .. have) or "")
     local owned = have > 0
     w.art:SetDesaturated(not owned)

@@ -2,6 +2,7 @@ local TC = TavernCards_NS
 
 local HELP = {
     "/tc        - open the card book (also: minimap button)",
+    "/tc play   - return to your match, or open the Play tab",
     "/tc status - card data and engine build",
     "/tc minimap - show or hide the minimap button (reports its state)",
     "/tc probe  - report which UI templates, atlases, events and APIs this client has",
@@ -25,6 +26,14 @@ function commands.status()
     end
     TC:Print("v%s, rules %s: %d cards known, %d collectible, %d playable in this build.",
         TC.VERSION, TC.RULES_VERSION, total, playable, ready)
+end
+
+function commands.play()
+    if TC.Match:Active() then
+        TC.Board:Open()
+    else
+        TC:ShowWindow("play")
+    end
 end
 
 function commands.probe()

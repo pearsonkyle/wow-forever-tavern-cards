@@ -37,8 +37,10 @@ Collection\Decks.lua
 UI\Art.lua
 UI\Toast.lua
 UI\CardWidget.lua
+UI\Match.lua
 UI\Window.lua
 UI\Confirm.lua
+UI\Board.lua
 UI\DeckSheet.lua
 UI\CollectionPanel.lua
 UI\DeckListPanel.lua

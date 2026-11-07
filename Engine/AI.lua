@@ -516,3 +516,29 @@ function AI.choose(engine, profileName, rng)
     end
     return 1
 end
+
+-- build_deck (jankcraft tc/ai/deck.cpp): 30 legal cards of `family` plus Neutral, deterministic in
+-- (family, seed). `allowed(id)` narrows the pool further (nil = every implemented card).
+function AI.buildDeck(family, seedHi, seedLo, allowed)
+    local pool = {}
+    for _, id in ipairs(D.all()) do
+        local d = D.def(id)
+        if d and d.implemented and d.collectible and d.droppable and id ~= D.COIN_ID
+            and (d.family == family or d.family == "NEUTRAL") and (not allowed or allowed(id)) then
+            pool[#pool + 1] = { id = id, legendary = d.rarity == "LEGENDARY" }
+        end
+    end
+    local capacity = 0
+    for _, entry in ipairs(pool) do capacity = capacity + (entry.legendary and 1 or 2) end
+    if capacity < 30 then return nil end
+    local rng = Rng.new(seedHi, seedLo)
+    rng:shuffle(pool)
+    local deck = {}
+    for _, entry in ipairs(pool) do
+        for _ = 1, entry.legendary and 1 or 2 do
+            if #deck < 30 then deck[#deck + 1] = entry.id end
+        end
+        if #deck >= 30 then break end
+    end
+    return #deck == 30 and deck or nil
+end
