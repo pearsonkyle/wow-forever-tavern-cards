@@ -1,0 +1,21 @@
+## Interface: 16001
+## Title: Tavern Cards
+## Notes: Collect cards from your quests and adventures, build decks, and play other adventurers at the tavern table.
+## Author: kpearson
+## Version: 0.1.0
+## SavedVariables: TavernCardsDB
+## SavedVariablesPerCharacter: TavernCardsCharDB
+## IconTexture: Interface\Icons\INV_Misc_Ticket_Tarot_Stack_01
+## AddonCompartmentFunc: TavernCards_OnAddonCompartmentClick
+
+Core\Init.lua
+Core\Events.lua
+Core\Compat.lua
+
+Data\Cards.lua
+Data\Wave.lua
+
+Engine\Rng.lua
+Engine\Data\Programs.lua
+
+Core\Commands.lua

@@ -1,0 +1,6 @@
+.DS_Store
+tools/cache/
+tools/trace/.build/
+tools/trace/tavern-trace
+*.jsonl
+__pycache__/
