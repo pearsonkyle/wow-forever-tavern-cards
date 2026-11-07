@@ -6,6 +6,7 @@ local HELP = {
     "/tc channel [on|off] - the tavern chat channel",
     "/tc who    - other Tavern Cards players online",
     "/tc duel [Name] - challenge a player (your target if no name) with your Play-tab deck",
+    "/tc sound  - turn the card game's sounds on or off",
     "/tc status - card data and engine build",
     "/tc minimap - show or hide the minimap button (reports its state)",
     "/tc probe  - report which UI templates, atlases, events and APIs this client has",
@@ -72,6 +73,11 @@ function commands.icons()
     local missing, total = TC.Art:CheckIcons()
     TC:Print("%d of %d card icons exist in this client.%s", total - #missing, total,
         #missing > 0 and (" Missing: " .. table.concat(missing, ", ", 1, math.min(#missing, 12))) or "")
+end
+
+function commands.sound()
+    TC.db.settings.mute = not TC.db.settings.mute
+    TC:Print("Sounds %s.", TC.db.settings.mute and "off" or "on")
 end
 
 function commands.probe()

@@ -255,3 +255,30 @@ function Art:Play(kit)
         PlaySound(id)
     end
 end
+
+-- Game sounds by moment. Each lists SOUNDKIT names in order of preference (clients differ in which they
+-- have); a moment plays at most once every 0.1s, so a board clear doesn't stack twenty sounds.
+local SFX = {
+    play = { "IG_ABILITY_ICON_DROP", "IG_CHARACTER_INFO_TAB" },
+    attack = { "IG_ABILITY_OPEN", "IG_ABILITY_ICON_DROP" },
+    hit = { "U_CHAT_SCROLL_BUTTON", "IG_MINIMAP_ZOOM_IN" },
+    death = { "IG_QUEST_LOG_ABANDON_QUEST", "IG_MAINMENU_CLOSE" },
+    draw = { "IG_ABILITY_PAGE_TURN" },
+    power = { "IG_SPELLBOOK_OPEN" },
+    turn = { "READY_CHECK" },
+    win = { "UI_EPICLOOT_TOAST", "LEVELUPSOUND", "IG_QUEST_LIST_COMPLETE" },
+    lose = { "IG_QUEST_FAILED" },
+    select = { "IG_QUEST_LIST_SELECT" },
+}
+local lastSfx = {}
+function Art:Sfx(moment)
+    local now = GetTime()
+    if lastSfx[moment] and now - lastSfx[moment] < 0.1 then return end
+    lastSfx[moment] = now
+    for _, kit in ipairs(SFX[moment] or {}) do
+        if SOUNDKIT and SOUNDKIT[kit] then
+            self:Play(kit)
+            return
+        end
+    end
+end

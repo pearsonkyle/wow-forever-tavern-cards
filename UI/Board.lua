@@ -376,12 +376,49 @@ local function updateGliders(elapsed)
     for w in pairs(gliders) do
         w.gx = w.gx + (w.tx - w.gx) * k
         w.gy = w.gy + (w.ty - w.gy) * k
-        if math.abs(w.gx - w.tx) < 0.5 and math.abs(w.gy - w.ty) < 0.5 then
+        local dx = 0
+        if w.shake then
+            w.shake = w.shake - elapsed
+            if w.shake <= 0 then
+                w.shake = nil
+            else
+                dx = math.sin(w.shake * 70) * 4 * (w.shake / 0.3)
+            end
+        end
+        if not w.shake and math.abs(w.gx - w.tx) < 0.5 and math.abs(w.gy - w.ty) < 0.5 then
             w.gx, w.gy = w.tx, w.ty
             gliders[w] = nil
         end
-        w.place(w, w.gx, w.gy)
+        w.place(w, w.gx + dx, w.gy)
     end
+end
+
+local zoom
+-- A big copy of the card beside a hovered minion or weapon, with the tooltip beside it.
+local function showZoom(owner, cardId)
+    if not zoom then
+        zoom = CardWidget:CreateGame(frame)
+        zoom:EnableMouse(false)
+        zoom:SetScale(1.45)
+        zoom:SetFrameLevel(frame:GetFrameLevel() + 48)
+    end
+    zoom.costNow = nil
+    zoom:SetCard(cardId)
+    zoom:ClearAllPoints()
+    local x = owner:GetCenter()
+    local right = x and frame:GetCenter() and x < frame:GetCenter()
+    -- Offsets are in the zoom's own (scaled) units.
+    if right then
+        zoom:SetPoint("LEFT", owner, "RIGHT", 12 / 1.45, 0)
+    else
+        zoom:SetPoint("RIGHT", owner, "LEFT", -12 / 1.45, 0)
+    end
+    zoom:Show()
+    return zoom, right
+end
+
+local function hideZoom()
+    if zoom then zoom:Hide() end
 end
 
 -- Ends every running effect at once (the board was hidden, or a new match begins): nothing may resume
@@ -400,8 +437,9 @@ local function finishEffects()
         g:Hide()
     end
     if arrow then arrow:Hide() end
+    hideZoom()
     for w in pairs(gliders) do
-        w.gx, w.gy = w.tx, w.ty
+        w.gx, w.gy, w.shake = w.tx, w.ty, nil
         w.place(w, w.gx, w.gy)
     end
     wipe(gliders)
@@ -431,7 +469,18 @@ local function entityTooltip(owner, id)
     local eng = engine()
     local e = eng and eng:ent(id)
     if not e then return end
-    GameTooltip:SetOwner(owner, "ANCHOR_RIGHT")
+    if e.zone == ZONE.BOARD or e.zone == ZONE.WEAPON then
+        local z, right = showZoom(owner, e.card_id)
+        GameTooltip:SetOwner(z, right and "ANCHOR_NONE" or "ANCHOR_NONE")
+        GameTooltip:ClearAllPoints()
+        if right then
+            GameTooltip:SetPoint("TOPLEFT", z, "TOPRIGHT", 6, 0)
+        else
+            GameTooltip:SetPoint("TOPRIGHT", z, "TOPLEFT", -6, 0)
+        end
+    else
+        GameTooltip:SetOwner(owner, "ANCHOR_RIGHT")
+    end
     if e.zone == ZONE.HERO then
         local p = eng:player(e.owner)
         local record = Match:Record()
@@ -550,7 +599,7 @@ local function minionWidget(parent)
     b:RegisterForClicks("LeftButtonUp", "RightButtonUp")
     b:SetScript("OnClick", onEntityClick)
     b:SetScript("OnEnter", function(self) Board.hover = self.entity entityTooltip(self, self.entity) end)
-    b:SetScript("OnLeave", function() Board.hover = nil GameTooltip:Hide() end)
+    b:SetScript("OnLeave", function() Board.hover = nil hideZoom() GameTooltip:Hide() end)
     return b
 end
 
@@ -646,7 +695,7 @@ local function heroWidget(parent, seat)
     b:RegisterForClicks("LeftButtonUp", "RightButtonUp")
     b:SetScript("OnClick", onEntityClick)
     b:SetScript("OnEnter", function(self) Board.hover = self.entity entityTooltip(self, self.entity) end)
-    b:SetScript("OnLeave", function() Board.hover = nil GameTooltip:Hide() end)
+    b:SetScript("OnLeave", function() Board.hover = nil hideZoom() GameTooltip:Hide() end)
     return b
 end
 
@@ -687,7 +736,7 @@ local function weaponWidget(parent)
     b.durability = gem(b, 22, 0.45, 0.45, 0.5, "GameFontHighlightSmall")
     b.durability:SetPoint("BOTTOMRIGHT", 6, -4)
     b:SetScript("OnEnter", function(self) entityTooltip(self, self.entity) end)
-    b:SetScript("OnLeave", function() GameTooltip:Hide() end)
+    b:SetScript("OnLeave", function() hideZoom() GameTooltip:Hide() end)
     return b
 end
 
@@ -1723,7 +1772,7 @@ function Board:ClickEndTurn()
     sel = nil
     for index, m in ipairs(moves) do
         if m.action == "end_turn" then
-            Art:Play("IG_QUEST_LIST_SELECT")
+            Art:Sfx("select")
             Match:PlayerApply(index)
             return
         end
@@ -1818,6 +1867,7 @@ local function onMatch(what, seat, move)
                 if from then
                     flyCard(e.card_id, from, to)
                     flownTo = e.id
+                    Art:Sfx("play")
                 end
             end
         end
@@ -1835,22 +1885,31 @@ local function onMatch(what, seat, move)
                         tex = Art:Icon(e.card_id)
                     end
                     lunge(a, b, tex)
-                    Art:Play("IG_ABILITY_ICON_DROP")
+                    Art:Sfx("attack")
                 end
             elseif ev.kind == "DAMAGED" and at then
                 floatText(at[1], at[2], "-" .. ev.amount, 1, 0.2, 0.15)
                 flash(widgets[ev.subject], 1, 0.15, 0.1)
+                local hit = widgets[ev.subject]
+                if hit and hit.place then
+                    -- A short shake on the minion that took the hit.
+                    hit.shake = 0.3
+                    gliders[hit] = true
+                end
+                Art:Sfx("hit")
             elseif ev.kind == "SUMMONED" and widgets[ev.subject] then
                 fadeIn(widgets[ev.subject], flownTo == ev.subject and FLY * 0.8 or 0)
             elseif ev.kind == "HERO_POWER_USED" then
                 flash(frame.powers[sideOf(ev.seat)], 1, 0.85, 0.3, 0.6)
+                Art:Sfx("power")
             elseif ev.kind == "DAMAGE_PREVENTED" and at then
                 floatText(at[1], at[2], "Blocked", 1, 0.9, 0.4)
             elseif ev.kind == "DIED" and at then
                 floatText(at[1], at[2] - 24, "Died", 0.7, 0.7, 0.7)
                 local dead = eng:ent(ev.subject)
                 if dead and not after[ev.subject] then
-                    local ghost = lunge(at, at, Art:Icon(dead.card_id), "die")
+                    lunge(at, at, Art:Icon(dead.card_id), "die")
+                    Art:Sfx("death")
                 end
             elseif ev.kind == "TURN_STARTED" then
                 turnStarted = ev.seat
@@ -1872,12 +1931,12 @@ local function onMatch(what, seat, move)
         end
         if turnStarted == ME() and not eng:is_terminal() then
             showBanner("Your Turn")
-            Art:Play("READY_CHECK")
+            Art:Sfx("turn")
         end
         return
     end
     if what == "end" then
-        Art:Play(Match.result == "win" and "UI_EPICLOOT_TOAST" or "IG_QUEST_FAILED")
+        Art:Sfx(Match.result == "win" and "win" or "lose")
         Board:Refresh()
     end
 end
