@@ -170,6 +170,8 @@ function CardWidget:Create(parent)
     w:SetScript("OnClick", function(self, button)
         if button == "RightButton" then
             contextMenu(self)
+        elseif self.onLeftClick and self.id then
+            self.onLeftClick(self.id)
         end
     end)
     w.SetCard = CardWidget.SetCard

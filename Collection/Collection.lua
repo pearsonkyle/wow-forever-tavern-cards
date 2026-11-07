@@ -35,7 +35,16 @@ function Collection:Cap(id)
     return card and card.rarity == "LEGENDARY" and 1 or 2
 end
 
+-- Basic (FREE) cards are everyone's from the start, like a starter set: always 2 copies.
+function Collection:IsBasic(id)
+    local card = TC.Cards[id]
+    return card ~= nil and card.rarity == "FREE"
+end
+
 function Collection:Count(id)
+    if self:IsBasic(id) then
+        return 2
+    end
     return TC.db.collection[id] or 0
 end
 
@@ -51,7 +60,7 @@ function Collection:AddCard(id, source, quiet, questID)
         return nil
     end
     local db = TC.db
-    local have = db.collection[id] or 0
+    local have = self:Count(id)
     local result, dust = "new", 0
     if have >= self:Cap(id) then
         result = "dust"
@@ -110,6 +119,9 @@ function Collection:NotifyBatch(cards, dust, label)
 end
 
 function Collection:Disenchant(id)
+    if self:IsBasic(id) then
+        return false
+    end
     local have = self:Count(id)
     local card = TC.Cards[id]
     if have == 0 or not card then
@@ -142,7 +154,7 @@ function Collection:Stats()
     for id, card in pairs(TC.Cards) do
         if bit.band(card.flags, 8) ~= 0 then
             total = total + 1
-            local n = TC.db.collection[id]
+            local n = TC.db.collection[id] or (self:IsBasic(id) and 2)
             if n then
                 owned = owned + 1
                 copies = copies + n

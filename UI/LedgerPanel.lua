@@ -1,5 +1,4 @@
--- Ledger tab: where every card came from, newest first. Plus the Decks and Play tabs, which open up
--- as the rules engine lands.
+-- Ledger tab: where every card came from, newest first.
 
 local TC = TavernCards_NS
 local Art = TC.Art
@@ -91,29 +90,4 @@ local function buildLedger(parent)
     return panel
 end
 
-local function placeholder(title, lines)
-    return function(parent)
-        local panel = CreateFrame("Frame", nil, parent)
-        parchment(panel)
-        local header = panel:CreateFontString(nil, "OVERLAY", "QuestFont_Huge")
-        header:SetPoint("TOP", 0, -60)
-        header:SetText(title)
-        header:SetTextColor(0.25, 0.15, 0.05)
-        local body = panel:CreateFontString(nil, "OVERLAY", "QuestFont")
-        body:SetPoint("TOP", header, "BOTTOM", 0, -16)
-        body:SetWidth(460)
-        body:SetText(table.concat(lines, "\n\n"))
-        body:SetTextColor(0.3, 0.2, 0.1)
-        return panel
-    end
-end
-
-TC:RegisterPanel("decks", "Decks", placeholder("Decks", {
-    "Build 30-card decks from your class cards and neutral cards: two copies of a card, one of a legendary.",
-    "The deck builder opens with the first playable card set.",
-}))
-TC:RegisterPanel("play", "Play", placeholder("The Tavern Table", {
-    "Challenge innkeepers, battlemasters and stable masters across Azeroth, practice against the house, or play a friend in your party.",
-    "Card duels arrive with the rules engine. Until then, keep questing: every quest adds to your collection.",
-}))
 TC:RegisterPanel("ledger", "Ledger", buildLedger)

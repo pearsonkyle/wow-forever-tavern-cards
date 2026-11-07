@@ -141,6 +141,8 @@ def main():
         c = by_id[cid]
         if c["family"] in ("DEATHKNIGHT", "DEMONHUNTER"):
             continue  # no Forever class plays these; they come from packs
+        if c["rarity"] == "FREE":
+            continue  # Basic cards are owned from the start
         name_words = set(words(c["name"])) - STOP
         head = re.sub(r"[^a-z' ]", " ", c["name"].split(",")[0].lower()).strip()
         pool.append({

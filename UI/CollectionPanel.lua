@@ -30,6 +30,10 @@ local function build(parent)
         rarity = { FREE = true, COMMON = true, RARE = true, EPIC = true, LEGENDARY = true },
     }
     local list, page = {}, 1
+    local editing           -- the deck being edited, if any: left page cards, right page the deck
+    local function perSpread()
+        return editing and PER_PAGE or PER_PAGE * 2
+    end
 
     -- ---- pages ---------------------------------------------------------------------------------
     local pageW, pageH = TC:PageSize()
@@ -52,9 +56,10 @@ local function build(parent)
     local gridW = COLS * CardWidget.WIDTH + (COLS - 1) * GAP_X
     local gridH = ROWS * CardWidget.HEIGHT + (ROWS - 1) * GAP_Y
     local scale = math.min(1, (pageW - 64) / gridW, (pageH - 56) / gridH)
-    local widgets = {}
+    local widgets, grids = {}, {}
     for i, p in ipairs(pages) do
         local grid = CreateFrame("Frame", nil, p)
+        grids[i] = grid
         grid:SetSize(gridW, gridH)
         grid:SetScale(scale)
         -- Lean each grid away from the book's spine.
@@ -63,6 +68,7 @@ local function build(parent)
             local w = CardWidget:Create(grid)
             local col, row = (n - 1) % COLS, math.floor((n - 1) / COLS)
             w:SetPoint("TOPLEFT", col * (CardWidget.WIDTH + GAP_X), -row * (CardWidget.HEIGHT + GAP_Y))
+            w.onLeftClick = function(id) panel:CardClicked(id) end
             widgets[#widgets + 1] = w
         end
     end
@@ -219,7 +225,9 @@ local function build(parent)
         if bit.band(card.flags, 8) == 0 then
             return false
         end
-        if filter.class == "mine" then
+        if editing then
+            if card.family ~= editing.class and card.family ~= "NEUTRAL" then return false end
+        elseif filter.class == "mine" then
             if card.family ~= myClass and card.family ~= "NEUTRAL" then return false end
         elseif filter.class ~= "all" and card.family ~= filter.class then
             return false
@@ -262,7 +270,7 @@ local function build(parent)
     end
 
     function panel:Pages()
-        return math.max(1, math.ceil(#list / (PER_PAGE * 2)))
+        return math.max(1, math.ceil(#list / perSpread()))
     end
 
     function panel:TurnPage(dir)
@@ -275,9 +283,9 @@ local function build(parent)
     end
 
     function panel:Draw()
-        local first = (page - 1) * PER_PAGE * 2
+        local first = (page - 1) * perSpread()
         for i, w in ipairs(widgets) do
-            w:SetCard(list[first + i])
+            w:SetCard(i <= perSpread() and list[first + i] or nil)
         end
         pageText:SetText(("Page %d / %d"):format(page, self:Pages()))
         prev:SetEnabled(page > 1)
@@ -297,6 +305,51 @@ local function build(parent)
         bar.text:SetText(("%d / %d collected"):format(owned, #list))
         dust:SetText(("|TInterface\\Icons\\INV_Enchant_DustArcane:14:14|t %d"):format(TC.db.dust))
         self:Draw()
+    end
+
+    -- ---- deck editing --------------------------------------------------------------------------
+    local sheet
+    local MESSAGES = {
+        full = "The deck already has 30 cards.", copies = "No more copies of that card fit in a deck.",
+        owned = "You don't own another copy of that card.", class = "That card belongs to another class.",
+    }
+
+    function panel:CardClicked(id)
+        if not editing then
+            return
+        end
+        local ok, why = TC.Decks:Add(editing, id)
+        if ok then
+            Art:Play("IG_MAINMENU_OPTION_CHECKBOX_ON")
+            sheet:Refresh()
+        else
+            UIErrorsFrame:AddMessage(MESSAGES[why] or why, 1, 0.1, 0.1)
+        end
+    end
+
+    function panel:EditDeck(deck)
+        editing = deck
+        if not sheet then
+            sheet = TC.DeckSheet:Create(pages[2], function() panel:StopEditing() end)
+        end
+        grids[2]:Hide()
+        sheet:Show()
+        sheet:SetDeck(deck)
+        page = 1
+        self:Refresh()
+    end
+
+    function panel:StopEditing()
+        editing = nil
+        if sheet then sheet:Hide() end
+        grids[2]:Show()
+        page = 1
+        self:Refresh()
+        TC:ShowWindow("decks")
+    end
+
+    function panel:Editing()
+        return editing
     end
 
     function panel:ShowOwned()
@@ -320,7 +373,7 @@ local function build(parent)
         rebuild()  -- also when the box already held this name (no OnTextChanged then)
         for i, other in ipairs(list) do
             if other == id then
-                page = math.floor((i - 1) / (PER_PAGE * 2)) + 1
+                page = math.floor((i - 1) / perSpread()) + 1
                 break
             end
         end

@@ -79,7 +79,7 @@ local function setPortrait(f, texture)
     end
 end
 
-local function selectTab(key)
+local function selectTab(key, arg)
     window.active = key
     for i, k in ipairs(order) do
         local tab = window.tabs[i]
@@ -98,6 +98,9 @@ local function selectTab(key)
     end
     setTitle(window, "Tavern Cards - " .. panels[key].title)
     local frame = panels[key].frame
+    if frame and frame.Open then
+        frame:Open(arg)
+    end
     if frame and frame.Refresh then
         frame:Refresh()
     end
@@ -160,12 +163,12 @@ local function build()
     return f
 end
 
-function TC:ShowWindow(key)
+function TC:ShowWindow(key, arg)
     if not window then
         build()
     end
     window:Show()
-    selectTab(panels[key] and key or window.active or order[1])
+    selectTab(panels[key] and key or window.active or order[1], arg)
 end
 
 function TC:ToggleWindow()
@@ -192,6 +195,13 @@ function TC:ShowCard(id)
     if frame and frame.FocusCard then
         frame:FocusCard(id)
     end
+end
+
+-- Opens the book as a deck editor: cards on the left page, the deck on the right.
+function TC:EditDeck(deck)
+    self:ShowWindow("collection")
+    local frame = panels.collection.frame
+    frame:EditDeck(deck)
 end
 
 -- The journey toast opens the book on what was just collected.

@@ -26,12 +26,17 @@ Engine\Rng.lua
 Engine\Data\Programs.lua
 
 Collection\Collection.lua
+Collection\Decks.lua
 
 UI\Art.lua
 UI\Toast.lua
 UI\CardWidget.lua
 UI\Window.lua
+UI\Confirm.lua
+UI\DeckSheet.lua
 UI\CollectionPanel.lua
+UI\DeckListPanel.lua
+UI\PlayPanel.lua
 UI\LedgerPanel.lua
 UI\Minimap.lua
 
