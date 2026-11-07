@@ -306,6 +306,20 @@ int main(int argc, char** argv)
                     << ",\"droppable\":" << (d->droppable ? "true" : "false")
                     << ",\"implemented\":" << (d->implemented ? "true" : "false")
                     << ",\"text\":" << quote(d->text);
+                // Attributes the loader reads off printed reminders (not program data).
+                if (!d->launch_upgrade.empty())
+                    out << ",\"launchUpgrade\":" << quote(d->launch_upgrade);
+                if (!d->next_drink.empty())
+                    out << ",\"nextDrink\":" << quote(d->next_drink);
+                if (!d->held_spell_transform.empty())
+                    out << ",\"heldSpellTransform\":" << quote(d->held_spell_transform)
+                        << ",\"heldSpellThreshold\":" << d->held_spell_threshold;
+                if (d->repeat_next_school != tc::SpellSchool::NONE)
+                    out << ",\"repeatNextSchool\":" << static_cast<int>(d->repeat_next_school);
+                if (d->spellburst_kept_by != tc::SpellSchool::NONE)
+                    out << ",\"spellburstKeptBy\":" << static_cast<int>(d->spellburst_kept_by);
+                if (d->leaves_no_corpse)
+                    out << ",\"leavesNoCorpse\":true";
                 if (!d->choice_labels.empty())
                 {
                     out << ",\"choiceLabels\":[";

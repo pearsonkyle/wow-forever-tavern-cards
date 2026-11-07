@@ -1,4 +1,6 @@
 {
-  "comment": "Capabilities the Lua engine implements. Keep in sync with Engine/ (a test checks this).",
-  "capabilities": []
+  "comment": "Capabilities the Lua engine implements. \"*\" = every op, trigger and condition (Engine/ ports the whole C++ engine; tests/fuzz.sh verifies it).",
+  "capabilities": [
+    "*"
+  ]
 }

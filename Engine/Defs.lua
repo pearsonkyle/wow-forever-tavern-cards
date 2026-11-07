@@ -95,8 +95,8 @@ local EFFECT_DEFAULTS = {
     discardCostSchool = 0, deckCostToken = "", repeatLess = false, repeatPerCount = false, repeatPrinted = false,
     countSelector = false, countType = 0, improved = false, statsBoth = false, discoverTakeAll = false,
     doubleSpellDamage = false, whileAttacking = false, namedAnywhere = false, otherClass = false,
-    buffHand = false, buffDeck = false, buffBoard = false, buffRandom = false, buffAll = false,
-    forOpponent = false, summonAttacks = 0, costOverride = 0, implicitTarget = false, secretOnly = false,
+    buffHand = false, buffDeck = false, buffBoard = false, buffRandom = false, buffAll = true,
+    forOpponent = false, summonAttacks = 0, costOverride = -1, implicitTarget = false, secretOnly = false,
     costCountName = "", tokenDisplay = "", transformPool = 0, classPool = 0, discoverCostDelta = 0,
     summonNamed = false, tokenUnnamed = false, oneInHand = false, excessToHero = false, stuffed = false,
     zeroCost = false, diesEndOfTurn = false, staysInHand = false, darkGift = false, freshCopy = false,
@@ -211,9 +211,12 @@ function D.def(id)
             d.choices[i] = prepareList(option)
         end
     end
-    -- Attributes the C++ loader reads off printed reminders; none of them are in this card set yet.
-    d.launch_upgrade, d.next_drink, d.held_spell_transform, d.held_spell_threshold = "", "", "", 0
-    d.repeat_next_school, d.spellburst_kept_by, d.leaves_no_corpse = 0, 0, false
+    -- Attributes the C++ loader reads off printed reminders ("(3 Drinks left!)", "Doesn't leave a Corpse").
+    local r = TC.CardReminders and TC.CardReminders[id] or EMPTY
+    d.launch_upgrade, d.next_drink = r.launchUpgrade or "", r.nextDrink or ""
+    d.held_spell_transform, d.held_spell_threshold = r.heldSpellTransform or "", r.heldSpellThreshold or 0
+    d.repeat_next_school, d.spellburst_kept_by = r.repeatNextSchool or 0, r.spellburstKeptBy or 0
+    d.leaves_no_corpse = r.leavesNoCorpse or false
     defs[id] = d
     return d
 end

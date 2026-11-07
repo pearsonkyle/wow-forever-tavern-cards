@@ -32,7 +32,8 @@ WORDING_FIELDS = {
 # Effect fields that are plain values (a number, a card id) rather than a capability.
 VALUE_FIELDS = {"amount", "amount2", "token", "tokens", "repeat", "conditionAmount", "costMin", "costMax"}
 
-DEFAULTS = {"repeat": 1}
+# EffectSpec fields whose C++ default is not zero/false/empty (tc/card.h).
+DEFAULTS = {"repeat": 1, "costOverride": -1, "buffAll": True}
 
 
 def is_default(field, value):

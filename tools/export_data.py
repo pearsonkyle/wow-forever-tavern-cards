@@ -33,7 +33,7 @@ FLAG_COLLECTIBLE, FLAG_DROPPABLE, FLAG_IMPLEMENTED, FLAG_PLAYABLE, FLAG_MADE_ONL
 
 # Program-level keys that are not runtime data for the Lua engine.
 PROGRAM_SKIP = {"program", "implemented", "displayText", "approximate"}  # "abilities" is kept
-EFFECT_SKIP = {"wording", "sourcePhrase", "tokenDisplay"}
+EFFECT_SKIP = {"wording", "sourcePhrase"}   # tokenDisplay is read by BUFF_NAMED
 
 
 def strip_effect(effect):
@@ -113,6 +113,7 @@ def main():
         "    order[#order + 1] = id",
         "end",
     ]
+    extras = {}
     for start in range(0, len(order), CHUNK):
         lines.append("do (function()")
         for cid in order[start:start + CHUNK]:
@@ -121,12 +122,18 @@ def main():
                      | (FLAG_IMPLEMENTED if c["implemented"] else 0) | (FLAG_PLAYABLE if cid in playable_set else 0)
                      | (FLAG_MADE_ONLY if c.get("madeOnly") else 0))
             shown = programs.get(cid, {}).get("displayText")
+            reminders = {k: c[k] for k in ("launchUpgrade", "nextDrink", "heldSpellTransform", "heldSpellThreshold",
+                                          "repeatNextSchool", "spellburstKeptBy", "leavesNoCorpse") if k in c}
+            if reminders:
+                extras[cid] = reminders
             args = [cid, c["name"], c["type"], c["family"], c["rarity"], c["school"], c["cost"], c["attack"],
                     c["health"], c["durability"], c["keywords"], c["races"], flags, c.get("spellDamage", 0), c["text"]]
             if shown and shown != c["text"]:
                 args.append(shown)
             lines.append("C(" + ",".join(lua_value(a) for a in args) + ")")
         lines.append("end)() end")
+    # Printed-reminder attributes (the C++ loader reads them off the text), for the few cards that have them.
+    lines.append("TC.CardReminders = " + lua_value(extras))
     write("Data/Cards.lua", "\n".join(lines) + "\n")
 
     # ---- Engine/Data/Programs.lua ---------------------------------------------------------------

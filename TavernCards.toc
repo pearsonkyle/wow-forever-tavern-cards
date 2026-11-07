@@ -29,6 +29,7 @@ Engine\Engine.lua
 Engine\Effects.lua
 Engine\Ops.lua
 Engine\Actions.lua
+Engine\AI.lua
 
 Collection\Collection.lua
 Collection\Decks.lua

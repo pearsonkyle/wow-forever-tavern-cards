@@ -799,6 +799,12 @@ function E:apply_play(a)
             self:summon_token(appendages[i], seat, -1, false)
         end
     end
+    -- A Forged grammar card runs its own Forge ability as part of the play (a flat program runs it inside
+    -- the ON_PLAY pass in run_effect_list).
+    local played = self:ent(id)
+    if played and played.flags.forged and card.abilities then
+        self:run_effects(id, "FORGED", target, id)
+    end
     if card.type == "SPELL" and card.schoolNum ~= 0 then
         p.play_schools_this_turn = bor(p.play_schools_this_turn, bit.lshift(1, card.schoolNum))
     end

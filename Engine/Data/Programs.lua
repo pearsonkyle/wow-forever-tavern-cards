@@ -48,12 +48,12 @@ P["AT_049"]={abilities={{1,1},{25,1}},effects={{amount=2,op="BUFF",raceFilter="t
 P["AT_051"]={abilities={{0,1}},effects={{amount=4,amount2=5,damageRange=true,op="DAMAGE",spell=true,target={kind="ALL",side="ANY_MINION"},trigger="ON_PLAY"}},overload=2}
 P["AT_052"]={overload=1}
 P["AT_053"]={abilities={{0,1}},effects={{amount=2,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY"}},overload=1}
-P["AT_054"]={effects={{amount=1,amount2=1,buffAll=true,buffDeck=true,buffHand=true,op="BUFF_ZONE",target={kind="ALL",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=1}},keywords={"battlecry"}}
+P["AT_054"]={effects={{amount=1,amount2=1,buffDeck=true,buffHand=true,op="BUFF_ZONE",target={kind="ALL",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=1}},keywords={"battlecry"}}
 P["AT_055"]={abilities={{0,1}},effects={{amount=5,op="HEAL",target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
 P["AT_056"]={abilities={{0,1}},effects={{amount=2,op="DAMAGE_ADJACENT",spell=true,target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"}}}
 P["AT_057"]={effects={{keyword="immune",op="GIVE_KEYWORD",raceFilter="beast",target={kind="CHOOSE",side="FRIENDLY_MINION"},temporary=true,trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["AT_059"]={effects={{amount=2,condition="HAND_EMPTY",op="DAMAGE",target={kind="ALL",side="ENEMY_HERO"},trigger="INSPIRE"}}}
-P["AT_060"]={effects={{keyword="taunt",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="DMF_514t2",trigger="AFTER_YOUR_HERO_ATTACKED"}},secret=true}
+P["AT_060"]={effects={{keyword="taunt",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="DMF_514t2",tokenDisplay="3/3 Bear",trigger="AFTER_YOUR_HERO_ATTACKED"}},secret=true}
 P["AT_063t"]={abilities={{4,1}},effects={{amount=1,op="DAMAGE",target={kind="ALL",side="ENEMY_CHARACTER"},trigger="END_TURN"}}}
 P["AT_064"]={abilities={{0,2}},effects={{amount=3,op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="ON_PLAY"},{amount=3,op="GAIN_ARMOR",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"}}}
 P["AT_065"]={effects={{amount=1,condition="CONTROL_KEYWORD",conditionKeyword="taunt",op="GAIN_DURABILITY",target={kind="ALL",side="ANY_CHARACTER"},trigger="BATTLECRY"}},keywords={"battlecry"}}
@@ -65,7 +65,7 @@ P["AT_070"]={abilities={{0,1}},effects={{amount=-1,amount2=2,costCount="FRIENDLY
 P["AT_071"]={abilities={{1,1}},effects={{amount=1,condition="HOLDING_RACE",conditionRace="dragon",keyword="charge",op="BUFF",target={kind="SELF",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["AT_073"]={abilities={{3,1}},effects={{amount=1,amount2=1,op="BUFF",target={kind="ALL",side="FRIENDLY_MINIONS"},trigger="START_TURN"}},secret=true}
 P["AT_074"]={abilities={{0,1}},effects={{amount=3,keyword="divine_shield",op="BUFF",target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"}}}
-P["AT_075"]={effects={{amount=2,keyword="taunt",op="BUFF_NAMED",target={kind="ALL",side="FRIENDLY_MINIONS"},trigger="AURA"}}}
+P["AT_075"]={effects={{amount=2,keyword="taunt",op="BUFF_NAMED",target={kind="ALL",side="FRIENDLY_MINIONS"},tokenDisplay="Silver Hand Recruit",trigger="AURA"}}}
 P["AT_076"]={effects={{op="SUMMON_RANDOM",raceFilter="murloc",target={kind="ALL",side="ANY_CHARACTER"},trigger="INSPIRE"}}}
 P["AT_081"]={abilities={{1,1}},effects={{amount=1,op="SET_ATTACK",target={kind="ALL",side="ENEMY_MINIONS"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["AT_082"]={abilities={{25,1}},effects={{amount=1,op="BUFF",target={kind="SELF",side="ANY_MINION"},trigger="INSPIRE"}}}
@@ -95,7 +95,7 @@ P["AT_108"]={effects={{condition="JOUST_WON",keyword="charge",op="BUFF",target={
 P["AT_110"]={abilities={{25,1}},effects={{op="RETURN_TO_HAND",target={kind="SELF",side="ANY_MINION"},trigger="INSPIRE"}}}
 P["AT_111"]={effects={{amount=4,op="HEAL",target={kind="ALL",side="ENEMY_HERO"},trigger="BATTLECRY"},{amount=4,op="HEAL",target={kind="ALL",side="YOUR_HERO"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["AT_112"]={effects={{condition="JOUST_WON",keyword="taunt,divine_shield",op="BUFF",target={kind="SELF",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
-P["AT_113"]={abilities={{25,1}},effects={{op="ADD_TO_HAND",target={kind="SELF",side="ANY_CHARACTER"},token="CS2_152",trigger="INSPIRE"}}}
+P["AT_113"]={abilities={{25,1}},effects={{op="ADD_TO_HAND",target={kind="SELF",side="ANY_CHARACTER"},token="CS2_152",tokenDisplay="2/2 squire",trigger="INSPIRE"}}}
 P["AT_114"]={keywords={"taunt"}}
 P["AT_115"]={effects={{amount=-2,heroPowerDelta=true,op="HERO_POWER_COST",target={kind="SELF",side="YOUR_HERO"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["AT_116"]={abilities={{1,1}},effects={{amount=1,condition="HOLDING_RACE",conditionRace="dragon",keyword="taunt",op="BUFF",target={kind="SELF",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
@@ -118,7 +118,7 @@ P["AV_119"]={effects={{amount=-2,amount2=5,op="CARD_COST",target={kind="SELF",si
 P["AV_121"]={abilities={{23,1}},effects={{amount=2,op="BUFF",target={kind="SELF",side="ANY_MINION"},trigger="HONORABLE_KILL"}}}
 P["AV_122"]={abilities={{23,1}},effects={{excludeSource=true,keyword="divine_shield",op="GIVE_KEYWORD",target={kind="ALL",side="FRIENDLY_MINIONS"},trigger="HONORABLE_KILL"}}}
 P["AV_123"]={abilities={{23,1}},effects={{amount=-2,op="HERO_POWER_COST",target={kind="SELF",side="YOUR_HERO"},trigger="HONORABLE_KILL"}},keywords={"stealth"}}
-P["AV_124"]={abilities={{23,1}},effects={{keyword="stealth",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="__anon_2_2_wolf",trigger="HONORABLE_KILL"}}}
+P["AV_124"]={abilities={{23,1}},effects={{keyword="stealth",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="__anon_2_2_wolf",tokenDisplay="2/2 wolf",trigger="HONORABLE_KILL"}}}
 P["AV_125"]={abilities={{1,1}},effects={{amount=2,amount2=2,condition="OTHER_MINIONS_AT_LEAST",conditionAmount=2,op="BUFF",target={kind="SELF",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["AV_126"]={effects={{amount=1,condition="ENEMY_MINIONS_AT_LEAST",conditionAmount=2,op="DAMAGE",target={kind="ALL",side="ENEMY_MINIONS"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["AV_127"]={effects={{amount=2,amount2=2,op="BUFF",subjectSchool="frost",target={kind="SELF",side="ANY_MINION"},trigger="WHEN_CAST_SPELL"}}}
@@ -133,47 +133,47 @@ P["AV_141t"]={effects={{amount=-5,amount2=2,condition="HEALTH_AT_MOST",condition
 P["AV_145"]={effects={{amount=3,amount2=3,condition="GAME_COUNT",conditionAmount=15,conditionType=31,keyword="charge",op="BUFF",target={kind="SELF",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["AV_201"]={effects={{amount=3,condition="COMBO",op="BUFF",target={kind="SELF",side="ANY_MINION"},trigger="BATTLECRY"}}}
 P["AV_209"]={effects={{op="DAMAGE",target={kind="SELF",side="ENEMY_HERO"},trigger="HONORABLE_KILL",valueSource="HERO_ATTACK"}}}
-P["AV_211"]={abilities={{2,1}},effects={{keyword="stealth",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="AV_211t",trigger="DEATHRATTLE"}},keywords={"stealth","deathrattle"}}
-P["AV_212"]={effects={{amount=2,op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="ON_PLAY"},{amount=1,buffHand=true,op="COST_ZONE",target={kind="ALL",side="ANY_CHARACTER"},trigger="HONORABLE_KILL",type_filter=2}}}
+P["AV_211"]={abilities={{2,1}},effects={{keyword="stealth",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="AV_211t",tokenDisplay="wolf",trigger="DEATHRATTLE"}},keywords={"stealth","deathrattle"}}
+P["AV_212"]={effects={{amount=2,op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="ON_PLAY"},{amount=1,buffAll=false,buffHand=true,op="COST_ZONE",target={kind="ALL",side="ANY_CHARACTER"},trigger="HONORABLE_KILL",type_filter=2}}}
 P["AV_213"]={effects={{amount=1,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=1},{op="HEAL",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY",valueSource="PREVIOUS_COST"}}}
 P["AV_215"]={effects={{keyword="windfury",op="BUFF",target={kind="SELF",side="ANY_MINION"},trigger="HONORABLE_KILL"}},keywords={"rush"}}
 P["AV_218"]={effects={{op="TRANSFORM",target={kind="ALL",side="ANY_MINION"},token="AV_218t",trigger="ON_PLAY"}}}
-P["AV_219"]={effects={{keyword="rush",op="ADD_TO_HAND",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="AV_219t",trigger="BATTLECRY"}},keywords={"battlecry"}}
+P["AV_219"]={effects={{keyword="rush",op="ADD_TO_HAND",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="AV_219t",tokenDisplay="1/1 ram",trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["AV_238"]={effects={{op="FORCE_ATTACK",subjectType=1,target={kind="TRIGGER_SOURCE",side="ANY_MINION"},trigger="AFTER_OPPONENT_PLAY_CARD"}},keywords={"stealth"}}
 P["AV_244"]={abilities={{23,1}},effects={{amount=1,amount2=1,op="BUFF",target={kind="SELF",side="ANY_MINION"},trigger="HONORABLE_KILL"}}}
 P["AV_255"]={effects={{keyword="freeze",op="GIVE_KEYWORD",target={kind="ALL",side="ANY_OTHER_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
-P["AV_257"]={effects={{amountSource="SCHOOL_SPELLS_GAME",op="SUMMON",schoolFilter=4,target={kind="ALL",side="ANY_CHARACTER"},token="AV_257t",trigger="BATTLECRY"}},keywords={"battlecry"}}
+P["AV_257"]={effects={{amountSource="SCHOOL_SPELLS_GAME",op="SUMMON",schoolFilter=4,target={kind="ALL",side="ANY_CHARACTER"},token="AV_257t",tokenDisplay="elemental that freezes for each frost spell you've cast this game",trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["AV_257t"]={effects={{op="FREEZE_ON_DAMAGE",target={kind="SELF",side="ANY_MINION"},trigger="AURA"}},keywords={"freeze"}}
 P["AV_260"]={effects={{op="ADD_TO_HAND",target={kind="SELF",side="ANY_CHARACTER"},token="AV_266",trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["AV_261"]={abilities={{14,1}},effects={{amount=1,op="BUFF",target={kind="SELF",side="ANY_MINION"},trigger="AFTER_FRIENDLY_MINION_DIES"}}}
 P["AV_264"]={effects={{delayed=true,fromHand=true,op="SUMMON_FROM_DECK",raceFilter="demon",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=1}}}
 P["AV_266"]={abilities={{0,2}},effects={{keyword="freeze",op="GIVE_KEYWORD",target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"},{amount=1,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
-P["AV_282"]={abilities={{0,2}},effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="AV_282t",trigger="ON_PLAY"},{op="ADD_TO_HAND",target={kind="SELF",side="ANY_CHARACTER"},token="AV_282t2",trigger="ON_PLAY"}}}
+P["AV_282"]={abilities={{0,2}},effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="AV_282t",tokenDisplay="snowman that freezes",trigger="ON_PLAY"},{op="ADD_TO_HAND",target={kind="SELF",side="ANY_CHARACTER"},token="AV_282t2",trigger="ON_PLAY"}}}
 P["AV_282t"]={effects={{op="FREEZE_ON_DAMAGE",target={kind="SELF",side="ANY_MINION"},trigger="AURA"}},keywords={"freeze"}}
-P["AV_282t2"]={effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="AV_282t3",trigger="ON_PLAY"},{op="ADD_TO_HAND",target={kind="SELF",side="ANY_CHARACTER"},token="AV_282t4",trigger="ON_PLAY"}}}
+P["AV_282t2"]={effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="AV_282t3",tokenDisplay="snowbrute that freezes",trigger="ON_PLAY"},{op="ADD_TO_HAND",target={kind="SELF",side="ANY_CHARACTER"},token="AV_282t4",trigger="ON_PLAY"}}}
 P["AV_282t3"]={effects={{op="FREEZE_ON_DAMAGE",target={kind="SELF",side="ANY_MINION"},trigger="AURA"}},keywords={"freeze"}}
-P["AV_282t4"]={effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="AV_282t5",trigger="ON_PLAY"}}}
+P["AV_282t4"]={effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="AV_282t5",tokenDisplay="snowgre that freezes",trigger="ON_PLAY"}}}
 P["AV_282t5"]={effects={{op="FREEZE_ON_DAMAGE",target={kind="SELF",side="ANY_MINION"},trigger="AURA"}},keywords={"freeze"}}
 P["AV_285"]={effects={{amount=1,op="DAMAGE",["repeat"]=5,spell=true,split=true,target={kind="RANDOM",side="ENEMY_MINION"},trigger="ON_PLAY"}},repeatable=true}
 P["AV_286"]={effects={{amount=1,amount2=1,op="CAST_FROM",schoolFilter=8,target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=2}},keywords={"taunt","battlecry"}}
 P["AV_291"]={abilities={{0,1}},effects={{amount=-1,amount2=2,costCount="GAME_MINIONS_OF_RACE",costCountRace="beast",op="CARD_COST",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"}},keywords={"taunt"}}
 P["AV_292"]={effects={{amount=2,amount2=2,op="BUFF",target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"},{amount=1,amount2=1,op="BUFF",raceFilter="beast",target={kind="ALL",side="FRIENDLY_MINIONS"},thenJoin=true,trigger="ON_PLAY"}}}
-P["AV_309"]={effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="AV_309t",trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
+P["AV_309"]={effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="AV_309t",tokenDisplay="4/1 Imp",trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
 P["AV_315"]={effects={{amount=3,op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"},{amount=3,amount2=3,freshCopy=true,op="SUMMON_COPY",target={kind="TRIGGER_SOURCE",side="ANY_MINION"},trigger="HONORABLE_KILL"}}}
 P["AV_321"]={effects={{amount=1,op="DRAW",subjectKeyword="taunt",target={kind="SELF",side="ANY_CHARACTER"},trigger="AFTER_PLAY_MINION"}}}
 P["AV_322"]={effects={{damagedOnly=true,op="DESTROY",target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"},{keyword="freeze",op="GIVE_KEYWORD",target={kind="ALL",side="ANY_OTHER_MINION"},trigger="ON_PLAY"}}}
-P["AV_323"]={effects={{keyword="taunt",op="ADD_TO_HAND",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="AV_323t",trigger="BATTLECRY"}},keywords={"taunt","battlecry"}}
+P["AV_323"]={effects={{keyword="taunt",op="ADD_TO_HAND",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="AV_323t",tokenDisplay="2/4 grunt",trigger="BATTLECRY"}},keywords={"taunt","battlecry"}}
 P["AV_325"]={abilities={{2,1}},effects={{op="DAMAGE",target={kind="ALL",side="ENEMY_MINIONS"},trigger="DEATHRATTLE",valueSource="SELF_ATTACK"}},keywords={"taunt","deathrattle"}}
 P["AV_326"]={effects={{amount=2,op="BUFF",subjectSide=1,subjectType=1,target={kind="TRIGGER_SOURCE",side="ANY_CHARACTER"},trigger="AFTER_HEAL"}}}
 P["AV_329"]={effects={{amount2=2,op="BUFF",target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"},{op="SET_ATTACK",setVerb=true,target={kind="PREVIOUS",side="ANY_MINION"},trigger="ON_PLAY",valueSource="TARGET_HEALTH"}}}
 P["AV_334"]={effects={{amount=-2,op="CARD_COST",raceFilter="beast",target={kind="SELF",side="YOUR_HERO"},trigger="DEATHRATTLE",type_filter=1}},keywords={"rush","deathrattle"}}
 P["AV_335"]={effects={{amount=1,amount2=1,condition="CONTROL_SECRET",keyword="stealth",op="BUFF",target={kind="SELF",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
-P["AV_337"]={effects={{keyword="taunt",op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="AV_337t",trigger="DEATHRATTLE"}},keywords={"taunt","deathrattle"}}
+P["AV_337"]={effects={{keyword="taunt",op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="AV_337t",tokenDisplay="2/4 Cub",trigger="DEATHRATTLE"}},keywords={"taunt","deathrattle"}}
 P["AV_339"]={effects={{keyword="taunt",op="SUMMON",subjectType=1,target={kind="ALL",side="ANY_CHARACTER"},token="AV_342t",trigger="AFTER_SELF_ATTACK"}},keywords={"rush"}}
 P["AV_340"]={abilities={{4,1},{23,1}},effects={{amount=2,op="DAMAGE",target={kind="ALL",side="ENEMY_CHARACTER"},trigger="END_TURN"},{amount=4,op="HEAL",target={kind="SELF",side="YOUR_HERO"},trigger="HONORABLE_KILL"}}}
 P["AV_343"]={effects={{amount=1,costMax=3,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=2},{amount2=8,op="CARD_COST",target={kind="PREVIOUS",side="ANY_CHARACTER"},temporary=true,trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["AV_344"]={effects={{amount=2,amount2=2,durationTurns=3,op="BUFF",target={kind="TRIGGER_SOURCE",side="ANY_CHARACTER"},trigger="AFTER_SUMMON_MINION"}}}
-P["AV_360"]={abilities={{4,1}},effects={{durationTurns=3,keyword="stealth",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="__anon_2_2_wolf",trigger="END_TURN"}}}
+P["AV_360"]={abilities={{4,1}},effects={{durationTurns=3,keyword="stealth",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="__anon_2_2_wolf",tokenDisplay="2/2 wolf",trigger="END_TURN"}}}
 P["AV_401"]={effects={{amount=1,amount2=1,op="BUFF",target={kind="RANDOM",side="FRIENDLY_HAND_MINIONS"},trigger="AFTER_CAST_SPELL"}}}
 P["AV_565"]={effects={{amount=1,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="HONORABLE_KILL",type_filter=3}},keywords={"rush"}}
 P["AV_660"]={abilities={{4,1}},effects={{amount=1,durationTurns=3,op="DAMAGE",spell=true,target={kind="ALL",side="ANY_MINION"},trigger="END_TURN"}}}
@@ -189,8 +189,8 @@ P["BAR_026"]={abilities={{2,1}},effects={{amount=4,op="HEAL",target={kind="SELF"
 P["BAR_027"]={abilities={{2,1}},effects={{amount=5,op="DAMAGE",target={kind="SELF",side="YOUR_HERO"},trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
 P["BAR_032"]={effects={{amount=6,excessToHero=true,op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"}}}
 P["BAR_033"]={effects={{amount=1,amount2=1,op="BUFF",target={kind="ALL",side="FRIENDLY_HAND_MINIONS"},trigger="START_TURN"}}}
-P["BAR_034"]={abilities={{0,1}},effects={{keyword="rush",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="BAR_034t3",trigger="ON_PLAY"}}}
-P["BAR_035"]={effects={{keyword="rush",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="BAR_035t",trigger="AFTER_CAST_SPELL"}}}
+P["BAR_034"]={abilities={{0,1}},effects={{keyword="rush",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="BAR_034t3",tokenDisplay="beast",trigger="ON_PLAY"}}}
+P["BAR_035"]={effects={{keyword="rush",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="BAR_035t",tokenDisplay="1/1 Hyena",trigger="AFTER_CAST_SPELL"}}}
 P["BAR_040"]={abilities={{1,1}},effects={{amount=2,condition="CONTROL_OTHER_RACE",conditionRace="murloc",op="DAMAGE",target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["BAR_041"]={effects={{amount=1,amount2=1,op="BUFF",target={kind="ALL",side="FRIENDLY_MINIONS"},trigger="ON_PLAY"},{amount=1,amount2=1,extra=true,op="BUFF",raceFilter="murloc",target={kind="ALL",side="FRIENDLY_MINIONS"},trigger="ON_PLAY"}}}
 P["BAR_043"]={effects={{amount=1,op="DRAW",raceFilter="murloc",target={kind="SELF",side="ANY_CHARACTER"},trigger="START_TURN"}}}
@@ -204,8 +204,8 @@ P["BAR_069"]={abilities={{1,1}},effects={{amount=6,op="DAMAGE",target={kind="SEL
 P["BAR_071"]={effects={{op="DESTROY",target={kind="RANDOM",side="ENEMY_MINION"},trigger="FRENZY"}}}
 P["BAR_072"]={abilities={{2,1}},effects={{keyword="taunt",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="BAR_072t",trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
 P["BAR_075"]={cantAttack=true,effects={{amount=1,amount2=1,op="BUFF",target={kind="ALL",side="FRIENDLY_MINIONS"},trigger="WHEN_OPPONENT_CASTS_SPELL"}},keywords={"cant_attack"}}
-P["BAR_076"]={cantAttack=true,effects={{op="SUMMON",subjectType=1,target={kind="ALL",side="ANY_CHARACTER"},token="BAR_076t",trigger="AFTER_OPPONENT_PLAY_CARD"}},keywords={"cant_attack"}}
-P["BAR_077"]={effects={{amountSource="GAME_NAMED_SUMMONED",costCountName="Watch Post",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="BAR_077t",trigger="BATTLECRY"}},keywords={"battlecry"}}
+P["BAR_076"]={cantAttack=true,effects={{op="SUMMON",subjectType=1,target={kind="ALL",side="ANY_CHARACTER"},token="BAR_076t",tokenDisplay="2/2 Grunt",trigger="AFTER_OPPONENT_PLAY_CARD"}},keywords={"cant_attack"}}
+P["BAR_077"]={effects={{amountSource="GAME_NAMED_SUMMONED",costCountName="Watch Post",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="BAR_077t",tokenDisplay="lookout for each watch post you've summoned this game",trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["BAR_078"]={effects={{op="DAMAGE",target={kind="ALL",side="ENEMY_MINIONS"},trigger="FRENZY",valueSource="SELF_ATTACK"}},keywords={"rush"}}
 P["BAR_082"]={effects={{amount=-1,amount2=1,keywordFilter="deathrattle",op="CARD_COST",target={kind="ALL",side="ANY_CHARACTER"},trigger="AURA"}}}
 P["BAR_305"]={abilities={{0,1}},effects={{keyword="freeze",op="GIVE_KEYWORD",target={kind="RANDOM",side="ENEMY_MINION"},trigger="ON_PLAY"}}}
@@ -218,14 +218,14 @@ P["BAR_311"]={effects={{amount=1,op="DAMAGE",["repeat"]=4,spell=true,split=true,
 P["BAR_313"]={effects={{amount=3,amount2=3,condition="RESTORED_HEALTH_THIS_TURN",op="BUFF",target={kind="SELF",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"taunt","battlecry"}}
 P["BAR_314"]={abilities={{0,1}},effects={{amount=1,op="DAMAGE",spell=true,target={kind="ALL",side="ENEMY_MINIONS"},trigger="ON_PLAY"}}}
 P["BAR_319"]={abilities={{0,1}},effects={{amount=2,op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
-P["BAR_320"]={effects={{amount=1,buffHand=true,op="COST_ZONE",target={kind="ALL",side="ANY_CHARACTER"},trigger="FRENZY"}}}
+P["BAR_320"]={effects={{amount=1,buffAll=false,buffHand=true,op="COST_ZONE",target={kind="ALL",side="ANY_CHARACTER"},trigger="FRENZY"}}}
 P["BAR_325"]={effects={{amount2=4,costMax=3,keywordFilter="deathrattle",op="CHOOSE_HAND",target={kind="SELF",side="ANY_CHARACTER"},trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
 P["BAR_326"]={effects={{amount2=4,costMax=4,keywordFilter="deathrattle",op="CHOOSE_HAND",target={kind="SELF",side="ANY_CHARACTER"},trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
-P["BAR_327"]={effects={{keyword="lifesteal",op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="BAR_327t",trigger="ON_PLAY"}}}
+P["BAR_327"]={effects={{keyword="lifesteal",op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="BAR_327t",tokenDisplay="2/2 Demon",trigger="ON_PLAY"}}}
 P["BAR_328"]={effects={{amount=2,condition="OUTCAST",keywordFilter="deathrattle",op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=1}}}
 P["BAR_329"]={effects={{costMax=5,fromDeck=true,keywordFilter="deathrattle",op="SUMMON_FROM_DECK",["repeat"]=3,target={kind="ALL",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=1}},keywords={"battlecry"}}
 P["BAR_330"]={effects={{amount=1,keywordFilter="deathrattle",op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="DEATHRATTLE",type_filter=1}},keywords={"deathrattle"}}
-P["BAR_533"]={effects={{keyword="taunt",op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="BAR_533t",trigger="ON_PLAY"}}}
+P["BAR_533"]={effects={{keyword="taunt",op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="BAR_533t",tokenDisplay="1/2 Turtle",trigger="ON_PLAY"}}}
 P["BAR_534"]={abilities={{0,1}},effects={{amount=1,amount2=3,op="BUFF",target={kind="ALL",side="FRIENDLY_MINIONS"},trigger="ON_PLAY"}}}
 P["BAR_535"]={abilities={{2,1}},effects={{amount=5,op="GAIN_ARMOR",target={kind="SELF",side="YOUR_HERO"},trigger="DEATHRATTLE"}},keywords={"taunt","deathrattle"}}
 P["BAR_536"]={effects={{amount=1,op="DRAW",raceFilter="beast",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY"},{amount=-1,op="CARD_COST",target={kind="PREVIOUS",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
@@ -237,10 +237,10 @@ P["BAR_743"]={abilities={{1,1}},effects={{amount2=2,condition="HOLDING_SCHOOL",c
 P["BAR_744"]={abilities={{11,1}},effects={{amount2=2,op="BUFF",subjectSchool="holy",target={kind="RANDOM",side="FRIENDLY_MINION"},trigger="AFTER_CAST_SPELL"}}}
 P["BAR_745"]={abilities={{1,1}},effects={{amount=3,op="DAMAGE",target={kind="SELF",side="YOUR_HERO"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["BAR_750"]={abilities={{1,1}},effects={{amount=1,op="DAMAGE",target={kind="ALL",side="ENEMY_MINIONS"},trigger="BATTLECRY"}},keywords={"taunt","battlecry"}}
-P["BAR_751"]={effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="BAR_751t",trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
-P["BAR_801"]={effects={{amount=1,op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="ON_PLAY"},{keyword="rush",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="BAR_035t",trigger="ON_PLAY"}}}
+P["BAR_751"]={effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="BAR_751t",tokenDisplay="1/1 Tinyfin",trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
+P["BAR_801"]={effects={{amount=1,op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="ON_PLAY"},{keyword="rush",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="BAR_035t",tokenDisplay="1/1 Hyena",trigger="ON_PLAY"}}}
 P["BAR_812"]={effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="CS2_033",trigger="WHEN_YOUR_MINION_ATTACKED"}},secret=true}
-P["BAR_841"]={effects={{amount=1,amount2=1,buffHand=true,buffRandom=true,keywordFilter="taunt",op="BUFF_ZONE",target={kind="ALL",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=1},{buffHand=true,buffRandom=true,keywordFilter="taunt",op="COPY",target={kind="PREVIOUS",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=1}}}
+P["BAR_841"]={effects={{amount=1,amount2=1,buffAll=false,buffHand=true,buffRandom=true,keywordFilter="taunt",op="BUFF_ZONE",target={kind="ALL",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=1},{buffAll=false,buffHand=true,buffRandom=true,keywordFilter="taunt",op="COPY",target={kind="PREVIOUS",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=1}}}
 P["BAR_842"]={effects={{amount=1,amount2=1,op="BUFF",target={kind="ALL",side="FRIENDLY_HAND_MINIONS"},trigger="ON_PLAY"}}}
 P["BAR_844"]={effects={{amount=1,op="DRAW",subjectType=-2,target={kind="SELF",side="ANY_CHARACTER"},trigger="AFTER_ATTACK_KILL"}}}
 P["BAR_846"]={effects={{condition="HERO_ATTACKED_THIS_TURN",op="SUMMON_COPY",target={kind="SELF",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"taunt","battlecry"}}
@@ -252,15 +252,15 @@ P["BAR_875"]={effects={{amount2=2,op="CAST_FROM",secretOnly=true,target={kind="S
 P["BAR_876"]={effects={{amount=1,condition="CONTROL_SECRET",op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=1}},keywords={"battlecry"}}
 P["BAR_878"]={abilities={{11,1}},effects={{keyword="lifesteal",op="SUMMON",subjectSchool="holy",target={kind="ALL",side="ANY_CHARACTER"},token="BAR_878t",trigger="AFTER_CAST_SPELL"}}}
 P["BAR_880"]={abilities={{0,1}},effects={{amount=3,op="BUFF",target={kind="RANDOM",side="FRIENDLY_MINION"},trigger="ON_PLAY"}}}
-P["BAR_881"]={effects={{amount=1,amount2=1,buffAll=true,buffBoard=true,buffDeck=true,buffHand=true,op="BUFF_ZONE",target={kind="ALL",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=1}}}
-P["BAR_888"]={abilities={{11,1}},effects={{op="SUMMON",subjectSchool="frost",target={kind="ALL",side="ANY_CHARACTER"},token="BAR_888t",trigger="AFTER_CAST_SPELL"}}}
+P["BAR_881"]={effects={{amount=1,amount2=1,buffBoard=true,buffDeck=true,buffHand=true,op="BUFF_ZONE",target={kind="ALL",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=1}}}
+P["BAR_888"]={abilities={{11,1}},effects={{op="SUMMON",subjectSchool="frost",target={kind="ALL",side="ANY_CHARACTER"},token="BAR_888t",tokenDisplay="elemental that freezes",trigger="AFTER_CAST_SPELL"}}}
 P["BAR_888t"]={effects={{op="FREEZE_ON_DAMAGE",target={kind="SELF",side="ANY_MINION"},trigger="AURA"}},keywords={"freeze"}}
 P["BAR_891"]={effects={{amount=2,op="BUFF",target={kind="ALL",side="YOUR_HERO"},temporary=true,trigger="ON_PLAY"}}}
 P["BAR_896"]={effects={{amount=1,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="FRENZY"}},keywords={"rush"}}
-P["BAR_902"]={effects={{amount=1,buffHand=true,op="COST_ZONE",schoolFilter=5,target={kind="ALL",side="ANY_CHARACTER"},trigger="WHEN_SELF_ATTACKS",type_filter=2}},keywords={"rush","divine_shield"}}
+P["BAR_902"]={effects={{amount=1,buffAll=false,buffHand=true,op="COST_ZONE",schoolFilter=5,target={kind="ALL",side="ANY_CHARACTER"},trigger="WHEN_SELF_ATTACKS",type_filter=2}},keywords={"rush","divine_shield"}}
 P["BAR_910"]={abilities={{0,2}},effects={{op="DESTROY",target={kind="CHOOSE",side="FRIENDLY_MINION"},trigger="ON_PLAY"},{amount=2,op="DAMAGE",spell=true,target={kind="ALL",side="ENEMY_MINIONS"},trigger="ON_PLAY"}}}
 P["BAR_912"]={effects={{costMax=1,costMin=1,op="SUMMON_FROM_DECK",target={kind="SELF",side="ANY_CHARACTER"},trigger="START_TURN",type_filter=1}}}
-P["BAR_914"]={effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="DMF_533t",trigger="ON_PLAY"}}}
+P["BAR_914"]={effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="DMF_533t",tokenDisplay="3/2 Imp",trigger="ON_PLAY"}}}
 end)() end
 do (function()
 P["BAR_915"]={effects={{amount=1,amount2=1,excludeSource=true,op="BUFF",target={kind="RANDOM",side="FRIENDLY_MINION"},trigger="BATTLECRY"},{amount=1,amount2=1,excludeSource=true,op="BUFF",target={kind="RANDOM",side="FRIENDLY_MINION"},trigger="DEATHRATTLE"}},keywords={"battlecry","deathrattle"}}
@@ -277,7 +277,7 @@ P["BE_183"]={effects={{amount=1,op="DAMAGE",["repeat"]=8,spell=true,split=true,t
 P["BE_193"]={keywords={"poisonous"}}
 P["BE_201"]={effects={{keyword="freeze",op="GIVE_KEYWORD",target={kind="CHOOSE",side="ENEMY_CHARACTER"},trigger="ON_PLAY"},{costMax=5,costMin=5,op="SUMMON_RANDOM",target={kind="ALL",side="ANY_CHARACTER"},trigger="ON_PLAY"},{keyword="freeze",op="GIVE_KEYWORD",target={kind="PREVIOUS",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
 P["BE_207"]={effects={{amount=1,amount2=1,op="BUFF",target={kind="ALL",side="FRIENDLY_HAND_MINIONS"},trigger="DEATHRATTLE"}},keywords={"reborn","deathrattle"}}
-P["BE_208"]={effects={{amount=1,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=1},{amount=2,amount2=2,buffHand=true,op="BUFF_ZONE",raceFilter="beast",target={kind="ALL",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=1}}}
+P["BE_208"]={effects={{amount=1,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=1},{amount=2,amount2=2,buffAll=false,buffHand=true,op="BUFF_ZONE",raceFilter="beast",target={kind="ALL",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=1}}}
 P["BE_220"]={effects={{op="ADD_TO_HAND",["repeat"]=2,schoolFilter=7,target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=2}}}
 P["BE_221"]={effects={{amount=1,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY"},{amount=-2,op="CARD_COST",target={kind="PREVIOUS",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
 P["BE_222"]={abilities={{0,1}},effects={{keyword="lifesteal",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="BE_222t",trigger="ON_PLAY"}}}
@@ -291,13 +291,13 @@ P["BE_265"]={effects={{keyword="rush",op="SUMMON",["repeat"]=5,target={kind="ALL
 P["BE_284"]={effects={{amount=4,amount2=2,op="DAMAGE_ADJACENT",spell=true,target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"}}}
 P["BE_285"]={keywords={"lifesteal"}}
 P["BE_303"]={effects={{amount=4,condition="HELD_DISTINCT_SCHOOLS_AT_LEAST",conditionAmount=2,op="DAMAGE",target={kind="ALL",side="ENEMY_CHARACTER"},trigger="BATTLECRY"}},keywords={"battlecry"}}
-P["BE_349"]={effects={{keyword="rush",op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="BE_349t",trigger="AFTER_HERO_ATTACK"}}}
+P["BE_349"]={effects={{keyword="rush",op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="BE_349t",tokenDisplay="2/2 Elemental",trigger="AFTER_HERO_ATTACK"}}}
 P["BE_550"]={abilities={{1,1},{2,1}},effects={{op="SUMMON_COPY",["repeat"]=2,target={kind="SELF",side="ANY_MINION"},trigger="BATTLECRY"},{amount=3,op="DAMAGE",target={kind="RANDOM",side="ENEMY_CHARACTER"},trigger="DEATHRATTLE"}},keywords={"battlecry","deathrattle"}}
 P["BE_552"]={effects={{op="ADD_TO_HAND",target={kind="SELF",side="ANY_CHARACTER"},token="BE_553t",trigger="AFTER_HERO_ATTACK"}}}
 P["BE_553"]={effects={{amount=3,discoverSummon=true,op="DISCOVER",raceFilter="mechanical",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=1},{op="ADD_TO_HAND",target={kind="SELF",side="ANY_CHARACTER"},token="BE_553t",trigger="ON_PLAY"}}}
 P["BE_553t"]={effects={{amount=2,diesEndOfTurn=true,keyword="rush",op="BUFF",raceFilter="mechanical",target={kind="CHOOSE",side="FRIENDLY_MINIONS"},trigger="ON_PLAY"}}}
 P["BE_560"]={abilities={{1,1}},effects={{amount=4,amount2=4,condition="ARMOR_AT_LEAST",conditionAmount=10,op="BUFF",target={kind="SELF",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"charge","battlecry"}}
-P["BE_561"]={effects={{keyword="taunt",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="BE_561t",trigger="ON_PLAY"},{amount=3,amount2=3,armorCost=3,op="BUFF",target={kind="PREVIOUS",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
+P["BE_561"]={effects={{keyword="taunt",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="BE_561t",tokenDisplay="3/3 Golem",trigger="ON_PLAY"},{amount=3,amount2=3,armorCost=3,op="BUFF",target={kind="PREVIOUS",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
 P["BE_566"]={effects={{amount2=1,op="CHOOSE_HAND",target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY"},{amount=-1,op="CARD_COST",previousPlural=true,target={kind="PREVIOUS",side="ANY_CHARACTER"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["BE_571"]={effects={{amount=3,discoverSummon=true,keywordFilter="deathrattle",op="DISCOVER",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=1},{amount=2,amount2=2,op="BUFF",target={kind="ALL",side="FRIENDLY_HAND_MINIONS"},trigger="ON_PLAY"}}}
 P["BE_572"]={abilities={{1,1},{2,1}},effects={{amount=3,op="GAIN_ARMOR",target={kind="SELF",side="YOUR_HERO"},trigger="BATTLECRY"},{amount=3,op="GAIN_ARMOR",target={kind="SELF",side="YOUR_HERO"},trigger="DEATHRATTLE"}},keywords={"taunt","battlecry","deathrattle"}}
@@ -305,18 +305,18 @@ P["BE_701"]={abilities={{8,1}},effects={{amount=1,op="DRAW",target={kind="SELF",
 P["BE_702"]={effects={{amount=3,condition="COMBO",discoverSummon=true,op="DISCOVER",otherClass=true,target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=1}}}
 P["BE_721"]={effects={{amount=-2,amount2=2,costCount="COMBO_CARDS_PLAYED_THIS_TURN",op="CARD_COST",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"},{amount=1,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["BE_729"]={effects={{amount=1,amount2=1,bothPlayers=true,op="CARD_COST",target={kind="ALL",side="ANY_CHARACTER"},trigger="AURA",type_filter=2}}}
-P["BE_730"]={abilities={{0,1}},effects={{keyword="charge",op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="BE_730t",trigger="ON_PLAY"}}}
+P["BE_730"]={abilities={{0,1}},effects={{keyword="charge",op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="BE_730t",tokenDisplay="mech beasts",trigger="ON_PLAY"}}}
 P["BE_733"]={abilities={{0,1}},effects={{amount=-1,amount2=2,costCount="ENEMY_MINIONS",op="CARD_COST",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"}},keywords={"rush","windfury"}}
 P["BE_740"]={effects={{amount=3,discoverSummon=true,keywordFilter="taunt",op="DISCOVER",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=1},{amount=2,amount2=3,op="BUFF",target={kind="PREVIOUS",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
 P["BE_749"]={effects={{costMax=1,costMin=1,op="SUMMON_RANDOM",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},trigger="DEATHRATTLE"},{amount=3,op="BUFF",target={kind="ALL",side="FRIENDLY_MINIONS"},trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
 P["BE_842"]={abilities={{0,3}},effects={{keyword="freeze",op="GIVE_KEYWORD",target={kind="CHOOSE",side="ENEMY_CHARACTER"},trigger="ON_PLAY"},{amount=3,op="GAIN_ARMOR",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"},{amount=1,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
 P["BE_851"]={effects={{amount=3,discoverSummon=true,op="DISCOVER",raceFilter="beast",target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=1}},keywords={"battlecry"}}
 P["BE_854"]={effects={{amount=3,op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="ON_PLAY"},{costMax=3,costMin=3,op="SUMMON_RANDOM",target={kind="ALL",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
-P["BE_856"]={effects={{amount=2,amount2=4,buffAll=true,buffDeck=true,buffHand=true,op="MULTIPLY_STATS",raceFilter="beast",target={kind="ALL",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=1}},keywords={"battlecry"}}
+P["BE_856"]={effects={{amount=2,amount2=4,buffDeck=true,buffHand=true,op="MULTIPLY_STATS",raceFilter="beast",target={kind="ALL",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=1}},keywords={"battlecry"}}
 P["BE_859"]={abilities={{2,1}},effects={{amount=1,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="DEATHRATTLE",valueSource="SELF_ATTACK"}},keywords={"taunt","deathrattle"}}
 P["BE_861"]={abilities={{2,1}},effects={{amount=3,op="HEAL",target={kind="SELF",side="YOUR_HERO"},trigger="DEATHRATTLE"}},keywords={"taunt","reborn","deathrattle"}}
 P["BE_877"]={effects={{amount=2,op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="ON_PLAY"},{amount2=6,condition="FRIENDLY_MINION_DIED_THIS_TURN",op="CARD_COST",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY"}},keywords={"lifesteal"}}
-P["BE_993"]={effects={{amount=2,buffHand=true,buffRandom=true,op="COST_ZONE",schoolFilter=7,target={kind="ALL",side="ANY_CHARACTER"},trigger="DEATHRATTLE",type_filter=2}},keywords={"deathrattle"}}
+P["BE_993"]={effects={{amount=2,buffAll=false,buffHand=true,buffRandom=true,op="COST_ZONE",schoolFilter=7,target={kind="ALL",side="ANY_CHARACTER"},trigger="DEATHRATTLE",type_filter=2}},keywords={"deathrattle"}}
 P["BE_998"]={effects={{op="DESTROY",target={kind="RANDOM",side="ENEMY_MINION"},trigger="SELF_TAKES_DAMAGE"}},keywords={"elusive"}}
 P["BOT_020"]={keywords={"rush"},magnetic=true}
 P["BOT_021"]={keywords={"taunt"},magnetic=true}
@@ -335,10 +335,10 @@ P["BOT_083"]={effects={{amount=1,op="BUFF",target={kind="ALL",side="YOUR_WEAPON"
 P["BOT_084"]={effects={{keywordFilter="deathrattle",op="ADD_TO_HAND",["repeat"]=2,target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
 P["BOT_099"]={effects={{fromHand=true,op="SUMMON_COPY_FROM",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"}}}
 P["BOT_101"]={effects={{op="ADD_TO_HAND",["repeat"]=2,target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=1}}}
-P["BOT_102"]={abilities={{2,1}},effects={{keyword="rush",op="ADD_TO_HAND",["repeat"]=2,target={kind="SELF",side="ANY_CHARACTER"},token="BOT_102t",trigger="DEATHRATTLE"}},keywords={"rush","deathrattle"}}
+P["BOT_102"]={abilities={{2,1}},effects={{keyword="rush",op="ADD_TO_HAND",["repeat"]=2,target={kind="SELF",side="ANY_CHARACTER"},token="BOT_102t",tokenDisplay="1/1 sparks",trigger="DEATHRATTLE"}},keywords={"rush","deathrattle"}}
 P["BOT_107"]={abilities={{4,1}},effects={{amount=1,excludeSource=true,op="DAMAGE",target={kind="ALL",side="ANY_CHARACTER"},trigger="END_TURN"}},magnetic=true}
 P["BOT_216"]={abilities={{1,1}},effects={{amount=10,condition="MANA_CRYSTALS_AT_LEAST",conditionAmount=10,op="HEAL",target={kind="SELF",side="YOUR_HERO"},trigger="BATTLECRY"}},keywords={"battlecry"}}
-P["BOT_218"]={effects={{keyword="taunt",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="BOT_218t",trigger="SELF_TAKES_DAMAGE"}}}
+P["BOT_218"]={effects={{keyword="taunt",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="BOT_218t",tokenDisplay="mech",trigger="SELF_TAKES_DAMAGE"}}}
 P["BOT_224"]={abilities={{1,1}},effects={{op="SUMMON_COPY",target={kind="SELF",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["BOT_226"]={effects={{amount=1,amountSource="HERO_DAMAGE_TAKEN_THIS_TURN",op="BUFF",target={kind="SELF",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["BOT_234"]={effects={{amount=1,amount2=1,op="SET_STATS",target={kind="ALL",side="ANY_MINION"},trigger="ON_PLAY",type_filter=1}}}
@@ -348,7 +348,7 @@ P["BOT_246"]={abilities={{0,1}},effects={{amount=1,op="DAMAGE",spell=true,target
 P["BOT_251"]={abilities={{2,1}},effects={{op="DESTROY",target={kind="RANDOM",side="ENEMY_MINION"},trigger="DEATHRATTLE"}},keywords={"deathrattle"},magnetic=true}
 P["BOT_256"]={effects={{op="SUMMON_RANDOM",target={kind="ALL",side="ANY_MINION"},trigger="BATTLECRY",valueSource="HAND_SIZE"}},keywords={"battlecry"}}
 P["BOT_267"]={effects={{costMax=2,fromHand=true,op="SUMMON_FROM_DECK",target={kind="SELF",side="ANY_CHARACTER"},trigger="DEATHRATTLE",type_filter=1}},keywords={"deathrattle"}}
-P["BOT_270"]={effects={{keyword="taunt,divine_shield",op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="GVG_085",trigger="BATTLECRY"}},keywords={"battlecry"}}
+P["BOT_270"]={effects={{keyword="taunt,divine_shield",op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="GVG_085",tokenDisplay="mechs",trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["BOT_280"]={effects={{amount=1,amount2=1,op="SUMMON_COPY",subjectType=1,target={kind="TRIGGER_SOURCE",side="ANY_MINION"},trigger="AFTER_OPPONENT_PLAY_CARD"}}}
 P["BOT_291"]={effects={{amount=1,costMin=5,fromDeck=true,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=2}},keywords={"battlecry"}}
 P["BOT_296"]={abilities={{1,1}},effects={{amount=10,condition="MANA_CRYSTALS_AT_LEAST",conditionAmount=10,op="BUFF",target={kind="SELF",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"taunt","battlecry"}}
@@ -362,11 +362,11 @@ P["BOT_413"]={abilities={{1,1}},effects={{amount2=1,amountSource="SPELLS_IN_HAND
 P["BOT_414"]={keywords={"divine_shield","stealth"}}
 P["BOT_420"]={abilities={{0,1}},effects={{op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="CATA_134t3",trigger="ON_PLAY"}}}
 P["BOT_422"]={choiceLabels={"Give your other minions +1/+1","Summon two 2/2 Treants"},choices={{{amount=1,amount2=1,excludeSource=true,op="BUFF",target={kind="ALL",side="FRIENDLY_MINIONS"},trigger="ON_PLAY"}},{{op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="CATA_134t3",trigger="ON_PLAY"}}},effects={{amount=1,amount2=1,excludeSource=true,op="BUFF",target={kind="ALL",side="FRIENDLY_MINIONS"},trigger="ON_PLAY"}}}
-P["BOT_423"]={effects={{amount=7,buffHand=true,buffRandom=true,op="COST_ZONE",target={kind="ALL",side="ANY_CHARACTER"},trigger="END_TURN",type_filter=1}}}
+P["BOT_423"]={effects={{amount=7,buffAll=false,buffHand=true,buffRandom=true,op="COST_ZONE",target={kind="ALL",side="ANY_CHARACTER"},trigger="END_TURN",type_filter=1}}}
 P["BOT_431"]={effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="BOT_031",trigger="BATTLECRY"}},keywords={"battlecry"}}
-P["BOT_433"]={effects={{buffAll=true,buffDeck=true,op="SWAP_WITH",target={kind="SELF",side="ANY_MINION"},trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
+P["BOT_433"]={effects={{buffDeck=true,op="SWAP_WITH",target={kind="SELF",side="ANY_MINION"},trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
 P["BOT_438"]={effects={{followUp={{op="ADD_TO_HAND",raceFilter="mechanical",target={kind="SELF",side="ANY_CHARACTER"},trigger="DEATHRATTLE",type_filter=1}},followUpCondition="NONE",op="GRANT_ABILITY",target={kind="ALL",side="FRIENDLY_MINIONS"},trigger="ON_PLAY"}}}
-P["BOT_443"]={effects={{amount=1,amount2=1,buffAll=true,buffHand=true,op="BUFF_ZONE",raceFilter="demon",target={kind="ALL",side="ANY_CHARACTER"},trigger="DEATHRATTLE",type_filter=1}},keywords={"deathrattle"}}
+P["BOT_443"]={effects={{amount=1,amount2=1,buffHand=true,op="BUFF_ZONE",raceFilter="demon",target={kind="ALL",side="ANY_CHARACTER"},trigger="DEATHRATTLE",type_filter=1}},keywords={"deathrattle"}}
 P["BOT_445"]={abilities={{2,1}},effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="BOT_445t",trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
 P["BOT_447"]={effects={{amount=5,op="DAMAGE",target={kind="SELF",side="YOUR_HERO"},trigger="BATTLECRY"},{amount=5,op="GAIN_ARMOR",target={kind="SELF",side="YOUR_HERO"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["BOT_448"]={abilities={{1,1}},effects={{amount=6,op="DAMAGE",target={kind="SELF",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"taunt","battlecry"}}
@@ -384,7 +384,7 @@ P["BOT_534"]={keywords={"divine_shield"}}
 P["BOT_535"]={effects={{op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="BOT_312t",trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["BOT_536"]={abilities={{1,1}},effects={{condition="MANA_CRYSTALS_AT_LEAST",conditionAmount=10,op="SUMMON_COPY",["repeat"]=2,target={kind="SELF",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["BOT_537"]={abilities={{2,1}},effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="BOT_537t",trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
-P["BOT_538"]={abilities={{1,1}},effects={{keyword="rush",op="ADD_TO_HAND",target={kind="SELF",side="ANY_CHARACTER"},token="BOT_102t",trigger="BATTLECRY"}},keywords={"battlecry"}}
+P["BOT_538"]={abilities={{1,1}},effects={{keyword="rush",op="ADD_TO_HAND",target={kind="SELF",side="ANY_CHARACTER"},token="BOT_102t",tokenDisplay="1/1 spark",trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["BOT_539"]={effects={{amount=3,costMin=5,op="DISCOVER",target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=2}},keywords={"battlecry"}}
 P["BOT_540"]={abilities={{1,1}},effects={{op="DESTROY",raceFilter="mechanical",target={kind="CHOOSE",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["BOT_548"]={keywords={"taunt","rush","divine_shield","lifesteal"},magnetic=true}
@@ -419,16 +419,16 @@ P["BRM_014"]={abilities={{1,1}},effects={{amount=3,amount2=3,condition="HAND_EMP
 P["BRM_015"]={effects={{amount=1,op="DAMAGE",replacement={{amount=3,condition="HEALTH_AT_MOST",conditionAmount=12,op="DAMAGE",spell=true,target={kind="ALL",side="ANY_MINION"},trigger="ON_PLAY"}},spell=true,target={kind="ALL",side="ANY_MINION"},trigger="ON_PLAY"}}}
 P["BRM_016"]={effects={{amount=2,op="DAMAGE",target={kind="ALL",side="ENEMY_HERO"},trigger="SELF_TAKES_DAMAGE"}}}
 P["BRM_018"]={effects={{amount=-2,op="CARD_COST",raceFilter="dragon",target={kind="SELF",side="YOUR_HERO"},trigger="BATTLECRY",type_filter=1}},keywords={"battlecry"}}
-P["BRM_022"]={effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="BRM_022t",trigger="SELF_TAKES_DAMAGE"}}}
+P["BRM_022"]={effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="BRM_022t",tokenDisplay="2/1 Whelp",trigger="SELF_TAKES_DAMAGE"}}}
 P["BRM_024"]={effects={{amount=3,amount2=3,condition="OPPONENT_HEALTH_AT_MOST",conditionAmount=15,op="BUFF",target={kind="SELF",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["BRM_025"]={abilities={{0,1}},effects={{amount=-1,amount2=2,costCount="MINIONS_DIED_THIS_TURN",op="CARD_COST",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"}}}
 P["BRM_026"]={effects={{costMax=1,costMin=1,forOpponent=true,op="SUMMON_RANDOM",target={kind="ALL",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=1}},keywords={"battlecry"}}
-P["BRM_028"]={effects={{amount=1,buffHand=true,op="COST_ZONE",target={kind="ALL",side="ANY_CHARACTER"},trigger="END_TURN"}}}
+P["BRM_028"]={effects={{amount=1,buffAll=false,buffHand=true,op="COST_ZONE",target={kind="ALL",side="ANY_CHARACTER"},trigger="END_TURN"}}}
 P["BRM_029"]={abilities={{1,1}},effects={{condition="HOLDING_RACE",conditionRace="dragon",op="DESTROY",rarityFilter=5,target={kind="CHOOSE",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["BRM_030"]={effects={{classPool=1,op="ADD_TO_HAND",otherClass=true,["repeat"]=2,target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=2}},keywords={"battlecry"}}
 P["BRM_033"]={abilities={{1,1}},effects={{amount=1,amount2=1,condition="HOLDING_RACE",conditionRace="dragon",op="BUFF",target={kind="SELF",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["BRM_034"]={abilities={{1,1}},effects={{amount=5,condition="HOLDING_RACE",conditionRace="dragon",op="DAMAGE",target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="BATTLECRY"}},keywords={"battlecry"}}
-P["BT_002"]={effects={{amount=1,buffDeck=true,op="COST_ZONE",target={kind="ALL",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=2}}}
+P["BT_002"]={effects={{amount=1,buffAll=false,buffDeck=true,op="COST_ZONE",target={kind="ALL",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=2}}}
 P["BT_003"]={effects={{costMax=4,costMin=4,op="SUMMON_RANDOM",target={kind="ALL",side="ANY_CHARACTER"},trigger="AFTER_OPPONENT_CAST_SPELL"}},secret=true}
 P["BT_004"]={dormantTurns=2,effects={{amount=2,op="DAMAGE",target={kind="ALL",side="ENEMY_MINIONS"},trigger="WHEN_AWAKENS"}}}
 P["BT_006"]={effects={{familyFilter=8,op="FILL_HAND",target={kind="ALL",side="ANY_CHARACTER"},temporary=true,trigger="ON_PLAY",type_filter=2}}}
@@ -439,11 +439,11 @@ P["BT_018"]={effects={{op="ADD_TO_HAND",raceFilter="murloc",target={kind="SELF",
 P["BT_019"]={effects={{op="SHUFFLE",target={kind="SELF",side="YOUR_HERO"},token="BT_019t",trigger="DEATHRATTLE"}},keywords={"divine_shield","deathrattle"}}
 P["BT_019t"]={effects={{op="SUMMON_RANDOM",raceFilter="murloc",["repeat"]=4,target={kind="ALL",side="ANY_CHARACTER"},trigger="BATTLECRY"},{keyword="divine_shield",op="GIVE_KEYWORD",previousPlural=true,target={kind="PREVIOUS",side="ANY_CHARACTER"},trigger="BATTLECRY"}},keywords={"divine_shield","battlecry"}}
 P["BT_021"]={effects={{amount=3,condition="DECK_NO_TYPE",conditionType=1,discoverTakeAll=true,familyFilter=8,op="DISCOVER",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=1}}}
-P["BT_024"]={effects={{amount=8,op="HEAL",target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="ON_PLAY"},{keyword="taunt,divine_shield",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="BT_024t",trigger="ON_PLAY"}}}
+P["BT_024"]={effects={{amount=8,op="HEAL",target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="ON_PLAY"},{keyword="taunt,divine_shield",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="BT_024t",tokenDisplay="8/8 Guardian",trigger="ON_PLAY"}}}
 P["BT_028"]={effects={{op="SHUFFLE",target={kind="SELF",side="YOUR_HERO"},token="BT_028t",trigger="DEATHRATTLE"}},keywords={"spell_damage","deathrattle"},spellDamage=1}
 P["BT_028t"]={effects={{amount2=3,familyFilter=8,forOpponent=true,op="CAST_FROM",["repeat"]=5,target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=2}},keywords={"spell_damage","battlecry"},spellDamage=1}
 P["BT_035"]={effects={{amount=2,op="BUFF",target={kind="ALL",side="YOUR_HERO"},temporary=true,trigger="ON_PLAY"},{amount=1,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
-P["BT_036"]={effects={{keyword="rush",op="SUMMON",["repeat"]=3,target={kind="ALL",side="ANY_CHARACTER"},token="BT_036t",trigger="ON_PLAY"}}}
+P["BT_036"]={effects={{keyword="rush",op="SUMMON",["repeat"]=3,target={kind="ALL",side="ANY_CHARACTER"},token="BT_036t",tokenDisplay="1/1 Illidari",trigger="ON_PLAY"}}}
 P["BT_042"]={effects={{amount=3,op="TRANSFORM",target={kind="TRIGGER_SOURCE",side="ANY_MINION"},trigger="WHEN_YOUR_MINION_ATTACKED"}},secret=true}
 P["BT_072"]={effects={{keyword="freeze",op="GIVE_KEYWORD",target={kind="CHOOSE",side="ENEMY_CHARACTER"},trigger="ON_PLAY"},{op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="CS2_033",trigger="ON_PLAY"}},keywords={"freeze"}}
 P["BT_100"]={effects={{amount=3,op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="ON_PLAY"},{costMax=3,costMin=3,op="SUMMON_RANDOM",target={kind="ALL",side="ANY_CHARACTER"},trigger="ON_PLAY"}},overload=1}
@@ -459,7 +459,7 @@ P["BT_115"]={effects={{amount=3,condition="CAST_SPELL_LAST_TURN",op="DISCOVER",t
 P["BT_123"]={effects={{op="SHUFFLE",target={kind="SELF",side="YOUR_HERO"},token="BT_123t",trigger="DEATHRATTLE"}},keywords={"rush","deathrattle"}}
 P["BT_123t"]={effects={{amount=10,op="GAIN_ARMOR",subjectType=-1,target={kind="SELF",side="YOUR_HERO"},trigger="AFTER_ATTACK_KILL"}},keywords={"rush"}}
 P["BT_124"]={effects={{amount=1,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=3},{amount=1,amount2=1,op="BUFF",target={kind="PREVIOUS",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
-P["BT_127"]={dormantTurns=2,effects={{amount=5,buffHand=true,buffRandom=true,op="COST_ZONE",target={kind="ALL",side="ANY_CHARACTER"},trigger="WHEN_AWAKENS",type_filter=1}}}
+P["BT_127"]={dormantTurns=2,effects={{amount=5,buffAll=false,buffHand=true,buffRandom=true,op="COST_ZONE",target={kind="ALL",side="ANY_CHARACTER"},trigger="WHEN_AWAKENS",type_filter=1}}}
 P["BT_130"]={abilities={{0,1}},effects={{amount=2,op="GAIN_MANA_CRYSTAL",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"}}}
 P["BT_132"]={effects={{amount=1,amount2=3,keyword="taunt",op="BUFF",target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"},{amount2=6,condition="MANA_CRYSTALS_AT_LEAST",conditionAmount=7,conditionTrails=true,op="CARD_COST",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
 P["BT_133"]={effects={{costMax=8,costMin=8,op="ADD_TO_HAND",target={kind="SELF",side="ANY_CHARACTER"},trigger="AFTER_SELF_ATTACK",type_filter=1}},keywords={"rush"}}
@@ -471,9 +471,9 @@ P["BT_140"]={effects={{amount=1,amount2=1,condition="DAMAGED_MINION_EXISTS",keyw
 P["BT_142"]={effects={{amount=1,op="BUFF",target={kind="ALL",side="YOUR_HERO"},temporary=true,trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["BT_155"]={abilities={{2,1}},effects={{keyword="taunt",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="BT_155t",trigger="DEATHRATTLE"}},keywords={"taunt","deathrattle"}}
 P["BT_156"]={dormantTurns=2,keywords={"rush"}}
-P["BT_159"]={effects={{forOpponent=true,op="SUMMON",["repeat"]=3,target={kind="ALL",side="ANY_CHARACTER"},token="BT_159t",trigger="BATTLECRY"}},keywords={"battlecry"}}
-P["BT_163"]={effects={{op="SUMMON",["repeat"]=4,summonAttacks=1,target={kind="ALL",side="ANY_CHARACTER"},token="BT_163t",trigger="ON_PLAY"}}}
-P["BT_173"]={effects={{keyword="rush",op="SUMMON",["repeat"]=6,target={kind="ALL",side="ANY_CHARACTER"},token="BT_036t",trigger="ON_PLAY"}}}
+P["BT_159"]={effects={{forOpponent=true,op="SUMMON",["repeat"]=3,target={kind="ALL",side="ANY_CHARACTER"},token="BT_159t",tokenDisplay="huntresses for your opponent",trigger="BATTLECRY"}},keywords={"battlecry"}}
+P["BT_163"]={effects={{op="SUMMON",["repeat"]=4,summonAttacks=1,target={kind="ALL",side="ANY_CHARACTER"},token="BT_163t",tokenDisplay="clefthoofs that attack random enemies",trigger="ON_PLAY"}}}
+P["BT_173"]={effects={{keyword="rush",op="SUMMON",["repeat"]=6,target={kind="ALL",side="ANY_CHARACTER"},token="BT_036t",tokenDisplay="1/1 Illidari",trigger="ON_PLAY"}}}
 P["BT_197"]={effects={{op="SHUFFLE",target={kind="SELF",side="YOUR_HERO"},token="BT_197t",trigger="DEATHRATTLE"}},keywords={"lifesteal","deathrattle"}}
 P["BT_197t"]={effects={{condition="OPPONENT_TURN",keyword="elusive",op="GIVE_KEYWORD",target={kind="SELF",side="FRIENDLY_MINIONS"},trigger="AURA"}},keywords={"taunt","lifesteal"}}
 P["BT_202"]={effects={{amount=1,amount2=1,op="BUFF",raceFilter="beast",target={kind="RANDOM",side="FRIENDLY_HAND_MINIONS"},trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
@@ -496,15 +496,15 @@ P["BT_291"]={effects={{amount=5,op="DAMAGE",spell=true,target={kind="CHOOSE",sid
 P["BT_292"]={abilities={{0,2}},effects={{amount=2,amount2=1,op="BUFF",target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"},{amount=1,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
 P["BT_300"]={effects={{amount=3,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY"},{amount=3,op="DRAW",subjectType=-1,target={kind="SELF",side="ANY_CHARACTER"},trigger="AFTER_DISCARD"}}}
 P["BT_301"]={effects={{op="DISCARD_HIGHEST",target={kind="ALL",side="ANY_CHARACTER"},trigger="BATTLECRY"}},keywords={"rush","battlecry"}}
-P["BT_304"]={effects={{keyword="lifesteal",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="BT_304t",trigger="DEATHRATTLE"}},keywords={"taunt","deathrattle"}}
+P["BT_304"]={effects={{keyword="lifesteal",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="BT_304t",tokenDisplay="5/5 Dreadlord",trigger="DEATHRATTLE"}},keywords={"taunt","deathrattle"}}
 P["BT_305"]={dormantTurns=2,effects={{amount=2,amount2=2,op="BUFF",target={kind="ALL",side="FRIENDLY_HAND_MINIONS"},trigger="WHEN_AWAKENS"}}}
 P["BT_307"]={abilities={{1,1}},effects={{amount=3,condition="HERO_TOOK_DAMAGE_THIS_TURN",op="REFRESH_MANA",target={kind="SELF",side="YOUR_HERO"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["BT_321"]={effects={{amount=3,op="DISCOVER",raceFilter="demon",target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=1}},keywords={"battlecry"}}
-P["BT_341"]={effects={{op="ADD_TO_HAND",raceFilter="dragon",target={kind="SELF",side="ANY_CHARACTER"},trigger="END_TURN",type_filter=1}},keywords={"taunt"}}
+P["BT_341"]={effects={{op="ADD_TO_HAND",raceFilter="dragon",target={kind="SELF",side="ANY_CHARACTER"},tokenDisplay="a dragon",trigger="END_TURN",type_filter=1}},keywords={"taunt"}}
 P["BT_351"]={abilities={{6,1}},effects={{amount=1,op="BUFF",target={kind="SELF",side="ANY_MINION"},trigger="AFTER_HERO_ATTACK"}}}
-P["BT_352"]={effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="BT_352t",trigger="AFTER_HERO_ATTACK"}}}
+P["BT_352"]={effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="BT_352t",tokenDisplay="2/2 Satyr",trigger="AFTER_HERO_ATTACK"}}}
 P["BT_355"]={abilities={{14,1}},effects={{amount=3,op="DAMAGE",target={kind="RANDOM",side="ENEMY_CHARACTER"},trigger="AFTER_FRIENDLY_MINION_DIES"}}}
-P["BT_407"]={abilities={{2,1}},effects={{op="ADD_TO_HAND",target={kind="SELF",side="ANY_CHARACTER"},token="BT_407t",trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
+P["BT_407"]={abilities={{2,1}},effects={{op="ADD_TO_HAND",target={kind="SELF",side="ANY_CHARACTER"},token="BT_407t",tokenDisplay="2/1 lost soul",trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
 P["BT_416"]={effects={{amount=-2,op="CARD_COST",raceFilter="demon",target={kind="SELF",side="YOUR_HERO"},trigger="BATTLECRY",type_filter=1}},keywords={"battlecry"}}
 P["BT_423"]={keywords={"taunt","lifesteal"}}
 P["BT_480"]={effects={{amount=1,condition="OUTCAST",op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY"}}}
@@ -521,8 +521,8 @@ P["BT_509"]={effects={{fromHand=true,op="SUMMON_FROM_DECK",raceFilter="demon",ta
 P["BT_512"]={effects={{amount=8,op="BUFF",target={kind="ALL",side="YOUR_HERO"},temporary=true,trigger="ON_PLAY"}}}
 P["BT_514"]={effects={{amount=1,op="DAMAGE",["repeat"]=2,repeatPrinted=true,spell=true,target={kind="ALL",side="ANY_MINION"},trigger="ON_PLAY"}}}
 P["BT_701"]={keywords={"stealth"}}
-P["BT_703"]={effects={{keyword="stealth",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="BT_703t",trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
-P["BT_707"]={effects={{keyword="poisonous",op="SUMMON",subjectType=1,target={kind="ALL",side="ANY_CHARACTER"},token="BT_707t",trigger="AFTER_OPPONENT_PLAY_CARD"}},secret=true}
+P["BT_703"]={effects={{keyword="stealth",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="BT_703t",tokenDisplay="7/5 Shadow",trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
+P["BT_707"]={effects={{keyword="poisonous",op="SUMMON",subjectType=1,target={kind="ALL",side="ANY_CHARACTER"},token="BT_707t",tokenDisplay="2/3 ambusher",trigger="AFTER_OPPONENT_PLAY_CARD"}},secret=true}
 P["BT_709"]={abilities={{17,1}},effects={{amount=2,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="AFTER_OPPONENT_CAST_SPELL"}},secret=true}
 P["BT_710"]={abilities={{1,1}},effects={{amount=2,condition="CONTROL_KEYWORD",conditionKeyword="stealth",op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["BT_711"]={effects={{condition="CONTROL_SECRET",op="RETURN_TO_HAND",target={kind="CHOOSE",side="ANY_MINION"},trigger="BATTLECRY"},{amount=2,op="CARD_COST",previousPlural=true,target={kind="PREVIOUS",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
@@ -532,19 +532,19 @@ P["BT_714"]={abilities={{1,1}},effects={{keyword="freeze",op="GIVE_KEYWORD",targ
 P["BT_715"]={effects={{amount=2,op="BUFF",target={kind="SELF",side="ANY_MINION"},trigger="SELF_TAKES_DAMAGE"}},keywords={"taunt"}}
 P["BT_716"]={effects={{amount=2,op="BUFF",target={kind="SELF",side="ANY_MINION"},trigger="SELF_TAKES_DAMAGE"}},keywords={"taunt"}}
 P["BT_720"]={effects={{amount=4,op="BUFF",target={kind="SELF",side="ANY_MINION"},temporary=true,trigger="BATTLECRY"}},keywords={"taunt","rush","battlecry"}}
-P["BT_721"]={effects={{op="SUMMON_WITH_STATS",statsFromSource=true,summonNamed=true,target={kind="ALL",side="ANY_MINION"},token="BT_721t",trigger="END_TURN"}}}
+P["BT_721"]={effects={{op="SUMMON_WITH_STATS",statsFromSource=true,summonNamed=true,target={kind="ALL",side="ANY_MINION"},token="BT_721t",tokenDisplay="Rot",trigger="END_TURN"}}}
 P["BT_722"]={abilities={{1,2}},effects={{amount=1,op="DAMAGE",target={kind="CHOOSE",side="ANY_MINION"},trigger="BATTLECRY"},{keyword="divine_shield",op="GIVE_KEYWORD",target={kind="PREVIOUS",side="ANY_CHARACTER"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["BT_723"]={abilities={{1,2}},effects={{amount=1,op="DAMAGE",target={kind="CHOOSE",side="ANY_MINION"},trigger="BATTLECRY"},{keyword="rush",op="GIVE_KEYWORD",target={kind="PREVIOUS",side="ANY_CHARACTER"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["BT_726"]={abilities={{2,1}},effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="BT_726t",trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
 P["BT_727"]={effects={{op="DAMAGE",target={kind="SELF",side="YOUR_HERO"},trigger="SELF_TAKES_DAMAGE",valueSource="EVENT_AMOUNT"}}}
-P["BT_728"]={effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="BT_728t",trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
+P["BT_728"]={effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="BT_728t",tokenDisplay="9/1 Inquisitor",trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
 P["BT_732"]={abilities={{1,1}},effects={{amount=6,excludeSource=true,op="DAMAGE",split=true,target={kind="RANDOM",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["BT_734"]={effects={{op="CANT_ATTACK_HEROES",target={kind="SELF",side="ANY_MINION"},trigger="AURA"}}}
-P["BT_735"]={abilities={{2,1}},effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="BT_735t",trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
+P["BT_735"]={abilities={{2,1}},effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="BT_735t",tokenDisplay="ashes of al'ar that resurrects this minion on your next turn",trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
 P["BT_735t"]={effects={{op="TRANSFORM",target={kind="SELF",side="ANY_MINION"},token="BT_735",trigger="START_TURN"}}}
 P["BT_737"]={effects={{amount=2,op="GO_DORMANT",prompt=true,target={kind="CHOOSE",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["BT_740"]={effects={{amount=2,op="DAMAGE",["repeat"]=2,spell=true,target={kind="RANDOM",side="ENEMY_MINION"},trigger="ON_PLAY"}},keywords={"lifesteal"}}
-P["BT_761"]={effects={{keyword="taunt",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="BT_761t",trigger="DEATHRATTLE"}},keywords={"rush","deathrattle"}}
+P["BT_761"]={effects={{keyword="taunt",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="BT_761t",tokenDisplay="5/9 Warlord",trigger="DEATHRATTLE"}},keywords={"rush","deathrattle"}}
 P["BT_801"]={effects={{amount=3,op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"},{amount=1,amount2=6,condition="OUTCAST",op="CARD_COST",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY"}},keywords={"lifesteal"}}
 P["BT_814"]={effects={{condition="OUTCAST",keyword="immune",op="GIVE_KEYWORD",target={kind="SELF",side="ANY_CHARACTER"},temporary=true,trigger="BATTLECRY"}},keywords={"rush"}}
 P["BT_921"]={keywords={"lifesteal"}}
@@ -573,7 +573,7 @@ P["CATA_467"]={abilities={{6,1}},effects={{amount=2,op="BUFF",target={kind="RAND
 P["CATA_471"]={effects={{followUp={{costMax=4,costMin=4,op="SUMMON_RANDOM",target={kind="ALL",side="ANY_CHARACTER"},trigger="DEATHRATTLE"}},followUpCondition="NONE",op="GRANT_ABILITY",target={kind="ALL",side="FRIENDLY_MINIONS"},trigger="ON_PLAY"}}}
 P["CATA_474"]={effects={{op="ADD_TO_HAND",schoolFilter=5,target={kind="SELF",side="ANY_CHARACTER"},trigger="END_TURN",type_filter=2},{amount=-3,op="CARD_COST",target={kind="PREVIOUS",side="ANY_CHARACTER"},trigger="END_TURN"}}}
 P["CATA_475"]={abilities={{4,1}},effects={{amount=2,op="DAMAGE",target={kind="ALL",side="ENEMY_CHARACTER"},trigger="END_TURN"}}}
-P["CATA_476"]={abilities={{4,1}},effects={{keyword="divine_shield",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="CATA_476t",trigger="END_TURN"}}}
+P["CATA_476"]={abilities={{4,1}},effects={{keyword="divine_shield",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="CATA_476t",tokenDisplay="elemental dragon",trigger="END_TURN"}}}
 P["CATA_477"]={effects={{amount=2,amount2=2,op="BUFF",prompt=true,target={kind="CHOOSE",side="FRIENDLY_HAND_MINIONS"},trigger="ON_PLAY"}}}
 P["CATA_478"]={effects={{op="SUMMON_WITH_STATS",raceFilter="dragon",statsFromSource=true,target={kind="ALL",side="ANY_MINION"},trigger="END_TURN"}}}
 P["CATA_484"]={effects={{amount=3,classPool=2,costMax=1,costMin=1,op="DISCOVER",otherClass=true,target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=2}},keywords={"battlecry"}}
@@ -627,7 +627,7 @@ P["CFM_300"]={keywords={"taunt"}}
 P["CFM_305"]={effects={{amount=1,amount2=1,op="BUFF",target={kind="ALL",side="FRIENDLY_HAND_MINIONS"},trigger="ON_PLAY"}}}
 P["CFM_308"]={choiceLabels={"Gain 10 Armor","Refresh your Mana Crystals"},choices={{{amount=10,op="GAIN_ARMOR",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"}},{{amount=10,op="REFRESH_MANA",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"}}},effects={{amount=10,op="GAIN_ARMOR",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"}}}
 P["CFM_310"]={abilities={{0,1}},effects={{op="SUMMON",["repeat"]=4,target={kind="ALL",side="ANY_CHARACTER"},token="PRO_001at",trigger="ON_PLAY"}}}
-P["CFM_315"]={abilities={{1,1}},effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="CFM_315t",trigger="BATTLECRY"}},keywords={"battlecry"}}
+P["CFM_315"]={abilities={{1,1}},effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="CFM_315t",tokenDisplay="cat",trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["CFM_324"]={abilities={{2,1}},effects={{op="SHUFFLE",target={kind="SELF",side="YOUR_HERO"},token="CFM_324t",trigger="DEATHRATTLE"}},keywords={"taunt","deathrattle"}}
 P["CFM_325"]={effects={{amount=2,condition="HAS_WEAPON",op="BUFF",target={kind="SELF",side="FRIENDLY_MINIONS"},trigger="AURA"}}}
 P["CFM_328"]={effects={{amount=2,condition="CONTROL_MINION_HEALTH_AT_LEAST",conditionAmount=6,op="DRAW",target={kind="ALL",side="ANY_CHARACTER"},trigger="BATTLECRY"}},keywords={"battlecry"}}
@@ -657,7 +657,7 @@ P["CFM_636"]={keywords={"stealth"}}
 P["CFM_639"]={effects={{amount=1,amount2=1,op="BUFF",target={kind="ALL",side="FRIENDLY_HAND_MINIONS"},trigger="END_TURN"}}}
 P["CFM_646"]={effects={{amount=2,op="DAMAGE",target={kind="ALL",side="ENEMY_HERO"},trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
 P["CFM_647"]={abilities={{1,1}},effects={{amount=1,op="DAMAGE",target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="BATTLECRY"}},keywords={"battlecry"}}
-P["CFM_648"]={abilities={{1,1}},effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="CFM_648t",trigger="BATTLECRY"}},keywords={"battlecry"}}
+P["CFM_648"]={abilities={{1,1}},effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="CFM_648t",tokenDisplay="ogre",trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["CFM_650"]={effects={{amount=1,amount2=1,op="BUFF",raceFilter="murloc",target={kind="RANDOM",side="FRIENDLY_HAND_MINIONS"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["CFM_651"]={effects={{amount=1,op="BUFF",target={kind="ALL",side="YOUR_WEAPON"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["CFM_653"]={keywords={"taunt"}}
@@ -691,7 +691,7 @@ P["CFM_751"]={abilities={{1,1}},effects={{amount=3,excludeSource=true,op="DAMAGE
 P["CFM_752"]={effects={{amount=1,keywordFilter="taunt",op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=1},{amount=2,amount2=2,op="BUFF",target={kind="PREVIOUS",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
 P["CFM_753"]={effects={{amount=1,amount2=1,op="BUFF",target={kind="ALL",side="FRIENDLY_HAND_MINIONS"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["CFM_754"]={effects={{amount=2,amount2=2,op="BUFF",target={kind="RANDOM",side="FRIENDLY_HAND_MINIONS"},trigger="END_TURN"}}}
-P["CFM_755"]={effects={{amount=1,amount2=1,buffHand=true,buffRandom=true,op="BUFF_ZONE",target={kind="ALL",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=3}},keywords={"battlecry"}}
+P["CFM_755"]={effects={{amount=1,amount2=1,buffAll=false,buffHand=true,buffRandom=true,op="BUFF_ZONE",target={kind="ALL",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=3}},keywords={"battlecry"}}
 P["CFM_756"]={effects={{op="GAIN_ARMOR",target={kind="SELF",side="YOUR_HERO"},trigger="SELF_DEALS_DAMAGE",valueSource="EVENT_AMOUNT"}},keywords={"taunt"}}
 P["CFM_759"]={abilities={{2,1}},effects={{amount=1,condition="SELF_ATTACK_AT_LEAST",conditionAmount=2,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
 P["CFM_760"]={abilities={{0,1}},effects={{amount=-2,amount2=2,costCount="GAME_SECRETS_PLAYED",op="CARD_COST",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"}}}
@@ -730,7 +730,7 @@ P["CS2_023"]={abilities={{0,1}},effects={{amount=2,op="DRAW",target={kind="SELF"
 P["CS2_024"]={effects={{amount=3,op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="ON_PLAY"},{keyword="freeze",op="GIVE_KEYWORD",target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="ON_PLAY"}},keywords={"freeze"}}
 P["CS2_025"]={abilities={{0,1}},effects={{amount=1,op="DAMAGE",spell=true,target={kind="ALL",side="ENEMY_MINIONS"},trigger="ON_PLAY"}}}
 P["CS2_026"]={abilities={{0,1}},effects={{keyword="freeze",op="GIVE_KEYWORD",target={kind="ALL",side="ENEMY_MINIONS"},trigger="ON_PLAY"}},keywords={"freeze"}}
-P["CS2_027"]={effects={{keyword="taunt",op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="CS2_mirror",trigger="ON_PLAY"}}}
+P["CS2_027"]={effects={{keyword="taunt",op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="CS2_mirror",tokenDisplay="0/2 minion",trigger="ON_PLAY"}}}
 P["CS2_028"]={effects={{amount=2,op="DAMAGE",spell=true,target={kind="ALL",side="ENEMY_MINIONS"},trigger="ON_PLAY"},{keyword="freeze",op="GIVE_KEYWORD",target={kind="ALL",side="ENEMY_MINIONS"},trigger="ON_PLAY"}},keywords={"freeze"}}
 P["CS2_029"]={abilities={{0,1}},effects={{amount=6,op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
 P["CS2_032"]={abilities={{0,1}},effects={{amount=5,op="DAMAGE",spell=true,target={kind="ALL",side="ENEMY_MINIONS"},trigger="ON_PLAY"}}}
@@ -848,24 +848,24 @@ P["DAL_090"]={keywords={"stealth"}}
 P["DAL_092"]={}
 P["DAL_095"]={abilities={{1,1}},effects={{amount=1,amountSource="SPELLS_IN_HAND",op="BUFF",target={kind="SELF",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["DAL_096"]={keywords={"taunt","spell_damage"},spellDamage=1}
-P["DAL_146"]={effects={{op="ADD_TO_HAND",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="DAL_146t",trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
-P["DAL_147"]={effects={{amount=3,amount2=3,buffAll=true,buffHand=true,op="BUFF_ZONE",raceFilter="dragon",target={kind="ALL",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=1}},keywords={"battlecry"}}
+P["DAL_146"]={effects={{op="ADD_TO_HAND",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="DAL_146t",tokenDisplay="4/4 dragon",trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
+P["DAL_147"]={effects={{amount=3,amount2=3,buffHand=true,op="BUFF_ZONE",raceFilter="dragon",target={kind="ALL",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=1}},keywords={"battlecry"}}
 P["DAL_163"]={effects={{amount=3,familyFilter=8,op="DISCOVER",target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=1}},keywords={"battlecry"}}
 P["DAL_182"]={abilities={{11,1}},effects={{amount=1,op="DAMAGE",target={kind="RANDOM",side="ENEMY_MINION"},trigger="AFTER_CAST_SPELL"}}}
 P["DAL_185"]={effects={{amount=4,op="HEAL",subjectType=-1,target={kind="SELF",side="YOUR_HERO"},trigger="AFTER_DRAW"}},keywords={"taunt"}}
 P["DAL_256"]={effects={{op="SUMMON",["repeat"]=5,target={kind="ALL",side="ANY_CHARACTER"},token="DAL_256t2",trigger="ON_PLAY"}},twinspell=true}
 P["DAL_350"]={choiceLabels={"Deal 2 damage to a minion","Restore 5 Health"},choices={{{amount=2,op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"}},{{amount=5,op="HEAL",target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="ON_PLAY"}}},effects={{amount=2,op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"}}}
 P["DAL_351"]={effects={{amount=1,amount2=1,op="BUFF",target={kind="ALL",side="FRIENDLY_MINIONS"},trigger="ON_PLAY"}},twinspell=true}
-P["DAL_354"]={abilities={{2,1}},effects={{op="ADD_TO_HAND",["repeat"]=2,target={kind="SELF",side="ANY_CHARACTER"},token="DAL_354t",trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
+P["DAL_354"]={abilities={{2,1}},effects={{op="ADD_TO_HAND",["repeat"]=2,target={kind="SELF",side="ANY_CHARACTER"},token="DAL_354t",tokenDisplay="1/1 squirrels",trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
 P["DAL_366"]={bonusEffects=1,effects={{op="DESTROY",target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"}}}
 P["DAL_371"]={effects={{amount=4,op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"},{amount=3,op="DISCOVER",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=2}}}
 P["DAL_373"]={effects={{amount=2,op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="ON_PLAY"}},twinspell=true}
 P["DAL_378"]={effects={{keyword="rush",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="DAL_378t1",trigger="ON_PLAY"}},twinspell=true}
-P["DAL_400"]={effects={{op="ADD_TO_HAND",target={kind="SELF",side="ANY_CHARACTER"},tokens={"DAL_613","DAL_614","DAL_615","DAL_739","DAL_741","DRG_052","ULD_616"},trigger="BATTLECRY"}},keywords={"battlecry"}}
-P["DAL_413"]={effects={{op="ADD_TO_HAND",target={kind="SELF",side="ANY_CHARACTER"},tokens={"DAL_613","DAL_614","DAL_615","DAL_739","DAL_741","DRG_052","ULD_616"},trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
+P["DAL_400"]={effects={{op="ADD_TO_HAND",target={kind="SELF",side="ANY_CHARACTER"},tokenDisplay="a lackey",tokens={"DAL_613","DAL_614","DAL_615","DAL_739","DAL_741","DRG_052","ULD_616"},trigger="BATTLECRY"}},keywords={"battlecry"}}
+P["DAL_413"]={effects={{op="ADD_TO_HAND",target={kind="SELF",side="ANY_CHARACTER"},tokenDisplay="a lackey",tokens={"DAL_613","DAL_614","DAL_615","DAL_739","DAL_741","DRG_052","ULD_616"},trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
 P["DAL_416"]={effects={{amount=3,op="DISCOVER",otherClass=true,target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=2}},keywords={"battlecry"}}
 P["DAL_432"]={effects={{amount=4,op="HEAL",target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="ON_PLAY"}},repeatable=true}
-P["DAL_433"]={effects={{op="ADD_TO_HAND",target={kind="SELF",side="ANY_CHARACTER"},tokens={"DAL_613","DAL_614","DAL_615","DAL_739","DAL_741","DRG_052","ULD_616"},trigger="BATTLECRY"}},keywords={"battlecry"},overload=1}
+P["DAL_433"]={effects={{op="ADD_TO_HAND",target={kind="SELF",side="ANY_CHARACTER"},tokenDisplay="a lackey",tokens={"DAL_613","DAL_614","DAL_615","DAL_739","DAL_741","DRG_052","ULD_616"},trigger="BATTLECRY"}},keywords={"battlecry"},overload=1}
 P["DAL_539"]={abilities={{1,1}},effects={{amount=4,condition="HOLDING_TYPE_COST",conditionAmount=5,conditionType=2,op="DAMAGE",target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["DAL_544"]={abilities={{1,1}},effects={{amount=2,op="HEAL",target={kind="ALL",side="FRIENDLY_CHARACTER"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["DAL_550"]={effects={{op="SUMMON_COPY",subjectType=-2,target={kind="TRIGGER_SOURCE",side="ANY_MINION"},trigger="SURVIVED_DAMAGE"}}}
@@ -891,12 +891,12 @@ P["DAL_714"]={abilities={{1,1}},effects={{amount=1,amount2=1,condition="HOLDING_
 P["DAL_716"]={effects={{amount=4,op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"},{amount2=6,condition="HOLDING_OTHER_CLASS",conditionTrails=true,op="CARD_COST",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
 P["DAL_720"]={effects={{op="RETURN_TO_HAND",target={kind="RANDOM",side="FRIENDLY_MINION"},trigger="DEATHRATTLE"},{amount=-2,op="CARD_COST",previousPlural=true,target={kind="PREVIOUS",side="FRIENDLY_MINION"},trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
 P["DAL_728"]={abilities={{0,1}},effects={{op="RETURN_TO_HAND",target={kind="ALL",side="FRIENDLY_MINIONS"},trigger="ON_PLAY"}}}
-P["DAL_733"]={effects={{keyword="lifesteal",op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="DAL_733t",trigger="ON_PLAY"}}}
+P["DAL_733"]={effects={{keyword="lifesteal",op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="DAL_733t",tokenDisplay="1/2 Dryad",trigger="ON_PLAY"}}}
 P["DAL_735"]={effects={{op="SILENCE",target={kind="ADJACENT",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["DAL_739"]={abilities={{1,1}},effects={{amount=1,keyword="rush",op="BUFF",target={kind="CHOOSE",side="FRIENDLY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["DAL_741"]={effects={{amount=3,op="DISCOVER",target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=2}},keywords={"battlecry"}}
 P["DAL_743"]={effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="PRO_001at",trigger="DEATHRATTLE"}},keywords={"rush","deathrattle"}}
-P["DAL_747"]={abilities={{1,1}},effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="DAL_747t",trigger="BATTLECRY"}},keywords={"battlecry"}}
+P["DAL_747"]={abilities={{1,1}},effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="DAL_747t",tokenDisplay="gryphon for each player",trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["DAL_748"]={keywords={"spell_damage"},spellDamage=1}
 P["DAL_759"]={effects={{op="GAIN_ARMOR",target={kind="SELF",side="YOUR_HERO"},trigger="SELF_DEALS_DAMAGE",valueSource="EVENT_AMOUNT"}}}
 P["DAL_760"]={keywords={"rush"}}
@@ -906,18 +906,18 @@ P["DAL_773"]={effects={{amount=1,keyword="rush",op="BUFF",subjectCost=1,target={
 P["DAL_774"]={effects={{costMax=3,costMin=3,op="SUMMON_RANDOM",raceFilter="beast",target={kind="ALL",side="ANY_CHARACTER"},trigger="WHEN_CAST_SPELL"}}}
 P["DAL_775"]={abilities={{2,1}},effects={{amount=3,op="DAMAGE",target={kind="ALL",side="ANY_MINION"},trigger="DEATHRATTLE"}},keywords={"taunt","deathrattle"}}
 P["DAL_799"]={effects={{condition="GAME_COUNT",conditionAmount=5,conditionType=32,op="SUMMON_COPY",target={kind="SELF",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"rush","battlecry"}}
-P["DED_001"]={choiceLabels={"Transform into a 3/1 Shark with Rush","Transform into a 1/3 Turtle with Taunt"},choices={{{amount=3,amount2=1,keyword="rush",op="TRANSFORM",target={kind="SELF",side="ANY_MINION"},token="DED_001a",trigger="ON_PLAY"}},{{amount=1,amount2=3,keyword="taunt",op="TRANSFORM",target={kind="SELF",side="ANY_MINION"},token="DED_001b",trigger="ON_PLAY"}}},effects={{amount=3,amount2=1,keyword="rush",op="TRANSFORM",target={kind="SELF",side="ANY_MINION"},token="DED_001a",trigger="ON_PLAY"}}}
+P["DED_001"]={choiceLabels={"Transform into a 3/1 Shark with Rush","Transform into a 1/3 Turtle with Taunt"},choices={{{amount=3,amount2=1,keyword="rush",op="TRANSFORM",target={kind="SELF",side="ANY_MINION"},token="DED_001a",tokenDisplay="shark",trigger="ON_PLAY"}},{{amount=1,amount2=3,keyword="taunt",op="TRANSFORM",target={kind="SELF",side="ANY_MINION"},token="DED_001b",tokenDisplay="turtle",trigger="ON_PLAY"}}},effects={{amount=3,amount2=1,keyword="rush",op="TRANSFORM",target={kind="SELF",side="ANY_MINION"},token="DED_001a",tokenDisplay="shark",trigger="ON_PLAY"}}}
 P["DED_006"]={effects={{keyword="charge",op="GIVE_KEYWORD",raceFilter="pirate",target={kind="ALL",side="FRIENDLY_MINIONS"},trigger="AURA",type_filter=1}}}
 P["DED_505"]={effects={{amount=1,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=2},{op="DAMAGE",target={kind="SELF",side="YOUR_HERO"},trigger="BATTLECRY",valueSource="PREVIOUS_COST"},{amount=1,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="DEATHRATTLE",type_filter=2},{op="DAMAGE",target={kind="SELF",side="YOUR_HERO"},trigger="DEATHRATTLE",valueSource="PREVIOUS_COST"}},keywords={"battlecry","deathrattle"}}
 P["DED_513"]={abilities={{1,1}},effects={{amount=2,condition="HOLDING_SCHOOL",conditionSchool="shadow",op="DAMAGE",target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["DED_516"]={effects={{amount=1,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=2},{op="GAIN_ARMOR",target={kind="SELF",side="YOUR_HERO"},trigger="BATTLECRY",valueSource="PREVIOUS_COST"}},keywords={"battlecry"}}
-P["DED_517"]={effects={{amount=8,op="DAMAGE",spell=true,target={kind="CHOOSE",side="ENEMY_MINION"},trigger="ON_PLAY"},{op="SUMMON_WITH_STATS",summonNamed=true,target={kind="ALL",side="ANY_MINION"},token="DED_517t",trigger="ON_PLAY",valueSource="EXCESS_DAMAGE"}}}
+P["DED_517"]={effects={{amount=8,op="DAMAGE",spell=true,target={kind="CHOOSE",side="ENEMY_MINION"},trigger="ON_PLAY"},{op="SUMMON_WITH_STATS",summonNamed=true,target={kind="ALL",side="ANY_MINION"},token="DED_517t",tokenDisplay="Remnant",trigger="ON_PLAY",valueSource="EXCESS_DAMAGE"}}}
 P["DED_519"]={effects={{amount=2,op="DAMAGE",["repeat"]=2,repeatPrinted=true,target={kind="RANDOM",side="ENEMY_CHARACTER"},trigger="AFTER_HERO_ATTACK"}}}
 P["DED_521"]={effects={{amount=1,op="DAMAGE",["repeat"]=12,split=true,target={kind="RANDOM",side="ANY_OTHER_CHARACTER"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["DED_523"]={effects={{op="DESTROY",raceFilter="beast",target={kind="CHOOSE",side="ANY_MINION"},trigger="BATTLECRY"},{amount=1,amount2=1,op="BUFF",requiresPrevious=true,target={kind="SELF",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["DEEP_005"]={effects={{costMax=3,keywordFilter="deathrattle",op="SUMMON_RANDOM",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},trigger="DEATHRATTLE",type_filter=1}},keywords={"taunt","deathrattle"}}
 P["DEEP_006"]={keywords={"taunt","divine_shield","lifesteal","elusive"}}
-P["DEEP_007"]={effects={{condition="EXCAVATED",conditionAmount=2,op="TRANSFORM",target={kind="ALL",side="ENEMY_MINIONS"},token="PRO_001at",trigger="BATTLECRY"}},keywords={"battlecry"}}
+P["DEEP_007"]={effects={{condition="EXCAVATED",conditionAmount=2,op="TRANSFORM",target={kind="ALL",side="ENEMY_MINIONS"},token="PRO_001at",tokenDisplay="1/1 Murlocs",trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["DEEP_008"]={abilities={{4,2}},effects={{amount=2,op="GAIN_ARMOR",target={kind="SELF",side="YOUR_HERO"},trigger="END_TURN"},{amount=1,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="END_TURN"}}}
 P["DEEP_009"]={effects={{amount=8,op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"},{amount=1,op="EXCAVATE",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"}}}
 P["DEEP_010"]={effects={{amount=1,op="DAMAGE",["repeat"]=3,repeatPrinted=true,spell=true,target={kind="ALL",side="ANY_MINION"},trigger="ON_PLAY"},{amount=-2,amount2=2,condition="CAST_SPELL_LAST_TURN",conditionTrails=true,op="CARD_COST",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"}}}
@@ -931,21 +931,21 @@ P["DEEP_030"]={abilities={{1,2},{2,2}},effects={{amount=1,op="DRAW",target={kind
 P["DEEP_033"]={effects={{amount=2,op="GRANT_BONUS_EFFECT",target={kind="SELF",side="FRIENDLY_MINION"},trigger="BATTLECRY"},{amount=1,op="EXCAVATE",target={kind="SELF",side="YOUR_HERO"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["DEEP_034"]={abilities={{1,1}},effects={{amount=1,condition="PLAYED_RACE_LAST_TURN",conditionRace="elemental",op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["DEEP_035"]={effects={{amount=1,op="GRANT_BONUS_EFFECT",target={kind="ALL",side="FRIENDLY_MINIONS"},trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
-P["DEEP_036"]={effects={{amount=2,amount2=4,buffAll=true,buffDeck=true,buffHand=true,op="MULTIPLY_STATS",raceFilter="elemental",target={kind="ALL",side="ANY_CHARACTER"},trigger="DEATHRATTLE",type_filter=1}},keywords={"taunt","deathrattle"}}
+P["DEEP_036"]={effects={{amount=2,amount2=4,buffDeck=true,buffHand=true,op="MULTIPLY_STATS",raceFilter="elemental",target={kind="ALL",side="ANY_CHARACTER"},trigger="DEATHRATTLE",type_filter=1}},keywords={"taunt","deathrattle"}}
 P["DEEP_999t1"]={abilities={{0,2}},effects={{amount=2,amount2=2,op="BUFF",target={kind="CHOOSE",side="FRIENDLY_MINION"},trigger="ON_PLAY"},{amount=2,op="DAMAGE",spell=true,target={kind="RANDOM",side="ENEMY_MINION"},trigger="ON_PLAY"}}}
 P["DEEP_999t2"]={abilities={{4,1}},effects={{amount=2,op="DAMAGE",target={kind="ALL",side="ENEMY_CHARACTER"},trigger="END_TURN"}}}
 P["DEEP_999t3"]={effects={{amount=3,op="DISCOVER",printOnly=true,raceFilter="elemental",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=1},{amount=3,discoverSummon=true,discoverTakeAll=true,op="DISCOVER",raceFilter="elemental",silent=true,target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=1}}}
-P["DEEP_999t4"]={effects={{amount=3,amount2=3,buffAll=true,buffBoard=true,buffDeck=true,buffHand=true,excludeSource=true,op="BUFF_ZONE",target={kind="ALL",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=1}},keywords={"battlecry"}}
+P["DEEP_999t4"]={effects={{amount=3,amount2=3,buffBoard=true,buffDeck=true,buffHand=true,excludeSource=true,op="BUFF_ZONE",target={kind="ALL",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=1}},keywords={"battlecry"}}
 P["DEEP_999t5"]={effects={{amount=3,op="TRANSFORM",target={kind="ALL",side="FRIENDLY_OTHER_MINIONS"},trigger="BATTLECRY"}},keywords={"battlecry"}}
-P["DINO_130"]={abilities={{2,2}},effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="DINO_130t",trigger="DEATHRATTLE"},{amount=1,amount2=1,op="BUFF",target={kind="ALL",side="FRIENDLY_MINIONS"},trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
+P["DINO_130"]={abilities={{2,2}},effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="DINO_130t",tokenDisplay="beast",trigger="DEATHRATTLE"},{amount=1,amount2=1,op="BUFF",target={kind="ALL",side="FRIENDLY_MINIONS"},trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
 P["DINO_131"]={effects={{op="SUMMON_FROM_DECK",raceFilter="beast",target={kind="SELF",side="ANY_CHARACTER"},trigger="DEATHRATTLE",type_filter=1},{keyword="lifesteal",op="GIVE_KEYWORD",target={kind="PREVIOUS",side="ANY_CHARACTER"},trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
 P["DINO_132"]={abilities={{4,1}},effects={{amount=5,op="DAMAGE",target={kind="RANDOM",side="ENEMY_MINION"},trigger="END_TURN"}},keywords={"taunt"}}
-P["DINO_136"]={effects={{keyword="rush",op="SUMMON",["repeat"]=3,target={kind="ALL",side="ANY_CHARACTER"},token="DINO_136t",trigger="ON_PLAY"},{condition="OUTCAST",keyword="immune_while_attacking",op="GIVE_KEYWORD",previousPlural=true,target={kind="PREVIOUS",side="ANY_CHARACTER"},temporary=true,trigger="ON_PLAY"}}}
+P["DINO_136"]={effects={{keyword="rush",op="SUMMON",["repeat"]=3,target={kind="ALL",side="ANY_CHARACTER"},token="DINO_136t",tokenDisplay="2/1 Raptor",trigger="ON_PLAY"},{condition="OUTCAST",keyword="immune_while_attacking",op="GIVE_KEYWORD",previousPlural=true,target={kind="PREVIOUS",side="ANY_CHARACTER"},temporary=true,trigger="ON_PLAY"}}}
 P["DINO_403"]={effects={{amount=8,amount2=8,op="SET_STATS",target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"},{keyword="charge",op="GIVE_KEYWORD",target={kind="PREVIOUS",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
 P["DINO_406"]={abilities={{0,2}},effects={{amount=4,op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="ON_PLAY"},{amount=1,amount2=1,op="BUFF",raceFilter="elemental",target={kind="ALL",side="FRIENDLY_MINIONS"},trigger="ON_PLAY"}}}
 P["DINO_416"]={abilities={{14,1}},effects={{corpseCost=3,keyword="reborn",op="GIVE_KEYWORD",target={kind="SELF",side="ANY_MINION"},trigger="AFTER_FRIENDLY_MINION_DIES"}},keywords={"rush"}}
 P["DINO_419"]={abilities={{1,1}},effects={{amount=2,amount2=2,keyword="rush",op="BUFF",raceFilter="beast",target={kind="CHOOSE",side="FRIENDLY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
-P["DINO_421"]={effects={{amount=3,amount2=3,buffAll=true,buffDeck=true,buffHand=true,op="BUFF_ZONE",target={kind="ALL",side="ANY_CHARACTER"},trigger="DEATHRATTLE",type_filter=1}},keywords={"taunt","elusive","deathrattle"}}
+P["DINO_421"]={effects={{amount=3,amount2=3,buffDeck=true,buffHand=true,op="BUFF_ZONE",target={kind="ALL",side="ANY_CHARACTER"},trigger="DEATHRATTLE",type_filter=1}},keywords={"taunt","elusive","deathrattle"}}
 P["DINO_426"]={effects={{amount=3,costMax=3,costMin=3,op="DISCOVER",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=1},{amount=2,amount2=3,op="SUMMON_COPY",target={kind="PREVIOUS",side="ANY_MINION"},trigger="ON_PLAY"}}}
 P["DINO_431"]={effects={{costMin=5,keywordFilter="taunt",op="SUMMON_RANDOM",target={kind="ALL",side="ANY_CHARACTER"},trigger="DEATHRATTLE",type_filter=1}},keywords={"taunt","deathrattle"}}
 P["DINO_434"]={effects={{costMax=1,costMin=1,op="ADD_TO_HAND",target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=1},{costMax=1,costMin=1,op="ADD_TO_HAND",target={kind="SELF",side="ANY_CHARACTER"},trigger="DEATHRATTLE",type_filter=2}},keywords={"battlecry","deathrattle"}}
@@ -971,25 +971,25 @@ P["DMF_079"]={effects={{amount2=2,op="CAST_FROM",secretOnly=true,target={kind="S
 P["DMF_080"]={effects={{amount=4,amount2=4,op="BUFF",target={kind="SELF",side="ANY_MINION"},trigger="CORRUPT"}},keywords={"rush"}}
 P["DMF_081"]={effects={{costMax=4,costMin=4,forOpponent=true,op="ADD_TO_HAND",target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=1}},keywords={"taunt","battlecry"}}
 P["DMF_083"]={effects={{keyword="poisonous",op="BUFF",target={kind="SELF",side="ANY_MINION"},trigger="CORRUPT"}}}
-P["DMF_086"]={effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="DMF_086e",trigger="ON_PLAY"},{amountSource="SECRETS_CONTROLLED",op="SUMMON",silent=true,target={kind="ALL",side="ANY_CHARACTER"},token="DMF_086e",trigger="ON_PLAY"}}}
+P["DMF_086"]={effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="DMF_086e",tokenDisplay="strider and repeat for each secret you control",trigger="ON_PLAY"},{amountSource="SECRETS_CONTROLLED",op="SUMMON",silent=true,target={kind="ALL",side="ANY_CHARACTER"},token="DMF_086e",trigger="ON_PLAY"}}}
 P["DMF_091"]={effects={{amount=1,amount2=1,op="BUFF",target={kind="ADJACENT",side="FRIENDLY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
-P["DMF_100"]={abilities={{1,1}},effects={{op="ADD_TO_HAND",["repeat"]=2,target={kind="SELF",side="ANY_CHARACTER"},token="DMF_100t",trigger="BATTLECRY"}},keywords={"battlecry"}}
+P["DMF_100"]={abilities={{1,1}},effects={{op="ADD_TO_HAND",["repeat"]=2,target={kind="SELF",side="ANY_CHARACTER"},token="DMF_100t",tokenDisplay="1/2 sugar elementals",trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["DMF_101"]={effects={{amount=3,op="DAMAGE",replacement={{amount=12,condition="CORRUPTED",implicitTarget=true,op="DAMAGE",target={kind="CHOOSE",side="ANY_MINION"},trigger="BATTLECRY"}},target={kind="CHOOSE",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["DMF_103"]={effects={{amount=1,op="DAMAGE",["repeat"]=10,spell=true,split=true,target={kind="RANDOM",side="ENEMY_CHARACTER"},trigger="ON_PLAY"}}}
-P["DMF_104"]={effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="DMF_104t",trigger="ON_PLAY"},{amountSource="ELEMENTALS_PLAYED_LAST_TURN",op="SUMMON",silent=true,target={kind="ALL",side="ANY_CHARACTER"},token="DMF_104t",trigger="ON_PLAY"}}}
+P["DMF_104"]={effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="DMF_104t",tokenDisplay="elemental and repeat for each elemental you played last turn",trigger="ON_PLAY"},{amountSource="ELEMENTALS_PLAYED_LAST_TURN",op="SUMMON",silent=true,target={kind="ALL",side="ANY_CHARACTER"},token="DMF_104t",trigger="ON_PLAY"}}}
 P["DMF_106"]={effects={{condition="CONTROL_SECRET",op="SUMMON_COPY",target={kind="SELF",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["DMF_110"]={effects={{amount=2,excludeRace="demon",op="DAMAGE",target={kind="ALL",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["DMF_111"]={abilities={{1,1}},effects={{amount=3,keyword="lifesteal",op="BUFF",raceFilter="demon",target={kind="CHOOSE",side="FRIENDLY_MINION"},temporary=true,trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["DMF_114"]={keywords={"taunt"}}
 P["DMF_115"]={effects={{amount=1,bothPlayers=true,op="DESTROY_MANA_CRYSTAL",target={kind="SELF",side="YOUR_HERO"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["DMF_119"]={effects={{op="DISCARD_LOWEST",target={kind="ALL",side="ANY_CHARACTER"},trigger="ON_PLAY"},{amount=1,amount2=1,op="BUFF",target={kind="ALL",side="FRIENDLY_MINIONS"},trigger="ON_PLAY"}}}
-P["DMF_120"]={effects={{amount=1,buffHand=true,buffRandom=true,op="COST_ZONE",target={kind="ALL",side="ANY_CHARACTER"},trigger="AFTER_CAST_SPELL"}}}
+P["DMF_120"]={effects={{amount=1,buffAll=false,buffHand=true,buffRandom=true,op="COST_ZONE",target={kind="ALL",side="ANY_CHARACTER"},trigger="AFTER_CAST_SPELL"}}}
 P["DMF_121"]={abilities={{1,1}},effects={{amount=1,amount2=1,amountSource="SPELLS_IN_HAND",op="BUFF",target={kind="SELF",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"taunt","battlecry"}}
 P["DMF_122"]={effects={{amount=3,op="DISCOVER",secretOnly=true,target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["DMF_174"]={effects={{amount=4,op="HEAL",replacement={{amount=4,condition="CORRUPTED",op="DAMAGE",target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="BATTLECRY"}},target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["DMF_184"]={effects={{amount2=4,op="BUFF",target={kind="SELF",side="ANY_MINION"},trigger="CORRUPT"}},keywords={"taunt"}}
 P["DMF_186"]={effects={{costMax=4,costMin=4,op="SUMMON_RANDOM",replacement={{condition="CORRUPTED",costMax=7,costMin=7,op="SUMMON_RANDOM",target={kind="ALL",side="ANY_CHARACTER"},trigger="ON_PLAY"}},target={kind="ALL",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
-P["DMF_187"]={effects={{amount=3,op="DISCOVER",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=2},{amount=1,buffHand=true,op="COST_ZONE",target={kind="ALL",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=2}}}
+P["DMF_187"]={effects={{amount=3,op="DISCOVER",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=2},{amount=1,buffAll=false,buffHand=true,op="COST_ZONE",target={kind="ALL",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=2}}}
 P["DMF_189"]={effects={{amount=2,amount2=2,op="BUFF",target={kind="RANDOM",side="FRIENDLY_HAND_MINIONS"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["DMF_190"]={keywords={"windfury"}}
 P["DMF_191"]={abilities={{2,1}},effects={{op="SILENCE",target={kind="ALL",side="ANY_MINION"},trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
@@ -998,37 +998,37 @@ P["DMF_195"]={effects={{amount=3,op="DISCOVER",target={kind="SELF",side="ANY_CHA
 P["DMF_202"]={effects={{amount=1,countSelector=true,countSide="FRIENDLY_HAND",countType=1,countZone="HAND",keyword="rush",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="DMF_523t",trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["DMF_219"]={effects={{amount=4,keyword="immune",op="BUFF",target={kind="ALL",side="YOUR_HERO"},temporary=true,trigger="ON_PLAY"}}}
 P["DMF_221"]={effects={{amount=1,op="DAMAGE_ADJACENT",spell=true,target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"}},keywords={"lifesteal"}}
-P["DMF_223"]={effects={{keyword="taunt",op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="DMF_223t",trigger="DEATHRATTLE"}},keywords={"rush","deathrattle"}}
+P["DMF_223"]={effects={{keyword="taunt",op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="DMF_223t",tokenDisplay="1/1 Assistant",trigger="DEATHRATTLE"}},keywords={"rush","deathrattle"}}
 P["DMF_227"]={effects={{amount=1,condition="OUTCAST",op="DAMAGE",target={kind="ALL",side="ENEMY_CHARACTER"},trigger="ON_PLAY"}}}
-P["DMF_235"]={effects={{amount=1,keyword="divine_shield",op="BUFF_NAMED",target={kind="ALL",side="ANY_CHARACTER"},trigger="BATTLECRY"}},keywords={"battlecry"}}
+P["DMF_235"]={effects={{amount=1,keyword="divine_shield",op="BUFF_NAMED",target={kind="ALL",side="ANY_CHARACTER"},tokenDisplay="Silver Hand Recruit",trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["DMF_237"]={effects={{amount=1,amount2=2,op="BUFF",subjectHealth=1,target={kind="TRIGGER_SOURCE",side="ANY_CHARACTER"},trigger="WHEN_SUMMON_MINION"}}}
 P["DMF_238"]={abilities={{1,1}},effects={{keyword="taunt",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="DMF_238t",trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["DMF_241"]={effects={{condition="DECK_NO_NEUTRAL",keyword="taunt,rush,divine_shield,lifesteal",op="BUFF",target={kind="SELF",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["DMF_247"]={effects={{amount=1,amount2=1,keyword="lifesteal",op="BUFF",target={kind="SELF",side="ANY_MINION"},trigger="CORRUPT"}},keywords={"taunt"}}
 P["DMF_512"]={abilities={{0,1}},effects={{durationTurns=1,keyword="stealth",op="GIVE_KEYWORD",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"}}}
-P["DMF_514"]={effects={{op="SHUFFLE",["repeat"]=3,target={kind="SELF",side="YOUR_HERO"},token="DMF_514t",trigger="DEATHRATTLE"},{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="DMF_514t2",trigger="CAST_WHEN_DRAWN"}},keywords={"deathrattle"}}
+P["DMF_514"]={effects={{op="SHUFFLE",["repeat"]=3,target={kind="SELF",side="YOUR_HERO"},token="DMF_514t",tokenDisplay="tickets",trigger="DEATHRATTLE"},{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="DMF_514t2",trigger="CAST_WHEN_DRAWN"}},keywords={"deathrattle"}}
 P["DMF_514t"]={castsWhenDrawn=true,effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="DMF_514t2",trigger="ON_PLAY"}}}
 P["DMF_517"]={effects={{amount=2,keyword="stealth",op="BUFF",target={kind="SELF",side="ANY_MINION"},trigger="CORRUPT"}}}
 P["DMF_518"]={effects={{op="DESTROY",target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"},{amount=-1,amount2=2,costCount="DECK_CARDS_NOT_FROM_DECK",op="CARD_COST",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"}}}
 P["DMF_519"]={effects={{amount=1,amountSource="OTHER_CARDS_PLAYED_THIS_TURN",condition="COMBO",op="DAMAGE",target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"}}}
 P["DMF_520"]={effects={{amount=2,op="BUFF",subjectKeyword="rush",target={kind="TRIGGER_SOURCE",side="ANY_CHARACTER"},trigger="AFTER_SUMMON_MINION"}}}
-P["DMF_521"]={effects={{op="EQUIP",target={kind="ALL",side="ANY_CHARACTER"},token="DMF_521t",trigger="BATTLECRY"}},keywords={"taunt","battlecry"}}
+P["DMF_521"]={effects={{op="EQUIP",target={kind="ALL",side="ANY_CHARACTER"},token="DMF_521t",tokenDisplay="3/2 sword",trigger="BATTLECRY"}},keywords={"taunt","battlecry"}}
 P["DMF_522"]={effects={{amount=1,op="DAMAGE",["repeat"]=5,spell=true,split=true,target={kind="RANDOM",side="ANY_MINION"},trigger="ON_PLAY"}}}
 P["DMF_530"]={effects={{amount=5,amount2=5,keywordFilter="taunt",op="BUFF",target={kind="RANDOM",side="FRIENDLY_HAND_MINIONS"},trigger="ON_PLAY"}}}
 P["DMF_531"]={effects={{amount=1,amount2=1,op="BUFF",target={kind="RANDOM",side="FRIENDLY_HAND_MINIONS"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["DMF_532"]={allMinionTypes=true,keywords={"taunt"}}
 end)() end
 do (function()
-P["DMF_533"]={effects={{op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="DMF_533t",trigger="DEATHRATTLE"}},keywords={"taunt","deathrattle"}}
+P["DMF_533"]={effects={{op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="DMF_533t",tokenDisplay="3/2 Imp",trigger="DEATHRATTLE"}},keywords={"taunt","deathrattle"}}
 P["DMF_702"]={effects={{amount=3,op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"},{amount=3,op="BUFF",target={kind="ALL",side="YOUR_HERO"},temporary=true,trigger="ON_PLAY"}}}
-P["DMF_703"]={effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="DMF_703t2",trigger="BATTLECRY"},{condition="CORRUPTED",op="SUMMON",silent=true,target={kind="ALL",side="ANY_CHARACTER"},token="DMF_703t2",trigger="BATTLECRY"}},keywords={"battlecry"}}
+P["DMF_703"]={effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="DMF_703t2",tokenDisplay="duelist and corrupt: summon 2",trigger="BATTLECRY"},{condition="CORRUPTED",op="SUMMON",silent=true,target={kind="ALL",side="ANY_CHARACTER"},token="DMF_703t2",trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["DMF_704"]={effects={{amount=1,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=3}},keywords={"battlecry"}}
 P["DMF_705"]={abilities={{6,1}},effects={{amount=1,amount2=1,op="BUFF",target={kind="RANDOM",side="FRIENDLY_MINION"},trigger="AFTER_HERO_ATTACK"}}}
-P["DMF_706"]={effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="DMF_706t",trigger="ON_PLAY"},{condition="HERO_ATTACKED_THIS_TURN",op="SUMMON",silent=true,target={kind="ALL",side="ANY_CHARACTER"},token="DMF_706t",trigger="ON_PLAY"}}}
+P["DMF_706"]={effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="DMF_706t",tokenDisplay="duelist and if your hero attacked this turn, summon another",trigger="ON_PLAY"},{condition="HERO_ATTACKED_THIS_TURN",op="SUMMON",silent=true,target={kind="ALL",side="ANY_CHARACTER"},token="DMF_706t",trigger="ON_PLAY"}}}
 P["DMF_707"]={effects={{op="ADD_TO_HAND",rarityFilter=5,subjectRace="murloc",target={kind="SELF",side="ANY_CHARACTER"},trigger="AFTER_FRIENDLY_MINION_DIES",type_filter=1}}}
 P["DMF_732"]={effects={{amount=8,op="GAIN_ARMOR",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"},{costMax=8,costMin=8,op="SUMMON_RANDOM",target={kind="ALL",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
 P["DRG_010"]={effects={{amount=1,fromDeck=true,keywordFilter="rush",op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=1}},keywords={"rush","battlecry"}}
-P["DRG_020"]={effects={{op="ADD_TO_HAND",target={kind="SELF",side="ANY_CHARACTER"},tokens={"DAL_613","DAL_614","DAL_615","DAL_739","DAL_741","DRG_052","ULD_616"},trigger="BATTLECRY"},{amount=3,op="GAIN_ARMOR",target={kind="SELF",side="YOUR_HERO"},trigger="BATTLECRY"}},keywords={"battlecry"}}
+P["DRG_020"]={effects={{op="ADD_TO_HAND",target={kind="SELF",side="ANY_CHARACTER"},tokenDisplay="a lackey",tokens={"DAL_613","DAL_614","DAL_615","DAL_739","DAL_741","DRG_052","ULD_616"},trigger="BATTLECRY"},{amount=3,op="GAIN_ARMOR",target={kind="SELF",side="YOUR_HERO"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["DRG_021"]={effects={{amount=1,op="INVOKE",target={kind="ALL",side="ANY_CHARACTER"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["DRG_023"]={abilities={{10,1}},effects={{amount=2,op="DAMAGE",subjectRace="pirate",target={kind="RANDOM",side="ENEMY_CHARACTER"},trigger="AFTER_SUMMON_MINION"}}}
 P["DRG_024"]={effects={{op="ADD_TO_HAND",raceFilter="pirate",target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=1}},keywords={"battlecry"}}
@@ -1036,7 +1036,7 @@ P["DRG_025"]={effects={{amount=1,fromDeck=true,op="DRAW",raceFilter="pirate",tar
 P["DRG_028"]={effects={{amount=3,op="DISCOVER",otherClass=true,rarityFilter=5,target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=1}}}
 P["DRG_030"]={effects={{amount=1,op="BUFF",target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"},{amount=1,op="INVOKE",target={kind="ALL",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
 P["DRG_033"]={effects={{amount=3,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY"},{amount=-3,amount2=2,condition="HOLDING_RACE",conditionRace="dragon",conditionTrails=true,op="CARD_COST",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"}}}
-P["DRG_035"]={effects={{op="ADD_TO_HAND",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="DRG_035t",trigger="BATTLECRY"}},keywords={"battlecry"}}
+P["DRG_035"]={effects={{op="ADD_TO_HAND",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="DRG_035t",tokenDisplay="1/1 pirate",trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["DRG_049"]={effects={{amount=2,amount2=2,op="BUFF",raceFilter="dragon",target={kind="CHOOSE",side="FRIENDLY_HAND_MINIONS"},trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
 P["DRG_050"]={effects={{amount=1,op="INVOKE",target={kind="ALL",side="ANY_CHARACTER"},trigger="BATTLECRY"}},keywords={"rush","battlecry"}}
 P["DRG_052"]={effects={{amount=3,op="DISCOVER",raceFilter="dragon",target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=1}},keywords={"battlecry"}}
@@ -1074,7 +1074,7 @@ P["DRG_225"]={effects={{amount=1,excludeSource=true,op="BUFF",raceFilter="mechan
 P["DRG_226"]={abilities={{1,1}},effects={{amount=8,op="HEAL",target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["DRG_229"]={effects={{amount=3,op="DISCOVER",raceFilter="dragon",target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=1}},keywords={"lifesteal","battlecry"}}
 P["DRG_231"]={effects={{condition="DECK_NO_NEUTRAL",familyFilter=2,op="ADD_TO_HAND",["repeat"]=5,target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY"}},keywords={"battlecry"}}
-P["DRG_232"]={effects={{condition="DECK_NO_NEUTRAL",op="EQUIP",target={kind="ALL",side="ANY_CHARACTER"},token="DRG_232t",trigger="BATTLECRY"}},keywords={"battlecry"}}
+P["DRG_232"]={effects={{condition="DECK_NO_NEUTRAL",op="EQUIP",target={kind="ALL",side="ANY_CHARACTER"},token="DRG_232t",tokenDisplay="4/2 truesilver champion",trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["DRG_232t"]={effects={{amount=3,op="HEAL",target={kind="TRIGGER_SOURCE",side="ANY_CHARACTER"},trigger="WHEN_HERO_ATTACKS"}}}
 P["DRG_239"]={}
 P["DRG_242"]={effects={{amount=1,op="INVOKE",target={kind="ALL",side="ANY_CHARACTER"},trigger="BATTLECRY"}},keywords={"taunt","battlecry"}}
@@ -1086,8 +1086,8 @@ P["DRG_250"]={effects={{amount=1,op="INVOKE",target={kind="ALL",side="ANY_CHARAC
 P["DRG_252"]={effects={{amount2=2,op="CAST_FROM",secretOnly=true,target={kind="SELF",side="ANY_CHARACTER"},trigger="INSPIRE"}}}
 P["DRG_254"]={effects={{amount=3,op="DISCOVER",raceFilter="dragon",target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=1}},keywords={"poisonous","battlecry"}}
 P["DRG_256"]={abilities={{25,1}},effects={{amount=5,op="DAMAGE",target={kind="RANDOM",side="ENEMY_CHARACTER"},trigger="INSPIRE"}}}
-P["DRG_257"]={effects={{amount=2,buffDeck=true,op="COST_ZONE",raceFilter="dragon",target={kind="ALL",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=1}},keywords={"battlecry"}}
-P["DRG_301"]={effects={{op="ADD_TO_HAND",target={kind="SELF",side="ANY_CHARACTER"},tokens={"DAL_613","DAL_614","DAL_615","DAL_739","DAL_741","DRG_052","ULD_616"},trigger="ON_PLAY"}}}
+P["DRG_257"]={effects={{amount=2,buffAll=false,buffDeck=true,op="COST_ZONE",raceFilter="dragon",target={kind="ALL",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=1}},keywords={"battlecry"}}
+P["DRG_301"]={effects={{op="ADD_TO_HAND",target={kind="SELF",side="ANY_CHARACTER"},tokenDisplay="a lackey",tokens={"DAL_613","DAL_614","DAL_615","DAL_739","DAL_741","DRG_052","ULD_616"},trigger="ON_PLAY"}}}
 P["DRG_303"]={effects={{amount=1,op="INVOKE",target={kind="ALL",side="ANY_CHARACTER"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["DRG_304"]={abilities={{2,1}},effects={{amount=3,condition="HOLDING_RACE",conditionRace="dragon",op="DAMAGE",target={kind="ALL",side="ENEMY_MINIONS"},trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
 P["DRG_309"]={effects={{amount=10,op="SET_MANA_CRYSTALS",target={kind="ALL",side="ANY_CHARACTER"},trigger="BATTLECRY"}},keywords={"battlecry"}}
@@ -1112,19 +1112,19 @@ P["EDR_060"]={effects={{amount=5,op="GAIN_ARMOR",target={kind="SELF",side="YOUR_
 P["EDR_102"]={effects={{amount=3,darkGift=true,op="DISCOVER",rarityFilter=5,target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=1}},keywords={"battlecry"}}
 P["EDR_105"]={effects={{amount=3,costMax=3,costMin=3,darkGift=true,op="DISCOVER",target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=1}},keywords={"battlecry"}}
 P["EDR_110"]={abilities={{2,1}},effects={{amount=1,op="DAMAGE",target={kind="RANDOM",side="ENEMY_MINION"},trigger="DEATHRATTLE"}},keywords={"poisonous","deathrattle"}}
-P["EDR_233"]={choiceLabels={"Summon three 2/3 Wolves with Taunt","Summon two 4/3 Falcons with Windfury"},choices={{{keyword="taunt",op="SUMMON",["repeat"]=3,target={kind="ALL",side="ANY_MINION"},token="EX1_tk11",trigger="ON_PLAY"}},{{keyword="windfury",op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_MINION"},token="EDR_233t2",trigger="ON_PLAY"}}},effects={{keyword="taunt",op="SUMMON",["repeat"]=3,target={kind="ALL",side="ANY_CHARACTER"},token="EDR_233t2",trigger="ON_PLAY"}}}
+P["EDR_233"]={choiceLabels={"Summon three 2/3 Wolves with Taunt","Summon two 4/3 Falcons with Windfury"},choices={{{keyword="taunt",op="SUMMON",["repeat"]=3,target={kind="ALL",side="ANY_MINION"},token="EX1_tk11",tokenDisplay="2/3 wolf",trigger="ON_PLAY"}},{{keyword="windfury",op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_MINION"},token="EDR_233t2",tokenDisplay="4/3 falcon",trigger="ON_PLAY"}}},effects={{keyword="taunt",op="SUMMON",["repeat"]=3,target={kind="ALL",side="ANY_CHARACTER"},token="EDR_233t2",trigger="ON_PLAY"}}}
 P["EDR_253"]={abilities={{6,1}},effects={{amount=1,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="AFTER_HERO_ATTACK"}}}
 P["EDR_254"]={effects={{op="BUFF",target={kind="SELF",side="ANY_MINION"},trigger="AFTER_CAST_SPELL",valueSource="PREVIOUS_COST"}}}
 P["EDR_255"]={effects={{amount=5,op="DAMAGE",["repeat"]=2,repeatPrinted=true,spell=true,target={kind="LOWEST_HEALTH",side="ENEMY_CHARACTER"},trigger="ON_PLAY"}},keywords={"lifesteal"}}
-P["EDR_262"]={effects={{amount=3,followUp={{keyword="rush",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="__anon_3_2_wolf",trigger="ON_PLAY"}},followUpCondition="IF_DIES",op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"}}}
-P["EDR_263"]={choiceLabels={"Deal 4 damage to the enemy hero","Summon two 3/2 Wolves with Rush"},choices={{{amount=4,op="DAMAGE",spell=true,target={kind="ALL",side="ENEMY_HERO"},trigger="ON_PLAY"}},{{keyword="rush",op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="__anon_3_2_wolves",trigger="ON_PLAY"}}},effects={{amount=4,op="DAMAGE",spell=true,target={kind="ALL",side="ENEMY_HERO"},trigger="ON_PLAY"}}}
+P["EDR_262"]={effects={{amount=3,followUp={{keyword="rush",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="__anon_3_2_wolf",tokenDisplay="3/2 wolf",trigger="ON_PLAY"}},followUpCondition="IF_DIES",op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"}}}
+P["EDR_263"]={choiceLabels={"Deal 4 damage to the enemy hero","Summon two 3/2 Wolves with Rush"},choices={{{amount=4,op="DAMAGE",spell=true,target={kind="ALL",side="ENEMY_HERO"},trigger="ON_PLAY"}},{{keyword="rush",op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="__anon_3_2_wolves",tokenDisplay="3/2 wolves",trigger="ON_PLAY"}}},effects={{amount=4,op="DAMAGE",spell=true,target={kind="ALL",side="ENEMY_HERO"},trigger="ON_PLAY"}}}
 P["EDR_270"]={effects={{amount=3,op="DISCOVER",schoolFilter=6,target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=2},{amount=-2,op="CARD_COST",previousPlural=true,target={kind="PREVIOUS",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
 P["EDR_272"]={keywords={"taunt","lifesteal","elusive"}}
 P["EDR_273"]={effects={{amount=3,chooseOneOnly=true,op="DISCOVER",otherClass=true,target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
-P["EDR_416"]={abilities={{6,1}},effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="EDR_416t",trigger="AFTER_HERO_ATTACK"}}}
+P["EDR_416"]={abilities={{6,1}},effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="EDR_416t",tokenDisplay="sheep that's dormant for 2 turns",trigger="AFTER_HERO_ATTACK"}}}
 P["EDR_416t"]={dormantTurns=2}
 P["EDR_456"]={effects={{amount=3,condition="HOLDING_RACE",conditionRace="dragon",darkGift=true,op="DISCOVER",raceFilter="dragon",target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=1}},keywords={"battlecry"}}
-P["EDR_457"]={effects={{condition="HOLDING_RACE",conditionRace="dragon",op="EQUIP",target={kind="ALL",side="ANY_CHARACTER"},token="EDR_457t",trigger="BATTLECRY"}},keywords={"battlecry"}}
+P["EDR_457"]={effects={{condition="HOLDING_RACE",conditionRace="dragon",op="EQUIP",target={kind="ALL",side="ANY_CHARACTER"},token="EDR_457t",tokenDisplay="2/2 sword",trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["EDR_459"]={effects={{amount=3,op="DAMAGE",target={kind="ALL",side="FRIENDLY_OTHER_MINIONS"},trigger="BATTLECRY"},{amount=3,op="DAMAGE",target={kind="ALL",side="ENEMY_MINIONS"},trigger="DEATHRATTLE"}},keywords={"battlecry","deathrattle"}}
 P["EDR_463"]={choiceLabels={"Destroy a minion with 3 or less Attack","Summon a random 2-Cost minion"},choices={{{op="DESTROY",target={kind="CHOOSE",side="ANY_MINION"},targetAttackMax=3,trigger="ON_PLAY"}},{{costMax=2,costMin=2,op="SUMMON_RANDOM",target={kind="ALL",side="ANY_CHARACTER"},trigger="ON_PLAY"}}},effects={{op="DESTROY",target={kind="CHOOSE",side="ANY_MINION"},targetAttackMax=3,trigger="ON_PLAY"}}}
 P["EDR_468"]={abilities={{1,2}},effects={{amount=1,op="DAMAGE",target={kind="CHOOSE",side="ANY_MINION"},trigger="BATTLECRY"},{amount=4,op="BUFF",target={kind="PREVIOUS",side="ANY_CHARACTER"},trigger="BATTLECRY"}},keywords={"battlecry"}}
@@ -1143,15 +1143,15 @@ P["EDR_571"]={effects={{amount=1,costMin=5,op="DRAW",target={kind="SELF",side="A
 P["EDR_572"]={effects={{amount=2,op="DRAW",raceFilter="dragon",target={kind="SELF",side="ANY_CHARACTER"},trigger="DEATHRATTLE"},{amount=-1,op="CARD_COST",previousPlural=true,setVerb=true,target={kind="PREVIOUS",side="ANY_CHARACTER"},trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
 P["EDR_598"]={keywords={"elusive"}}
 P["EDR_810t"]={effects={{amount=1,op="DAMAGE",target={kind="LOWEST_HEALTH",side="ENEMY_CHARACTER"},trigger="END_TURN"},{amount=1,op="HEAL",silent=true,target={kind="SELF",side="YOUR_HERO"},trigger="END_TURN"}}}
-P["EDR_813"]={choiceLabels={"Summon two 1/1 Ants","Spend 2 Corpses to deal 4 damage to a minion"},choices={{{op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="EDR_813at",trigger="ON_PLAY"}},{{amount=4,corpseCost=2,op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"}}},effects={{op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="EDR_813at",trigger="ON_PLAY"}}}
-P["EDR_814"]={effects={{amount=2,op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="ON_PLAY"},{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="EDR_810t",trigger="ON_PLAY"}}}
+P["EDR_813"]={choiceLabels={"Summon two 1/1 Ants","Spend 2 Corpses to deal 4 damage to a minion"},choices={{{op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="EDR_813at",tokenDisplay="ants",trigger="ON_PLAY"}},{{amount=4,corpseCost=2,op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"}}},effects={{op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="EDR_813at",tokenDisplay="ants",trigger="ON_PLAY"}}}
+P["EDR_814"]={effects={{amount=2,op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="ON_PLAY"},{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="EDR_810t",tokenDisplay="0/2 Leech",trigger="ON_PLAY"}}}
 P["EDR_816"]={abilities={{4,1}},effects={{amount=1,excludeSource=true,op="BUFF",target={kind="ALL",side="FRIENDLY_MINIONS"},trigger="END_TURN"}}}
-P["EDR_817"]={abilities={{0,2}},effects={{amount=2,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY"},{op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="__anon_0_2_leeches",trigger="ON_PLAY"}}}
-P["EDR_840"]={effects={{amount=1,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY"},{op="SUMMON_RANDOM",target={kind="ALL",side="ANY_CHARACTER"},tokens={"EDR_840t","EDR_840t1","EDR_840t2"},trigger="ON_PLAY"}}}
+P["EDR_817"]={abilities={{0,2}},effects={{amount=2,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY"},{op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="__anon_0_2_leeches",tokenDisplay="0/2 leeches",trigger="ON_PLAY"}}}
+P["EDR_840"]={effects={{amount=1,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY"},{op="SUMMON_RANDOM",target={kind="ALL",side="ANY_CHARACTER"},tokenDisplay="dormant dreadseed",tokens={"EDR_840t","EDR_840t1","EDR_840t2"},trigger="ON_PLAY"}}}
 P["EDR_840t"]={dormantTurns=2,effects={{amount=3,op="BUFF",target={kind="ALL",side="YOUR_HERO"},temporary=true,trigger="WHEN_AWAKENS"}}}
 P["EDR_840t1"]={dormantTurns=1,keywords={"elusive"}}
 P["EDR_840t2"]={dormantTurns=3,keywords={"taunt","lifesteal"}}
-P["EDR_841"]={effects={{op="SUMMON_RANDOM",target={kind="ALL",side="ANY_CHARACTER"},tokens={"EDR_840t","EDR_840t1","EDR_840t2"},trigger="BATTLECRY"},{op="SUMMON_RANDOM",target={kind="ALL",side="ANY_CHARACTER"},tokens={"EDR_840t","EDR_840t1","EDR_840t2"},trigger="DEATHRATTLE"}},keywords={"battlecry","deathrattle"}}
+P["EDR_841"]={effects={{op="SUMMON_RANDOM",target={kind="ALL",side="ANY_CHARACTER"},tokenDisplay="dormant dreadseed",tokens={"EDR_840t","EDR_840t1","EDR_840t2"},trigger="BATTLECRY"},{op="SUMMON_RANDOM",target={kind="ALL",side="ANY_CHARACTER"},tokenDisplay="dormant dreadseed",tokens={"EDR_840t","EDR_840t1","EDR_840t2"},trigger="DEATHRATTLE"}},keywords={"battlecry","deathrattle"}}
 P["EDR_847"]={abilities={{1,1},{2,1}},effects={{amount=-2,op="HERO_POWER_COST",target={kind="SELF",side="YOUR_HERO"},trigger="BATTLECRY"},{amount=-2,op="HERO_POWER_COST",target={kind="SELF",side="YOUR_HERO"},trigger="DEATHRATTLE"}},keywords={"battlecry","deathrattle"}}
 P["EDR_848"]={effects={{amount=6,op="HEAL",target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="ON_PLAY"},{familyFilter=10,op="ADD_TO_HAND",["repeat"]=3,target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=2}}}
 P["EDR_849"]={effects={{amount=1,op="GRANT_BONUS_EFFECT",target={kind="TRIGGER_SOURCE",side="ANY_CHARACTER"},trigger="AFTER_PLAY_MINION"}}}
@@ -1181,7 +1181,7 @@ P["ETC_034"]={effects={{amount=3,condition="CONTROL_NO_OTHER_MINIONS",op="DAMAGE
 P["ETC_035"]={effects={{amount=2,amount2=2,condition="CONTROL_NO_OTHER_MINIONS",keyword="rush",op="BUFF",target={kind="SELF",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"taunt","battlecry"}}
 P["ETC_068"]={effects={{op="FATIGUE_DAMAGE",target={kind="SELF",side="YOUR_HERO"},trigger="BATTLECRY"},{op="BUFF",statsBoth=true,target={kind="SELF",side="ANY_MINION"},trigger="BATTLECRY",valueSource="PREVIOUS_MUCH"}},keywords={"battlecry"}}
 P["ETC_069"]={effects={{op="FATIGUE_DAMAGE",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"},{op="DAMAGE",target={kind="ALL",side="ENEMY_CHARACTER"},trigger="ON_PLAY",valueSource="PREVIOUS_MUCH"}}}
-P["ETC_070"]={effects={{op="FATIGUE_DAMAGE",target={kind="SELF",side="YOUR_HERO"},trigger="BATTLECRY"},{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="AV_316t",trigger="BATTLECRY",valueSource="PREVIOUS_MUCH"}},keywords={"battlecry"}}
+P["ETC_070"]={effects={{op="FATIGUE_DAMAGE",target={kind="SELF",side="YOUR_HERO"},trigger="BATTLECRY"},{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="AV_316t",tokenDisplay="3/3 Imp",trigger="BATTLECRY",valueSource="PREVIOUS_MUCH"}},keywords={"battlecry"}}
 P["ETC_072"]={effects={{amount=1,condition="COMBO",op="DAMAGE",["repeat"]=4,split=true,target={kind="RANDOM",side="ENEMY_CHARACTER"},trigger="BATTLECRY"}}}
 P["ETC_075"]={effects={{amount=2,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY"},{amount=2,condition="FINALE",op="BUFF",target={kind="ALL",side="YOUR_WEAPON"},trigger="ON_PLAY"}}}
 P["ETC_079"]={effects={{op="RETURN_TO_HAND",target={kind="ALL",side="FRIENDLY_MINIONS"},trigger="ON_PLAY"},{amount=1,amount2=8,op="CARD_COST",target={kind="PREVIOUS",side="FRIENDLY_MINIONS"},temporary=true,trigger="ON_PLAY"}}}
@@ -1192,21 +1192,21 @@ P["ETC_101"]={effects={{amount=2,condition="CONTROL_NO_OTHER_MINIONS",op="DAMAGE
 P["ETC_105"]={effects={{amount=2,amount2=2,op="BUFF",target={kind="RANDOM",side="FRIENDLY_HAND_MINIONS"},trigger="END_TURN"}}}
 P["ETC_201"]={abilities={{0,1}},effects={{amount=1,amount2=1,op="BUFF",target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"}}}
 P["ETC_201t"]={effects={{amount=1,amount2=1,op="BUFF",target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"}}}
-P["ETC_207"]={effects={{keyword="taunt",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="__anon_1_4_monkey",trigger="ON_PLAY"}}}
-P["ETC_207t"]={effects={{keyword="taunt",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="__anon_1_4_monkey",trigger="ON_PLAY"}}}
-P["ETC_314"]={abilities={{0,2}},effects={{amount=3,op="DAMAGE",spell=true,target={kind="ALL",side="ANY_MINION"},trigger="ON_PLAY"},{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="__anon_6_6_popstar",trigger="ON_PLAY"}}}
-P["ETC_321"]={effects={{keyword="taunt,divine_shield",op="SUMMON",["repeat"]=3,target={kind="ALL",side="ANY_CHARACTER"},token="__anon_1_2_mechs",trigger="DEATHRATTLE"}},keywords={"taunt","divine_shield","deathrattle"}}
+P["ETC_207"]={effects={{keyword="taunt",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="__anon_1_4_monkey",tokenDisplay="1/4 Monkey",trigger="ON_PLAY"}}}
+P["ETC_207t"]={effects={{keyword="taunt",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="__anon_1_4_monkey",tokenDisplay="1/4 Monkey",trigger="ON_PLAY"}}}
+P["ETC_314"]={abilities={{0,2}},effects={{amount=3,op="DAMAGE",spell=true,target={kind="ALL",side="ANY_MINION"},trigger="ON_PLAY"},{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="__anon_6_6_popstar",tokenDisplay="6/6 popstar",trigger="ON_PLAY"}}}
+P["ETC_321"]={effects={{keyword="taunt,divine_shield",op="SUMMON",["repeat"]=3,target={kind="ALL",side="ANY_CHARACTER"},token="__anon_1_2_mechs",tokenDisplay="1/2 mechs",trigger="DEATHRATTLE"}},keywords={"taunt","divine_shield","deathrattle"}}
 P["ETC_325"]={abilities={{0,1}},effects={{condition="FINALE",keyword="lifesteal",op="GIVE_KEYWORD",target={kind="SELF",side="ANY_MINION"},trigger="ON_PLAY"}},keywords={"rush"}}
 P["ETC_326"]={effects={{amount=3,op="DISCOVER",rarityFilter=5,target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=1}},keywords={"battlecry"}}
 P["ETC_334"]={effects={{amount=4,op="DAMAGE",target={kind="SELF",side="ANY_MINION"},trigger="BATTLECRY"},{amount=5,op="DAMAGE",target={kind="RANDOM",side="ENEMY_CHARACTER"},trigger="OVERHEAL"}},keywords={"battlecry"}}
 P["ETC_356"]={effects={{amount=6,op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"},{amount=-3,amount2=2,condition="OVERLOADED",conditionTrails=true,op="CARD_COST",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"}},keywords={"lifesteal"}}
 P["ETC_357"]={keywords={"taunt","rush","divine_shield","windfury"}}
-P["ETC_358"]={effects={{condition="CONTROL_NO_OTHER_MINIONS",op="ADD_TO_HAND",target={kind="ALL",side="ANY_CHARACTER"},token="ETC_358",trigger="BATTLECRY",type_filter=1}},keywords={"battlecry"}}
+P["ETC_358"]={effects={{condition="CONTROL_NO_OTHER_MINIONS",op="ADD_TO_HAND",target={kind="ALL",side="ANY_CHARACTER"},token="ETC_358",tokenDisplay="a saxophone soloist",trigger="BATTLECRY",type_filter=1}},keywords={"battlecry"}}
 P["ETC_359"]={effects={{amount=3,condition="OVERLOADED",fromDeck=true,op="DISCOVER",target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=2}},keywords={"battlecry"}}
 P["ETC_373"]={choiceLabels={"Summon five 2/2 Treants","Give your minions +2/+4 and Taunt"},choices={{{op="SUMMON",["repeat"]=5,target={kind="ALL",side="ANY_CHARACTER"},token="ETC_373t",trigger="ON_PLAY"}},{{amount=2,amount2=4,keyword="taunt",op="BUFF",target={kind="ALL",side="FRIENDLY_MINIONS"},trigger="ON_PLAY"}}},effects={{op="SUMMON",["repeat"]=5,target={kind="ALL",side="ANY_CHARACTER"},token="ETC_373t",trigger="ON_PLAY"}}}
 P["ETC_379"]={effects={{amount=2,op="BUFF",target={kind="ALL",side="YOUR_HERO"},temporary=true,trigger="ON_PLAY"},{amount=4,op="GAIN_ARMOR",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"}}}
 P["ETC_384"]={effects={{amount=2,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY"},{amount=-1,amount2=2,costCount="HERO_ATTACK",op="CARD_COST",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"}}}
-P["ETC_386"]={effects={{keyword="taunt",op="SUMMON",["repeat"]=2,statsFromHeroGains=true,target={kind="ALL",side="ANY_CHARACTER"},token="ETC_386t",trigger="BATTLECRY"}},keywords={"battlecry"}}
+P["ETC_386"]={effects={{keyword="taunt",op="SUMMON",["repeat"]=2,statsFromHeroGains=true,target={kind="ALL",side="ANY_CHARACTER"},token="ETC_386t",tokenDisplay="0/0 Quilboar",trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["ETC_394"]={effects={{amount=2,op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"},{amount=3,condition="FINALE",op="DISCOVER",schoolFilter=8,target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=2}}}
 P["ETC_410"]={abilities={{1,1}},effects={{amount=1,amount2=1,amountSource="MINIONS_DIED_THIS_TURN",op="BUFF",target={kind="SELF",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"rush","battlecry"}}
 P["ETC_418"]={effects={{amount=1,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=3}},keywords={"battlecry"}}
@@ -1223,7 +1223,7 @@ P["EX1_001"]={effects={{amount=2,op="BUFF",target={kind="SELF",side="ANY_MINION"
 P["EX1_002"]={abilities={{1,1}},effects={{keywordFilter="taunt",op="DESTROY",target={kind="CHOOSE",side="ENEMY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"},tradeable=true}
 P["EX1_004"]={effects={{amount2=1,excludeSource=true,op="BUFF",target={kind="RANDOM",side="FRIENDLY_MINION"},trigger="END_TURN"}}}
 P["EX1_005"]={effects={{op="DESTROY",target={kind="CHOOSE",side="ANY_MINION"},targetAttackMin=7,trigger="BATTLECRY"}},keywords={"battlecry"},tradeable=true}
-P["EX1_006"]={effects={{buffAll=true,buffHand=true,buffRandom=true,op="SWAP_WITH",target={kind="SELF",side="ANY_MINION"},trigger="START_TURN"}}}
+P["EX1_006"]={effects={{buffHand=true,buffRandom=true,op="SWAP_WITH",target={kind="SELF",side="ANY_MINION"},trigger="START_TURN"}}}
 P["EX1_007"]={effects={{amount=1,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="SELF_TAKES_DAMAGE"}}}
 P["EX1_008"]={keywords={"divine_shield"}}
 P["EX1_009"]={effects={{amount=5,damagedOnly=true,op="BUFF",target={kind="SELF",side="FRIENDLY_MINIONS"},trigger="AURA"}}}
@@ -1268,13 +1268,13 @@ P["EX1_102"]={abilities={{3,1}},effects={{amount=2,op="DAMAGE",target={kind="RAN
 P["EX1_103"]={abilities={{1,1}},effects={{amount2=2,excludeSource=true,op="BUFF",raceFilter="murloc",target={kind="ALL",side="FRIENDLY_MINIONS"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["EX1_105"]={effects={{amount=-1,amount2=2,costCount="OTHER_CARDS_IN_HAND",op="CARD_COST",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"}}}
 P["EX1_110"]={abilities={{2,1}},effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="EX1_110t",trigger="DEATHRATTLE"}},keywords={"taunt","deathrattle"}}
-P["EX1_116"]={effects={{forOpponent=true,op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="EX1_116t",trigger="BATTLECRY"}},keywords={"charge","battlecry"}}
+P["EX1_116"]={effects={{forOpponent=true,op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="EX1_116t",tokenDisplay="whelps for your opponent",trigger="BATTLECRY"}},keywords={"charge","battlecry"}}
 end)() end
 do (function()
 P["EX1_124"]={effects={{amount=2,op="DAMAGE",replacement={{amount=4,condition="COMBO",op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="ON_PLAY"}},spell=true,target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
 P["EX1_128"]={abilities={{0,1}},effects={{durationTurns=1,keyword="stealth",op="GIVE_KEYWORD",target={kind="ALL",side="FRIENDLY_MINIONS"},trigger="ON_PLAY"}}}
 P["EX1_129"]={abilities={{0,2}},effects={{amount=1,op="DAMAGE",spell=true,target={kind="ALL",side="ENEMY_MINIONS"},trigger="ON_PLAY"},{amount=1,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
-P["EX1_130"]={abilities={{20,1}},effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="EX1_130a",trigger="WHEN_ENEMY_MINION_ATTACKS"}},secret=true}
+P["EX1_130"]={abilities={{20,1}},effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="EX1_130a",tokenDisplay="defender as the new target",trigger="WHEN_ENEMY_MINION_ATTACKS"}},secret=true}
 P["EX1_131"]={effects={{condition="COMBO",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="EX1_131t",trigger="BATTLECRY"}}}
 P["EX1_133"]={effects={{amount=1,op="DAMAGE",replacement={{amount=2,condition="COMBO",implicitTarget=true,op="DAMAGE",target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="BATTLECRY"}},target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["EX1_134"]={effects={{amount=3,condition="COMBO",op="DAMAGE",target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="BATTLECRY"}}}
@@ -1348,7 +1348,7 @@ P["EX1_365"]={abilities={{0,2}},effects={{amount=1,op="DRAW",target={kind="SELF"
 P["EX1_371"]={abilities={{0,1}},effects={{keyword="divine_shield",op="GIVE_KEYWORD",target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"}}}
 P["EX1_379"]={effects={{amount=1,op="SET_HEALTH",subjectType=1,target={kind="TRIGGER_SOURCE",side="ANY_CHARACTER"},trigger="AFTER_OPPONENT_PLAY_CARD"}},secret=true}
 P["EX1_382"]={abilities={{1,1}},effects={{amount=1,op="SET_ATTACK",target={kind="CHOOSE",side="ENEMY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
-P["EX1_383"]={effects={{op="EQUIP",target={kind="ALL",side="ANY_CHARACTER"},token="EX1_383t",trigger="DEATHRATTLE"}},keywords={"taunt","divine_shield","deathrattle"}}
+P["EX1_383"]={effects={{op="EQUIP",target={kind="ALL",side="ANY_CHARACTER"},token="EX1_383t",tokenDisplay="5/3 ashbringer",trigger="DEATHRATTLE"}},keywords={"taunt","divine_shield","deathrattle"}}
 P["EX1_384"]={effects={{amount=1,op="DAMAGE",["repeat"]=8,spell=true,split=true,target={kind="RANDOM",side="ENEMY_CHARACTER"},trigger="ON_PLAY"}}}
 P["EX1_390"]={effects={{amount=3,damagedOnly=true,op="BUFF",target={kind="SELF",side="FRIENDLY_MINIONS"},trigger="AURA"}},keywords={"taunt"}}
 P["EX1_391"]={effects={{amount=2,followUp={{amount=1,op="DRAW",target={kind="ALL",side="ANY_CHARACTER"},trigger="ON_PLAY"}},followUpCondition="IF_SURVIVES",op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"}}}
@@ -1403,7 +1403,7 @@ P["EX1_609"]={effects={{amount=6,op="DAMAGE",spell=true,subjectType=1,target={ki
 P["EX1_610"]={abilities={{19,1}},effects={{amount=2,op="DAMAGE",spell=true,target={kind="ALL",side="ENEMY_CHARACTER"},trigger="WHEN_YOUR_HERO_ATTACKED"}},secret=true}
 P["EX1_611"]={effects={{op="RETURN_TO_HAND",subjectType=1,target={kind="TRIGGER_SOURCE",side="ANY_CHARACTER"},trigger="WHEN_ENEMY_MINION_ATTACKS"},{amount=2,op="CARD_COST",previousPlural=true,subjectType=1,target={kind="PREVIOUS",side="ANY_CHARACTER"},trigger="WHEN_ENEMY_MINION_ATTACKS"}},secret=true}
 P["EX1_613"]={effects={{amount=2,amount2=2,amountSource="OTHER_CARDS_PLAYED_THIS_TURN",condition="COMBO",op="BUFF",target={kind="SELF",side="ANY_MINION"},trigger="BATTLECRY"}}}
-P["EX1_614"]={effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="EX1_614t",trigger="AFTER_PLAY_CARD"}}}
+P["EX1_614"]={effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="EX1_614t",tokenDisplay="2/1 Satyr",trigger="AFTER_PLAY_CARD"}}}
 P["EX1_616"]={effects={{amount=1,amount2=1,bothPlayers=true,op="CARD_COST",target={kind="ALL",side="ANY_CHARACTER"},trigger="AURA",type_filter=1}}}
 P["EX1_617"]={abilities={{0,1}},effects={{op="DESTROY",target={kind="RANDOM",side="ENEMY_MINION"},trigger="ON_PLAY"}}}
 P["EX1_619"]={effects={{amount=1,op="SET_HEALTH",target={kind="ALL",side="ANY_MINION"},trigger="ON_PLAY"}},madeOnly=true}
@@ -1421,7 +1421,7 @@ P["FIR_913"]={effects={{op="ADD_TO_HAND",raceFilter="elemental",subjectSchool="f
 P["FIR_923"]={effects={{amount=4,op="DAMAGE",replacement={{amount=8,condition="HOLDING_TYPE_COST",conditionAmount=8,implicitTarget=true,op="DAMAGE",spell=true,target={kind="RANDOM",side="ENEMY_MINION"},trigger="ON_PLAY"}},spell=true,target={kind="RANDOM",side="ENEMY_MINION"},trigger="ON_PLAY"}}}
 P["FIR_929"]={effects={{amount=1,op="DRAW",schoolFilter=3,target={kind="SELF",side="ANY_CHARACTER"},trigger="DEATHRATTLE",type_filter=2}},keywords={"deathrattle"}}
 P["FIR_939"]={effects={{amount=2,op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="ON_PLAY"},{amount=3,darkGift=true,familyFilter=1,op="DISCOVER",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=1}}}
-P["FIR_952"]={effects={{amount=3,op="DISCOVER",schoolFilter=8,target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=2},{amount=1,buffHand=true,op="COST_ZONE",schoolFilter=8,target={kind="ALL",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=2}},keywords={"battlecry"}}
+P["FIR_952"]={effects={{amount=3,op="DISCOVER",schoolFilter=8,target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=2},{amount=1,buffAll=false,buffHand=true,op="COST_ZONE",schoolFilter=8,target={kind="ALL",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=2}},keywords={"battlecry"}}
 P["FIR_961"]={effects={{condition="HOLDING_TYPE_COST",conditionAmount=5,conditionType=2,keyword="divine_shield,lifesteal",op="BUFF",target={kind="SELF",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["FP1_001"]={effects={{amount=5,op="HEAL",target={kind="ALL",side="ENEMY_HERO"},trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
 P["FP1_002"]={abilities={{2,1}},effects={{op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="FP1_002t",trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
@@ -1431,7 +1431,7 @@ P["FP1_007"]={effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},tok
 P["FP1_008"]={keywords={"elusive"}}
 P["FP1_010"]={keywords={"poisonous"}}
 P["FP1_011"]={effects={{op="ADD_TO_HAND",raceFilter="beast",target={kind="SELF",side="ANY_CHARACTER"},trigger="DEATHRATTLE",type_filter=1}},keywords={"deathrattle"}}
-P["FP1_012"]={effects={{keyword="taunt",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="FP1_012t",trigger="DEATHRATTLE"}},keywords={"taunt","deathrattle"}}
+P["FP1_012"]={effects={{keyword="taunt",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="FP1_012t",tokenDisplay="1/2 Slime",trigger="DEATHRATTLE"}},keywords={"taunt","deathrattle"}}
 P["FP1_016"]={abilities={{1,1}},effects={{excludeSource=true,op="SILENCE",target={kind="ALL",side="FRIENDLY_MINIONS"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["FP1_020"]={effects={{amount=3,amount2=2,op="BUFF",target={kind="RANDOM",side="FRIENDLY_MINION"},trigger="AFTER_FRIENDLY_MINION_DIES"}},secret=true}
 P["FP1_021"]={abilities={{2,1}},effects={{amount=1,op="DAMAGE",target={kind="ALL",side="ANY_MINION"},trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
@@ -1457,7 +1457,7 @@ P["GDB_130"]={effects={{amount=2,amount2=2,condition="BUILDING_STARSHIP",op="BUF
 P["GDB_132"]={effects={{amount=2,followUp={{additional=true,amount=3,op="DISCOVER",raceFilter="demon",target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=1}},followUpCondition="IF_DIES",op="DAMAGE",target={kind="CHOOSE",side="ENEMY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["GDB_134"]={effects={{amount=3,op="DAMAGE",target={kind="RANDOM",side="ENEMY_CHARACTER"},trigger="END_TURN"},{op="SUMMON",summonNamed=true,target={kind="ALL",side="ANY_CHARACTER"},token="GDB_134",trigger="SPELLBURST"}}}
 P["GDB_228"]={abilities={{0,2}},effects={{amount=2,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY"},{amount=-1,amount2=2,costCount="FRIENDLY_MINIONS_OF_RACE",costCountRace="draenei",op="CARD_COST",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"}}}
-P["GDB_231"]={effects={{amount=2,buffAll=true,buffHand=true,op="BUFF_ZONE",raceFilter="draenei",target={kind="ALL",side="ANY_CHARACTER"},trigger="AFTER_HERO_ATTACK",type_filter=1}}}
+P["GDB_231"]={effects={{amount=2,buffHand=true,op="BUFF_ZONE",raceFilter="draenei",target={kind="ALL",side="ANY_CHARACTER"},trigger="AFTER_HERO_ATTACK",type_filter=1}}}
 P["GDB_301"]={effects={{op="FILL_HAND",schoolFilter=3,target={kind="ALL",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=2},{amount=1,amount2=8,op="CARD_COST",target={kind="PREVIOUS",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
 P["GDB_305"]={abilities={{0,2}},effects={{amount=2,op="DAMAGE",spell=true,target={kind="ALL",side="ENEMY_CHARACTER"},trigger="ON_PLAY"},{amount=-1,amount2=2,costCount="FRIENDLY_MINIONS_OF_RACE",costCountRace="elemental",op="CARD_COST",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"}}}
 P["GDB_310"]={effects={{amount=2,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="SPELLBURST",type_filter=2}},keywords={"spell_damage"},spellDamage=1}
@@ -1469,20 +1469,20 @@ P["GDB_331t1"]={abilities={{2,1}},effects={{op="SUMMON",["repeat"]=2,target={kin
 P["GDB_331t2"]={abilities={{2,1}},effects={{op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="GDB_331t3",trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
 P["GDB_333"]={effects={{amount=-1,op="CARD_COST",target={kind="SELF",side="YOUR_HERO"},trigger="DEATHRATTLE",type_filter=3}},keywords={"deathrattle"}}
 P["GDB_430"]={castsWhenDrawn=true,effects={{amount=2,op="DAMAGE",spell=true,target={kind="RANDOM",side="ENEMY_CHARACTER"},trigger="ON_PLAY"}}}
-P["GDB_435"]={effects={{op="SHUFFLE",["repeat"]=3,target={kind="SELF",side="YOUR_HERO"},token="GDB_430",trigger="BATTLECRY"},{amount=2,op="DAMAGE",target={kind="RANDOM",side="ENEMY_CHARACTER"},trigger="CAST_WHEN_DRAWN"}},keywords={"battlecry"}}
+P["GDB_435"]={effects={{op="SHUFFLE",["repeat"]=3,target={kind="SELF",side="YOUR_HERO"},token="GDB_430",tokenDisplay="asteroids",trigger="BATTLECRY"},{amount=2,op="DAMAGE",target={kind="RANDOM",side="ENEMY_CHARACTER"},trigger="CAST_WHEN_DRAWN"}},keywords={"battlecry"}}
 P["GDB_442"]={effects={{costMax=3,costMin=3,op="SUMMON_RANDOM",target={kind="ALL",side="ANY_CHARACTER"},trigger="SPELLBURST"}}}
 P["GDB_443"]={effects={{amount=3,fromDeck=true,op="DISCOVER",target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=2},{amount=-5,op="CARD_COST",target={kind="PREVIOUS",side="ANY_CHARACTER"},trigger="BATTLECRY"}},keywords={"battlecry"}}
-P["GDB_445"]={effects={{amount=5,op="DAMAGE",spell=true,target={kind="ALL",side="ANY_MINION"},trigger="ON_PLAY"},{op="SHUFFLE",["repeat"]=5,target={kind="SELF",side="YOUR_HERO"},token="GDB_430",trigger="ON_PLAY"},{amount=2,op="DAMAGE",silent=true,spell=true,target={kind="RANDOM",side="ENEMY_CHARACTER"},trigger="CAST_WHEN_DRAWN"}}}
+P["GDB_445"]={effects={{amount=5,op="DAMAGE",spell=true,target={kind="ALL",side="ANY_MINION"},trigger="ON_PLAY"},{op="SHUFFLE",["repeat"]=5,target={kind="SELF",side="YOUR_HERO"},token="GDB_430",tokenDisplay="asteroids",trigger="ON_PLAY"},{amount=2,op="DAMAGE",silent=true,spell=true,target={kind="RANDOM",side="ENEMY_CHARACTER"},trigger="CAST_WHEN_DRAWN"}}}
 P["GDB_452"]={keywords={"taunt","divine_shield","lifesteal"}}
 P["GDB_454"]={effects={{amount=6,op="HEAL",target={kind="ALL",side="ENEMY_HERO"},trigger="DEATHRATTLE"},{op="SILENCE",target={kind="SELF",side="ANY_MINION"},trigger="SPELLBURST"}},keywords={"deathrattle"}}
 P["GDB_457"]={abilities={{0,1}},echo=true,effects={{amount=1,amount2=2,keyword="rush",op="BUFF",target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"}}}
 P["GDB_460"]={effects={{amount=3,op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"},{amount2=3,op="BUFF",target={kind="RANDOM",side="FRIENDLY_HAND_MINIONS"},trigger="ON_PLAY"}}}
 P["GDB_463"]={effects={{amount=1,op="DRAW",raceFilter="draenei",target={kind="SELF",side="ANY_CHARACTER"},trigger="SPELLBURST"}},keywords={"divine_shield"}}
 P["GDB_465"]={effects={{amount=5,op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="ON_PLAY",undamagedOnly=true},{amount=1,amount2=6,condition="BUILDING_STARSHIP",conditionTrails=true,op="CARD_COST",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
-P["GDB_467"]={effects={{amount2=1,op="SHUFFLE",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"},{amount=3,buffDeck=true,op="COST_ZONE",target={kind="ALL",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
+P["GDB_467"]={effects={{amount2=1,op="SHUFFLE",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"},{amount=3,buffAll=false,buffDeck=true,op="COST_ZONE",target={kind="ALL",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
 P["GDB_472"]={effects={{amount=2,op="DAMAGE_MULTIPLIER",target={kind="ALL",side="ENEMY_MINIONS"},trigger="AURA",undamagedOnly=true},{condition="COMBO",op="ADD_TO_HAND",target={kind="SELF",side="ANY_CHARACTER"},token="CS2_072",trigger="BATTLECRY"}}}
-P["GDB_722"]={effects={{amount=2,amount2=1,buffAll=true,buffHand=true,op="BUFF_ZONE",raceFilter="draenei",target={kind="ALL",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=1},{amount=2,amount2=1,buffAll=true,buffHand=true,op="BUFF_ZONE",raceFilter="draenei",target={kind="ALL",side="ANY_CHARACTER"},trigger="DEATHRATTLE",type_filter=1}},keywords={"battlecry","deathrattle"}}
-P["GDB_840"]={effects={{op="SUMMON",summonAttacks=3,target={kind="ALL",side="ANY_CHARACTER"},token="GDB_840t",trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
+P["GDB_722"]={effects={{amount=2,amount2=1,buffHand=true,op="BUFF_ZONE",raceFilter="draenei",target={kind="ALL",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=1},{amount=2,amount2=1,buffHand=true,op="BUFF_ZONE",raceFilter="draenei",target={kind="ALL",side="ANY_CHARACTER"},trigger="DEATHRATTLE",type_filter=1}},keywords={"battlecry","deathrattle"}}
+P["GDB_840"]={effects={{op="SUMMON",summonAttacks=3,target={kind="ALL",side="ANY_CHARACTER"},token="GDB_840t",tokenDisplay="beast that attacks the lowest health enemy",trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
 P["GDB_844"]={effects={{amount=3,costMin=5,op="DISCOVER",raceFilter="beast",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=1},{amount=-2,op="CARD_COST",target={kind="PREVIOUS",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
 P["GDB_852"]={effects={{amount=1,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY"},{amount=-1,condition="TARGET_IS_TYPE",conditionType=2,op="CARD_COST",target={kind="PREVIOUS",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
 P["GDB_855"]={effects={{amount=8,op="BUFF",target={kind="ALL",side="YOUR_HERO"},temporary=true,trigger="SPELLBURST"},{amount=8,op="GAIN_ARMOR",target={kind="SELF",side="YOUR_HERO"},trigger="SPELLBURST"}},keywords={"taunt","elusive"}}
@@ -1492,7 +1492,7 @@ P["GDB_864"]={effects={{costMax=1,costMin=1,op="SUMMON_RANDOM",["repeat"]=2,targ
 P["GDB_877"]={effects={{amount=1,amount2=1,keyword="rush",op="BUFF",target={kind="ADJACENT",side="FRIENDLY_MINION"},trigger="DEATHRATTLE"}},keywords={"rush","deathrattle"}}
 P["GDB_878"]={effects={{excludeSource=true,followUp={{amount=1,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="DEATHRATTLE"}},followUpCondition="NONE",op="GRANT_ABILITY",raceFilter="murloc",target={kind="ALL",side="FRIENDLY_MINIONS"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["GDB_883"]={effects={{costMax=2,costMin=2,op="SUMMON_RANDOM",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},trigger="ON_PLAY"},{amount=2,op="REFRESH_MANA",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"}}}
-P["GDB_901"]={effects={{amount=3,op="DAMAGE",target={kind="CHOOSE",side="ENEMY_MINION"},trigger="BATTLECRY"},{op="SHUFFLE",["repeat"]=3,target={kind="SELF",side="YOUR_HERO"},token="GDB_430",trigger="BATTLECRY"},{amount=2,op="DAMAGE",silent=true,spell=true,target={kind="RANDOM",side="ENEMY_CHARACTER"},trigger="CAST_WHEN_DRAWN"}},keywords={"battlecry"}}
+P["GDB_901"]={effects={{amount=3,op="DAMAGE",target={kind="CHOOSE",side="ENEMY_MINION"},trigger="BATTLECRY"},{op="SHUFFLE",["repeat"]=3,target={kind="SELF",side="YOUR_HERO"},token="GDB_430",tokenDisplay="asteroids",trigger="BATTLECRY"},{amount=2,op="DAMAGE",silent=true,spell=true,target={kind="RANDOM",side="ENEMY_CHARACTER"},trigger="CAST_WHEN_DRAWN"}},keywords={"battlecry"}}
 P["GIFT_02"]={effects={{op="DISCOVER",target={kind="ALL",side="ANY_CHARACTER"},temporary=true,tokens={"CS2_024","CS2_023","CS2_029"},trigger="ON_PLAY"}}}
 P["GIFT_03"]={effects={{op="DISCOVER",target={kind="ALL",side="ANY_CHARACTER"},temporary=true,tokens={"BRM_013","EX1_617","EX1_537"},trigger="ON_PLAY"}}}
 P["GIFT_04"]={effects={{op="DISCOVER",target={kind="ALL",side="ANY_CHARACTER"},temporary=true,tokens={"RLK_057","RLK_015","RLK_024"},trigger="ON_PLAY"}}}
@@ -1511,7 +1511,7 @@ P["GIL_119"]={effects={{amount=2,excludeSource=true,op="BUFF",raceFilter="elemen
 P["GIL_120"]={keywords={"taunt"}}
 P["GIL_121"]={keywords={"spell_damage"},spellDamage=2}
 P["GIL_124"]={effects={{excludeSource=true,op="DESTROY",target={kind="ALL",side="ANY_MINION"},targetAttackMax=2,trigger="BATTLECRY"}},keywords={"battlecry"}}
-P["GIL_128"]={effects={{amount=2,amount2=3,buffAll=true,buffHand=true,op="MULTIPLY_STATS",target={kind="ALL",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=1}},keywords={"battlecry"}}
+P["GIL_128"]={effects={{amount=2,amount2=3,buffHand=true,op="MULTIPLY_STATS",target={kind="ALL",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=1}},keywords={"battlecry"}}
 P["GIL_130"]={effects={{amount=2,amount2=2,condition="DECK_ONLY_PARITY",conditionAmount=1,op="BUFF",target={kind="SELF",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"taunt","battlecry"}}
 P["GIL_134"]={effects={{amount=4,followUp={{additional=true,op="COPY",target={kind="TRIGGER_SOURCE",side="ANY_CHARACTER"},trigger="ON_PLAY"}},followUpCondition="IF_DIES",op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"}}}
 P["GIL_142"]={effects={{forOpponent=true,fromHand=true,op="TRANSFORM",target={kind="SELF",side="ANY_MINION"},trigger="IN_HAND_TURN_START"}}}
@@ -1524,7 +1524,7 @@ P["GIL_156"]={effects={{amount2=3,op="CANT_ATTACK_UNLESS",target={kind="SELF",si
 end)() end
 do (function()
 P["GIL_188"]={choiceLabels={"Transform into a 4/2 with Rush","Transform into a 2/4 with Taunt"},choices={{{amount=4,amount2=2,keyword="rush",op="TRANSFORM",target={kind="SELF",side="ANY_MINION"},token="GIL_188a",tokenUnnamed=true,trigger="ON_PLAY"}},{{amount=2,amount2=4,keyword="taunt",op="TRANSFORM",target={kind="SELF",side="ANY_MINION"},token="GIL_188b",tokenUnnamed=true,trigger="ON_PLAY"}}},effects={{amount=4,amount2=2,keyword="rush",op="TRANSFORM",target={kind="SELF",side="ANY_MINION"},token="GIL_188a",tokenUnnamed=true,trigger="ON_PLAY"}}}
-P["GIL_190"]={effects={{op="SUMMON",subjectSide=1,subjectType=1,target={kind="ALL",side="ANY_CHARACTER"},token="GIL_190t",trigger="AFTER_HEAL"}}}
+P["GIL_190"]={effects={{op="SUMMON",subjectSide=1,subjectType=1,target={kind="ALL",side="ANY_CHARACTER"},token="GIL_190t",tokenDisplay="3/3 Whelp",trigger="AFTER_HEAL"}}}
 P["GIL_191"]={effects={{op="SUMMON",["repeat"]=4,target={kind="ALL",side="ANY_CHARACTER"},token="GIL_191t",trigger="ON_PLAY"}}}
 P["GIL_200"]={keywords={"stealth"},swapInHand=true}
 P["GIL_201"]={keywords={"lifesteal"},swapInHand=true}
@@ -1577,15 +1577,15 @@ P["GIL_654"]={abilities={{0,1}},echo=true,effects={{amount=1,op="DAMAGE",spell=t
 P["GIL_655"]={effects={{amount=1,op="BUFF",target={kind="SELF",side="ANY_MINION"},trigger="WHEN_FRIENDLY_MINION_ATTACKS"}}}
 P["GIL_658"]={effects={{amount=10,amount2=10,costOverride=10,op="COPY",prompt=true,setVerb=true,target={kind="CHOOSE",side="FRIENDLY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["GIL_661"]={abilities={{0,1}},effects={{amount=6,op="HEAL",target={kind="ALL",side="FRIENDLY_CHARACTER"},trigger="ON_PLAY"}}}
-P["GIL_663"]={effects={{op="ADD_TO_HAND",["repeat"]=2,target={kind="SELF",side="ANY_CHARACTER"},token="GIL_663t",trigger="ON_PLAY"}}}
+P["GIL_663"]={effects={{op="ADD_TO_HAND",["repeat"]=2,target={kind="SELF",side="ANY_CHARACTER"},token="GIL_663t",tokenDisplay="2/2 treants",trigger="ON_PLAY"}}}
 P["GIL_664"]={effects={{costMax=2,costMin=2,op="SUMMON_RANDOM",target={kind="ALL",side="ANY_CHARACTER"},trigger="WHEN_CAST_SPELL"}}}
 P["GIL_667"]={abilities={{2,1}},effects={{amount=6,op="HEAL",target={kind="SELF",side="YOUR_HERO"},trigger="DEATHRATTLE"}},keywords={"taunt","deathrattle"}}
 P["GIL_677"]={echo=true,effects={{op="ADD_TO_HAND",rarityFilter=5,target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=1}},keywords={"battlecry"}}
 P["GIL_678"]={echo=true}
 P["GIL_680"]={echo=true}
 P["GIL_681"]={allMinionTypes=true}
-P["GIL_682"]={effects={{forOpponent=true,op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="GIL_682t",trigger="BATTLECRY"}},keywords={"rush","battlecry"}}
-P["GIL_683"]={effects={{forOpponent=true,op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="GIL_683t",trigger="BATTLECRY"}},keywords={"battlecry"}}
+P["GIL_682"]={effects={{forOpponent=true,op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="GIL_682t",tokenDisplay="mucklings for your opponent",trigger="BATTLECRY"}},keywords={"rush","battlecry"}}
+P["GIL_683"]={effects={{forOpponent=true,op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="GIL_683t",tokenDisplay="poisonous drakeslayer for your opponent",trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["GIL_687"]={effects={{amount=3,followUp={{additional=true,op="ADD_TO_HAND",target={kind="SELF",side="ANY_CHARACTER"},token="TAVERN_COIN",trigger="ON_PLAY"}},followUpCondition="IF_DIES",op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"}}}
 P["GIL_691"]={effects={{op="COPY",subjectType=1,target={kind="TRIGGER_SOURCE",side="ANY_CHARACTER"},trigger="AFTER_DRAW"}}}
 P["GIL_693"]={abilities={{3,1}},effects={{amount=1,op="DAMAGE",target={kind="SELF",side="YOUR_HERO"},trigger="START_TURN"}}}
@@ -1635,7 +1635,7 @@ P["GVG_041"]={choiceLabels={"Summon 5 Wisps","Give a minion +5/+5 and Taunt"},ch
 P["GVG_042"]={effects={{op="ADD_TO_HAND",raceFilter="murloc",["repeat"]=4,target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=1}},keywords={"battlecry"},overload=3}
 P["GVG_043"]={abilities={{1,1}},effects={{amount=1,op="BUFF",target={kind="RANDOM",side="FRIENDLY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["GVG_044"]={}
-P["GVG_045"]={abilities={{0,2}},effects={{amount=2,amount2=4,damageRange=true,op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"},{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="GVG_045t",trigger="ON_PLAY"}}}
+P["GVG_045"]={abilities={{0,2}},effects={{amount=2,amount2=4,damageRange=true,op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"},{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="GVG_045t",tokenDisplay="imp for each damage dealt",trigger="ON_PLAY"}}}
 P["GVG_046"]={effects={{amount=1,countExcludeSource=true,countRace="beast",countSelector=true,countSide="FRIENDLY_MINIONS",countType=1,countZone="BOARD",op="BUFF",target={kind="SELF",side="ANY_MINION"},trigger="AURA"}},keywords={"taunt"}}
 P["GVG_048"]={effects={{amount=2,excludeSource=true,op="BUFF",raceFilter="mechanical",target={kind="ALL",side="FRIENDLY_MINIONS"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["GVG_051"]={effects={{amount=1,damagedOnly=true,op="BUFF",target={kind="SELF",side="FRIENDLY_MINIONS"},trigger="AURA"}}}
@@ -1645,7 +1645,7 @@ P["GVG_055"]={abilities={{1,1}},effects={{amount=2,amount2=2,op="BUFF",raceFilte
 P["GVG_057"]={effects={{amount=4,op="HEAL",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"},{amount=2,op="BUFF",target={kind="SELF",side="ANY_MINION"},temporary=true,trigger="ON_PLAY"}}}
 P["GVG_058"]={keywords={"divine_shield"}}
 P["GVG_059"]={effects={{keyword="taunt,divine_shield",op="GIVE_KEYWORD",target={kind="RANDOM",side="FRIENDLY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
-P["GVG_060"]={effects={{amount=2,amount2=2,op="BUFF_NAMED",target={kind="ALL",side="ANY_CHARACTER"},trigger="BATTLECRY"}},keywords={"battlecry"}}
+P["GVG_060"]={effects={{amount=2,amount2=2,op="BUFF_NAMED",target={kind="ALL",side="ANY_CHARACTER"},tokenDisplay="Silver Hand Recruit",trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["GVG_062"]={effects={{keyword="divine_shield",op="BUFF",subjectRace="mechanical",target={kind="SELF",side="ANY_MINION"},trigger="WHEN_SUMMON_MINION"}}}
 P["GVG_064"]={}
 P["GVG_065"]={effects={{amount=50,op="MISDIRECT",target={kind="SELF",side="ANY_MINION"},trigger="AURA"}}}
@@ -1684,7 +1684,7 @@ P["GVG_120"]={abilities={{1,1}},effects={{op="DESTROY",raceFilter="beast",target
 P["GVG_122"]={effects={{keyword="elusive",op="GIVE_KEYWORD",target={kind="ADJACENT",side="FRIENDLY_MINIONS"},trigger="AURA",type_filter=1}}}
 P["GVG_123"]={effects={{condition="CONTROL_OTHER_RACE",conditionRace="mechanical",op="ADD_TO_HAND",schoolFilter=3,target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=2}},keywords={"spell_damage","battlecry"},spellDamage=1}
 P["HERO_11bpt"]={abilities={{4,1}},effects={{op="DESTROY",target={kind="SELF",side="ANY_MINION"},trigger="END_TURN"}},keywords={"charge"}}
-P["ICC_019"]={abilities={{2,1}},effects={{condition="OPPONENT_TURN",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="ICC_019t",trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
+P["ICC_019"]={abilities={{2,1}},effects={{condition="OPPONENT_TURN",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="ICC_019t",tokenDisplay="skeleton",trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
 P["ICC_021"]={abilities={{2,1}},effects={{amount=2,op="DAMAGE",target={kind="ALL",side="ENEMY_MINIONS"},trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
 P["ICC_023"]={}
 P["ICC_026"]={effects={{op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="ICC_026t",trigger="BATTLECRY"}},keywords={"battlecry"}}
@@ -1697,7 +1697,7 @@ P["ICC_034"]={effects={{condition="OPPONENT_TURN",op="SUMMON",target={kind="ALL"
 P["ICC_038"]={keywords={"taunt","divine_shield"}}
 P["ICC_039"]={effects={{amount=3,amount2=3,op="SET_STATS",target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"}}}
 P["ICC_049"]={effects={{amount=2,followUp={{keyword="poisonous",op="GIVE_KEYWORD",target={kind="PREVIOUS",side="ANY_CHARACTER"},trigger="ON_PLAY"}},followUpCondition="IF_SURVIVES",op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"}}}
-P["ICC_050"]={abilities={{0,1}},effects={{op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="__anon_1_2_poisonous_spiders",trigger="ON_PLAY"}}}
+P["ICC_050"]={abilities={{0,1}},effects={{op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="__anon_1_2_poisonous_spiders",tokenDisplay="1/2 poisonous spiders",trigger="ON_PLAY"}}}
 P["ICC_051"]={choiceLabels={"Transform into a 1/2 with Poisonous","Transform into a 1/5 with Taunt"},choices={{{amount=1,amount2=2,keyword="poisonous",op="TRANSFORM",target={kind="SELF",side="ANY_MINION"},token="ICC_051a",tokenUnnamed=true,trigger="ON_PLAY"}},{{amount=1,amount2=5,keyword="taunt",op="TRANSFORM",target={kind="SELF",side="ANY_MINION"},token="ICC_051b",tokenUnnamed=true,trigger="ON_PLAY"}}},effects={{amount=1,amount2=2,keyword="poisonous",op="TRANSFORM",target={kind="SELF",side="ANY_MINION"},token="ICC_051a",tokenUnnamed=true,trigger="ON_PLAY"}}}
 P["ICC_052"]={effects={{op="TRIGGER_DEATHRATTLE",target={kind="CHOOSE",side="FRIENDLY_MINION"},trigger="ON_PLAY"}}}
 P["ICC_055"]={abilities={{0,1}},effects={{amount=3,op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"}},keywords={"lifesteal"}}
@@ -1705,20 +1705,20 @@ P["ICC_056"]={effects={{amount=3,amount2=3,op="BUFF",target={kind="CHOOSE",side=
 P["ICC_058"]={abilities={{1,1}},effects={{keyword="freeze",op="GIVE_KEYWORD",target={kind="CHOOSE",side="ENEMY_CHARACTER"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["ICC_062"]={abilities={{2,1}},effects={{amount=6,condition="OPPONENT_TURN",op="GAIN_ARMOR",target={kind="SELF",side="YOUR_HERO"},trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
 P["ICC_064"]={abilities={{1,1},{2,1}},effects={{amount=1,op="DAMAGE",target={kind="ALL",side="ANY_MINION"},trigger="BATTLECRY"},{amount=1,op="DAMAGE",target={kind="ALL",side="ANY_MINION"},trigger="DEATHRATTLE"}},keywords={"battlecry","deathrattle"}}
-P["ICC_065"]={effects={{op="ADD_TO_HAND",["repeat"]=2,target={kind="SELF",side="ANY_CHARACTER"},token="ICC_026t",trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
+P["ICC_065"]={effects={{op="ADD_TO_HAND",["repeat"]=2,target={kind="SELF",side="ANY_CHARACTER"},token="ICC_026t",tokenDisplay="1/1 skeletons",trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
 P["ICC_067"]={effects={{condition="OPPONENT_TURN",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="ICC_900t",trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
 P["ICC_075"]={abilities={{4,1}},effects={{amount=1,op="DAMAGE",target={kind="ALL",side="ENEMY_MINIONS"},trigger="END_TURN"}}}
 P["ICC_079"]={effects={{amount=3,op="BUFF",target={kind="ALL",side="YOUR_HERO"},temporary=true,trigger="ON_PLAY"},{amount=3,op="GAIN_ARMOR",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"}}}
 P["ICC_081"]={keywords={"taunt"},overload=3}
 P["ICC_083"]={effects={{amount=1,amount2=1,op="CARD_COST",target={kind="SELF",side="ENEMY_HERO"},trigger="AURA",type_filter=2}}}
-P["ICC_085"]={effects={{amount=5,op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="ON_PLAY"},{amount=5,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY"},{amount=5,op="GAIN_ARMOR",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"},{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="ICC_085t",trigger="ON_PLAY"}}}
+P["ICC_085"]={effects={{amount=5,op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="ON_PLAY"},{amount=5,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY"},{amount=5,op="GAIN_ARMOR",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"},{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="ICC_085t",tokenDisplay="5/5 Ghoul",trigger="ON_PLAY"}}}
 P["ICC_088"]={effects={{op="FREEZE_ON_DAMAGE",target={kind="SELF",side="ANY_MINION"},trigger="AURA"}},keywords={"taunt","freeze"}}
 P["ICC_089"]={effects={{amount=2,fromDeck=true,op="DRAW",raceFilter="murloc",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=1}}}
 P["ICC_090"]={effects={{amount=-1,amount2=2,costCount="GAME_MANA_OVERLOADED",op="CARD_COST",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"}}}
 P["ICC_092"]={abilities={{1,1}},effects={{amount=1,op="BUFF",target={kind="CHOOSE",side="FRIENDLY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["ICC_094"]={abilities={{1,1}},effects={{amount=1,amount2=1,op="BUFF",target={kind="CHOOSE",side="FRIENDLY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["ICC_099"]={abilities={{2,1}},effects={{amount=5,op="DAMAGE",target={kind="ALL",side="FRIENDLY_MINIONS"},trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
-P["ICC_200"]={effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="EX1_170",trigger="WHEN_YOUR_MINION_ATTACKED"}},secret=true}
+P["ICC_200"]={effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="EX1_170",tokenDisplay="2/3 Poisonous Cobra",trigger="WHEN_YOUR_MINION_ATTACKED"}},secret=true}
 P["ICC_210"]={effects={{amount=1,amount2=1,excludeSource=true,op="BUFF",target={kind="RANDOM",side="FRIENDLY_MINION"},trigger="END_TURN"}}}
 P["ICC_212"]={keywords={"lifesteal"}}
 P["ICC_214"]={abilities={{2,1}},effects={{op="DESTROY",target={kind="RANDOM",side="ENEMY_MINION"},trigger="DEATHRATTLE"}},keywords={"taunt","lifesteal","deathrattle"}}
@@ -1779,7 +1779,7 @@ P["JAIL_436"]={effects={{amount=1,op="BUFF",target={kind="ALL",side="YOUR_HERO"}
 P["JAIL_436t"]={effects={{amount=2,op="BUFF",target={kind="ALL",side="YOUR_HERO"},temporary=true,trigger="ON_PLAY"},{amount=2,op="GAIN_ARMOR",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"},{op="ADD_TO_HAND",summonNamed=true,target={kind="SELF",side="ANY_CHARACTER"},token="JAIL_436t2",trigger="ON_PLAY"}}}
 P["JAIL_436t2"]={effects={{amount=4,op="BUFF",target={kind="ALL",side="YOUR_HERO"},temporary=true,trigger="ON_PLAY"},{amount=4,op="GAIN_ARMOR",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"}}}
 P["JAIL_440"]={effects={{op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="HERO_11bpt",trigger="SELF_TAKES_DAMAGE"}}}
-P["JAIL_442"]={effects={{op="SHUFFLE",["repeat"]=4,target={kind="SELF",side="YOUR_HERO"},token="JAIL_443t",trigger="DEATHRATTLE"},{amount=2,op="DAMAGE",printOnly=true,target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="CAST_WHEN_DRAWN"},{amount=2,op="DAMAGE",silent=true,target={kind="SELF",side="YOUR_HERO"},trigger="CAST_WHEN_DRAWN"}},keywords={"deathrattle"}}
+P["JAIL_442"]={effects={{op="SHUFFLE",["repeat"]=4,target={kind="SELF",side="YOUR_HERO"},token="JAIL_443t",tokenDisplay="blights",trigger="DEATHRATTLE"},{amount=2,op="DAMAGE",printOnly=true,target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="CAST_WHEN_DRAWN"},{amount=2,op="DAMAGE",silent=true,target={kind="SELF",side="YOUR_HERO"},trigger="CAST_WHEN_DRAWN"}},keywords={"deathrattle"}}
 P["JAIL_443t"]={castsWhenDrawn=true,effects={{amount=2,op="DAMAGE",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"}}}
 P["JAIL_450"]={abilities={{6,1}},effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="HERO_11bpt",trigger="AFTER_HERO_ATTACK"}}}
 P["JAIL_451"]={effects={{amount=3,costMax=5,costMin=5,op="DISCOVER",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=1},{corpseCost=5,op="SUMMON_COPY",target={kind="PREVIOUS",side="ANY_MINION"},trigger="ON_PLAY"}}}
@@ -1787,7 +1787,7 @@ P["JAIL_455"]={effects={{amount=1,op="DAMAGE",["repeat"]=2,repeatPrinted=true,ta
 P["JAIL_456"]={effects={{amount=1,condition="DECK_AT_LEAST",conditionAmount=25,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["JAIL_457"]={abilities={{1,1}},effects={{amount=1,amount2=1,excludeSource=true,op="BUFF",target={kind="ALL",side="FRIENDLY_MINIONS"},trigger="BATTLECRY"}},keywords={"battlecry"},prepare=true}
 P["JAIL_460"]={effects={{op="ADD_TO_HAND",target={kind="SELF",side="ANY_CHARACTER"},trigger="DEATHRATTLE",type_filter=3}},keywords={"deathrattle"}}
-P["JAIL_502"]={effects={{buffAll=true,buffHand=true,buffRandom=true,forOpponent=true,op="SWAP_WITH",target={kind="SELF",side="ANY_MINION"},trigger="START_TURN"}}}
+P["JAIL_502"]={effects={{buffHand=true,buffRandom=true,forOpponent=true,op="SWAP_WITH",target={kind="SELF",side="ANY_MINION"},trigger="START_TURN"}}}
 P["JAIL_503"]={effects={{amount=-1,amount2=2,costCount="NAMED_IN_HAND",costCountName="Coin",op="CARD_COST",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"},{amount=1,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
 P["JAIL_513"]={abilities={{1,1}},effects={{amount2=1,amountSource="CARDS_IN_HAND",op="BUFF",target={kind="SELF",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"taunt","battlecry"}}
 P["JAIL_514"]={abilities={{0,2}},effects={{amount=3,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY"},{amount=-1,amount2=2,costCount="CARDS_IN_HAND",op="CARD_COST",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"}}}
@@ -1832,7 +1832,7 @@ P["JAM_027"]={choiceLabels={"Give a friendly minion +2 Attack and Rush","Give a 
 P["JAM_028"]={paysWith=1}
 P["JAM_033"]={bonusEffects=1,bonusEffectsReroll=true,keywords={"rush"}}
 P["JAM_034"]={effects={{amount=2,amount2=7,op="CARD_COST",target={kind="SELF",side="ENEMY_HERO"},trigger="BATTLECRY",type_filter=2}},keywords={"battlecry"},tradeable=true}
-P["KAR_004"]={effects={{keyword="stealth",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="EX1_017",trigger="AFTER_OPPONENT_CAST_SPELL"}},secret=true}
+P["KAR_004"]={effects={{keyword="stealth",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="EX1_017",tokenDisplay="4/2 Panther",trigger="AFTER_OPPONENT_CAST_SPELL"}},secret=true}
 P["KAR_005"]={effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="KAR_005a",trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
 P["KAR_009"]={effects={{familyFilter=8,op="ADD_TO_HAND",target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=2}},keywords={"battlecry"}}
 P["KAR_010"]={effects={{condition="HOLDING_RACE",conditionRace="dragon",op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="KAR_010a",trigger="BATTLECRY"}},keywords={"battlecry"}}
@@ -1841,7 +1841,7 @@ P["KAR_013"]={abilities={{0,2}},effects={{op="SILENCE",target={kind="CHOOSE",sid
 P["KAR_021"]={effects={{op="SUMMON_RANDOM",raceFilter="totem",target={kind="ALL",side="ANY_CHARACTER"},tokens={"CS2_050","CS2_051","CS2_052","NEW1_009"},trigger="WHEN_CAST_SPELL",type_filter=1}}}
 P["KAR_026"]={abilities={{0,1}},effects={{amountSource="ENEMY_MINIONS",keyword="taunt",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="KAR_026t",trigger="ON_PLAY"}}}
 P["KAR_029"]={abilities={{2,1}},effects={{amount=1,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
-P["KAR_030a"]={effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="KAR_030",trigger="BATTLECRY"}},keywords={"battlecry"}}
+P["KAR_030a"]={effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="KAR_030",tokenDisplay="1/3 Spider",trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["KAR_033"]={effects={{condition="HOLDING_RACE",conditionRace="dragon",op="DESTROY",target={kind="CHOOSE",side="ENEMY_MINION"},targetAttackMax=3,trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["KAR_035"]={effects={{amount=3,op="HEAL",target={kind="SELF",side="YOUR_HERO"},trigger="WHEN_CAST_SPELL"}}}
 P["KAR_036"]={effects={{amount2=1,op="BUFF",target={kind="SELF",side="FRIENDLY_MINION"},trigger="AFTER_CAST_SPELL"}}}
@@ -1858,20 +1858,20 @@ P["KAR_077"]={effects={{amount=2,amount2=2,op="BUFF",target={kind="CHOOSE",side=
 P["KAR_089"]={abilities={{15,1}},effects={{amount=1,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="AFTER_DISCARD"}}}
 P["KAR_091"]={effects={{amount=4,op="GAIN_ARMOR",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"},{costMax=4,costMin=4,op="SUMMON_RANDOM",target={kind="ALL",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
 P["KAR_092"]={effects={{amount=3,condition="CONTROL_SECRET",op="DAMAGE",target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="BATTLECRY"}},keywords={"battlecry"}}
-P["KAR_094"]={effects={{op="ADD_TO_HAND",target={kind="ALL",side="ANY_CHARACTER"},token="KAR_094a",trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
+P["KAR_094"]={effects={{op="ADD_TO_HAND",target={kind="ALL",side="ANY_CHARACTER"},token="KAR_094a",tokenDisplay="3/2 weapon",trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
 P["KAR_114"]={effects={{amount=1,amount2=1,fromDeck=true,op="SUMMON_COPY_FROM",target={kind="SELF",side="YOUR_HERO"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["KAR_300"]={}
-P["KAR_710"]={abilities={{1,1}},effects={{keyword="taunt",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="KAR_710m",trigger="BATTLECRY"}},keywords={"battlecry"}}
+P["KAR_710"]={abilities={{1,1}},effects={{keyword="taunt",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="KAR_710m",tokenDisplay="minion",trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["KAR_711"]={effects={{amount=-1,amount2=2,costCount="GAME_SPELLS_CAST",op="CARD_COST",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"}}}
 P["KAR_712"]={effects={{condition="YOUR_TURN",keyword="immune",op="GIVE_KEYWORD",target={kind="SELF",side="YOUR_HERO"},trigger="AURA"}}}
 P["LEG_CS3_013"]={effects={{amount=3,op="DAMAGE",target={kind="ALL",side="ENEMY_HERO"},trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
 P["LEG_CS3_017"]={effects={{amount=3,condition="OUTCAST",op="BUFF",target={kind="ALL",side="YOUR_HERO"},temporary=true,trigger="BATTLECRY"}}}
 P["LEG_CS3_028"]={effects={{amount=3,fromDeck=true,op="DISCOVER",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=2}}}
 P["LEG_CS3_037"]={keywords={"rush"}}
-P["LEG_RLK_077"]={effects={{keyword="rush,reborn",op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="RLK_077t",trigger="BATTLECRY"}},keywords={"battlecry"}}
+P["LEG_RLK_077"]={effects={{keyword="rush,reborn",op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="RLK_077t",tokenDisplay="1/1 Fighter",trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["LEG_RLK_125"]={abilities={{0,2}},effects={{op="DESTROY",target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"},{amount=3,op="DAMAGE",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"}}}
 P["LEG_RLK_226"]={abilities={{2,1}},effects={{corpseCost=3,keyword="taunt",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="RLK_226t",trigger="DEATHRATTLE"}},keywords={"taunt","deathrattle"}}
-P["LEG_RLK_705"]={effects={{keyword="reborn",op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="RLK_705t",trigger="ON_PLAY"}}}
+P["LEG_RLK_705"]={effects={{keyword="reborn",op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="RLK_705t",tokenDisplay="1/1 zombie",trigger="ON_PLAY"}}}
 P["LEG_RLK_710"]={effects={{amount=-1,amount2=4,oneInHand=true,op="CARD_COST",target={kind="SELF",side="YOUR_HERO"},trigger="AFTER_HERO_ATTACK",type_filter=2}}}
 P["LEG_RLK_753"]={abilities={{1,1}},effects={{amount=1,amount2=2,corpseCost=1,op="BUFF",target={kind="SELF",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["LEG_TTN_908"]={effects={{amount=2,amount2=1,durationTurns=3,op="BUFF",target={kind="TRIGGER_SOURCE",side="ANY_CHARACTER"},trigger="WHEN_FRIENDLY_MINION_ATTACKS"}}}
@@ -1883,7 +1883,7 @@ P["LOE_010"]={keywords={"poisonous"}}
 P["LOE_012"]={effects={{op="ADD_TO_HAND",target={kind="SELF",side="ANY_CHARACTER"},token="TAVERN_COIN",trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
 P["LOE_016"]={effects={{amount=2,op="DAMAGE",subjectKeyword="battlecry",target={kind="RANDOM",side="ENEMY_CHARACTER"},trigger="AFTER_PLAY_MINION"}}}
 P["LOE_017"]={effects={{amount=3,amount2=3,op="SET_STATS",target={kind="CHOOSE",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
-P["LOE_019t"]={effects={{op="SHUFFLE",target={kind="SELF",side="YOUR_HERO"},token="LOE_019t2",trigger="ON_PLAY"},{amount=1,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
+P["LOE_019t"]={effects={{op="SHUFFLE",target={kind="SELF",side="YOUR_HERO"},token="LOE_019t2",tokenDisplay="the golden monkey",trigger="ON_PLAY"},{amount=1,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
 P["LOE_019t2"]={effects={{op="TRANSFORM",rarityFilter=5,target={kind="ALL",side="FRIENDLY_HAND"},trigger="BATTLECRY",type_filter=1},{op="TRANSFORM",rarityFilter=5,silent=true,target={kind="ALL",side="FRIENDLY_DECK"},trigger="BATTLECRY",type_filter=1}},keywords={"taunt","battlecry"}}
 P["LOE_022"]={keywords={"taunt"}}
 P["LOE_023"]={effects={{amount=3,costMax=1,costMin=1,op="DISCOVER",target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY"}},keywords={"battlecry"}}
@@ -1895,8 +1895,8 @@ P["LOE_047"]={effects={{amount=3,op="DISCOVER",raceFilter="beast",target={kind="
 P["LOE_050"]={effects={{costMax=1,costMin=1,op="SUMMON_RANDOM",target={kind="ALL",side="ANY_CHARACTER"},trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
 P["LOE_061"]={abilities={{2,1}},effects={{amount=3,amount2=3,op="BUFF",target={kind="RANDOM",side="FRIENDLY_MINION"},trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
 P["LOE_073"]={abilities={{1,1}},effects={{condition="CONTROL_OTHER_RACE",conditionRace="beast",keyword="taunt",op="GIVE_KEYWORD",target={kind="SELF",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
-P["LOE_079"]={effects={{op="SHUFFLE",target={kind="SELF",side="YOUR_HERO"},token="LOE_019t",trigger="BATTLECRY"}},keywords={"battlecry"}}
-P["LOE_089"]={effects={{op="SUMMON",["repeat"]=3,target={kind="ALL",side="ANY_CHARACTER"},token="LOE_089t",trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
+P["LOE_079"]={effects={{op="SHUFFLE",target={kind="SELF",side="YOUR_HERO"},token="LOE_019t",tokenDisplay="the map to the golden monkey",trigger="BATTLECRY"}},keywords={"battlecry"}}
+P["LOE_089"]={effects={{op="SUMMON",["repeat"]=3,target={kind="ALL",side="ANY_CHARACTER"},token="LOE_089t",tokenDisplay="2/2 Runt",trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
 P["LOE_105"]={effects={{amount=1,amount2=1,op="BUFF",target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"},{followUp={{op="ADD_TO_HAND",target={kind="SELF",side="ANY_CHARACTER"},token="LOE_105",trigger="DEATHRATTLE"}},followUpCondition="NONE",op="GRANT_ABILITY",target={kind="PREVIOUS",side="ANY_MINION"},trigger="ON_PLAY"}}}
 P["LOE_113"]={abilities={{0,2}},effects={{amount=2,amount2=2,op="BUFF",target={kind="ALL",side="FRIENDLY_MINIONS"},trigger="ON_PLAY"},{amount=-1,amount2=2,costCount="FRIENDLY_MINIONS_OF_RACE",costCountRace="murloc",op="CARD_COST",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"}}}
 P["LOE_116"]={effects={{amount=4,amount2=4,condition="OTHER_MINIONS_AT_LEAST",conditionAmount=6,op="BUFF",target={kind="SELF",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
@@ -1913,22 +1913,22 @@ P["LOOT_069"]={abilities={{1,1}},effects={{op="SUMMON",target={kind="ALL",side="
 P["LOOT_077"]={abilities={{0,2}},effects={{amount=3,op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"},{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="LOOT_077t",trigger="ON_PLAY"}}}
 P["LOOT_078"]={effects={{op="CLEAVE",target={kind="SELF",side="ANY_MINION"},trigger="AURA"}}}
 P["LOOT_088"]={abilities={{0,2}},effects={{keyword="divine_shield",op="GIVE_KEYWORD",target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"},{amount=1,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
-P["LOOT_091"]={effects={{keyword="taunt",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="LOOT_091t",trigger="ON_PLAY"}}}
+P["LOOT_091"]={effects={{keyword="taunt",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="LOOT_091t",tokenDisplay="2/2 Spirit",trigger="ON_PLAY"}}}
 P["LOOT_103"]={effects={{familyFilter=8,op="ADD_TO_HAND",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=2}}}
 P["LOOT_104"]={effects={{familyFilter=8,op="TRANSFORM",target={kind="TRIGGER_SOURCE",side="ANY_MINION"},trigger="IN_HAND_TURN_START",type_filter=2}}}
 P["LOOT_108"]={abilities={{4,1}},effects={{amount=3,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="END_TURN"}}}
 P["LOOT_111"]={effects={{op="DESTROY",target={kind="CHOOSE",side="ANY_MINION"},targetAttackMax=1,trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["LOOT_117"]={keywords={"taunt","divine_shield"}}
-P["LOOT_118"]={effects={{amount=2,buffHand=true,buffRandom=true,op="COST_ZONE",target={kind="ALL",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=3}},keywords={"battlecry"}}
+P["LOOT_118"]={effects={{amount=2,buffAll=false,buffHand=true,buffRandom=true,op="COST_ZONE",target={kind="ALL",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=3}},keywords={"battlecry"}}
 P["LOOT_122"]={effects={{op="DESTROY",target={kind="CHOOSE",side="ENEMY_WEAPON"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["LOOT_124"]={effects={{condition="CONTROL_NO_OTHER_MINIONS",keyword="taunt,divine_shield",op="BUFF",target={kind="SELF",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["LOOT_125"]={keywords={"divine_shield","poisonous"}}
-P["LOOT_131"]={effects={{keyword="taunt",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="LOOT_131t1",trigger="END_TURN"}}}
+P["LOOT_131"]={effects={{keyword="taunt",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="LOOT_131t1",tokenDisplay="1/2 Ooze",trigger="END_TURN"}}}
 P["LOOT_132"]={abilities={{1,1}},effects={{amount=6,op="DAMAGE",raceFilter="dragon",target={kind="CHOOSE",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["LOOT_134"]={abilities={{3,1}},effects={{amount=4,op="SET_ATTACK",setVerb=true,target={kind="SELF",side="ANY_MINION"},trigger="START_TURN"}}}
 P["LOOT_136"]={effects={{amount=1,excludeSource=true,op="BUFF",target={kind="ALL",side="FRIENDLY_MINIONS"},trigger="AURA"}},keywords={"stealth"}}
 P["LOOT_137"]={keywords={"taunt"}}
-P["LOOT_150"]={effects={{op="TRANSFORM",target={kind="CHOOSE",side="FRIENDLY_MINION"},token="LOOT_150t1",trigger="BATTLECRY"}},keywords={"battlecry"}}
+P["LOOT_150"]={effects={{op="TRANSFORM",target={kind="CHOOSE",side="FRIENDLY_MINION"},token="LOOT_150t1",tokenDisplay="6/6 Elemental",trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["LOOT_152"]={abilities={{1,1}},effects={{amount2=1,excludeSource=true,op="BUFF",target={kind="ALL",side="FRIENDLY_MINIONS"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["LOOT_153"]={abilities={{2,1}},effects={{op="SUMMON",["repeat"]=7,target={kind="ALL",side="ANY_CHARACTER"},token="LOOT_153t1",trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
 P["LOOT_154"]={effects={{costMax=1,costMin=1,forOpponent=true,op="SUMMON_RANDOM",target={kind="ALL",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=1}},keywords={"battlecry"}}
@@ -1938,7 +1938,7 @@ P["LOOT_204"]={effects={{op="RETURN_TO_HAND",target={kind="TRIGGER_SOURCE",side=
 P["LOOT_211"]={effects={{amount=2,condition="COMBO",fromDeck=true,op="DRAW",target={kind="ALL",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=1}}}
 P["LOOT_222"]={keywords={"immune_while_attacking"}}
 P["LOOT_231"]={effects={{op="GAIN_ARMOR",target={kind="SELF",side="YOUR_HERO"},trigger="WHEN_CAST_SPELL",valueSource="PREVIOUS_COST"}}}
-P["LOOT_233"]={effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="LOOT_233t",trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
+P["LOOT_233"]={effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="LOOT_233t",tokenDisplay="5/1 Revenant",trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
 P["LOOT_258"]={}
 P["LOOT_278"]={bonusEffects=1,effects={{amount=2,amount2=2,op="BUFF",target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"}}}
 P["LOOT_285"]={bonusEffects=1,effects={{amount=5,op="GAIN_ARMOR",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"}}}
@@ -1948,14 +1948,14 @@ P["LOOT_309"]={effects={{amount=6,op="GAIN_ARMOR",target={kind="SELF",side="YOUR
 P["LOOT_313"]={effects={{amount=-1,amount2=2,costCount="NAMED_ON_BOARD",costCountName="Silver Hand Recruit",op="CARD_COST",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"}},keywords={"divine_shield"}}
 P["LOOT_315"]={keywords={"taunt","poisonous"}}
 P["LOOT_329"]={effects={{op="SUMMON_COPY",target={kind="TRIGGER_SOURCE",side="ANY_MINION"},trigger="AFTER_PLAY_MINION"}}}
-P["LOOT_333"]={effects={{amount=2,amount2=2,keyword="taunt",op="BUFF_NAMED",target={kind="ALL",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
+P["LOOT_333"]={effects={{amount=2,amount2=2,keyword="taunt",op="BUFF_NAMED",target={kind="ALL",side="ANY_CHARACTER"},tokenDisplay="Silver Hand Recruit",trigger="ON_PLAY"}}}
 P["LOOT_347"]={effects={{amount=1,op="DAMAGE",["repeat"]=3,split=true,target={kind="RANDOM",side="ENEMY_CHARACTER"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["LOOT_351"]={abilities={{2,1}},effects={{amount=1,op="GAIN_MANA_CRYSTAL",target={kind="SELF",side="YOUR_HERO"},trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
-P["LOOT_357"]={effects={{forOpponent=true,op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="LOOT_357l",trigger="BATTLECRY"}},keywords={"battlecry"}}
+P["LOOT_357"]={effects={{forOpponent=true,op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="LOOT_357l",tokenDisplay="treasure chest for your opponent",trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["LOOT_357l"]={effects={{forOpponent=true,op="ADD_TO_HAND",target={kind="SELF",side="ANY_CHARACTER"},tokens={"LOOT_998h","LOOT_998j","LOOT_998k","LOOT_998l"},trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
 P["LOOT_363"]={abilities={{2,1}},effects={{op="ADD_TO_HAND",["repeat"]=3,target={kind="SELF",side="ANY_CHARACTER"},token="CS2_101t",trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
 P["LOOT_367"]={abilities={{1,1}},effects={{amount=2,amountSource="ENEMY_MINIONS",op="GAIN_ARMOR",target={kind="SELF",side="YOUR_HERO"},trigger="BATTLECRY"}},keywords={"battlecry"}}
-P["LOOT_368"]={abilities={{2,1}},effects={{keyword="taunt",op="SUMMON",["repeat"]=3,target={kind="ALL",side="ANY_CHARACTER"},token="__anon_1_3_demons",trigger="DEATHRATTLE"}},keywords={"taunt","deathrattle"}}
+P["LOOT_368"]={abilities={{2,1}},effects={{keyword="taunt",op="SUMMON",["repeat"]=3,target={kind="ALL",side="ANY_CHARACTER"},token="__anon_1_3_demons",tokenDisplay="1/3 demons",trigger="DEATHRATTLE"}},keywords={"taunt","deathrattle"}}
 P["LOOT_382"]={effects={{keyword="elusive",op="GIVE_KEYWORD",target={kind="SELF",side="YOUR_HERO"},trigger="AURA"}}}
 P["LOOT_383"]={effects={{costMax=2,costMin=2,forOpponent=true,op="SUMMON_RANDOM",target={kind="ALL",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=1}},keywords={"taunt","battlecry"}}
 P["LOOT_388"]={abilities={{1,1}},effects={{amount=2,op="HEAL",target={kind="ALL",side="FRIENDLY_CHARACTER"},trigger="BATTLECRY"}},keywords={"battlecry"}}
@@ -1966,23 +1966,23 @@ P["LOOT_410"]={effects={{amount=3,condition="HOLDING_RACE",conditionRace="dragon
 P["LOOT_412"]={effects={{amount=1,amount2=1,fromHand=true,op="SUMMON_COPY_FROM",target={kind="SELF",side="YOUR_HERO"},trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
 P["LOOT_413"]={abilities={{2,1}},effects={{amount=3,op="GAIN_ARMOR",target={kind="SELF",side="YOUR_HERO"},trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
 P["LOOT_414"]={effects={{amount2=2,op="CAST_FROM",target={kind="SELF",side="ANY_CHARACTER"},trigger="END_TURN",type_filter=2}}}
-P["LOOT_415"]={effects={{op="ADD_TO_HAND",target={kind="ALL",side="ANY_CHARACTER"},token="LOOT_415t1",trigger="DEATHRATTLE"}},keywords={"taunt","deathrattle"}}
-P["LOOT_415t1"]={effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="LOOT_415t1t",trigger="ON_PLAY"},{op="ADD_TO_HAND",summonNamed=true,target={kind="SELF",side="ANY_CHARACTER"},token="LOOT_415t2",trigger="ON_PLAY"}}}
-P["LOOT_415t2"]={effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="LOOT_415t2t",trigger="ON_PLAY"},{op="ADD_TO_HAND",summonNamed=true,target={kind="SELF",side="ANY_CHARACTER"},token="LOOT_415t3",trigger="ON_PLAY"}}}
-P["LOOT_415t3"]={effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="LOOT_415t3t",trigger="ON_PLAY"},{op="ADD_TO_HAND",summonNamed=true,target={kind="SELF",side="ANY_CHARACTER"},token="LOOT_415t4",trigger="ON_PLAY"}}}
-P["LOOT_415t4"]={effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="LOOT_415t4t",trigger="ON_PLAY"},{op="ADD_TO_HAND",summonNamed=true,target={kind="SELF",side="ANY_CHARACTER"},token="LOOT_415t5",trigger="ON_PLAY"}}}
-P["LOOT_415t5"]={effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="LOOT_415t5t",trigger="ON_PLAY"},{op="ADD_TO_HAND",summonNamed=true,target={kind="SELF",side="ANY_CHARACTER"},token="LOOT_415t6",trigger="ON_PLAY"}}}
+P["LOOT_415"]={effects={{op="ADD_TO_HAND",target={kind="ALL",side="ANY_CHARACTER"},token="LOOT_415t1",tokenDisplay="the first seal",trigger="DEATHRATTLE"}},keywords={"taunt","deathrattle"}}
+P["LOOT_415t1"]={effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="LOOT_415t1t",tokenDisplay="2/2 demon",trigger="ON_PLAY"},{op="ADD_TO_HAND",summonNamed=true,target={kind="SELF",side="ANY_CHARACTER"},token="LOOT_415t2",trigger="ON_PLAY"}}}
+P["LOOT_415t2"]={effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="LOOT_415t2t",tokenDisplay="3/3 demon",trigger="ON_PLAY"},{op="ADD_TO_HAND",summonNamed=true,target={kind="SELF",side="ANY_CHARACTER"},token="LOOT_415t3",trigger="ON_PLAY"}}}
+P["LOOT_415t3"]={effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="LOOT_415t3t",tokenDisplay="4/4 demon",trigger="ON_PLAY"},{op="ADD_TO_HAND",summonNamed=true,target={kind="SELF",side="ANY_CHARACTER"},token="LOOT_415t4",trigger="ON_PLAY"}}}
+P["LOOT_415t4"]={effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="LOOT_415t4t",tokenDisplay="5/5 demon",trigger="ON_PLAY"},{op="ADD_TO_HAND",summonNamed=true,target={kind="SELF",side="ANY_CHARACTER"},token="LOOT_415t5",trigger="ON_PLAY"}}}
+P["LOOT_415t5"]={effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="LOOT_415t5t",tokenDisplay="6/6 demon",trigger="ON_PLAY"},{op="ADD_TO_HAND",summonNamed=true,target={kind="SELF",side="ANY_CHARACTER"},token="LOOT_415t6",trigger="ON_PLAY"}}}
 P["LOOT_415t6"]={effects={{op="DESTROY",target={kind="ALL",side="ENEMY_DECK"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["LOOT_420"]={effects={{amount2=4,op="CHOOSE_HAND",target={kind="SELF",side="ANY_CHARACTER"},trigger="START_TURN"}}}
 P["LOOT_504"]={echo=true,effects={{amount=1,op="TRANSFORM",target={kind="CHOOSE",side="FRIENDLY_MINION"},transformPool=1,trigger="ON_PLAY"}}}
 P["LOOT_534"]={effects={{op="ADD_TO_HAND",target={kind="SELF",side="ANY_CHARACTER"},token="TAVERN_COIN",trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
-P["LOOT_535"]={effects={{amountSource="GAME_SPELLS_COST_5_PLUS",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="LOOT_535t",trigger="BATTLECRY"}},keywords={"battlecry"}}
+P["LOOT_535"]={effects={{amountSource="GAME_SPELLS_COST_5_PLUS",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="LOOT_535t",tokenDisplay="dragon for each spell you cast this game that costs 5 or more",trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["LOOT_998h"]={effects={{amount=1,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY"},{op="FILL_HAND",target={kind="PREVIOUS",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
 P["LOOT_998j"]={effects={{amount=3,discoverSummon=true,op="DISCOVER",rarityFilter=5,target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=1},{op="SUMMON_COPY",target={kind="PREVIOUS",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
 P["LOOT_998k"]={effects={{op="TRANSFORM",rarityFilter=5,target={kind="ALL",side="FRIENDLY_HAND"},trigger="BATTLECRY",type_filter=1},{amount=-1,op="CARD_COST",previousPlural=true,target={kind="PREVIOUS",side="ANY_CHARACTER"},trigger="BATTLECRY"}},keywords={"taunt","battlecry"}}
 P["LOOT_998l"]={effects={{amount=3,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY"},{amount=1,amount2=8,op="CARD_COST",previousPlural=true,target={kind="PREVIOUS",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
-P["MAW_004"]={effects={{buffAll=true,buffDeck=true,buffRandom=true,forOpponent=true,op="SWAP_WITH",target={kind="SELF",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
-P["MAW_015"]={effects={{op="SUMMON",["repeat"]=2,summonNamed=true,target={kind="ALL",side="ANY_CHARACTER"},token="CS2_101t",trigger="ON_PLAY"},{amount=1,amount2=1,op="BUFF_NAMED",target={kind="ALL",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
+P["MAW_004"]={effects={{buffDeck=true,buffRandom=true,forOpponent=true,op="SWAP_WITH",target={kind="SELF",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
+P["MAW_015"]={effects={{op="SUMMON",["repeat"]=2,summonNamed=true,target={kind="ALL",side="ANY_CHARACTER"},token="CS2_101t",trigger="ON_PLAY"},{amount=1,amount2=1,op="BUFF_NAMED",target={kind="ALL",side="ANY_CHARACTER"},tokenDisplay="Silver Hand Recruit",trigger="ON_PLAY"}}}
 P["MAW_017"]={effects={{amount=1,amount2=1,condition="DECK_NO_NEUTRAL",op="SET_STATS",target={kind="CHOOSE",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["MAW_020"]={abilities={{0,1}},effects={{amount=-1,amount2=2,costCount="CARDS_PLAYED_THIS_TURN",op="CARD_COST",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"}},keywords={"rush"}}
 P["MAW_025"]={choiceLabels={"Silence a minion","Give a minion Immune this turn"},choices={{{op="SILENCE",target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"}},{{keyword="immune",op="GIVE_KEYWORD",target={kind="CHOOSE",side="ANY_MINION"},temporary=true,trigger="ON_PLAY"}}},effects={{op="SILENCE",target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"}}}
@@ -1994,7 +1994,7 @@ P["MEND_045"]={effects={{op="ADD_TO_HAND",raceFilter="dragon",target={kind="SELF
 P["MEND_305"]={effects={{amount=2,amount2=2,op="BUFF",raceFilter="beast",target={kind="CHOOSE",side="FRIENDLY_MINION"},trigger="ON_PLAY"},{amount=2,amount2=2,op="BUFF",raceFilter="beast",target={kind="RANDOM",side="FRIENDLY_HAND_MINIONS"},trigger="ON_PLAY"}}}
 P["MEND_502"]={effects={{op="SUMMON_RANDOM",printOnly=true,target={kind="ALL",side="ANY_CHARACTER"},trigger="ON_PLAY",zeroCost=true},{costMax=6,costMin=6,op="SUMMON_RANDOM",silent=true,target={kind="ALL",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
 P["MIS_104"]={effects={{op="ADD_TO_HAND",raceFilter="beast",["repeat"]=5,target={kind="SELF",side="ANY_CHARACTER"},temporary=true,trigger="ON_PLAY",type_filter=1}}}
-P["MIS_301"]={effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="MIS_301t",trigger="ON_PLAY"},{amount=1,amountSource="NAMED_ON_BOARD",costCountName="Treant",op="DRAW",silent=true,target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
+P["MIS_301"]={effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="MIS_301t",tokenDisplay="treant and draw a card for each treant you control",trigger="ON_PLAY"},{amount=1,amountSource="NAMED_ON_BOARD",costCountName="Treant",op="DRAW",silent=true,target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
 P["MIS_306"]={keywords={"rush"},overload=4}
 P["MIS_308"]={effects={{op="SHUFFLE",setVerb=true,target={kind="SELF",side="ENEMY_HERO"},token="BOT_511t",trigger="END_TURN"},{amount=5,explodesWording=true,op="DAMAGE",target={kind="SELF",side="YOUR_HERO"},trigger="CAST_WHEN_DRAWN"}}}
 P["MIS_314"]={effects={{costMax=1,costMin=1,op="SUMMON_RANDOM",["repeat"]=3,target={kind="ALL",side="ANY_CHARACTER"},trigger="DEATHRATTLE"}},keywords={"rush","deathrattle"}}
@@ -2035,7 +2035,7 @@ P["NEW1_040"]={effects={{keyword="taunt",op="SUMMON",target={kind="ALL",side="AN
 P["NEW1_041"]={effects={{op="DESTROY",target={kind="RANDOM",side="ENEMY_MINION"},targetAttackMax=2,trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["NX2_002"]={abilities={{11,1}},effects={{amount=1,op="DAMAGE",target={kind="ALL",side="ENEMY_MINIONS"},trigger="AFTER_CAST_SPELL"}}}
 P["NX2_003"]={effects={{amount=3,condition="CAST_SPELL_LAST_TURN",op="DISCOVER",raceFilter="elemental",target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=1}},keywords={"battlecry"}}
-P["NX2_006"]={abilities={{6,1}},effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="NX2_006t",trigger="AFTER_HERO_ATTACK"}}}
+P["NX2_006"]={abilities={{6,1}},effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="NX2_006t",tokenDisplay="undead pirate",trigger="AFTER_HERO_ATTACK"}}}
 P["NX2_007"]={abilities={{1,1}},effects={{condition="PLAYED_RACE_LAST_TURN",conditionRace="elemental",op="SUMMON",["repeat"]=3,target={kind="ALL",side="ANY_CHARACTER"},token="PRO_001at",trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["NX2_009"]={effects={{keyword="freeze",op="GIVE_KEYWORD",target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"},{op="COPY",target={kind="PREVIOUS",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
 P["NX2_010"]={abilities={{0,1}},effects={{amount=4,amount2=4,condition="MANATHIRST",conditionAmount=11,keyword="charge",op="BUFF",target={kind="SELF",side="ANY_MINION"},trigger="ON_PLAY"}},keywords={"taunt"}}
@@ -2048,7 +2048,7 @@ P["NX2_022"]={effects={{condition="HOLDING_RACE",conditionRace="mechanical",keyw
 P["NX2_024"]={abilities={{2,1}},effects={{amount=4,op="DAMAGE",target={kind="SELF",side="YOUR_HERO"},trigger="DEATHRATTLE"}},keywords={"rush","deathrattle"}}
 P["NX2_027"]={abilities={{1,1}},effects={{condition="ARMOR_AT_LEAST",conditionAmount=5,op="SUMMON_COPY",target={kind="SELF",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"taunt","battlecry"}}
 P["NX2_028"]={abilities={{6,2}},effects={{amount=4,op="GAIN_ARMOR",target={kind="SELF",side="YOUR_HERO"},trigger="AFTER_HERO_ATTACK"},{amount=1,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="AFTER_HERO_ATTACK"}}}
-P["NX2_032"]={effects={{op="SPEND_ALL_MANA",target={kind="SELF",side="YOUR_HERO"},trigger="DEATHRATTLE"},{keyword="rush",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="RLK_018t",trigger="DEATHRATTLE",valueSource="PREVIOUS_MUCH"}},keywords={"deathrattle"}}
+P["NX2_032"]={effects={{op="SPEND_ALL_MANA",target={kind="SELF",side="YOUR_HERO"},trigger="DEATHRATTLE"},{keyword="rush",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="RLK_018t",tokenDisplay="2/2 Zombie",trigger="DEATHRATTLE",valueSource="PREVIOUS_MUCH"}},keywords={"deathrattle"}}
 P["NX2_044"]={effects={{amount=3,costMax=1,costMin=1,discoverGuessCopy=true,op="DISCOVER",target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["NX2_050"]={allMinionTypes=true}
 P["NX2_051"]={abilities={{0,1}},effects={{condition="MANATHIRST",conditionAmount=6,keyword="reborn",op="GIVE_KEYWORD",target={kind="SELF",side="ANY_MINION"},trigger="ON_PLAY"}},keywords={"rush"}}
@@ -2057,7 +2057,7 @@ P["OG_024"]={overload=2}
 P["OG_026"]={effects={{op="UNLOCK_OVERLOAD",target={kind="SELF",side="YOUR_HERO"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["OG_027"]={effects={{amount=1,op="TRANSFORM",target={kind="ALL",side="FRIENDLY_MINIONS"},transformPool=2,trigger="ON_PLAY"}}}
 P["OG_028"]={abilities={{0,1}},effects={{amount=-1,amount2=2,costCount="GAME_MINIONS_OF_RACE",costCountRace="totem",op="CARD_COST",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"}},keywords={"taunt"}}
-P["OG_031"]={effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="OG_031a",trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
+P["OG_031"]={effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="OG_031a",tokenDisplay="4/2 Elemental",trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
 P["OG_034"]={effects={{amount2=1,op="CANT_ATTACK_UNLESS",target={kind="SELF",side="ANY_MINION"},trigger="AURA"}}}
 P["OG_042"]={effects={{op="SUMMON_FROM_DECK",target={kind="SELF",side="ANY_CHARACTER"},trigger="END_TURN",type_filter=1}}}
 P["OG_045"]={effects={{followUp={{op="ADD_TO_HAND",raceFilter="beast",target={kind="SELF",side="ANY_CHARACTER"},trigger="DEATHRATTLE",type_filter=1}},followUpCondition="NONE",op="GRANT_ABILITY",target={kind="ALL",side="FRIENDLY_MINIONS"},trigger="ON_PLAY"}}}
@@ -2095,7 +2095,7 @@ P["OG_153"]={keywords={"taunt"}}
 P["OG_156"]={effects={{keyword="taunt",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="OG_156a",trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["OG_158"]={abilities={{2,1}},effects={{amount=1,amount2=1,op="BUFF",target={kind="RANDOM",side="FRIENDLY_MINION"},trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
 P["OG_161"]={effects={{amount=2,excludeRace="murloc",op="DAMAGE",target={kind="ALL",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
-P["OG_162"]={effects={{amount=2,op="DAMAGE",target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="BATTLECRY"},{amount=2,amount2=2,namedAnywhere=true,op="BUFF_NAMED",target={kind="SELF",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
+P["OG_162"]={effects={{amount=2,op="DAMAGE",target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="BATTLECRY"},{amount=2,amount2=2,namedAnywhere=true,op="BUFF_NAMED",target={kind="SELF",side="ANY_MINION"},tokenDisplay="C'Thun",trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["OG_176"]={abilities={{0,1}},effects={{amount=5,op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="ON_PLAY",undamagedOnly=true}}}
 P["OG_179"]={abilities={{2,1}},effects={{amount=1,op="DAMAGE",target={kind="RANDOM",side="ENEMY_CHARACTER"},trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
 P["OG_195"]={choiceLabels={"Summon seven 1/1 Wisps","Give your minions +2/+2"},choices={{{op="SUMMON",["repeat"]=7,target={kind="ALL",side="ANY_CHARACTER"},token="OG_195c",trigger="ON_PLAY"}},{{amount=2,amount2=2,op="BUFF",target={kind="ALL",side="FRIENDLY_MINIONS"},trigger="ON_PLAY"}}},effects={{op="SUMMON",["repeat"]=7,target={kind="ALL",side="ANY_CHARACTER"},token="OG_195c",trigger="ON_PLAY"}}}
@@ -2117,26 +2117,26 @@ P["OG_256"]={abilities={{2,1}},effects={{amount=1,amount2=1,op="BUFF",target={ki
 P["OG_267"]={effects={{amount=2,op="BUFF",target={kind="ALL",side="YOUR_WEAPON"},trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
 P["OG_271"]={effects={{amount=2,amount2=1,op="MULTIPLY_STATS",target={kind="SELF",side="ANY_MINION"},trigger="START_TURN"}}}
 P["OG_272"]={abilities={{2,1}},effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="OG_272t",trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
-P["OG_281"]={effects={{amount=2,amount2=2,namedAnywhere=true,op="BUFF_NAMED",target={kind="SELF",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
-P["OG_283"]={effects={{amount=3,amount2=3,namedAnywhere=true,op="BUFF_NAMED",target={kind="SELF",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"divine_shield","battlecry"}}
-P["OG_284"]={effects={{amount=1,amount2=1,keyword="taunt",namedAnywhere=true,op="BUFF_NAMED",target={kind="SELF",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"taunt","battlecry"}}
-P["OG_286"]={effects={{amount=1,amount2=1,namedAnywhere=true,op="BUFF_NAMED",target={kind="SELF",side="ANY_MINION"},trigger="END_TURN"}}}
+P["OG_281"]={effects={{amount=2,amount2=2,namedAnywhere=true,op="BUFF_NAMED",target={kind="SELF",side="ANY_MINION"},tokenDisplay="C'Thun",trigger="BATTLECRY"}},keywords={"battlecry"}}
+P["OG_283"]={effects={{amount=3,amount2=3,namedAnywhere=true,op="BUFF_NAMED",target={kind="SELF",side="ANY_MINION"},tokenDisplay="C'Thun",trigger="BATTLECRY"}},keywords={"divine_shield","battlecry"}}
+P["OG_284"]={effects={{amount=1,amount2=1,keyword="taunt",namedAnywhere=true,op="BUFF_NAMED",target={kind="SELF",side="ANY_MINION"},tokenDisplay="C'Thun",trigger="BATTLECRY"}},keywords={"taunt","battlecry"}}
+P["OG_286"]={effects={{amount=1,amount2=1,namedAnywhere=true,op="BUFF_NAMED",target={kind="SELF",side="ANY_MINION"},tokenDisplay="C'Thun",trigger="END_TURN"}}}
 P["OG_291"]={effects={{amount=1,amount2=1,costOverride=1,op="COPY",prompt=true,setVerb=true,target={kind="CHOOSE",side="FRIENDLY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
-P["OG_292"]={effects={{amount=1,amount2=1,buffAll=true,buffHand=true,keywordFilter="deathrattle",op="BUFF_ZONE",target={kind="ALL",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=1}},keywords={"battlecry"}}
-P["OG_293"]={effects={{amount=4,amount2=4,namedAnywhere=true,op="BUFF_NAMED",target={kind="SELF",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"taunt","battlecry"}}
+P["OG_292"]={effects={{amount=1,amount2=1,buffHand=true,keywordFilter="deathrattle",op="BUFF_ZONE",target={kind="ALL",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=1}},keywords={"battlecry"}}
+P["OG_293"]={effects={{amount=4,amount2=4,namedAnywhere=true,op="BUFF_NAMED",target={kind="SELF",side="ANY_MINION"},tokenDisplay="C'Thun",trigger="BATTLECRY"}},keywords={"taunt","battlecry"}}
 P["OG_295"]={effects={{amount=2,amountSource="ENEMY_MINIONS",op="HEAL",target={kind="SELF",side="YOUR_HERO"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["OG_300"]={effects={{amount=2,amount2=2,op="BUFF",subjectType=-1,target={kind="SELF",side="ANY_MINION"},trigger="AFTER_ATTACK_KILL"}}}
-P["OG_303"]={effects={{amount=1,amount2=1,namedAnywhere=true,op="BUFF_NAMED",target={kind="SELF",side="ANY_MINION"},trigger="AFTER_CAST_SPELL"}},keywords={"spell_damage"},spellDamage=1}
+P["OG_303"]={effects={{amount=1,amount2=1,namedAnywhere=true,op="BUFF_NAMED",target={kind="SELF",side="ANY_MINION"},tokenDisplay="C'Thun",trigger="AFTER_CAST_SPELL"}},keywords={"spell_damage"},spellDamage=1}
 P["OG_308"]={effects={{op="MAY_ATTACK_AGAIN",target={kind="ALL",side="ANY_CHARACTER"},trigger="AURA"}}}
 P["OG_309"]={effects={{op="TRIGGER_DEATHRATTLE",target={kind="CHOOSE",side="FRIENDLY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["OG_310"]={effects={{keyword="divine_shield",op="GIVE_KEYWORD",subjectHealth=1,target={kind="TRIGGER_SOURCE",side="ANY_CHARACTER"},trigger="WHEN_SUMMON_MINION"}}}
 P["OG_311"]={effects={{amount=3,familyFilter=2,op="DISCOVER",target={kind="ALL",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=1},{amount=2,amount2=2,op="BUFF",target={kind="PREVIOUS",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
-P["OG_312"]={effects={{op="EQUIP",target={kind="ALL",side="ANY_CHARACTER"},token="OG_058",trigger="BATTLECRY"}},keywords={"battlecry"}}
+P["OG_312"]={effects={{op="EQUIP",target={kind="ALL",side="ANY_CHARACTER"},token="OG_058",tokenDisplay="1/3 rusty hook",trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["OG_313"]={effects={{amount=1,amount2=1,op="BUFF",subjectRace="beast",target={kind="TRIGGER_SOURCE",side="ANY_CHARACTER"},trigger="AFTER_SUMMON_MINION"}}}
-P["OG_314"]={effects={{amount=1,followUp={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="OG_314b",trigger="ON_PLAY"}},followUpCondition="IF_SURVIVES",op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"}}}
+P["OG_314"]={effects={{amount=1,followUp={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="OG_314b",tokenDisplay="2/2 slime",trigger="ON_PLAY"}},followUpCondition="IF_SURVIVES",op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"}}}
 P["OG_318"]={effects={{keyword="taunt",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="OG_318t",trigger="SELF_TAKES_DAMAGE"}}}
 P["OG_320"]={abilities={{1,1}},effects={{amount=1,amountSource="OTHER_CARDS_IN_HAND",op="BUFF",target={kind="SELF",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
-P["OG_321"]={effects={{amount=1,amount2=1,namedAnywhere=true,op="BUFF_NAMED",target={kind="SELF",side="ANY_MINION"},trigger="SELF_TAKES_DAMAGE"}},keywords={"taunt"}}
+P["OG_321"]={effects={{amount=1,amount2=1,namedAnywhere=true,op="BUFF_NAMED",target={kind="SELF",side="ANY_MINION"},tokenDisplay="C'Thun",trigger="SELF_TAKES_DAMAGE"}},keywords={"taunt"}}
 P["OG_322"]={effects={{amount=-2,amount2=1,op="CARD_COST",target={kind="SELF",side="YOUR_HERO"},trigger="AURA",type_filter=3}}}
 P["OG_323"]={abilities={{2,1}},effects={{amount=1,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
 P["OG_325"]={}
@@ -2144,20 +2144,20 @@ P["OG_326"]={}
 P["OG_327"]={keywords={"taunt"}}
 P["OG_328"]={effects={{amount=1,op="TRANSFORM",target={kind="CHOOSE",side="FRIENDLY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["OG_330"]={effects={{classPool=1,op="ADD_TO_HAND",otherClass=true,target={kind="SELF",side="ANY_CHARACTER"},trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
-P["OG_334"]={effects={{amount=1,amount2=1,namedAnywhere=true,op="BUFF_NAMED",target={kind="SELF",side="ANY_MINION"},trigger="AFTER_HEAL"}},keywords={"taunt"}}
+P["OG_334"]={effects={{amount=1,amount2=1,namedAnywhere=true,op="BUFF_NAMED",target={kind="SELF",side="ANY_MINION"},tokenDisplay="C'Thun",trigger="AFTER_HEAL"}},keywords={"taunt"}}
 P["OG_337"]={abilities={{1,1}},effects={{amount2=1,amountSource="ENEMY_MINIONS",op="BUFF",target={kind="SELF",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"taunt","battlecry"}}
-P["OG_339"]={effects={{amount=2,amount2=2,namedAnywhere=true,op="BUFF_NAMED",target={kind="SELF",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
+P["OG_339"]={effects={{amount=2,amount2=2,namedAnywhere=true,op="BUFF_NAMED",target={kind="SELF",side="ANY_MINION"},tokenDisplay="C'Thun",trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["OG_340"]={keywords={"taunt","elusive"}}
-P["ONY_001"]={effects={{condition="HOLDING_RACE",conditionRace="dragon",keyword="rush",op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="ONY_001t",trigger="BATTLECRY"}},keywords={"battlecry"}}
+P["ONY_001"]={effects={{condition="HOLDING_RACE",conditionRace="dragon",keyword="rush",op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="ONY_001t",tokenDisplay="2/1 Whelp",trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["ONY_006"]={effects={{amount=1,amountSource="SPELLS_IN_HAND",improved=true,op="DAMAGE_ADJACENT",spell=true,target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"}}}
 P["ONY_007"]={effects={{amount=1,op="DAMAGE",["repeat"]=4,split=true,target={kind="RANDOM",side="ENEMY_CHARACTER"},trigger="AFTER_CAST_SPELL"}}}
 P["ONY_009"]={effects={{costMax=5,op="SUMMON_FROM_DECK",raceFilter="beast",target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=1}},keywords={"battlecry"}}
 P["ONY_010"]={effects={{amount=2,op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="ON_PLAY"},{op="ADD_TO_HAND",target={kind="SELF",side="ANY_CHARACTER"},token="ONY_010",trigger="HONORABLE_KILL"}}}
 P["ONY_011"]={effects={{amount=1,op="DAMAGE",["repeat"]=10,spell=true,split=true,target={kind="RANDOM",side="ENEMY_MINION"},trigger="ON_PLAY"}},overload=1}
-P["ONY_013"]={effects={{amount=5,op="HEAL",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"},{amount=2,buffHand=true,buffRandom=true,op="COST_ZONE",target={kind="ALL",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=2}}}
+P["ONY_013"]={effects={{amount=5,op="HEAL",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"},{amount=2,buffAll=false,buffHand=true,buffRandom=true,op="COST_ZONE",target={kind="ALL",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=2}}}
 P["ONY_014"]={effects={{amount=1,op="DAMAGE",spell=true,target={kind="ALL",side="ANY_MINION"},trigger="ON_PLAY"},{amount=1,op="BUFF",target={kind="SELF",side="ANY_MINION"},temporary=true,trigger="HONORABLE_KILL"}}}
 P["ONY_016"]={abilities={{0,1}},effects={{op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="BT_922t",trigger="ON_PLAY"}}}
-P["ONY_017"]={effects={{amount=1,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=1},{condition="TARGET_IS_RACE",conditionRace="dragon",keyword="rush",op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="__anon_2_1_whelp",trigger="ON_PLAY"}}}
+P["ONY_017"]={effects={{amount=1,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=1},{condition="TARGET_IS_RACE",conditionRace="dragon",keyword="rush",op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="__anon_2_1_whelp",tokenDisplay="2/1 Whelp",trigger="ON_PLAY"}}}
 P["ONY_018"]={choiceLabels={"Restore 8 Health to your hero","Deal 4 damage"},choices={{{amount=8,op="HEAL",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"}},{{amount=4,op="DAMAGE",target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="ON_PLAY"}}},effects={{amount=8,op="HEAL",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"}}}
 P["ONY_022"]={effects={{amount=3,op="DISCOVER",schoolFilter=5,target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=2}},keywords={"battlecry"}}
 P["ONY_024"]={abilities={{1,1}},effects={{op="DAMAGE",target={kind="CHOOSE",side="ENEMY_MINION"},trigger="BATTLECRY",valueSource="HERO_ARMOR"}},keywords={"taunt","battlecry"}}
@@ -2181,17 +2181,17 @@ P["REV_313"]={effects={{amount=3,op="DISCOVER",target={kind="SELF",side="ANY_CHA
 P["REV_318"]={effects={{amount=1,op="DRAW",schoolFilter=6,target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=2},{amount=1,op="GAIN_MANA_CRYSTAL",target={kind="SELF",side="YOUR_HERO"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["REV_319"]={effects={{amount=1,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="DEATHRATTLE",type_filter=1},{amount=-8,op="CARD_COST",target={kind="PREVIOUS",side="ANY_CHARACTER"},trigger="DEATHRATTLE"}},keywords={"taunt"}}
 P["REV_333"]={effects={{op="TRIGGER_DEATHRATTLE",target={kind="CHOOSE",side="FRIENDLY_MINION"},trigger="ON_PLAY"}}}
-P["REV_334"]={effects={{keyword="taunt",op="SUMMON",["repeat"]=3,target={kind="ALL",side="ANY_CHARACTER"},token="REV_334t",trigger="ON_PLAY"},{amount=1,amount2=1,condition="HEALTH_AT_MOST",conditionAmount=20,op="BUFF",previousPlural=true,target={kind="PREVIOUS",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
+P["REV_334"]={effects={{keyword="taunt",op="SUMMON",["repeat"]=3,target={kind="ALL",side="ANY_CHARACTER"},token="REV_334t",tokenDisplay="1/3 Jailer",trigger="ON_PLAY"},{amount=1,amount2=1,condition="HEALTH_AT_MOST",conditionAmount=20,op="BUFF",previousPlural=true,target={kind="PREVIOUS",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
 P["REV_338"]={effects={{amount2=1,op="BUFF",target={kind="ALL",side="FRIENDLY_HAND_MINIONS"},trigger="BATTLECRY"}},keywords={"battlecry"}}
-P["REV_350"]={effects={{op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="REV_350t",trigger="ON_PLAY"},{amount=1,amount2=2,condition="INFUSE_PROGRESS",conditionAmount=3,op="BUFF",previousPlural=true,target={kind="PREVIOUS",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
+P["REV_350"]={effects={{op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="REV_350t",tokenDisplay="2/1 Bat",trigger="ON_PLAY"},{amount=1,amount2=2,condition="INFUSE_PROGRESS",conditionAmount=3,op="BUFF",previousPlural=true,target={kind="PREVIOUS",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
 P["REV_351"]={abilities={{1,1}},effects={{amount=2,op="BUFF",raceFilter="beast",target={kind="CHOOSE",side="FRIENDLY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
-P["REV_356"]={effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="REV_350t",trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
-P["REV_360"]={effects={{op="SUMMON_RANDOM",target={kind="ALL",side="ANY_CHARACTER"},tokens={"REV_360t","REV_360t1","REV_360t2"},trigger="BATTLECRY"}},keywords={"battlecry"}}
+P["REV_356"]={effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="REV_350t",tokenDisplay="2/1 Bat",trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
+P["REV_360"]={effects={{op="SUMMON_RANDOM",target={kind="ALL",side="ANY_CHARACTER"},tokenDisplay="dormant wildseed",tokens={"REV_360t","REV_360t1","REV_360t2"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["REV_360t"]={dormantTurns=1,keywords={"rush"}}
 P["REV_360t1"]={dormantTurns=2,keywords={"taunt"}}
-P["REV_360t2"]={dormantTurns=3,effects={{op="EQUIP",target={kind="ALL",side="ANY_CHARACTER"},token="REV_360t4",trigger="WHEN_AWAKENS"}}}
+P["REV_360t2"]={dormantTurns=3,effects={{op="EQUIP",target={kind="ALL",side="ANY_CHARACTER"},token="REV_360t4",tokenDisplay="4/2 greatbow",trigger="WHEN_AWAKENS"}}}
 P["REV_362"]={effects={{amount=2,op="BUFF",target={kind="CHOOSE",side="FRIENDLY_MINION"},trigger="ON_PLAY"},{condition="TARGET_IS_RACE",conditionRace="beast",keyword="rush",op="GIVE_KEYWORD",target={kind="PREVIOUS",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
-P["REV_364"]={effects={{amount=3,op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="ON_PLAY"},{op="SUMMON_RANDOM",target={kind="ALL",side="ANY_CHARACTER"},tokens={"REV_360t","REV_360t1","REV_360t2"},trigger="ON_PLAY"}}}
+P["REV_364"]={effects={{amount=3,op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="ON_PLAY"},{op="SUMMON_RANDOM",target={kind="ALL",side="ANY_CHARACTER"},tokenDisplay="dormant wildseed",tokens={"REV_360t","REV_360t1","REV_360t2"},trigger="ON_PLAY"}}}
 P["REV_369"]={effects={{amount=6,excessToHero=true,op="DAMAGE",["repeat"]=3,spell=true,target={kind="RANDOM",side="ENEMY_MINION"},trigger="ON_PLAY"}}}
 P["REV_375"]={abilities={{2,1}},effects={{keyword="rush",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="REV_375t",trigger="DEATHRATTLE"}},keywords={"rush","deathrattle"}}
 P["REV_378"]={effects={{amount=1,amount2=7,op="CARD_COST",target={kind="SELF",side="ENEMY_HERO"},trigger="BATTLECRY",type_filter=1}},keywords={"battlecry"}}
@@ -2202,7 +2202,7 @@ P["REV_511"]={effects={{amount2=1,op="CHOOSE_HAND",target={kind="SELF",side="ANY
 P["REV_513"]={effects={{amount=2,condition="CONTROL_SECRET",op="DAMAGE",target={kind="ALL",side="ENEMY_CHARACTER"},trigger="END_TURN"}}}
 P["REV_517"]={effects={{op="SUMMON_COPY",prompt=true,["repeat"]=3,target={kind="CHOOSE",side="FRIENDLY_MINION"},trigger="ON_PLAY"}},overload=2}
 P["REV_602"]={effects={{keyword="freeze",op="GIVE_KEYWORD",target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"},{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="REV_845",trigger="ON_PLAY"}}}
-P["REV_827"]={abilities={{17,1}},effects={{keyword="stealth",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="REV_827t",trigger="AFTER_OPPONENT_CAST_SPELL"}},secret=true}
+P["REV_827"]={abilities={{17,1}},effects={{keyword="stealth",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="REV_827t",tokenDisplay="spider",trigger="AFTER_OPPONENT_CAST_SPELL"}},secret=true}
 P["REV_837"]={effects={{amount=2,amount2=1,bothPlayers=true,op="CARD_COST",target={kind="ALL",side="ANY_CHARACTER"},trigger="AURA",type_filter=1}}}
 P["REV_838"]={abilities={{0,1}},effects={{amount=-1,amount2=2,costCount="GAME_MINIONS_OF_RACE",costCountRace="totem",op="CARD_COST",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"}}}
 P["REV_839"]={abilities={{4,1}},effects={{amount2=1,op="BUFF",target={kind="SELF",side="ANY_MINION"},trigger="END_TURN"}}}
@@ -2211,9 +2211,9 @@ P["REV_900"]={effects={{condition="CONTROL_SECRET",op="SUMMON_COPY",target={kind
 P["REV_917"]={effects={{op="SUMMON_RANDOM",raceFilter="totem",target={kind="ALL",side="ANY_CHARACTER"},tokens={"CS2_050","CS2_051","CS2_052","NEW1_009"},trigger="AFTER_HERO_ATTACK",type_filter=1}}}
 P["REV_923"]={effects={{amount=1,op="TRANSFORM",target={kind="CHOOSE",side="FRIENDLY_MINION"},transformPool=1,trigger="ON_PLAY"}}}
 P["REV_930"]={effects={{amount=2,damagedOnly=true,keyword="charge",op="BUFF",target={kind="SELF",side="ANY_MINION"},trigger="AURA"}}}
-P["REV_936"]={effects={{keyword="taunt",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="REV_936t",trigger="BATTLECRY"}},keywords={"battlecry"}}
+P["REV_936"]={effects={{keyword="taunt",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="REV_936t",tokenDisplay="3/5 Elemental",trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["REV_939"]={effects={{amount=3,followUp={{additional=true,amount=-2,op="CARD_COST",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"}},followUpCondition="IF_DIES",op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"}}}
-P["REV_943"]={effects={{op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="REV_943t",trigger="ON_PLAY"},{amount=1,amount2=1,amountSource="GAME_RELICS_PLAYED",op="BUFF",previousPlural=true,silent=true,target={kind="PREVIOUS",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
+P["REV_943"]={effects={{op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="REV_943t",tokenDisplay="spirits and improve your future relics",trigger="ON_PLAY"},{amount=1,amount2=1,amountSource="GAME_RELICS_PLAYED",op="BUFF",previousPlural=true,silent=true,target={kind="PREVIOUS",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
 P["REV_945"]={effects={{amount=3,op="DISCOVER",otherClass=true,secretOnly=true,target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["REV_947"]={effects={{amount=3,familyFilter=2,op="DISCOVER",target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY"}},keywords={"taunt","battlecry"}}
 P["REV_951"]={abilities={{1,1}},effects={{condition="DECK_NO_NEUTRAL",op="ADD_TO_HAND",["repeat"]=3,target={kind="SELF",side="ANY_CHARACTER"},token="REV_951t",trigger="BATTLECRY"}},keywords={"battlecry"}}
@@ -2224,7 +2224,7 @@ P["REV_983"]={effects={{amount=3,amount2=3,op="SET_STATS",target={kind="CHOOSE",
 P["REV_990"]={abilities={{0,2}},effects={{amount=1,op="DAMAGE",target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"},{amount=2,op="BUFF",target={kind="PREVIOUS",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
 P["RLK_012"]={effects={{amount=2,op="GAIN_CORPSES",subjectType=-2,target={kind="SELF",side="YOUR_HERO"},trigger="AFTER_ATTACK_KILL"}}}
 P["RLK_015"]={abilities={{0,3}},effects={{amount=3,op="DAMAGE",spell=true,target={kind="CHOOSE",side="ENEMY_CHARACTER"},trigger="ON_PLAY"},{keyword="freeze",op="GIVE_KEYWORD",target={kind="PREVIOUS",side="ANY_CHARACTER"},trigger="ON_PLAY"},{amount=1,excludeSource=true,op="DAMAGE",spell=true,target={kind="ALL",side="ENEMY_CHARACTER"},trigger="ON_PLAY"}}}
-P["RLK_018"]={effects={{amount=3,followUp={{keyword="rush",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="RLK_018t",trigger="ON_PLAY"}},followUpCondition="IF_DIES",op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"}}}
+P["RLK_018"]={effects={{amount=3,followUp={{keyword="rush",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="RLK_018t",tokenDisplay="2/2 zombie",trigger="ON_PLAY"}},followUpCondition="IF_DIES",op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"}}}
 P["RLK_024"]={abilities={{0,1}},effects={{amount=6,op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"}},keywords={"lifesteal"}}
 P["RLK_029"]={abilities={{2,1}},effects={{amount=4,op="DAMAGE",target={kind="RANDOM",side="ENEMY_CHARACTER"},trigger="DEATHRATTLE"}},keywords={"taunt","deathrattle"}}
 P["RLK_038"]={effects={{amount=2,op="DAMAGE",spell=true,target={kind="CHOOSE",side="ENEMY_CHARACTER"},trigger="ON_PLAY"},{keyword="freeze",op="GIVE_KEYWORD",target={kind="CHOOSE",side="ENEMY_CHARACTER"},trigger="ON_PLAY"}},keywords={"freeze"}}
@@ -2241,12 +2241,12 @@ P["RLK_083"]={effects={{amount=1,op="DAMAGE",["repeat"]=2,target={kind="RANDOM",
 P["RLK_104"]={effects={{amount=2,op="DAMAGE",target={kind="ALL",side="ANY_OTHER_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["RLK_113"]={effects={{amount=3,condition="OPPONENT_TURN",op="DAMAGE",target={kind="ALL",side="ENEMY_HERO"},trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
 P["RLK_117"]={effects={{op="DESTROY",target={kind="TRIGGER_SOURCE",side="ANY_CHARACTER"},trigger="AFTER_SELF_ATTACK"}}}
-P["RLK_118"]={effects={{keyword="taunt",op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="RLK_118t3",trigger="ON_PLAY"},{corpseCost=4,keyword="reborn",op="GIVE_KEYWORD",previousPlural=true,target={kind="PREVIOUS",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
+P["RLK_118"]={effects={{keyword="taunt",op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="RLK_118t3",tokenDisplay="2/2 Zombie",trigger="ON_PLAY"},{corpseCost=4,keyword="reborn",op="GIVE_KEYWORD",previousPlural=true,target={kind="PREVIOUS",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
 P["RLK_119"]={abilities={{1,1}},effects={{keyword="reborn",op="GIVE_KEYWORD",raceFilter="undead",target={kind="CHOOSE",side="FRIENDLY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["RLK_121"]={effects={{amount=1,op="DRAW",subjectRace="undead",target={kind="SELF",side="ANY_CHARACTER"},trigger="AFTER_FRIENDLY_MINION_DIES"}}}
 P["RLK_123"]={effects={{amount=2,condition="FRIENDLY_RACE_DIED_THIS_TURN",conditionRace="undead",op="DAMAGE",target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="BATTLECRY"}},keywords={"battlecry"}}
-P["RLK_208"]={effects={{amount=4,op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="ON_PLAY"},{condition="DECK_NO_TYPE",conditionType=1,keyword="rush",op="SUMMON",["repeat"]=4,target={kind="ALL",side="ANY_CHARACTER"},token="BT_036t",trigger="ON_PLAY"}}}
-P["RLK_216"]={effects={{amount=1,buffAll=true,buffDeck=true,keywordFilter="deathrattle",op="COST_ZONE",target={kind="ALL",side="ANY_CHARACTER"},trigger="BATTLECRY"}},keywords={"battlecry"}}
+P["RLK_208"]={effects={{amount=4,op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="ON_PLAY"},{condition="DECK_NO_TYPE",conditionType=1,keyword="rush",op="SUMMON",["repeat"]=4,target={kind="ALL",side="ANY_CHARACTER"},token="BT_036t",tokenDisplay="1/1 Illidari",trigger="ON_PLAY"}}}
+P["RLK_216"]={effects={{amount=1,buffDeck=true,keywordFilter="deathrattle",op="COST_ZONE",target={kind="ALL",side="ANY_CHARACTER"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["RLK_220"]={effects={{amount=2,op="DAMAGE",target={kind="ALL",side="ENEMY_HERO"},trigger="WHEN_SELF_ATTACKS"}},keywords={"lifesteal"}}
 P["RLK_222"]={effects={{op="ADD_TO_HAND",target={kind="SELF",side="ANY_CHARACTER"},token="RLK_222t1",trigger="BATTLECRY"},{amount=2,condition="MANATHIRST",conditionAmount=5,op="DAMAGE",target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["RLK_222t1"]={effects={{op="ADD_TO_HAND",target={kind="SELF",side="ANY_CHARACTER"},token="RLK_222t2",trigger="BATTLECRY"},{amount=5,condition="MANATHIRST",conditionAmount=8,op="GAIN_ARMOR",target={kind="SELF",side="YOUR_HERO"},trigger="BATTLECRY"}},keywords={"battlecry"}}
@@ -2262,17 +2262,17 @@ P["RLK_536"]={effects={{op="TRIGGER_DEATHRATTLE",target={kind="CHOOSE",side="FRI
 P["RLK_539"]={effects={{amount=6,op="DAMAGE",target={kind="ALL",side="ENEMY_HERO"},trigger="END_TURN"}},keywords={"lifesteal"}}
 P["RLK_542"]={effects={{op="ADD_TO_HAND",["repeat"]=2,target={kind="SELF",side="ANY_CHARACTER"},token="RLK_843",trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
 P["RLK_543"]={effects={{amount=-1,amount2=1,op="CARD_COST",schoolFilter=2,target={kind="SELF",side="YOUR_HERO"},trigger="AURA",type_filter=2}}}
-P["RLK_544"]={effects={{keyword="taunt,elusive",op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="RLK_544t",trigger="ON_PLAY"}}}
+P["RLK_544"]={effects={{keyword="taunt,elusive",op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="RLK_544t",tokenDisplay="golems",trigger="ON_PLAY"}}}
 P["RLK_547"]={effects={{amount=3,classPool=2,op="DISCOVER",otherClass=true,target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=2},{amount=-1,op="CARD_COST",previousPlural=true,target={kind="PREVIOUS",side="ANY_CHARACTER"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["RLK_548"]={effects={{op="ADD_TO_HAND",target={kind="SELF",side="ANY_CHARACTER"},token="RLK_843",trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["RLK_550"]={effects={{excludeSource=true,followUp={{amount=1,amount2=1,op="BUFF",target={kind="ALL",side="FRIENDLY_MINIONS"},trigger="DEATHRATTLE"}},followUpCondition="NONE",op="GRANT_ABILITY",target={kind="ALL",side="FRIENDLY_MINIONS"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["RLK_551"]={abilities={{2,1}},effects={{amount=3,op="DAMAGE",target={kind="RANDOM",side="ENEMY_CHARACTER"},trigger="DEATHRATTLE"}},keywords={"taunt","lifesteal","reborn","deathrattle"}}
-P["RLK_552"]={effects={{condition="FRIENDLY_RACE_DIED_THIS_TURN",conditionRace="undead",op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="RLK_909t",trigger="BATTLECRY"}},keywords={"battlecry"}}
-P["RLK_554"]={abilities={{2,1}},effects={{keyword="taunt",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="RLK_554t",trigger="DEATHRATTLE"}},keywords={"taunt","reborn","deathrattle"}}
+P["RLK_552"]={effects={{condition="FRIENDLY_RACE_DIED_THIS_TURN",conditionRace="undead",op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="RLK_909t",tokenDisplay="3/2 Zombie",trigger="BATTLECRY"}},keywords={"battlecry"}}
+P["RLK_554"]={abilities={{2,1}},effects={{keyword="taunt",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="RLK_554t",tokenDisplay="undead",trigger="DEATHRATTLE"}},keywords={"taunt","reborn","deathrattle"}}
 P["RLK_573"]={effects={{amount=1,op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="ON_PLAY"},{amount=1,condition="COMBO",op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
 P["RLK_590"]={effects={{op="FILL_HAND",target={kind="ALL",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=2},{amount=-1,amount2=2,costCount="OTHER_CARDS_IN_HAND",op="CARD_COST",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"}}}
 P["RLK_592"]={effects={{amount=5,amount2=5,excludeSource=true,keyword="taunt",op="BUFF",raceFilter="undead",target={kind="RANDOM",side="FRIENDLY_MINION"},trigger="BATTLECRY"},{amount=5,amount2=5,excludeSource=true,keyword="taunt",op="BUFF",raceFilter="undead",target={kind="RANDOM",side="FRIENDLY_MINION"},trigger="DEATHRATTLE"}},keywords={"reborn","battlecry","deathrattle"}}
-P["RLK_593"]={effects={{amount=2,amount2=4,buffAll=true,buffDeck=true,op="MULTIPLY_STATS",target={kind="ALL",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=1}},keywords={"battlecry"}}
+P["RLK_593"]={effects={{amount=2,amount2=4,buffDeck=true,op="MULTIPLY_STATS",target={kind="ALL",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=1}},keywords={"battlecry"}}
 P["RLK_602"]={keywords={"taunt","rush","elusive"}}
 P["RLK_609"]={abilities={{11,1}},effects={{amount=1,op="DAMAGE",subjectSchool="fire",target={kind="ALL",side="ANY_MINION"},trigger="AFTER_CAST_SPELL"}}}
 P["RLK_651"]={abilities={{0,1}},effects={{amount=-1,amount2=2,costCount="ARMOR_YOU_HAVE",op="CARD_COST",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"}},keywords={"taunt"}}
@@ -2283,15 +2283,15 @@ P["RLK_657"]={abilities={{1,1},{2,1}},effects={{amount=6,op="GAIN_ARMOR",target=
 P["RLK_659"]={effects={{amount=5,op="GAIN_ARMOR",target={kind="SELF",side="YOUR_HERO"},trigger="BATTLECRY"},{amount=3,amount2=10,op="CARD_COST",target={kind="SELF",side="YOUR_HERO"},trigger="BATTLECRY",type_filter=1}},keywords={"battlecry"}}
 P["RLK_708"]={abilities={{1,1},{2,1}},effects={{amount=1,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY"},{amount=1,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="DEATHRATTLE"}},keywords={"battlecry","deathrattle"}}
 P["RLK_709"]={abilities={{0,2}},effects={{amount=2,op="DAMAGE",spell=true,target={kind="ALL",side="ENEMY_CHARACTER"},trigger="ON_PLAY"},{amount=1,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
-P["RLK_731"]={effects={{amount=2,buffAll=true,buffHand=true,corpseCost=2,op="BUFF_ZONE",target={kind="ALL",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=1}},keywords={"battlecry"}}
+P["RLK_731"]={effects={{amount=2,buffHand=true,corpseCost=2,op="BUFF_ZONE",target={kind="ALL",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=1}},keywords={"battlecry"}}
 P["RLK_745"]={abilities={{4,1}},effects={{corpseCost=4,op="SUMMON_COPY",target={kind="SELF",side="ANY_MINION"},trigger="END_TURN"}},keywords={"reborn"}}
 P["RLK_814"]={abilities={{1,1}},effects={{amount=1,amount2=1,condition="HOLDING_SCHOOL",conditionSchool="shadow",op="BUFF",target={kind="SELF",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["RLK_818"]={effects={{amount=1,op="DAMAGE",["repeat"]=3,spell=true,target={kind="RANDOM",side="ENEMY_CHARACTER"},trigger="ON_PLAY"}}}
 P["RLK_824"]={effects={{amount=1,op="BUFF",subjectRace="undead",target={kind="TRIGGER_SOURCE",side="ANY_CHARACTER"},trigger="AFTER_SUMMON_MINION"}}}
 P["RLK_825"]={effects={{amount=1,amountSource="GAME_HERO_ATTACKS",improved=true,op="DAMAGE",target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="BATTLECRY"}},keywords={"battlecry"}}
-P["RLK_828"]={effects={{amount=1,amount2=1,buffAll=true,buffDeck=true,buffHand=true,op="BUFF",target={kind="ALL",side="FRIENDLY_MINIONS"},trigger="AFTER_HERO_ATTACK"}}}
+P["RLK_828"]={effects={{amount=1,amount2=1,buffDeck=true,buffHand=true,op="BUFF",target={kind="ALL",side="FRIENDLY_MINIONS"},trigger="AFTER_HERO_ATTACK"}}}
 P["RLK_829"]={effects={{amount=2,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY"},{amount=1,amount2=6,condition="FRIENDLY_RACE_DIED_THIS_TURN",conditionRace="undead",conditionTrails=true,op="CARD_COST",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
-P["RLK_833"]={abilities={{2,1}},effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="RLK_833t",trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
+P["RLK_833"]={abilities={{2,1}},effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="RLK_833t",tokenDisplay="undead chicken",trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
 P["RLK_834"]={effects={{amount=3,op="DISCOVER",target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=2},{amount=-2,condition="FRIENDLY_RACE_DIED_THIS_TURN",conditionRace="undead",op="CARD_COST",target={kind="PREVIOUS",side="ANY_CHARACTER"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["RLK_843"]={effects={{amount=2,op="DAMAGE",replacement={{amount=3,condition="MANATHIRST",conditionAmount=8,op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="ON_PLAY"}},spell=true,target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
 P["RLK_910"]={effects={{followUp={{amount=3,op="DAMAGE",target={kind="RANDOM",side="ENEMY_CHARACTER"},trigger="DEATHRATTLE"}},followUpCondition="NONE",op="GRANT_ABILITY",target={kind="ALL",side="FRIENDLY_MINIONS"},trigger="ON_PLAY"}}}
@@ -2328,27 +2328,27 @@ P["SCH_243"]={effects={{op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CH
 P["SCH_244"]={effects={{costMax=3,costMin=3,op="SUMMON_RANDOM",raceFilter="beast",target={kind="ALL",side="ANY_CHARACTER"},trigger="DEATHRATTLE"}},keywords={"taunt","deathrattle"}}
 P["SCH_245"]={effects={{amount=3,op="DISCOVER",target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=2}},keywords={"spell_damage","battlecry"},spellDamage=1}
 P["SCH_247"]={effects={{costMax=1,costMin=1,op="ADD_TO_HAND",["repeat"]=2,target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=1}}}
-P["SCH_252"]={effects={{op="SHUFFLE",["repeat"]=2,target={kind="SELF",side="YOUR_HERO"},token="SCH_307t",trigger="BATTLECRY"},{amount=2,op="HEAL",silent=true,target={kind="SELF",side="YOUR_HERO"},trigger="CAST_WHEN_DRAWN"}},keywords={"battlecry"}}
-P["SCH_253"]={effects={{amount=3,op="DAMAGE",spell=true,target={kind="ALL",side="ANY_MINION"},trigger="ON_PLAY"},{amountSource="MINIONS_DYING",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="SCH_253t",trigger="ON_PLAY"}}}
-P["SCH_271"]={effects={{amount=2,op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="ON_PLAY"},{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="SCH_271t",trigger="ON_PLAY",valueSource="PREVIOUS_MUCH"}}}
+P["SCH_252"]={effects={{op="SHUFFLE",["repeat"]=2,target={kind="SELF",side="YOUR_HERO"},token="SCH_307t",tokenDisplay="soul fragments",trigger="BATTLECRY"},{amount=2,op="HEAL",silent=true,target={kind="SELF",side="YOUR_HERO"},trigger="CAST_WHEN_DRAWN"}},keywords={"battlecry"}}
+P["SCH_253"]={effects={{amount=3,op="DAMAGE",spell=true,target={kind="ALL",side="ANY_MINION"},trigger="ON_PLAY"},{amountSource="MINIONS_DYING",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="SCH_253t",tokenDisplay="spirit for every minion killed",trigger="ON_PLAY"}}}
+P["SCH_271"]={effects={{amount=2,op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="ON_PLAY"},{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="SCH_271t",tokenDisplay="1/1 Elemental",trigger="ON_PLAY",valueSource="PREVIOUS_MUCH"}}}
 P["SCH_273"]={abilities={{4,1}},effects={{amount=1,op="DAMAGE",spell=true,target={kind="ALL",side="ENEMY_CHARACTER"},trigger="END_TURN"}}}
 P["SCH_276"]={effects={{op="SILENCE",subjectType=1,target={kind="TRIGGER_SOURCE",side="ANY_CHARACTER"},trigger="WHEN_SELF_ATTACKS"}},keywords={"rush"}}
 P["SCH_283"]={effects={{amount=1,condition="HERO_POWER_USED_THIS_TURN",op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["SCH_300"]={effects={{amount=3,keywordFilter="deathrattle",op="DISCOVER",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=1},{amount=-1,keywordFilter="deathrattle",op="CARD_COST",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY",type_filter=1}}}
 P["SCH_302"]={effects={{keyword="divine_shield",op="GIVE_KEYWORD",target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"},{amount=1,amount2=1,op="SUMMON_COPY",target={kind="PREVIOUS",side="ANY_MINION"},thenJoin=true,trigger="ON_PLAY"}}}
-P["SCH_307"]={effects={{amount=2,op="DAMAGE",spell=true,target={kind="ALL",side="ANY_MINION"},trigger="ON_PLAY"},{op="SHUFFLE",["repeat"]=2,target={kind="SELF",side="YOUR_HERO"},token="SCH_307t",trigger="ON_PLAY"},{amount=2,op="HEAL",silent=true,target={kind="SELF",side="YOUR_HERO"},trigger="CAST_WHEN_DRAWN"}}}
+P["SCH_307"]={effects={{amount=2,op="DAMAGE",spell=true,target={kind="ALL",side="ANY_MINION"},trigger="ON_PLAY"},{op="SHUFFLE",["repeat"]=2,target={kind="SELF",side="YOUR_HERO"},token="SCH_307t",tokenDisplay="soul fragments",trigger="ON_PLAY"},{amount=2,op="HEAL",silent=true,target={kind="SELF",side="YOUR_HERO"},trigger="CAST_WHEN_DRAWN"}}}
 P["SCH_307t"]={castsWhenDrawn=true,effects={{amount=2,op="HEAL",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"}}}
 P["SCH_310"]={keywords={"spell_damage"},spellDamage=1}
 P["SCH_311"]={abilities={{1,1}},effects={{excludeSource=true,keyword="rush",op="GIVE_KEYWORD",target={kind="ALL",side="FRIENDLY_MINIONS"},trigger="BATTLECRY"}},keywords={"rush","battlecry"}}
 P["SCH_312"]={abilities={{1,1}},effects={{amount=-2,op="HERO_POWER_COST",target={kind="SELF",side="YOUR_HERO"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["SCH_313"]={effects={{amount=2,op="DAMAGE",target={kind="ALL",side="ANY_OTHER_MINION"},trigger="SPELLBURST"}}}
 P["SCH_333"]={effects={{amount=3,op="DISCOVER",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=2},{amount=-1,op="CARD_COST",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY",type_filter=2}}}
-P["SCH_337"]={effects={{op="SUMMON",["repeat"]=2,summonAttacks=1,target={kind="ALL",side="ANY_CHARACTER"},token="SCH_337t",trigger="END_TURN"}}}
+P["SCH_337"]={effects={{op="SUMMON",["repeat"]=2,summonAttacks=1,target={kind="ALL",side="ANY_CHARACTER"},token="SCH_337t",tokenDisplay="ruffians that attack random enemies",trigger="END_TURN"}}}
 P["SCH_340"]={abilities={{2,1}},effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="SCH_340t",trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
 P["SCH_343"]={effects={{amount=3,amount2=3,deckCostToken="SCH_307t",op="BUFF",target={kind="SELF",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"taunt","battlecry"}}
 P["SCH_350"]={effects={{amount=3,condition="COMBO",familyFilter=8,op="DISCOVER",target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=2}}}
 P["SCH_355"]={effects={{amount=3,deckCostToken="SCH_307t",op="DAMAGE",target={kind="ALL",side="ANY_OTHER_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
-P["SCH_426"]={effects={{op="SUMMON",summonAttacks=1,target={kind="ALL",side="ANY_CHARACTER"},token="SCH_426t",trigger="DEATHRATTLE"}},keywords={"stealth","deathrattle"}}
+P["SCH_426"]={effects={{op="SUMMON",summonAttacks=1,target={kind="ALL",side="ANY_CHARACTER"},token="SCH_426t",tokenDisplay="forsaken lilian that attacks a random enemy",trigger="DEATHRATTLE"}},keywords={"stealth","deathrattle"}}
 P["SCH_427"]={abilities={{0,1}},effects={{amount=2,op="REFRESH_MANA",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"}},overload=2}
 P["SCH_512"]={effects={{amount=4,followUp={{additional=true,freshCopy=true,op="SUMMON_COPY",target={kind="PREVIOUS",side="ANY_MINION"},trigger="ON_PLAY"}},followUpCondition="IF_DIES",op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"}}}
 P["SCH_513"]={effects={{condition="HERO_HEALTH_CHANGED_THIS_TURN",op="DESTROY",target={kind="CHOOSE",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
@@ -2360,7 +2360,7 @@ P["SCH_532"]={effects={{keyword="divine_shield",op="BUFF",target={kind="SELF",si
 P["SCH_533"]={effects={{op="SUMMON_FROM_DECK",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=1},{keyword="taunt,divine_shield",op="GIVE_KEYWORD",target={kind="PREVIOUS",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
 P["SCH_535"]={abilities={{0,1}},effects={{amount=3,op="DAMAGE",spell=true,target={kind="ALL",side="ANY_MINION"},trigger="ON_PLAY"}},keywords={"lifesteal"}}
 P["SCH_605"]={effects={{op="CLEAVE",target={kind="SELF",side="ANY_MINION"},trigger="AURA"}}}
-P["SCH_609"]={effects={{amount=4,amount2=4,buffAll=true,buffBoard=true,buffDeck=true,buffHand=true,op="BUFF_ZONE",target={kind="ALL",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=1}}}
+P["SCH_609"]={effects={{amount=4,amount2=4,buffBoard=true,buffDeck=true,buffHand=true,op="BUFF_ZONE",target={kind="ALL",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=1}}}
 P["SCH_610"]={effects={{costMax=5,op="SUMMON_FROM_DECK",raceFilter="beast",["repeat"]=2,target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=1},{keyword="rush",op="GIVE_KEYWORD",previousPlural=true,target={kind="PREVIOUS",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
 P["SCH_613"]={abilities={{1,1}},effects={{amount=5,condition="HOLDING_TYPE_COST",conditionAmount=5,conditionType=2,op="HEAL",target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="BATTLECRY"}},keywords={"taunt","battlecry"}}
 P["SCH_614"]={abilities={{22,1}},effects={{amount=10,op="REFRESH_MANA",target={kind="SELF",side="YOUR_HERO"},trigger="SPELLBURST"}}}
@@ -2369,11 +2369,11 @@ P["SCH_617"]={effects={{amount=1,amount2=1,op="BUFF",target={kind="CHOOSE",side=
 P["SCH_621"]={effects={{amount=-1,amount2=-1,op="SUMMON_COPY",setVerb=true,target={kind="SELF",side="ANY_MINION"},trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
 P["SCH_622"]={abilities={{6,1}},effects={{amount=1,op="BUFF",target={kind="SELF",side="ANY_MINION"},trigger="AFTER_HERO_ATTACK"}}}
 P["SCH_623"]={effects={{amount=2,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY"},{amount=-1,amount2=2,costCount="WEAPON_ATTACK",op="CARD_COST",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"}}}
-P["SCH_700"]={effects={{op="SHUFFLE",["repeat"]=2,target={kind="SELF",side="YOUR_HERO"},token="SCH_307t",trigger="BATTLECRY"},{amount=2,op="HEAL",silent=true,target={kind="SELF",side="YOUR_HERO"},trigger="CAST_WHEN_DRAWN"}},keywords={"battlecry"}}
-P["SCH_701"]={effects={{amount=3,op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"},{op="SHUFFLE",["repeat"]=2,target={kind="SELF",side="YOUR_HERO"},token="SCH_307t",trigger="ON_PLAY"},{amount=2,op="HEAL",silent=true,target={kind="SELF",side="YOUR_HERO"},trigger="CAST_WHEN_DRAWN"}}}
+P["SCH_700"]={effects={{op="SHUFFLE",["repeat"]=2,target={kind="SELF",side="YOUR_HERO"},token="SCH_307t",tokenDisplay="soul fragments",trigger="BATTLECRY"},{amount=2,op="HEAL",silent=true,target={kind="SELF",side="YOUR_HERO"},trigger="CAST_WHEN_DRAWN"}},keywords={"battlecry"}}
+P["SCH_701"]={effects={{amount=3,op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"},{op="SHUFFLE",["repeat"]=2,target={kind="SELF",side="YOUR_HERO"},token="SCH_307t",tokenDisplay="soul fragments",trigger="ON_PLAY"},{amount=2,op="HEAL",silent=true,target={kind="SELF",side="YOUR_HERO"},trigger="CAST_WHEN_DRAWN"}}}
 P["SCH_704"]={effects={{amount=5,deckCostToken="SCH_307t",op="BUFF",target={kind="ALL",side="YOUR_HERO"},temporary=true,trigger="BATTLECRY"}},keywords={"battlecry"}}
-P["SCH_705"]={effects={{condition="OUTCAST",op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="SCH_705t",trigger="ON_PLAY",type_filter=1}}}
-P["SCH_709"]={effects={{keyword="taunt",op="ADD_TO_HAND",target={kind="ALL",side="ANY_CHARACTER"},token="SCH_709t",trigger="DEATHRATTLE"}},keywords={"taunt","deathrattle"}}
+P["SCH_705"]={effects={{condition="OUTCAST",op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="SCH_705t",tokenDisplay="1/1 demon",trigger="ON_PLAY",type_filter=1}}}
+P["SCH_709"]={effects={{keyword="taunt",op="ADD_TO_HAND",target={kind="ALL",side="ANY_CHARACTER"},token="SCH_709t",tokenDisplay="5/7 ghost",trigger="DEATHRATTLE"}},keywords={"taunt","deathrattle"}}
 P["SCH_710"]={effects={{keyword="taunt",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="SCH_710t",trigger="WHEN_OPPONENT_CASTS_SPELL"}}}
 P["SCH_711"]={effects={{costMax=7,costMin=7,op="SUMMON_RANDOM",target={kind="ALL",side="ANY_CHARACTER"},trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
 P["SCH_712"]={keywords={"lifesteal"}}
@@ -2386,13 +2386,13 @@ P["SC_413"]={abilities={{1,1}},effects={{amount=10,op="DAMAGE",target={kind="RAN
 P["SC_413t"]={effects={{amount=10,excessToHero=true,op="DAMAGE",target={kind="RANDOM",side="ENEMY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["SC_414"]={abilities={{1,1}},effects={{amount=5,op="DAMAGE",target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["SC_414t"]={effects={{amount=5,op="DAMAGE",target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="BATTLECRY"},{amount=5,amountSource="GAME_STARSHIPS_LAUNCHED",op="DAMAGE",repeatPerCount=true,target={kind="RANDOM",side="ENEMY_CHARACTER"},trigger="BATTLECRY"}},keywords={"battlecry"}}
-P["SC_756"]={effects={{op="SUMMON",["repeat"]=4,target={kind="ALL",side="ANY_CHARACTER"},token="SC_756t",trigger="END_TURN"}}}
+P["SC_756"]={effects={{op="SUMMON",["repeat"]=4,target={kind="ALL",side="ANY_CHARACTER"},token="SC_756t",tokenDisplay="interceptors that attack random enemies",trigger="END_TURN"}}}
 P["SW_006"]={effects={{costMax=3,costMin=3,op="SUMMON_RANDOM",target={kind="ALL",side="ANY_CHARACTER"},trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
 P["SW_021"]={effects={{op="SUMMON_FROM_DECK",target={kind="ALL",side="ANY_CHARACTER"},trigger="DEATHRATTLE",type_filter=1}},keywords={"deathrattle"}}
 P["SW_027"]={effects={{amount=2,op="DAMAGE",replacement={{amount=5,condition="CONTROL_RACE",conditionRace="pirate",implicitTarget=true,op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"}},spell=true,target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"}}}
 P["SW_029"]={effects={{amount=1,op="DRAW",raceFilter="pirate",target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["SW_030"]={abilities={{4,1}},effects={{amount=3,op="GAIN_ARMOR",target={kind="SELF",side="YOUR_HERO"},trigger="END_TURN"}}}
-P["SW_032"]={effects={{amount=1,buffDeck=true,buffHand=true,op="COST_ZONE",raceFilter="elemental",target={kind="ALL",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=1}},keywords={"battlecry"}}
+P["SW_032"]={effects={{amount=1,buffAll=false,buffDeck=true,buffHand=true,op="COST_ZONE",raceFilter="elemental",target={kind="ALL",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=1}},keywords={"battlecry"}}
 P["SW_033"]={keywords={"rush","lifesteal"},overload=1}
 P["SW_040"]={effects={{amount=2,op="DAMAGE",["repeat"]=2,repeatPrinted=true,spell=true,target={kind="LOWEST_HEALTH",side="ENEMY_CHARACTER"},trigger="ON_PLAY"}}}
 P["SW_041"]={effects={{amount=1,delayed=true,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY"},{amount=-1,delayed=true,op="CARD_COST",target={kind="PREVIOUS",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
@@ -2433,11 +2433,11 @@ P["SW_321"]={effects={{amount=3,op="DAMAGE",spell=true,target={kind="CHOOSE",sid
 P["SW_412"]={abilities={{0,1}},effects={{amount=3,op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="ON_PLAY",undamagedOnly=true}},tradeable=true}
 P["SW_413"]={effects={{keyword="stealth",op="GIVE_KEYWORD",subjectType=1,target={kind="SELF",side="ANY_MINION"},trigger="AFTER_SELF_ATTACK"}},keywords={"rush"}}
 P["SW_422"]={choiceLabels={"Give your minions +1 Attack","Summon a 2/2 Treant"},choices={{{amount=1,op="BUFF",target={kind="ALL",side="FRIENDLY_MINIONS"},trigger="ON_PLAY"}},{{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="SW_422t",trigger="ON_PLAY"}}},effects={{amount=1,op="BUFF",target={kind="ALL",side="FRIENDLY_MINIONS"},trigger="ON_PLAY"}}}
-P["SW_429"]={effects={{keyword="taunt",op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="SW_429t",trigger="ON_PLAY"}},tradeable=true}
+P["SW_429"]={effects={{keyword="taunt",op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="SW_429t",tokenDisplay="2/7 Turtle",trigger="ON_PLAY"}},tradeable=true}
 P["SW_431"]={effects={{amount=3,op="BUFF",target={kind="ALL",side="YOUR_HERO"},temporary=true,trigger="WHEN_SELF_ATTACKS"}},keywords={"rush"}}
 P["SW_437"]={effects={{followUp={{amount=1,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="DEATHRATTLE"}},followUpCondition="NONE",op="GRANT_ABILITY",target={kind="ALL",side="FRIENDLY_MINIONS"},trigger="ON_PLAY"}}}
-P["SW_439"]={effects={{op="SHUFFLE",["repeat"]=4,target={kind="SELF",side="YOUR_HERO"},token="SW_439t",trigger="DEATHRATTLE"},{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="SW_439t2",trigger="CAST_WHEN_DRAWN"}},keywords={"deathrattle"}}
-P["SW_439t"]={castsWhenDrawn=true,effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="SW_439t2",trigger="ON_PLAY"}}}
+P["SW_439"]={effects={{op="SHUFFLE",["repeat"]=4,target={kind="SELF",side="YOUR_HERO"},token="SW_439t",tokenDisplay="acorns",trigger="DEATHRATTLE"},{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="SW_439t2",tokenDisplay="2/1 Squirrel",trigger="CAST_WHEN_DRAWN"}},keywords={"deathrattle"}}
+P["SW_439t"]={castsWhenDrawn=true,effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="SW_439t2",tokenDisplay="2/1 Squirrel",trigger="ON_PLAY"}}}
 P["SW_441"]={abilities={{0,1}},effects={{op="SILENCE",target={kind="ALL",side="ENEMY_MINIONS"},trigger="ON_PLAY"}},tradeable=true}
 P["SW_442"]={abilities={{0,1}},effects={{amount=4,op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="ON_PLAY"}},keywords={"lifesteal"}}
 P["SW_444"]={effects={{amount=1,condition="ANY_HERO_TOOK_DAMAGE_THIS_TURN",op="DRAW",schoolFilter=7,target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=2}},keywords={"battlecry"}}
@@ -2452,19 +2452,19 @@ P["TAVERN_GHOUL"]={keywords={"charge"}}
 P["TAVERN_RECRUIT"]={}
 P["TAVERN_TOTEM"]={}
 P["TID_001"]={effects={{amount=1,op="DAMAGE",["repeat"]=2,repeatPrinted=true,spell=true,target={kind="CHOOSE",side="ENEMY_CHARACTER"},trigger="ON_PLAY"}}}
-P["TID_005"]={effects={{keyword="rush",op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="TID_005t",trigger="ON_PLAY"}},overload=1}
+P["TID_005"]={effects={{keyword="rush",op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="TID_005t",tokenDisplay="5/4 Elemental",trigger="ON_PLAY"}},overload=1}
 P["TID_074"]={abilities={{1,1}},effects={{amount=5,condition="HELD_SPELLS_AT_LEAST",conditionAmount=3,op="DAMAGE",target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["TID_075"]={effects={{amount=3,op="DAMAGE",repeatLess=true,spell=true,target={kind="RANDOM",side="ENEMY_MINION"},trigger="ON_PLAY"}}}
 P["TID_080"]={effects={{amount=3,keyword="immune_while_attacking",op="BUFF",target={kind="SELF",side="ANY_MINION"},trigger="AURA",whileAttacking=true}},keywords={"stealth"}}
 P["TID_704"]={effects={{amount=1,op="DRAW",schoolFilter=8,target={kind="SELF",side="ANY_CHARACTER"},trigger="AFTER_HERO_ATTACK",type_filter=2}}}
-P["TID_710"]={effects={{amount=1,amount2=1,buffAll=true,buffDeck=true,keywordFilter="battlecry",op="BUFF_ZONE",target={kind="ALL",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=1}},keywords={"battlecry"}}
+P["TID_710"]={effects={{amount=1,amount2=1,buffDeck=true,keywordFilter="battlecry",op="BUFF_ZONE",target={kind="ALL",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=1}},keywords={"battlecry"}}
 P["TID_714"]={effects={{op="DREDGE",target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY"},{op="GAIN_ARMOR",target={kind="SELF",side="YOUR_HERO"},trigger="BATTLECRY",valueSource="PREVIOUS_COST"}},keywords={"taunt","battlecry"}}
 P["TID_716"]={effects={{amount=5,op="DAMAGE",target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="BATTLECRY"},{amount=8,op="GAIN_ARMOR",target={kind="SELF",side="YOUR_HERO"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["TID_719"]={effects={{amount=1,amount2=9,op="CARD_COST",target={kind="SELF",side="ENEMY_HERO"},trigger="BATTLECRY"}},keywords={"battlecry"}}
-P["TIME_017"]={abilities={{2,1}},effects={{keyword="divine_shield",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="__anon_7_7_tank",trigger="DEATHRATTLE"}},keywords={"divine_shield","deathrattle"}}
-P["TIME_025"]={effects={{op="SHUFFLE",["repeat"]=2,target={kind="SELF",side="YOUR_HERO"},token="TIME_025t",trigger="BATTLECRY"},{amount=3,op="DAMAGE",target={kind="SELF",side="YOUR_HERO"},trigger="CAST_WHEN_DRAWN"}},keywords={"battlecry"}}
+P["TIME_017"]={abilities={{2,1}},effects={{keyword="divine_shield",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="__anon_7_7_tank",tokenDisplay="7/7 tank",trigger="DEATHRATTLE"}},keywords={"divine_shield","deathrattle"}}
+P["TIME_025"]={effects={{op="SHUFFLE",["repeat"]=2,target={kind="SELF",side="YOUR_HERO"},token="TIME_025t",tokenDisplay="shreds of time",trigger="BATTLECRY"},{amount=3,op="DAMAGE",target={kind="SELF",side="YOUR_HERO"},trigger="CAST_WHEN_DRAWN"}},keywords={"battlecry"}}
 P["TIME_025t"]={castsWhenDrawn=true,effects={{amount=3,op="DAMAGE",spell=true,target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"}}}
-P["TIME_026"]={effects={{amount=1,amount2=1,op="BUFF",target={kind="ALL",side="FRIENDLY_MINIONS"},trigger="ON_PLAY"},{op="SHUFFLE",["repeat"]=2,target={kind="SELF",side="YOUR_HERO"},token="TIME_025t",trigger="ON_PLAY"},{amount=3,op="DAMAGE",silent=true,spell=true,target={kind="SELF",side="YOUR_HERO"},trigger="CAST_WHEN_DRAWN"}}}
+P["TIME_026"]={effects={{amount=1,amount2=1,op="BUFF",target={kind="ALL",side="FRIENDLY_MINIONS"},trigger="ON_PLAY"},{op="SHUFFLE",["repeat"]=2,target={kind="SELF",side="YOUR_HERO"},token="TIME_025t",tokenDisplay="shreds of time",trigger="ON_PLAY"},{amount=3,op="DAMAGE",silent=true,spell=true,target={kind="SELF",side="YOUR_HERO"},trigger="CAST_WHEN_DRAWN"}}}
 P["TIME_037"]={effects={{amount=1,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=1},{amount2=2,op="BUFF",target={kind="ALL",side="FRIENDLY_HAND_MINIONS"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["TIME_042"]={effects={{op="DISCARD",target={kind="ALL",side="FRIENDLY_HAND"},trigger="BATTLECRY"},{op="ADD_TO_HAND",target={kind="SELF",side="ANY_CHARACTER"},token="TIME_042t",trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["TIME_042t"]={effects={{amount=1,amount2=1,op="BUFF",staysInHand=true,target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"}}}
@@ -2474,7 +2474,7 @@ P["TIME_046"]={dormantTurns=3,keywords={"taunt"}}
 P["TIME_051"]={effects={{amount=2,amount2=1,op="MULTIPLY_STATS",target={kind="SELF",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"rush","battlecry"}}
 P["TIME_053"]={}
 P["TIME_056"]={keywords={"divine_shield","lifesteal"}}
-P["TIME_059"]={abilities={{1,1}},effects={{keyword="elusive",op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="__anon_2_1_living_paradoxes",trigger="BATTLECRY"}},keywords={"elusive","battlecry"}}
+P["TIME_059"]={abilities={{1,1}},effects={{keyword="elusive",op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="__anon_2_1_living_paradoxes",tokenDisplay="2/1 living paradoxes",trigger="BATTLECRY"}},keywords={"elusive","battlecry"}}
 P["TIME_060"]={effects={{amount=2,op="DAMAGE_MULTIPLIER",target={kind="SELF",side="ANY_MINION"},trigger="AURA"}}}
 P["TIME_062"]={effects={{condition="HOLDING_RACE",conditionRace="dragon",keyword="taunt,divine_shield",op="BUFF",target={kind="SELF",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["TIME_100"]={effects={{amount=1,amount2=1,op="BUFF",target={kind="ALL",side="FRIENDLY_HAND_MINIONS"},trigger="END_TURN"}},keywords={"divine_shield"}}
@@ -2484,19 +2484,19 @@ P["TIME_218"]={effects={{amount=1,op="DAMAGE",spell=true,target={kind="CHOOSE",s
 P["TIME_427"]={abilities={{1,1}},effects={{op="DAMAGE",target={kind="CHOOSE",side="ENEMY_MINION"},trigger="BATTLECRY",valueSource="SELF_HEALTH"}},keywords={"lifesteal","battlecry"}}
 P["TIME_428"]={abilities={{4,1}},effects={{amount2=1,excludeSource=true,op="BUFF",target={kind="ALL",side="FRIENDLY_MINIONS"},trigger="END_TURN"}}}
 P["TIME_431"]={effects={{op="HEAL",target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="BATTLECRY",valueSource="SELF_HEALTH"}},keywords={"taunt","battlecry"}}
-P["TIME_434"]={effects={{op="SUMMON",summonAttacks=2,target={kind="ALL",side="ANY_CHARACTER"},token="TIME_434t",trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
-P["TIME_447"]={effects={{keyword="divine_shield",op="GIVE_KEYWORD",target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="ON_PLAY"},{amount2=2,buffHand=true,op="BUFF_ZONE",target={kind="ALL",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=1}}}
+P["TIME_434"]={effects={{op="SUMMON",summonAttacks=2,target={kind="ALL",side="ANY_CHARACTER"},token="TIME_434t",tokenDisplay="shadow that attacks a random enemy minion",trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
+P["TIME_447"]={effects={{keyword="divine_shield",op="GIVE_KEYWORD",target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="ON_PLAY"},{amount2=2,buffAll=false,buffHand=true,op="BUFF_ZONE",target={kind="ALL",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=1}}}
 P["TIME_601"]={effects={{amount=3,op="DRAW_UNTIL",target={kind="SELF",side="YOUR_HERO"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["TIME_603"]={abilities={{2,1}},effects={{op="DESTROY",target={kind="RANDOM",side="ENEMY_MINION"},trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
 P["TIME_605"]={abilities={{1,1}},effects={{op="SUMMON_COPY",target={kind="SELF",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"rush","elusive","battlecry"}}
 P["TIME_612"]={effects={{amount=3,op="DISCOVER",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=2}},paysWith=1}
 P["TIME_613"]={effects={{op="ADD_TO_HAND",rarityFilter=5,target={kind="SELF",side="ANY_CHARACTER"},trigger="DEATHRATTLE",type_filter=1},{amount=-1,op="CARD_COST",target={kind="PREVIOUS",side="ANY_CHARACTER"},trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
 P["TIME_614"]={effects={{amount=6,condition="HERO_HEALTH_CHANGED_THIS_TURN",op="DAMAGE",target={kind="CHOOSE",side="ENEMY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
-P["TIME_700"]={abilities={{4,1}},effects={{durationTurns=3,keyword="taunt",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="TIME_700t",trigger="END_TURN"}}}
+P["TIME_700"]={abilities={{4,1}},effects={{durationTurns=3,keyword="taunt",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="TIME_700t",tokenDisplay="dragon",trigger="END_TURN"}}}
 P["TIME_703"]={abilities={{1,2}},effects={{amount=5,amount2=5,condition="HEALTH_AT_MOST",conditionAmount=10,op="BUFF",target={kind="SELF",side="ANY_MINION"},trigger="BATTLECRY"},{condition="HEALTH_AT_MOST",conditionAmount=10,op="SUMMON_COPY",target={kind="SELF",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"taunt","battlecry"}}
 P["TIME_710"]={effects={{condition="COMBO",op="SUMMON_COPY",target={kind="SELF",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"stealth"}}
 P["TIME_712"]={effects={{op="DESTROY",target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"},{condition="COMBO",costMax=8,costMin=8,op="SUMMON_RANDOM",target={kind="ALL",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
-P["TIME_713"]={effects={{forOpponent=true,op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="TIME_713t",trigger="BATTLECRY"}},keywords={"battlecry"}}
+P["TIME_713"]={effects={{forOpponent=true,op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="TIME_713t",tokenDisplay="chest for your opponent and it's full of coins!",trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["TIME_713t"]={effects={{forOpponent=true,op="FILL_HAND",target={kind="ALL",side="ANY_CHARACTER"},token="GAME_005",trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
 P["TIME_715"]={effects={{amount=2,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY"},{amount=-1,amount2=2,costCount="ENEMY_MINIONS",op="CARD_COST",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"}}}
 P["TIME_716"]={effects={{amount=1,amount2=7,op="CARD_COST",target={kind="SELF",side="ENEMY_HERO"},trigger="ON_PLAY"}}}
@@ -2505,7 +2505,7 @@ P["TIME_750"]={effects={{amount=3,op="DAMAGE",spell=true,target={kind="CHOOSE",s
 P["TIME_856"]={keywords={"spell_damage"},spellDamage=2}
 P["TIME_858"]={effects={{amount=5,op="DAMAGE",target={kind="CHOOSE",side="ENEMY_MINION"},trigger="BATTLECRY"},{amount=1,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY",valueSource="EXCESS_DAMAGE"}},keywords={"battlecry"}}
 P["TIME_871"]={effects={{amount=2,amount2=2,amountSource="FRIENDLY_MINIONS",countDamagedOnly=true,countSelector=true,countSide="ANY_MINION",countType=1,countZone="BOARD",op="BUFF",target={kind="SELF",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"taunt","battlecry"}}
-P["TIME_873"]={effects={{amount=10,op="GAIN_ARMOR",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"},{forOpponent=true,op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="TIME_873t",trigger="ON_PLAY"}}}
+P["TIME_873"]={effects={{amount=10,op="GAIN_ARMOR",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"},{forOpponent=true,op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="TIME_873t",tokenDisplay="beasts for your opponent",trigger="ON_PLAY"}}}
 P["TIME_876"]={effects={{forOpponent=true,fromHand=true,op="TRANSFORM",target={kind="SELF",side="ANY_MINION"},trigger="IN_HAND_TURN_START"}}}
 P["TLC_101"]={effects={{amount=3,damagedOnly=true,op="BUFF",target={kind="SELF",side="FRIENDLY_MINIONS"},trigger="AURA"}},keywords={"taunt","reborn"}}
 P["TLC_220"]={effects={{amount=3,op="DAMAGE",subjectRace="elemental",target={kind="RANDOM",side="ENEMY_CHARACTER"},trigger="AFTER_SUMMON_MINION"}}}
@@ -2513,12 +2513,12 @@ P["TLC_221"]={effects={{amount=3,op="DAMAGE",spell=true,target={kind="CHOOSE",si
 P["TLC_225"]={effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="TLC_249",trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
 P["TLC_226"]={effects={{amount=1,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="DEATHRATTLE",type_filter=2},{condition="KINDRED",op="SUMMON_COPY",target={kind="SELF",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"deathrattle"}}
 P["TLC_227"]={effects={{amount=2,op="DAMAGE",["repeat"]=3,repeatPrinted=true,spell=true,target={kind="LOWEST_HEALTH",side="ENEMY_CHARACTER"},trigger="ON_PLAY"}},overload=1}
-P["TLC_232"]={effects={{delayed=true,op="SUMMON",["repeat"]=3,target={kind="ALL",side="ANY_CHARACTER"},token="TLC_237t",trigger="ON_PLAY"}}}
+P["TLC_232"]={effects={{delayed=true,op="SUMMON",["repeat"]=3,target={kind="ALL",side="ANY_CHARACTER"},token="TLC_237t",tokenDisplay="2/1 Hatchling",trigger="ON_PLAY"}}}
 P["TLC_233"]={effects={{amount=1,amount2=1,excludeSource=true,keyword="taunt",op="BUFF",target={kind="ALL",side="FRIENDLY_MINIONS"},targetAttackMax=2,trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["TLC_234"]={abilities={{2,1}},effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="TLC_234t",trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
 P["TLC_234t"]={effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="TLC_234",trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
-P["TLC_237"]={effects={{op="SUMMON",["repeat"]=4,target={kind="ALL",side="ANY_CHARACTER"},token="TLC_237t",trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
-P["TLC_240"]={effects={{op="SUMMON",["repeat"]=3,target={kind="ALL",side="ANY_CHARACTER"},token="__anon_2_1_murloc",trigger="DEATHRATTLE"},{amount=1,op="GRANT_BONUS_EFFECT",previousPlural=true,target={kind="PREVIOUS",side="ANY_MINION"},trigger="DEATHRATTLE"}},keywords={"rush","deathrattle"}}
+P["TLC_237"]={effects={{op="SUMMON",["repeat"]=4,target={kind="ALL",side="ANY_CHARACTER"},token="TLC_237t",tokenDisplay="2/1 Hatchling",trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
+P["TLC_240"]={effects={{op="SUMMON",["repeat"]=3,target={kind="ALL",side="ANY_CHARACTER"},token="__anon_2_1_murloc",tokenDisplay="2/1 Murloc",trigger="DEATHRATTLE"},{amount=1,op="GRANT_BONUS_EFFECT",previousPlural=true,target={kind="PREVIOUS",side="ANY_MINION"},trigger="DEATHRATTLE"}},keywords={"rush","deathrattle"}}
 P["TLC_243"]={effects={{condition="KINDRED",keyword="immune",op="GIVE_KEYWORD",target={kind="SELF",side="ANY_CHARACTER"},temporary=true,trigger="BATTLECRY"}},keywords={"rush","windfury"}}
 P["TLC_247"]={effects={{op="COPY",subjectType=-1,target={kind="TRIGGER_SOURCE",side="ANY_CHARACTER"},trigger="AFTER_ATTACK_KILL"}},keywords={"stealth"}}
 P["TLC_249"]={effects={{amount=1,op="DAMAGE",["repeat"]=2,split=true,target={kind="RANDOM",side="ENEMY_CHARACTER"},trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
@@ -2532,7 +2532,7 @@ P["TLC_439"]={effects={{amount=2,op="DAMAGE",spell=true,target={kind="ALL",side=
 end)() end
 do (function()
 P["TLC_442"]={effects={{amount=3,discoverChain=true,op="DISCOVER",raceFilter="murloc",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=1}}}
-P["TLC_443"]={abilities={{2,1}},effects={{keyword="taunt",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="TLC_443t",trigger="DEATHRATTLE"}},keywords={"reborn","deathrattle"}}
+P["TLC_443"]={abilities={{2,1}},effects={{keyword="taunt",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="TLC_443t",tokenDisplay="undead beast",trigger="DEATHRATTLE"}},keywords={"reborn","deathrattle"}}
 P["TLC_444"]={effects={{amount=3,op="GRANT_BONUS_EFFECT",target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"}}}
 P["TLC_447"]={effects={{op="DESTROY",target={kind="CHOOSE",side="ENEMY_MINION"},trigger="ON_PLAY"},{amount=2,condition="KINDRED",op="DAMAGE",spell=true,target={kind="ALL",side="ANY_MINION"},trigger="ON_PLAY"}}}
 P["TLC_461"]={effects={{amount=3,op="DISCOVER",target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY",valueSource="MANA"}},keywords={"battlecry"}}
@@ -2546,10 +2546,10 @@ P["TLC_605"]={effects={{amount=6,condition="OPPONENT_TURN",op="BUFF",target={kin
 P["TLC_606"]={effects={{amount=2,followUp={{amount=5,op="GAIN_ARMOR",target={kind="SELF",side="FRIENDLY_MINION"},trigger="BATTLECRY"}},followUpCondition="IF_DIES",op="DAMAGE",target={kind="CHOOSE",side="ENEMY_MINION"},trigger="BATTLECRY",type_filter=1}},keywords={"battlecry"}}
 P["TLC_620"]={abilities={{0,2}},effects={{amount=3,op="GAIN_ARMOR",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"},{op="DAMAGE",target={kind="CHOOSE",side="ENEMY_MINION"},trigger="ON_PLAY",valueSource="HERO_ARMOR"}}}
 P["TLC_623"]={abilities={{4,1}},effects={{amount=2,amount2=2,damagedOnly=true,excludeSource=true,op="BUFF",target={kind="CHOOSE",side="FRIENDLY_MINION"},trigger="END_TURN"}}}
-P["TLC_822"]={effects={{amount=1,buffHand=true,buffRandom=true,op="COST_ZONE",raceFilter="beast",target={kind="ALL",side="ANY_CHARACTER"},trigger="END_TURN",type_filter=1}}}
+P["TLC_822"]={effects={{amount=1,buffAll=false,buffHand=true,buffRandom=true,op="COST_ZONE",raceFilter="beast",target={kind="ALL",side="ANY_CHARACTER"},trigger="END_TURN",type_filter=1}}}
 P["TLC_825"]={effects={{condition="KINDRED",op="DAMAGE",target={kind="CHOOSE",side="ENEMY_MINION"},trigger="BATTLECRY",valueSource="SELF_ATTACK"}}}
-P["TLC_831"]={abilities={{2,1}},effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="TLC_831t",trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
-P["TLC_833"]={effects={{keyword="rush",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="TLC_903t",trigger="AFTER_HERO_ATTACK"}}}
+P["TLC_831"]={abilities={{2,1}},effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="TLC_831t",tokenDisplay="pterrordax that steals 1 health from all other minions",trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
+P["TLC_833"]={effects={{keyword="rush",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="TLC_903t",tokenDisplay="2/1 Grub",trigger="AFTER_HERO_ATTACK"}}}
 P["TLC_835"]={effects={{amount=40,op="SET_HEALTH",setVerb=true,target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"}}}
 P["TLC_840"]={effects={{amount=2,op="DAMAGE",target={kind="ALL",side="ENEMY_HERO"},trigger="AFTER_SELF_ATTACK"}},keywords={"stealth"}}
 P["TLC_900"]={effects={{amount=3,discoverChain=true,op="DISCOVER",schoolFilter=8,target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=2}}}
@@ -2563,10 +2563,10 @@ P["TOY_054"]={effects={{amount=3,condition="HELD_SPELLS_AT_LEAST",conditionAmoun
 P["TOY_103"]={effects={{op="MAY_ATTACK_AGAIN",target={kind="ALL",side="ANY_CHARACTER"},trigger="AURA"}},keywords={"rush"}}
 P["TOY_352"]={effects={{amount=1,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=1},{amount=1,condition="TARGET_IS_RACE",conditionRace="beast",op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=2}}}
 P["TOY_356"]={abilities={{2,1}},effects={{amount=7,op="DAMAGE",target={kind="RANDOM",side="ENEMY_CHARACTER"},trigger="DEATHRATTLE"}},keywords={"rush","deathrattle"}}
-P["TOY_358"]={effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="TOY_358t",trigger="AFTER_HERO_ATTACK"}}}
+P["TOY_358"]={effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="TOY_358t",tokenDisplay="1/1 hound",trigger="AFTER_HERO_ATTACK"}}}
 P["TOY_370"]={effects={{amount=2,op="DAMAGE",["repeat"]=3,repeatPrinted=true,target={kind="RANDOM",side="ENEMY_CHARACTER"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["TOY_375"]={effects={{keyword="freeze",op="GIVE_KEYWORD",target={kind="CHOOSE",side="ENEMY_MINION"},trigger="BATTLECRY"},{op="GAIN_ARMOR",target={kind="SELF",side="YOUR_HERO"},trigger="BATTLECRY",valueSource="PREVIOUS_ATTACK"}},keywords={"battlecry","miniaturize"}}
-P["TOY_380"]={effects={{keyword="elusive",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="TOY_380t2",trigger="DEATHRATTLE"}},keywords={"taunt","deathrattle","miniaturize"}}
+P["TOY_380"]={effects={{keyword="elusive",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="TOY_380t2",tokenDisplay="4/4 Whelp",trigger="DEATHRATTLE"}},keywords={"taunt","deathrattle","miniaturize"}}
 P["TOY_381"]={effects={{amount=-2,amount2=1,op="HERO_POWER_COST",target={kind="SELF",side="YOUR_HERO"},trigger="AURA"}}}
 P["TOY_500"]={effects={{amount=1,op="DAMAGE",["repeat"]=10,spell=true,split=true,target={kind="RANDOM",side="ANY_MINION"},trigger="ON_PLAY"}},keywords={"lifesteal"},overload=1}
 P["TOY_503"]={abilities={{1,1}},effects={{op="SUMMON_COPY",target={kind="SELF",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"taunt","elusive","battlecry"}}
@@ -2582,18 +2582,18 @@ P["TOY_517"]={effects={{amount=1,keywordFilter="rush",op="DRAW",target={kind="SE
 P["TOY_518"]={effects={{amount=1,op="BUFF",subjectRace="pirate",target={kind="TRIGGER_SOURCE",side="ANY_CHARACTER"},trigger="AFTER_SUMMON_MINION"}}}
 P["TOY_519"]={effects={{costMax=4,costMin=4,op="SUMMON_RANDOM",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},trigger="ON_PLAY"},{amount=-1,amount2=2,costCount="CARDS_DRAWN_THIS_TURN",op="CARD_COST",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"}}}
 P["TOY_521"]={effects={{amount=-2,op="CARD_COST",target={kind="SELF",side="YOUR_HERO"},temporary=true,trigger="BATTLECRY"}},keywords={"battlecry","miniaturize"}}
-P["TOY_522"]={effects={{op="SUMMON",summonAttacks=1,target={kind="ALL",side="ANY_CHARACTER"},token="TOY_522t",trigger="AFTER_HERO_ATTACK"}}}
+P["TOY_522"]={effects={{op="SUMMON",summonAttacks=1,target={kind="ALL",side="ANY_CHARACTER"},token="TOY_522t",tokenDisplay="pirate that attacks a random enemy",trigger="AFTER_HERO_ATTACK"}}}
 P["TOY_530"]={effects={{amount=-1,amount2=2,costCount="GAME_CARDS_DRAWN",op="CARD_COST",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"}}}
-P["TOY_601"]={effects={{op="SUMMON",summonAttacks=1,target={kind="ALL",side="ANY_CHARACTER"},token="TOY_601t2",trigger="END_TURN"}},keywords={"miniaturize"}}
+P["TOY_601"]={effects={{op="SUMMON",summonAttacks=1,target={kind="ALL",side="ANY_CHARACTER"},token="TOY_601t2",tokenDisplay="bot that attacks a random enemy",trigger="END_TURN"}},keywords={"miniaturize"}}
 P["TOY_605"]={effects={{amount=2,keywordFilter="taunt",op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=1}}}
 P["TOY_606"]={effects={{amount=1,op="DAMAGE",["repeat"]=8,split=true,target={kind="RANDOM",side="ENEMY_MINION"},trigger="DEATHRATTLE"}},keywords={"taunt","deathrattle"}}
 P["TOY_641"]={effects={{amount=1,op="DRAW",raceFilter="demon",target={kind="SELF",side="ANY_CHARACTER"},trigger="DEATHRATTLE"},{amount=-2,op="CARD_COST",target={kind="PREVIOUS",side="ANY_CHARACTER"},trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
 P["TOY_642"]={effects={{amount=3,op="DAMAGE",target={kind="LOWEST_HEALTH",side="ENEMY_CHARACTER"},trigger="BATTLECRY"},{amount=3,op="DAMAGE",target={kind="LOWEST_HEALTH",side="ENEMY_CHARACTER"},trigger="DEATHRATTLE"}},keywords={"lifesteal","battlecry","deathrattle"}}
 P["TOY_644"]={effects={{amount=2,op="GO_DORMANT",target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"}}}
 P["TOY_646"]={abilities={{2,1}},effects={{amount=1,op="DAMAGE",target={kind="ALL",side="ENEMY_CHARACTER"},trigger="DEATHRATTLE"}},keywords={"taunt","lifesteal","deathrattle"}}
-P["TOY_670"]={effects={{keyword="taunt,divine_shield",op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="__anon_1_2_mechs",trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
+P["TOY_670"]={effects={{keyword="taunt,divine_shield",op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="__anon_1_2_mechs",tokenDisplay="1/2 mechs",trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
 P["TOY_802"]={abilities={{1,1}},effects={{amount=1,op="REFRESH_MANA",target={kind="SELF",side="YOUR_HERO"},trigger="BATTLECRY"}},keywords={"battlecry"},tradeable=true}
-P["TOY_804"]={effects={{keyword="taunt",op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="TOY_804t",trigger="ON_PLAY"},{amount=-3,amount2=2,condition="HAS_SPELL_DAMAGE",conditionTrails=true,op="CARD_COST",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"}}}
+P["TOY_804"]={effects={{keyword="taunt",op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="TOY_804t",tokenDisplay="2/5 Beetle",trigger="ON_PLAY"},{amount=-3,amount2=2,condition="HAS_SPELL_DAMAGE",conditionTrails=true,op="CARD_COST",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"}}}
 P["TOY_807"]={effects={{doubleSpellDamage=true,op="SPELL_DAMAGE_AURA",silent=true,target={kind="SELF",side="ANY_MINION"},trigger="AURA"}},spellDamage=1}
 P["TOY_808"]={effects={{costMax=6,costMin=6,durationTurns=3,op="SUMMON_RANDOM",target={kind="ALL",side="ANY_CHARACTER"},trigger="END_TURN"}}}
 P["TOY_810"]={effects={{amount=1,amount2=1,op="BUFF",target={kind="ALL",side="FRIENDLY_HAND_MINIONS"},trigger="AFTER_HERO_ATTACK"}},keywords={"lifesteal"}}
@@ -2601,7 +2601,7 @@ P["TOY_811"]={keywords={"rush","divine_shield","lifesteal","miniaturize"}}
 P["TOY_821"]={abilities={{11,1}},effects={{keyword="reborn",op="GIVE_KEYWORD",subjectSchool="frost",target={kind="SELF",side="ANY_MINION"},trigger="AFTER_CAST_SPELL"}},keywords={"rush"}}
 P["TOY_826"]={effects={{followUp={{amount=1,op="DAMAGE",target={kind="ALL",side="ANY_MINION"},trigger="DEATHRATTLE"}},followUpCondition="NONE",op="GRANT_ABILITY",target={kind="ALL",side="ANY_MINION"},trigger="ON_PLAY"}}}
 P["TOY_827"]={abilities={{1,1}},effects={{corpseCost=5,op="SUMMON_COPY",target={kind="SELF",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"taunt","battlecry"}}
-P["TOY_877"]={effects={{amount=2,amount2=3,buffAll=true,buffBoard=true,buffDeck=true,buffHand=true,op="BUFF_ZONE",target={kind="ALL",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=1}}}
+P["TOY_877"]={effects={{amount=2,amount2=3,buffBoard=true,buffDeck=true,buffHand=true,op="BUFF_ZONE",target={kind="ALL",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=1}}}
 P["TOY_881"]={abilities={{0,1}},effects={{amount=2,amount2=3,keywordFilter="divine_shield",op="BUFF",target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"}}}
 P["TOY_883"]={abilities={{0,2}},effects={{amount=3,op="DAMAGE",spell=true,target={kind="ALL",side="ENEMY_MINIONS"},trigger="ON_PLAY"},{amount=-1,amount2=2,costCount="OTHER_CARDS_IN_HAND",op="CARD_COST",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"}}}
 P["TOY_891"]={effects={{amount=2,condition="CONTROL_LOCATION",op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY"}},keywords={"battlecry"}}
@@ -2609,7 +2609,7 @@ P["TOY_893"]={effects={{amount=-1,amount2=-1,op="SUMMON_COPY",setVerb=true,targe
 P["TOY_894"]={effects={{amount2=2,op="SWAP_STAT_WITH",target={kind="CHOOSE",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"rush","battlecry"}}
 P["TOY_895"]={effects={{amount2=1,op="SWAP_STAT_WITH",target={kind="CHOOSE",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"taunt","battlecry"}}
 P["TOY_896"]={effects={{amount2=3,op="SWAP_STAT_WITH",target={kind="CHOOSE",side="ANY_OTHER_MINION"},trigger="BATTLECRY",type_filter=1}},keywords={"divine_shield","lifesteal","battlecry"}}
-P["TOY_914"]={effects={{keyword="taunt",op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="TOY_914t",trigger="DEATHRATTLE"}},keywords={"taunt","deathrattle"}}
+P["TOY_914"]={effects={{keyword="taunt",op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="TOY_914t",tokenDisplay="4/6 Knight",trigger="DEATHRATTLE"}},keywords={"taunt","deathrattle"}}
 P["TOY_915"]={abilities={{1,1}},effects={{amount=2,keyword="immune",op="BUFF",raceFilter="demon",target={kind="CHOOSE",side="FRIENDLY_MINION"},temporary=true,trigger="BATTLECRY"}},keywords={"battlecry","miniaturize"}}
 P["TRL_010"]={effects={{amount=3,op="GAIN_ARMOR",target={kind="SELF",side="YOUR_HERO"},trigger="OVERKILL"}},keywords={"stealth"}}
 P["TRL_015"]={effects={{amount=2,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="OVERKILL"}}}
@@ -2648,7 +2648,7 @@ P["TRL_321"]={abilities={{0,1}},effects={{amount=4,damagedOnly=true,op="DAMAGE",
 P["TRL_323"]={abilities={{1,1}},effects={{amount=5,condition="HOLDING_RACE",conditionRace="dragon",op="GAIN_ARMOR",target={kind="SELF",side="YOUR_HERO"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["TRL_326"]={effects={{condition="HOLDING_RACE",conditionRace="dragon",damagedOnly=true,op="DESTROY",target={kind="CHOOSE",side="ENEMY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["TRL_347"]={effects={{amount=3,op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="ON_PLAY"},{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="TRL_347t",trigger="OVERKILL"}}}
-P["TRL_348"]={abilities={{1,1}},effects={{keyword="rush",op="ADD_TO_HAND",target={kind="SELF",side="ANY_CHARACTER"},token="TRL_348t",trigger="BATTLECRY"}},keywords={"rush","battlecry"}}
+P["TRL_348"]={abilities={{1,1}},effects={{keyword="rush",op="ADD_TO_HAND",target={kind="SELF",side="ANY_CHARACTER"},token="TRL_348t",tokenDisplay="1/1 lynx",trigger="BATTLECRY"}},keywords={"rush","battlecry"}}
 P["TRL_349"]={effects={{amount=3,condition="HAS_WEAPON",op="DISCOVER",target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=2}},keywords={"battlecry"}}
 P["TRL_351"]={abilities={{0,1}},effects={{keyword="taunt",op="SUMMON",["repeat"]=3,target={kind="ALL",side="ANY_CHARACTER"},token="TRL_351t",trigger="ON_PLAY"}},overload=3}
 P["TRL_360"]={effects={{amount=1,op="DAMAGE",target={kind="TRIGGER_SOURCE",side="ANY_CHARACTER"},trigger="AFTER_PLAY_MINION"}}}
@@ -2663,7 +2663,7 @@ P["TRL_503"]={effects={{op="SUMMON",["repeat"]=3,target={kind="ALL",side="ANY_CH
 P["TRL_504"]={effects={{amount=1,forOpponent=true,op="ADD_TO_HAND",setVerb=true,target={kind="SELF",side="ANY_CHARACTER"},token="TAVERN_COIN",trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["TRL_505"]={effects={{amount=-1,amount2=4,oneInHand=true,op="CARD_COST",raceFilter="beast",target={kind="SELF",side="YOUR_HERO"},trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
 P["TRL_506"]={effects={{amount=5,op="BUFF",target={kind="SELF",side="ANY_MINION"},trigger="OVERKILL"}}}
-P["TRL_507"]={effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="TRL_507t",trigger="AFTER_HERO_ATTACK"}}}
+P["TRL_507"]={effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="TRL_507t",tokenDisplay="1/1 Pirate",trigger="AFTER_HERO_ATTACK"}}}
 P["TRL_508"]={abilities={{3,1}},effects={{amount=2,op="HEAL",target={kind="SELF",side="ANY_MINION"},trigger="START_TURN"}}}
 P["TRL_509"]={effects={{op="ADD_TO_HAND",["repeat"]=2,target={kind="SELF",side="ANY_CHARACTER"},token="TRL_509t",trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["TRL_509t"]={effects={{amount=1,amount2=1,op="BUFF",target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"}}}
@@ -2701,7 +2701,7 @@ P["TSC_017"]={effects={{amount=3,condition="HELD_SPELLS_AT_LEAST",conditionAmoun
 P["TSC_034"]={effects={{amount=3,op="DRAW",raceFilter="murloc",target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["TSC_053"]={keywords={"spell_damage"},spellDamage=1}
 P["TSC_054"]={effects={{amount=1,op="DAMAGE",["repeat"]=3,split=true,subjectRace="mechanical",target={kind="RANDOM",side="ENEMY_CHARACTER"},trigger="AFTER_SUMMON_MINION"}}}
-P["TSC_055"]={effects={{amount=1,op="DRAW",raceFilter="mechanical",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY"},{amount=1,buffHand=true,op="COST_ZONE",raceFilter="mechanical",target={kind="ALL",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=1}}}
+P["TSC_055"]={effects={{amount=1,op="DRAW",raceFilter="mechanical",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY"},{amount=1,buffAll=false,buffHand=true,op="COST_ZONE",raceFilter="mechanical",target={kind="ALL",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=1}}}
 P["TSC_064"]={abilities={{1,1}},effects={{amount=3,condition="HELD_SPELLS_AT_LEAST",conditionAmount=3,op="DAMAGE",target={kind="ALL",side="ENEMY_CHARACTER"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["TSC_065"]={cantAttack=true,keywords={"cant_attack"}}
 P["TSC_070"]={effects={{op="DREDGE",target={kind="SELF",side="ANY_CHARACTER"},trigger="AFTER_HERO_ATTACK"},{amount=-2,condition="TARGET_IS_RACE",conditionRace="beast",op="CARD_COST",target={kind="PREVIOUS",side="ANY_CHARACTER"},trigger="AFTER_HERO_ATTACK"}}}
@@ -2713,10 +2713,10 @@ P["TSC_213"]={effects={{amount=1,amount2=1,amountSource="SPELLS_CAST_THIS_TURN",
 P["TSC_216"]={colossal=1,keywords={"lifesteal"}}
 P["TSC_609"]={abilities={{1,1}},effects={{condition="HELD_SPELLS_AT_LEAST",conditionAmount=3,op="SUMMON_COPY",["repeat"]=2,target={kind="SELF",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"taunt","battlecry"}}
 P["TSC_610"]={effects={{amount=2,condition="HERO_ATTACKED_THIS_TURN",op="DAMAGE",target={kind="ALL",side="ENEMY_CHARACTER"},trigger="BATTLECRY"}},keywords={"battlecry"}}
-P["TSC_614"]={effects={{amount=1,amount2=1,buffAll=true,buffHand=true,op="BUFF_ZONE",raceFilter="murloc",target={kind="ALL",side="ANY_CHARACTER"},trigger="DEATHRATTLE",type_filter=1}},keywords={"deathrattle"}}
-P["TSC_631"]={effects={{op="ADD_TO_HAND",["repeat"]=3,target={kind="SELF",side="ANY_CHARACTER"},token="TSC_638t",trigger="ON_PLAY"}}}
+P["TSC_614"]={effects={{amount=1,amount2=1,buffHand=true,op="BUFF_ZONE",raceFilter="murloc",target={kind="ALL",side="ANY_CHARACTER"},trigger="DEATHRATTLE",type_filter=1}},keywords={"deathrattle"}}
+P["TSC_631"]={effects={{op="ADD_TO_HAND",["repeat"]=3,target={kind="SELF",side="ANY_CHARACTER"},token="TSC_638t",tokenDisplay="1/1 piranha swarmers",trigger="ON_PLAY"}}}
 P["TSC_632"]={effects={{amount=1,amount2=1,op="BUFF",raceFilter="mechanical",target={kind="RANDOM",side="FRIENDLY_HAND_MINIONS"},trigger="BATTLECRY"}},keywords={"divine_shield","battlecry"}}
-P["TSC_633"]={effects={{op="ADD_TO_HAND",target={kind="SELF",side="ANY_CHARACTER"},token="TSC_638t",trigger="END_TURN"}}}
+P["TSC_633"]={effects={{op="ADD_TO_HAND",target={kind="SELF",side="ANY_CHARACTER"},token="TSC_638t",tokenDisplay="1/1 piranha swarmer",trigger="END_TURN"}}}
 P["TSC_637"]={effects={{amount=2,op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="ON_PLAY"},{op="DREDGE",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
 P["TSC_638t"]={effects={{amount=1,op="BUFF",subjectName="Piranha Swarmer",target={kind="SELF",side="ANY_MINION"},trigger="AFTER_SUMMON_MINION"}},keywords={"rush"}}
 P["TSC_640"]={abilities={{1,1},{2,1}},effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="TSC_638t",trigger="BATTLECRY"},{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="TSC_638t",trigger="DEATHRATTLE"}},keywords={"battlecry","deathrattle"}}
@@ -2724,7 +2724,7 @@ P["TSC_643"]={effects={{amount=3,condition="HELD_SPELLS_AT_LEAST",conditionAmoun
 P["TSC_645"]={effects={{costMax=3,op="SUMMON_RANDOM",raceFilter="mechanical",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},trigger="DEATHRATTLE",type_filter=1}},keywords={"rush","deathrattle"}}
 P["TSC_646"]={effects={{condition="CONTROL_RACE",conditionRace="mechanical",op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="TSC_646t",trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["TSC_647"]={dormantTurns=1,keywords={"rush"}}
-P["TSC_648"]={effects={{amountSource="SCHOOLS_CAST_GAME",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="TSC_648t",trigger="BATTLECRY"}},keywords={"battlecry"}}
+P["TSC_648"]={effects={{amountSource="SCHOOLS_CAST_GAME",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="TSC_648t",tokenDisplay="elemental for each spell school you've cast this game",trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["TSC_650"]={choiceLabels={"Summon a 6/6 Orca with Taunt","Summon six 1/1 Otters with Rush"},choices={{{amount=6,amount2=6,keyword="taunt",op="SUMMON",target={kind="ALL",side="ANY_MINION"},token="TSC_650t",trigger="ON_PLAY"}},{{amount=1,amount2=1,keyword="rush",op="SUMMON",["repeat"]=6,target={kind="ALL",side="ANY_MINION"},token="TSC_650t4",trigger="ON_PLAY"}}},effects={{amount=6,amount2=6,keyword="taunt",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="TSC_650t",trigger="ON_PLAY"}}}
 P["TSC_656"]={effects={{amount=3,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY"},{keyword="taunt",op="SUMMON_WITH_STATS",summonNamed=true,target={kind="ALL",side="ANY_MINION"},token="UNG_999t2t1",trigger="ON_PLAY",valueSource="HAND_SIZE"}}}
 P["TSC_823"]={effects={{amount=-1,op="CARD_COST",target={kind="SELF",side="YOUR_HERO"},trigger="BATTLECRY",type_filter=2}},keywords={"battlecry"}}
@@ -2736,13 +2736,13 @@ P["TSC_915"]={effects={{op="DREDGE",target={kind="SELF",side="ANY_CHARACTER"},tr
 P["TSC_916"]={effects={{op="DREDGE",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY"},{amount=1,condition="COMBO",op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
 P["TSC_922"]={effects={{amount=2,amount2=1,op="BUFF",subjectCost=1,target={kind="TRIGGER_SOURCE",side="ANY_CHARACTER"},trigger="AFTER_SUMMON_MINION"}}}
 P["TSC_924"]={effects={{amount=4,op="DAMAGE",spell=true,target={kind="ALL",side="ANY_MINION"},trigger="ON_PLAY"},{amount=1,forOpponent=true,op="ADD_TO_HAND",setVerb=true,target={kind="SELF",side="ANY_CHARACTER"},token="TSC_955t",trigger="ON_PLAY"}}}
-P["TSC_925"]={effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="TSC_925t",trigger="ON_PLAY"},{op="DREDGE",silent=true,target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY"},{condition="TARGET_IS_RACE",conditionRace="murloc",op="SUMMON",silent=true,target={kind="ALL",side="ANY_CHARACTER"},token="TSC_925t",trigger="ON_PLAY"}}}
+P["TSC_925"]={effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="TSC_925t",tokenDisplay="murloc, then dredge and if it's also a murloc, summon 1 more",trigger="ON_PLAY"},{op="DREDGE",silent=true,target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY"},{condition="TARGET_IS_RACE",conditionRace="murloc",op="SUMMON",silent=true,target={kind="ALL",side="ANY_CHARACTER"},token="TSC_925t",trigger="ON_PLAY"}}}
 P["TSC_926"]={abilities={{1,1}},effects={{excludeSource=true,op="SILENCE",target={kind="ALL",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["TSC_928"]={effects={{amount=1,amount2=1,op="BUFF",subjectRace="mechanical",target={kind="SELF",side="ANY_MINION"},trigger="AFTER_SUMMON_MINION"}}}
-P["TSC_932"]={effects={{amount=3,op="DAMAGE",spell=true,target={kind="CHOOSE",side="ENEMY_CHARACTER"},trigger="ON_PLAY"},{keyword="rush",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="TSC_932t",trigger="ON_PLAY"}}}
+P["TSC_932"]={effects={{amount=3,op="DAMAGE",spell=true,target={kind="CHOOSE",side="ENEMY_CHARACTER"},trigger="ON_PLAY"},{keyword="rush",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="TSC_932t",tokenDisplay="5/5 Shark",trigger="ON_PLAY"}}}
 P["TSC_935"]={effects={{amount=2,op="DRAW",target={kind="SELF",side="ENEMY_HERO"},trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
 P["TSC_938"]={abilities={{2,1}},effects={{amount=1,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="DEATHRATTLE"}},keywords={"taunt","deathrattle"}}
-P["TSC_941"]={abilities={{0,2}},effects={{amount=3,op="GAIN_ARMOR",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"},{keyword="taunt",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="TSC_941t",trigger="ON_PLAY"}}}
+P["TSC_941"]={abilities={{0,2}},effects={{amount=3,op="GAIN_ARMOR",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"},{keyword="taunt",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="TSC_941t",tokenDisplay="naga",trigger="ON_PLAY"}}}
 P["TSC_952"]={effects={{amount=2,op="HEAL",target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="ON_PLAY"}},repeatable=true}
 P["TSC_955"]={effects={{amount=1,forOpponent=true,op="ADD_TO_HAND",setVerb=true,target={kind="SELF",side="ANY_CHARACTER"},token="TSC_955t",trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["TSC_955t"]={effects={{amount=1,op="DAMAGE",printOnly=true,target={kind="ALL",side="YOUR_HERO"},trigger="START_TURN"},{amount=1,amountSource="SELF_NUMBER",op="DAMAGE",silent=true,target={kind="ALL",side="YOUR_HERO"},trigger="IN_HAND_TURN_START"}},handTurns=2,numbered=true}
@@ -2769,7 +2769,7 @@ P["TTN_458"]={abilities={{1,1},{26,1}},effects={{amount=5,op="DAMAGE",split=true
 P["TTN_463"]={effects={{op="DISCARD_HIGHEST",target={kind="ALL",side="ANY_CHARACTER"},trigger="ON_PLAY"},{op="DAMAGE",target={kind="ALL",side="ANY_MINION"},trigger="ON_PLAY",valueSource="PREVIOUS_COST"}}}
 P["TTN_466"]={effects={{op="GAIN_ARMOR",target={kind="SELF",side="YOUR_HERO"},trigger="SELF_DEALS_DAMAGE",valueSource="EVENT_AMOUNT"}},keywords={"rush"}}
 P["TTN_467"]={effects={{amount=4,op="GAIN_ARMOR",target={kind="SELF",side="YOUR_HERO"},trigger="WHEN_HERO_ATTACKS"}}}
-P["TTN_468"]={effects={{amount=1,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=2},{amount=1,buffHand=true,buffRandom=true,op="COST_ZONE",schoolFilter=3,target={kind="ALL",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=2}},keywords={"battlecry"}}
+P["TTN_468"]={effects={{amount=1,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=2},{amount=1,buffAll=false,buffHand=true,buffRandom=true,op="COST_ZONE",schoolFilter=3,target={kind="ALL",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=2}},keywords={"battlecry"}}
 P["TTN_469"]={effects={{amount=2,condition="ARMOR_CHANGED_THIS_TURN",op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["TTN_478"]={effects={{amount=1,amountSource="SCHOOLS_CAST_GAME",improved=true,op="DAMAGE",target={kind="ALL",side="ENEMY_MINIONS"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["TTN_479"]={effects={{amount=1,amount2=1,op="BUFF",subjectRace="elemental",target={kind="TRIGGER_SOURCE",side="ANY_CHARACTER"},trigger="AFTER_SUMMON_MINION"}}}
@@ -2786,7 +2786,7 @@ do (function()
 P["TTN_721t"]={effects={{amount=2,amount2=1,op="BUFF",printOnly=true,target={kind="SELF",side="ANY_MINION"},trigger="ON_PLAY"},{amount=2,amount2=1,op="BUFF",silent=true,target={kind="SELF",side="ANY_MINION"},trigger="ON_PLAY"},{amount=4,op="DAMAGE",silent=true,target={kind="RANDOM",side="ENEMY_CHARACTER"},trigger="ON_PLAY"}}}
 P["TTN_721t1"]={effects={{amount=1,amount2=2,op="BUFF",printOnly=true,target={kind="SELF",side="ANY_MINION"},trigger="ON_PLAY"},{amount=1,amount2=2,op="BUFF",silent=true,target={kind="SELF",side="ANY_MINION"},trigger="ON_PLAY"},{amount=1,op="DRAW",silent=true,target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
 P["TTN_721t2"]={effects={{amount2=3,keyword="elusive",op="BUFF",printOnly=true,target={kind="SELF",side="ANY_MINION"},trigger="ON_PLAY"},{amount2=3,keyword="elusive",op="BUFF",silent=true,target={kind="SELF",side="ANY_MINION"},trigger="ON_PLAY"}}}
-P["TTN_722"]={effects={{amount=3,op="BUFF",target={kind="ALL",side="YOUR_HERO"},temporary=true,trigger="ON_PLAY"},{keyword="rush",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="TSC_648t",trigger="ON_PLAY"}},overload=1}
+P["TTN_722"]={effects={{amount=3,op="BUFF",target={kind="ALL",side="YOUR_HERO"},temporary=true,trigger="ON_PLAY"},{keyword="rush",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="TSC_648t",tokenDisplay="3/3 Elemental",trigger="ON_PLAY"}},overload=1}
 P["TTN_725"]={effects={{amount=3,op="DAMAGE",target={kind="LOWEST_HEALTH",side="ENEMY_CHARACTER"},trigger="AFTER_HERO_ATTACK"}}}
 P["TTN_726"]={effects={{amount=2,op="DAMAGE_MULTIPLIER",target={kind="ALL",side="ANY_MINION"},trigger="ON_PLAY"},{amount=1,op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
 P["TTN_728"]={effects={{amount=3,fromDeck=true,op="DISCOVER",raceFilter="mechanical",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=1},{amount=2,amount2=1,op="BUFF",target={kind="PREVIOUS",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
@@ -2797,7 +2797,7 @@ P["TTN_831"]={effects={{amount=3,op="DAMAGE",spell=true,target={kind="ALL",side=
 P["TTN_832"]={abilities={{1,1}},effects={{amount=4,op="DAMAGE",target={kind="SELF",side="YOUR_HERO"},trigger="BATTLECRY"}},keywords={"rush","battlecry"}}
 P["TTN_835"]={effects={{op="UNLOCK_OVERLOAD",target={kind="SELF",side="YOUR_HERO"},trigger="BATTLECRY"},{op="DRAW",target={kind="SELF",side="YOUR_HERO"},trigger="BATTLECRY",valueSource="PREVIOUS_AMOUNT"}},keywords={"battlecry"}}
 P["TTN_841"]={effects={{amount=4,op="BUFF",target={kind="ALL",side="YOUR_HERO"},temporary=true,trigger="ON_PLAY"},{amount=-1,amount2=2,costCount="CARDS_DRAWN_THIS_TURN",op="CARD_COST",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"}}}
-P["TTN_843"]={abilities={{13,1}},effects={{keyword="rush",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="TTN_843t1",trigger="AFTER_DRAW"}}}
+P["TTN_843"]={abilities={{13,1}},effects={{keyword="rush",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="TTN_843t1",tokenDisplay="demon",trigger="AFTER_DRAW"}}}
 P["TTN_844"]={effects={{amount=1,amountSource="CARDS_DRAWN_THIS_TURN",op="BUFF",target={kind="SELF",side="ANY_MINION"},trigger="AURA"}}}
 P["TTN_852"]={effects={{amount=1,amount2=1,op="BUFF",target={kind="RANDOM",side="FRIENDLY_HAND_MINIONS"},trigger="AFTER_SELF_ATTACK"}},magnetic=true}
 P["TTN_853"]={effects={{amount=1,op="SET_HEALTH",setVerb=true,target={kind="CHOOSE",side="ENEMY_MINION"},trigger="ON_PLAY"},{amount=1,op="DAMAGE",spell=true,target={kind="ALL",side="ENEMY_CHARACTER"},trigger="ON_PLAY"}}}
@@ -2805,10 +2805,10 @@ P["TTN_858"]={effects={{keyword="taunt",op="GIVE_KEYWORD",printOnly=true,target=
 P["TTN_858t1"]={effects={{amount=2,op="DRAW",printOnly=true,target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=1},{amount=2,op="DRAW",silent=true,target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=1},{amount=2,amount2=2,op="SET_STATS",previousPlural=true,silent=true,target={kind="PREVIOUS",side="ANY_CHARACTER"},trigger="ON_PLAY"},{amount=2,amount2=8,op="CARD_COST",previousPlural=true,silent=true,target={kind="PREVIOUS",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
 P["TTN_858t2"]={effects={{amount=2,amount2=2,op="BUFF",printOnly=true,target={kind="ALL",side="FRIENDLY_OTHER_MINIONS"},trigger="ON_PLAY"},{amount=2,amount2=2,op="BUFF",silent=true,target={kind="ALL",side="FRIENDLY_OTHER_MINIONS"},trigger="ON_PLAY"}}}
 P["TTN_858t3"]={effects={{amount=2,amount2=2,op="SET_STATS",printOnly=true,target={kind="ALL",side="ENEMY_MINIONS"},trigger="ON_PLAY"},{amount=2,amount2=2,op="SET_STATS",silent=true,target={kind="ALL",side="ENEMY_MINIONS"},trigger="ON_PLAY"}}}
-P["TTN_861"]={effects={{keyword="taunt",op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="CFM_606t",trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
+P["TTN_861"]={effects={{keyword="taunt",op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="CFM_606t",tokenDisplay="2/2 Elemental",trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
 P["TTN_862"]={effects={{keyword="rush",op="GIVE_KEYWORD",printOnly=true,target={kind="LEFT_SIDE",side="ANY_MINION"},trigger="ON_PLAY"},{keyword="rush",op="GIVE_KEYWORD",silent=true,target={kind="LEFT_SIDE",side="ANY_MINION"},trigger="AURA"},{keyword="lifesteal",op="GIVE_KEYWORD",silent=true,target={kind="RIGHT_SIDE",side="ANY_MINION"},trigger="AURA"}},madeOnly=true,titanAbilities={"TTN_862t1","TTN_862t2","TTN_862t3"}}
 P["TTN_862t1"]={effects={{amount=3,discoverCostDelta=-3,keywordFilter="deathrattle",op="DISCOVER",printOnly=true,target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=1},{amount=3,discoverCostDelta=-3,keywordFilter="deathrattle",op="DISCOVER",silent=true,target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=1}}}
-P["TTN_862t2"]={effects={{amount=2,buffAll=true,buffHand=true,op="COST_ZONE",printOnly=true,target={kind="ALL",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=1},{amount=2,buffAll=true,buffHand=true,op="COST_ZONE",silent=true,target={kind="ALL",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=1}}}
+P["TTN_862t2"]={effects={{amount=2,buffHand=true,op="COST_ZONE",printOnly=true,target={kind="ALL",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=1},{amount=2,buffHand=true,op="COST_ZONE",silent=true,target={kind="ALL",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=1}}}
 P["TTN_862t3"]={effects={{op="SUMMON",printOnly=true,["repeat"]=4,target={kind="ALL",side="ANY_CHARACTER"},token="TTN_862t4",trigger="ON_PLAY"},{op="SUMMON",["repeat"]=4,silent=true,target={kind="ALL",side="ANY_CHARACTER"},token="TTN_862t4",trigger="ON_PLAY"}}}
 P["TTN_903"]={effects={{op="SUMMON",printOnly=true,target={kind="ALL",side="ANY_CHARACTER"},token="TTN_903t4",trigger="ON_PLAY"},{op="SUMMON",silent=true,target={kind="ALL",side="ANY_CHARACTER"},token="TTN_903t4",trigger="AFTER_TITAN_ABILITY"}},madeOnly=true,titanAbilities={"TTN_903t","TTN_903t2","TTN_903t3"}}
 P["TTN_903t"]={effects={{amount=10,op="DRAW_UNTIL",printOnly=true,target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"},{amount=10,op="DRAW_UNTIL",silent=true,target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"}}}
@@ -2817,8 +2817,8 @@ P["TTN_903t3"]={effects={{amount=10,op="REFRESH_MANA",printOnly=true,target={kin
 P["TTN_921"]={effects={{op="ADD_TO_HAND",target={kind="SELF",side="ANY_CHARACTER"},token="TAVERN_COIN",trigger="WHEN_SELF_ATTACKS"}},magnetic=true}
 P["TTN_925"]={effects={{amount=3,costMax=3,op="DISCOVER",otherClass=true,target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=2}},keywords={"battlecry"}}
 P["TTN_931"]={cantAttack=true,keywords={"taunt","cant_attack"}}
-P["TTN_955"]={choiceLabels={"Get 2 random Nature spells","Reduce the Cost of spells in your hand by (1)"},choices={{{op="ADD_TO_HAND",["repeat"]=2,schoolFilter=6,target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=2}},{{amount=1,buffHand=true,op="COST_ZONE",target={kind="ALL",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=2}}},effects={{op="ADD_TO_HAND",["repeat"]=2,schoolFilter=6,target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=2}}}
-P["ULD_135"]={choiceLabels={"Summon a 6/6 Ancient with Taunt","Restore 12 Health"},choices={{{keyword="taunt",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="ULD_135at",trigger="ON_PLAY"}},{{amount=12,op="HEAL",target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="ON_PLAY"}}},effects={{keyword="taunt",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="ULD_135at",trigger="ON_PLAY"}}}
+P["TTN_955"]={choiceLabels={"Get 2 random Nature spells","Reduce the Cost of spells in your hand by (1)"},choices={{{op="ADD_TO_HAND",["repeat"]=2,schoolFilter=6,target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=2}},{{amount=1,buffAll=false,buffHand=true,op="COST_ZONE",target={kind="ALL",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=2}}},effects={{op="ADD_TO_HAND",["repeat"]=2,schoolFilter=6,target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=2}}}
+P["ULD_135"]={choiceLabels={"Summon a 6/6 Ancient with Taunt","Restore 12 Health"},choices={{{keyword="taunt",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="ULD_135at",tokenDisplay="6/6 Ancient",trigger="ON_PLAY"}},{{amount=12,op="HEAL",target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="ON_PLAY"}}},effects={{keyword="taunt",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="ULD_135at",tokenDisplay="6/6 Ancient",trigger="ON_PLAY"}}}
 P["ULD_136"]={effects={{amount=3,chooseOneOnly=true,op="DISCOVER",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
 P["ULD_137"]={effects={{condition="HOLDING_TYPE_COST",conditionAmount=5,conditionType=2,op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="ULD_137t",trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["ULD_145"]={effects={{amount=1,op="BUFF",target={kind="SELF",side="ANY_MINION"},trigger="WHEN_SUMMON_MINION"}}}
@@ -2854,10 +2854,10 @@ P["ULD_215"]={effects={{keyword="taunt",op="SUMMON",target={kind="ALL",side="ANY
 P["ULD_217"]={effects={{amount=1,excludeSource=true,op="BUFF",target={kind="RANDOM",side="FRIENDLY_MINION"},trigger="END_TURN"}},keywords={"reborn"}}
 P["ULD_238"]={effects={{amount=1,condition="DECK_NO_DUPLICATES",op="DAMAGE",["repeat"]=10,split=true,target={kind="RANDOM",side="ENEMY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["ULD_239"]={effects={{amount=3,op="DAMAGE",spell=true,subjectType=1,target={kind="ALL",side="ENEMY_MINIONS"},trigger="AFTER_YOUR_HERO_ATTACKED"}},secret=true}
-P["ULD_250"]={abilities={{2,1}},effects={{keyword="taunt",op="ADD_TO_HAND",["repeat"]=2,target={kind="SELF",side="ANY_CHARACTER"},token="LOE_009t",trigger="DEATHRATTLE"}},keywords={"taunt","deathrattle"}}
+P["ULD_250"]={abilities={{2,1}},effects={{keyword="taunt",op="ADD_TO_HAND",["repeat"]=2,target={kind="SELF",side="ANY_CHARACTER"},token="LOE_009t",tokenDisplay="1/1 scarabs",trigger="DEATHRATTLE"}},keywords={"taunt","deathrattle"}}
 P["ULD_253"]={abilities={{1,1}},effects={{op="SUMMON_COPY",target={kind="SELF",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"taunt","battlecry"}}
-P["ULD_256"]={effects={{amount=2,amount2=2,buffAll=true,buffHand=true,keywordFilter="taunt",op="BUFF_ZONE",target={kind="ALL",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=1}}}
-P["ULD_258"]={effects={{amount=2,amount2=2,buffAll=true,buffHand=true,keywordFilter="taunt",op="BUFF_ZONE",target={kind="ALL",side="ANY_CHARACTER"},trigger="END_TURN",type_filter=1}},keywords={"taunt"}}
+P["ULD_256"]={effects={{amount=2,amount2=2,buffHand=true,keywordFilter="taunt",op="BUFF_ZONE",target={kind="ALL",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=1}}}
+P["ULD_258"]={effects={{amount=2,amount2=2,buffHand=true,keywordFilter="taunt",op="BUFF_ZONE",target={kind="ALL",side="ANY_CHARACTER"},trigger="END_TURN",type_filter=1}},keywords={"taunt"}}
 P["ULD_265"]={abilities={{0,1}},effects={{keyword="reborn",op="GIVE_KEYWORD",target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"}}}
 P["ULD_266"]={abilities={{2,1}},effects={{amount=1,amount2=1,op="BUFF",target={kind="RANDOM",side="FRIENDLY_MINION"},trigger="DEATHRATTLE"}},keywords={"reborn","deathrattle"}}
 P["ULD_270"]={effects={{amount=5,damagedOnly=true,op="HEAL",target={kind="CHOOSE",side="FRIENDLY_CHARACTER"},trigger="END_TURN"}}}
@@ -2866,7 +2866,7 @@ P["ULD_272"]={abilities={{0,2}},effects={{amount=1,op="DAMAGE",spell=true,target
 P["ULD_273"]={abilities={{0,2}},effects={{amount=5,op="HEAL",target={kind="ALL",side="ANY_CHARACTER"},trigger="ON_PLAY"},{amount=5,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
 P["ULD_274"]={keywords={"stealth","reborn"}}
 P["ULD_275"]={keywords={"taunt","reborn"}}
-P["ULD_276"]={effects={{op="ADD_TO_HAND",target={kind="SELF",side="ANY_CHARACTER"},tokens={"DAL_613","DAL_614","DAL_615","DAL_739","DAL_741","DRG_052","ULD_616"},trigger="END_TURN"}}}
+P["ULD_276"]={effects={{op="ADD_TO_HAND",target={kind="SELF",side="ANY_CHARACTER"},tokenDisplay="a lackey",tokens={"DAL_613","DAL_614","DAL_615","DAL_739","DAL_741","DRG_052","ULD_616"},trigger="END_TURN"}}}
 P["ULD_280"]={abilities={{2,1}},effects={{op="RETURN_TO_HAND",target={kind="RANDOM",side="ENEMY_MINION"},trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
 P["ULD_282"]={effects={{costMax=1,costMin=1,op="ADD_TO_HAND",target={kind="SELF",side="ANY_CHARACTER"},trigger="DEATHRATTLE",type_filter=1}},keywords={"deathrattle"}}
 P["ULD_285"]={effects={{amount=2,condition="COMBO",op="BUFF",target={kind="SELF",side="ANY_MINION"},trigger="ON_PLAY"}}}
@@ -2878,14 +2878,14 @@ P["ULD_324"]={effects={{op="DESTROY",target={kind="CHOOSE",side="ANY_MINION"},tr
 P["ULD_327"]={effects={{op="ADD_TO_HAND",otherClass=true,target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=1}},keywords={"rush","battlecry"}}
 P["ULD_328"]={effects={{op="ADD_TO_HAND",otherClass=true,["repeat"]=2,target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=2}}}
 P["ULD_329"]={effects={{familyFilter=8,op="ADD_TO_HAND",target={kind="SELF",side="ANY_CHARACTER"},trigger="AFTER_CAST_SPELL",type_filter=1}}}
-P["ULD_410"]={effects={{amount=5,buffHand=true,buffRandom=true,op="COST_ZONE",raceFilter="beast",target={kind="ALL",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=1}},keywords={"battlecry"}}
+P["ULD_410"]={effects={{amount=5,buffAll=false,buffHand=true,buffRandom=true,op="COST_ZONE",raceFilter="beast",target={kind="ALL",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=1}},keywords={"battlecry"}}
 P["ULD_430"]={effects={{keyword="rush",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="ULD_430t",trigger="AFTER_HERO_ATTACK"}}}
-P["ULD_439"]={abilities={{1,1}},effects={{op="ADD_TO_HAND",["repeat"]=2,target={kind="SELF",side="ANY_CHARACTER"},token="ULD_439t",trigger="BATTLECRY"}},keywords={"battlecry"}}
+P["ULD_439"]={abilities={{1,1}},effects={{op="ADD_TO_HAND",["repeat"]=2,target={kind="SELF",side="ANY_CHARACTER"},token="ULD_439t",tokenDisplay="2/1 sandwasps",trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["ULD_450"]={keywords={"lifesteal"}}
 P["ULD_616"]={abilities={{1,1}},effects={{amount2=2,keyword="taunt",op="BUFF",target={kind="CHOOSE",side="FRIENDLY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["ULD_702"]={effects={{keyword="reborn",op="GIVE_KEYWORD",subjectType=1,target={kind="TRIGGER_SOURCE",side="ANY_CHARACTER"},trigger="AFTER_OPPONENT_PLAY_CARD"}}}
 P["ULD_707"]={abilities={{0,1}},effects={{damagedOnly=true,op="DESTROY",target={kind="ALL",side="ANY_MINION"},trigger="ON_PLAY"}}}
-P["ULD_708"]={effects={{op="ADD_TO_HAND",target={kind="SELF",side="ANY_CHARACTER"},tokens={"DAL_613","DAL_614","DAL_615","DAL_739","DAL_741","DRG_052","ULD_616"},trigger="AFTER_HERO_ATTACK"}}}
+P["ULD_708"]={effects={{op="ADD_TO_HAND",target={kind="SELF",side="ANY_CHARACTER"},tokenDisplay="a lackey",tokens={"DAL_613","DAL_614","DAL_615","DAL_739","DAL_741","DRG_052","ULD_616"},trigger="AFTER_HERO_ATTACK"}}}
 P["ULD_709"]={effects={{amount=5,op="GAIN_ARMOR",target={kind="SELF",side="YOUR_HERO"},trigger="WHEN_HERO_ATTACKS"}}}
 P["ULD_712"]={effects={{keyword="rush",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="ULD_430t",trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["ULD_713"]={effects={{keyword="rush",op="SUMMON",["repeat"]=7,target={kind="ALL",side="ANY_CHARACTER"},token="ULD_430t",trigger="ON_PLAY"}}}
@@ -2900,7 +2900,7 @@ P["UNG_002"]={effects={{op="ADAPT",target={kind="SELF",side="ANY_MINION"},trigge
 P["UNG_004"]={effects={{amount=7,amount2=14,op="SET_STATS",target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"}}}
 P["UNG_009"]={effects={{condition="OTHER_MINIONS_AT_LEAST",conditionAmount=2,op="ADAPT",target={kind="SELF",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["UNG_010"]={abilities={{2,1}},effects={{op="SUMMON",["repeat"]=3,target={kind="ALL",side="ANY_CHARACTER"},token="PRO_001at",trigger="DEATHRATTLE"}},keywords={"taunt","deathrattle"}}
-P["UNG_018"]={effects={{amount=2,op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="ON_PLAY"},{op="ADD_TO_HAND",target={kind="SELF",side="ANY_CHARACTER"},token="UNG_809t1",trigger="ON_PLAY"}}}
+P["UNG_018"]={effects={{amount=2,op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="ON_PLAY"},{op="ADD_TO_HAND",target={kind="SELF",side="ANY_CHARACTER"},token="UNG_809t1",tokenDisplay="1/2 elemental",trigger="ON_PLAY"}}}
 P["UNG_019"]={keywords={"elusive"}}
 P["UNG_021"]={effects={{condition="PLAYED_RACE_LAST_TURN",conditionRace="elemental",op="ADD_TO_HAND",target={kind="SELF",side="ANY_CHARACTER"},token="UNG_018",trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["UNG_022"]={effects={{amount=1,amount2=1,op="SUMMON_COPY",prompt=true,target={kind="CHOOSE",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
@@ -2927,14 +2927,14 @@ P["UNG_108"]={effects={{amount=1,amount2=1,op="BUFF",target={kind="CHOOSE",side=
 P["UNG_201"]={effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="PRO_001at",trigger="END_TURN"}}}
 P["UNG_202"]={effects={{amount=-1,amount2=4,op="CARD_COST",raceFilter="elemental",target={kind="ALL",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=1}},keywords={"battlecry"}}
 P["UNG_205"]={abilities={{1,1}},effects={{keyword="freeze",op="GIVE_KEYWORD",target={kind="CHOOSE",side="ENEMY_CHARACTER"},trigger="BATTLECRY"}},keywords={"battlecry"}}
-P["UNG_208"]={effects={{condition="PLAYED_RACE_LAST_TURN",conditionRace="elemental",keyword="taunt",op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="UNG_208t",trigger="BATTLECRY"}},keywords={"battlecry"}}
+P["UNG_208"]={effects={{condition="PLAYED_RACE_LAST_TURN",conditionRace="elemental",keyword="taunt",op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="UNG_208t",tokenDisplay="2/3 Elemental",trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["UNG_800"]={effects={{op="TRIGGER_DEATHRATTLE",target={kind="CHOOSE",side="FRIENDLY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["UNG_801"]={effects={{condition="OTHER_MINIONS_AT_LEAST",conditionAmount=2,keyword="taunt",op="BUFF",target={kind="SELF",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["UNG_803"]={effects={{amount=1,op="DAMAGE",target={kind="ALL",side="ENEMY_HERO"},trigger="BATTLECRY"},{amount=1,op="DAMAGE",target={kind="ALL",side="YOUR_HERO"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["UNG_806"]={}
 P["UNG_807"]={effects={{op="DESTROY",raceFilter="pirate",target={kind="CHOOSE",side="ANY_MINION"},trigger="BATTLECRY"},{amount=1,amount2=1,op="BUFF",requiresPrevious=true,target={kind="SELF",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["UNG_808"]={keywords={"taunt","poisonous"}}
-P["UNG_809"]={effects={{op="ADD_TO_HAND",target={kind="SELF",side="ANY_CHARACTER"},token="UNG_809t1",trigger="BATTLECRY"}},keywords={"battlecry"}}
+P["UNG_809"]={effects={{op="ADD_TO_HAND",target={kind="SELF",side="ANY_CHARACTER"},token="UNG_809t1",tokenDisplay="1/2 elemental",trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["UNG_810"]={keywords={"taunt"}}
 P["UNG_812"]={keywords={"stealth"}}
 P["UNG_813"]={keywords={"windfury"}}
@@ -2947,7 +2947,7 @@ P["UNG_835"]={effects={{amount=3,op="DISCOVER",target={kind="SELF",side="ANY_CHA
 P["UNG_836"]={effects={{amount=2,amount2=2,op="BUFF",subjectType=-1,target={kind="TRIGGER_SOURCE",side="ANY_CHARACTER"},trigger="AFTER_DISCARD"},{op="RETURN_TO_HAND",subjectType=-1,target={kind="TRIGGER_SOURCE",side="ANY_CHARACTER"},trigger="AFTER_DISCARD"}}}
 P["UNG_838"]={effects={{amount=4,condition="OPPONENT_TURN",op="BUFF",target={kind="SELF",side="FRIENDLY_MINIONS"},trigger="AURA"}},keywords={"taunt"}}
 P["UNG_844"]={cantAttack=true,keywords={"cant_attack"}}
-P["UNG_845"]={abilities={{2,1}},effects={{op="ADD_TO_HAND",["repeat"]=2,target={kind="SELF",side="ANY_CHARACTER"},token="UNG_809t1",trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
+P["UNG_845"]={abilities={{2,1}},effects={{op="ADD_TO_HAND",["repeat"]=2,target={kind="SELF",side="ANY_CHARACTER"},token="UNG_809t1",tokenDisplay="1/2 flame elementals",trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
 P["UNG_846"]={effects={{familyFilter=8,op="ADD_TO_HAND",target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=2}},keywords={"battlecry"}}
 P["UNG_847"]={abilities={{1,1}},effects={{amount=5,condition="PLAYED_RACE_LAST_TURN",conditionRace="elemental",op="DAMAGE",target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["UNG_848"]={effects={{amount=2,op="DAMAGE",target={kind="ALL",side="ANY_OTHER_MINION"},trigger="BATTLECRY"}},keywords={"taunt","battlecry"}}
@@ -2982,17 +2982,17 @@ P["VAC_339"]={effects={{op="SUMMON_WITH_STATS",raceFilter="elemental",statsFromS
 P["VAC_404"]={abilities={{0,2}},effects={{amount=2,op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"},{amount=2,op="DAMAGE",spell=true,target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"}}}
 P["VAC_404t1"]={effects={{amount=2,op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"},{amount=2,op="DAMAGE",spell=true,target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"}}}
 P["VAC_404t2"]={effects={{amount=2,op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"},{amount=2,op="DAMAGE",spell=true,target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"}}}
-P["VAC_412"]={effects={{forOpponent=true,op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="VAC_412t",trigger="BATTLECRY"}},keywords={"rush","battlecry"}}
+P["VAC_412"]={effects={{forOpponent=true,op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="VAC_412t",tokenDisplay="worm for your opponent",trigger="BATTLECRY"}},keywords={"rush","battlecry"}}
 P["VAC_419"]={effects={{amount=4,op="DAMAGE",spell=true,target={kind="ALL",side="ENEMY_HERO"},trigger="ON_PLAY"},{amount=4,op="DAMAGE",spell=true,target={kind="ALL",side="YOUR_HERO"},trigger="ON_PLAY"}}}
-P["VAC_421"]={effects={{forOpponent=true,op="SUMMON",summonAttacks=4,target={kind="ALL",side="ANY_CHARACTER"},token="VAC_421t",trigger="BATTLECRY"}},keywords={"battlecry"}}
+P["VAC_421"]={effects={{forOpponent=true,op="SUMMON",summonAttacks=4,target={kind="ALL",side="ANY_CHARACTER"},token="VAC_421t",tokenDisplay="beast for your opponent and it attacks all of their minions",trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["VAC_430"]={effects={{amount=3,op="DISCOVER",raceFilter="pirate",target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=1}},keywords={"battlecry"}}
 P["VAC_436"]={effects={{keyword="reborn",op="GIVE_KEYWORD",subjectKeyword="deathrattle",target={kind="TRIGGER_SOURCE",side="ANY_CHARACTER"},trigger="WHEN_PLAY_MINION"}}}
 P["VAC_438"]={effects={{amount=3,classPool=2,op="DISCOVER",otherClass=true,target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=4}},keywords={"battlecry"}}
 P["VAC_442"]={effects={{amount=1,amountSource="ELEMENTAL_STREAK",improved=true,op="DAMAGE",target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="BATTLECRY"}},keywords={"battlecry"}}
-P["VAC_445"]={effects={{op="SUMMON",["repeat"]=5,summonAttacks=1,target={kind="ALL",side="ANY_CHARACTER"},token="VAC_445t",trigger="ON_PLAY"}}}
+P["VAC_445"]={effects={{op="SUMMON",["repeat"]=5,summonAttacks=1,target={kind="ALL",side="ANY_CHARACTER"},token="VAC_445t",tokenDisplay="ghouls that attack random enemies",trigger="ON_PLAY"}}}
 P["VAC_460"]={effects={{amount=2,op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="ON_PLAY"},{condition="COMBO",op="ADD_TO_HAND",target={kind="SELF",side="ANY_CHARACTER"},token="TAVERN_COIN",trigger="ON_PLAY"}}}
 P["VAC_463"]={effects={{amount=-1,amount2=1,op="CARD_COST",otherClass=true,target={kind="ALL",side="ANY_CHARACTER"},trigger="AURA"}}}
-P["VAC_509"]={effects={{op="SUMMON",["repeat"]=3,summonAttacks=1,target={kind="ALL",side="ANY_CHARACTER"},token="CS2_033",trigger="ON_PLAY"}}}
+P["VAC_509"]={effects={{op="SUMMON",["repeat"]=3,summonAttacks=1,target={kind="ALL",side="ANY_CHARACTER"},token="CS2_033",tokenDisplay="water elementals that freeze and they attack random enemies",trigger="ON_PLAY"}}}
 P["VAC_512"]={effects={{op="DAMAGE",target={kind="SELF",side="YOUR_HERO"},trigger="SELF_TAKES_DAMAGE",valueSource="EVENT_AMOUNT"}}}
 P["VAC_514"]={abilities={{2,1}},effects={{keyword="reborn",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="VAC_514t",trigger="DEATHRATTLE"}},keywords={"rush","deathrattle"}}
 P["VAC_520"]={effects={{amount=1,op="DAMAGE",["repeat"]=2,spell=true,split=true,target={kind="RANDOM",side="ENEMY_MINION"},trigger="ON_PLAY"}}}
@@ -3011,7 +3011,7 @@ P["VAC_930"]={effects={{amount=5,op="BUFF",target={kind="ALL",side="YOUR_HERO"},
 P["VAC_934"]={abilities={{1,1}},effects={{amount=10,op="DAMAGE",target={kind="SELF",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"taunt","battlecry"}}
 P["VAC_937"]={abilities={{1,1}},effects={{keyword="windfury",op="GIVE_KEYWORD",raceFilter="pirate",target={kind="CHOOSE",side="FRIENDLY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["VAC_940"]={effects={{op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="VAC_940t",trigger="BATTLECRY"},{amount=3,op="DAMAGE",target={kind="SELF",side="YOUR_HERO"},trigger="BATTLECRY"}},keywords={"battlecry"}}
-P["VAC_943"]={effects={{condition="YOUR_TURN",keyword="taunt",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="VAC_943t",trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
+P["VAC_943"]={effects={{condition="YOUR_TURN",keyword="taunt",op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="VAC_943t",tokenDisplay="6/6 Imp",trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
 P["VAC_946"]={effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="FP1_007",trigger="BATTLECRY"},{op="DESTROY",target={kind="PREVIOUS",side="ANY_CHARACTER"},trigger="DEATHRATTLE"}},keywords={"battlecry","deathrattle"}}
 P["VAC_950"]={effects={{amount=1,amount2=6,condition="MANA_CRYSTALS_AT_LEAST",conditionAmount=10,conditionTrails=true,op="CARD_COST",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY"}},keywords={"taunt","rush"}}
 P["VAC_951"]={abilities={{0,1}},effects={{amount=3,op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"}},keywords={"lifesteal"}}
@@ -3020,15 +3020,15 @@ P["VAC_951t2"]={effects={{amount=3,op="DAMAGE",spell=true,target={kind="CHOOSE",
 P["VAC_958"]={allMinionTypes=true,effects={{op="SHUFFLE_SELF",target={kind="ALL",side="ANY_CHARACTER"},trigger="DEATHRATTLE"},{op="KEEPS_ENCHANTMENTS",target={kind="ALL",side="ANY_CHARACTER"},trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
 P["VAC_960"]={effects={{costMax=1,costMin=1,op="SUMMON_FROM_DECK",target={kind="SELF",side="ANY_CHARACTER"},trigger="AFTER_HERO_ATTACK",type_filter=1}}}
 P["VAN_EX1_614"]={effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="VAN_TU4e_002t",trigger="WHEN_PLAY_CARD"}}}
-P["WC_003"]={effects={{delayed=true,keyword="taunt",op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="WC_003t",trigger="ON_PLAY"}}}
+P["WC_003"]={effects={{delayed=true,keyword="taunt",op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="WC_003t",tokenDisplay="2/2 Demon",trigger="ON_PLAY"}}}
 P["WC_004"]={effects={{amount=-2,amount2=4,oneInHand=true,op="CARD_COST",raceFilter="beast",target={kind="SELF",side="YOUR_HERO"},trigger="DEATHRATTLE"}},keywords={"taunt","deathrattle"}}
 P["WC_006"]={effects={{amount=-2,amount2=1,op="CARD_COST",schoolFilter=6,target={kind="SELF",side="YOUR_HERO"},trigger="AURA",type_filter=2}}}
 P["WC_007"]={abilities={{0,1}},effects={{keyword="poisonous",op="GIVE_KEYWORD",raceFilter="beast",target={kind="CHOOSE",side="FRIENDLY_MINION"},trigger="ON_PLAY"}}}
-P["WC_008"]={effects={{keyword="rush",op="SUMMON",["repeat"]=4,target={kind="ALL",side="ANY_CHARACTER"},token="BAR_035t",trigger="FRENZY"}}}
+P["WC_008"]={effects={{keyword="rush",op="SUMMON",["repeat"]=4,target={kind="ALL",side="ANY_CHARACTER"},token="BAR_035t",tokenDisplay="1/1 Hyena",trigger="FRENZY"}}}
 P["WC_013"]={effects={{amount=1,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=2},{amount=-2,condition="TARGET_IS_SCHOOL",conditionSchool="holy",op="CARD_COST",target={kind="PREVIOUS",side="ANY_CHARACTER"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["WC_024"]={effects={{amount=1,amount2=1,condition="HAS_WEAPON",op="BUFF",target={kind="SELF",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["WC_025"]={effects={{amount=1,op="BUFF",target={kind="CHOOSE",side="FRIENDLY_HAND_MINIONS"},trigger="AFTER_HERO_ATTACK"}}}
-P["WC_026"]={effects={{amount=8,op="GAIN_ARMOR",target={kind="SELF",side="YOUR_HERO"},trigger="FRENZY"},{op="EQUIP",target={kind="SELF",side="YOUR_HERO"},token="WC_026t",trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
+P["WC_026"]={effects={{amount=8,op="GAIN_ARMOR",target={kind="SELF",side="YOUR_HERO"},trigger="FRENZY"},{op="EQUIP",target={kind="SELF",side="YOUR_HERO"},token="WC_026t",tokenDisplay="2/5 turtle spike",trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
 P["WC_032"]={abilities={{2,1}},effects={{keyword="divine_shield",op="GIVE_KEYWORD",target={kind="ALL",side="FRIENDLY_MINIONS"},trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
 P["WC_033"]={effects={{amount=1,amount2=1,op="SET_STATS",subjectType=1,target={kind="TRIGGER_SOURCE",side="ANY_CHARACTER"},trigger="WHEN_ENEMY_MINION_ATTACKS"}},secret=true}
 P["WC_036"]={abilities={{11,1}},effects={{keyword="rush",op="SUMMON",subjectSchool="nature",target={kind="ALL",side="ANY_CHARACTER"},token="WC_036t1",trigger="AFTER_CAST_SPELL"}}}
@@ -3047,21 +3047,21 @@ P["WON_052"]={abilities={{1,1}},effects={{condition="SELF_ATTACK_AT_LEAST",condi
 P["WON_065"]={effects={{amount2=1,op="BUFF",target={kind="TRIGGER_SOURCE",side="ANY_CHARACTER"},trigger="AFTER_SUMMON_MINION"}}}
 P["WON_066"]={effects={{amount=3,condition="DECK_NO_DUPLICATES",op="DISCOVER",raceFilter="dragon",target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=1},{op="DAMAGE",target={kind="ALL",side="ANY_OTHER_MINION"},trigger="BATTLECRY",valueSource="PREVIOUS_COST"}},keywords={"battlecry"}}
 P["WON_077"]={effects={{costMax=4,costMin=4,keyword="stealth",op="TRANSFORM",target={kind="TRIGGER_SOURCE",side="ANY_MINION"},trigger="IN_HAND_TURN_START",type_filter=1}}}
-P["WON_079"]={effects={{forOpponent=true,op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="WON_079t",trigger="BATTLECRY"},{condition="COMBO",keyword="rush",op="GIVE_KEYWORD",silent=true,target={kind="SELF",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
+P["WON_079"]={effects={{forOpponent=true,op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="WON_079t",tokenDisplay="gong for your opponent and combo: gain rush",trigger="BATTLECRY"},{condition="COMBO",keyword="rush",op="GIVE_KEYWORD",silent=true,target={kind="SELF",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["WON_079t"]={effects={{forOpponent=true,op="SUMMON",["repeat"]=7,target={kind="ALL",side="ANY_CHARACTER"},token="WON_079t2",trigger="SELF_TAKES_DAMAGE"}}}
 P["WON_116"]={effects={{amount=3,keywordFilter="taunt",op="DISCOVER",target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=1},{op="GAIN_ARMOR",target={kind="SELF",side="YOUR_HERO"},trigger="BATTLECRY",valueSource="PREVIOUS_COST"}},keywords={"battlecry"}}
 P["WON_138"]={abilities={{2,1}},effects={{amount=2,amount2=2,op="BUFF",raceFilter="pirate",target={kind="RANDOM",side="FRIENDLY_MINION"},trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
 P["WON_139"]={effects={{amount=1,op="DRAW",raceFilter="mechanical",target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY"},{amount=-2,op="CARD_COST",previousPlural=true,target={kind="PREVIOUS",side="ANY_CHARACTER"},trigger="BATTLECRY"}},keywords={"battlecry"}}
-P["WON_146"]={dormantTurns=2,effects={{amount=4,buffAll=true,buffHand=true,op="COST_ZONE",raceFilter="dragon",target={kind="ALL",side="ANY_CHARACTER"},trigger="WHEN_AWAKENS",type_filter=1}}}
+P["WON_146"]={dormantTurns=2,effects={{amount=4,buffHand=true,op="COST_ZONE",raceFilter="dragon",target={kind="ALL",side="ANY_CHARACTER"},trigger="WHEN_AWAKENS",type_filter=1}}}
 P["WON_345"]={effects={{keywordFilter="taunt",op="SUMMON_FROM_DECK",target={kind="SELF",side="ANY_CHARACTER"},trigger="DEATHRATTLE",type_filter=1}},keywords={"deathrattle"}}
 P["WORK_002"]={effects={{amount=1,amount2=1,op="BUFF",target={kind="ALL",side="FRIENDLY_MINIONS"},targetAttackMax=1,targetAttackMin=1,trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["WORK_003"]={effects={{amount=4,op="HEAL",target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="ON_PLAY"},{op="SUMMON",["repeat"]=3,summonNamed=true,target={kind="ALL",side="ANY_CHARACTER"},token="CS2_101t",trigger="ON_PLAY"},{amount=2,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
 P["WORK_009"]={abilities={{1,1}},effects={{keyword="lifesteal",op="GIVE_KEYWORD",target={kind="CHOOSE",side="FRIENDLY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["WORK_010"]={effects={{costMax=8,costMin=8,op="SUMMON_RANDOM",target={kind="ALL",side="ANY_CHARACTER"},trigger="DEATHRATTLE"}},keywords={"taunt","deathrattle"}}
 P["WORK_011"]={effects={{amount=1,amount2=1,op="BUFF",target={kind="ADJACENT",side="FRIENDLY_MINION"},trigger="END_TURN"}}}
-P["WORK_015"]={effects={{amount=6,buffHand=true,buffRandom=true,op="COST_ZONE",target={kind="ALL",side="ANY_CHARACTER"},trigger="DEATHRATTLE",type_filter=1}},keywords={"rush","deathrattle"}}
+P["WORK_015"]={effects={{amount=6,buffAll=false,buffHand=true,buffRandom=true,op="COST_ZONE",target={kind="ALL",side="ANY_CHARACTER"},trigger="DEATHRATTLE",type_filter=1}},keywords={"rush","deathrattle"}}
 P["WORK_016"]={abilities={{6,1}},effects={{amount=3,op="DAMAGE",target={kind="SELF",side="YOUR_HERO"},trigger="AFTER_HERO_ATTACK"}}}
-P["WORK_018"]={abilities={{2,1}},effects={{op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="WORK_018t",trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
+P["WORK_018"]={abilities={{2,1}},effects={{op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="WORK_018t",tokenDisplay="ponies",trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
 P["WORK_023"]={effects={{amount=3,op="GAIN_ARMOR",target={kind="SELF",side="YOUR_HERO"},trigger="SELF_TAKES_DAMAGE"}},keywords={"taunt"}}
 P["WORK_028"]={effects={{keyword="reborn",op="GIVE_KEYWORD",target={kind="ALL",side="ANY_MINION"},trigger="ON_PLAY"},{op="DESTROY",target={kind="ALL",side="ANY_MINION"},trigger="ON_PLAY"}}}
 P["WORK_032"]={abilities={{1,1}},effects={{condition="HERO_TOOK_DAMAGE_THIS_TURN",op="SUMMON_COPY",target={kind="SELF",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
@@ -3086,15 +3086,15 @@ P["WW_001t8"]={effects={{amount=1,amount2=2,op="BUFF",target={kind="CHOOSE",side
 P["WW_001t9"]={effects={{amount=3,costMax=3,costMin=3,op="DISCOVER",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY"},{amount2=8,op="CARD_COST",target={kind="PREVIOUS",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
 P["WW_002"]={effects={{amount=1,op="EXCAVATE",target={kind="SELF",side="YOUR_HERO"},trigger="BATTLECRY"}},keywords={"rush","battlecry"}}
 P["WW_009"]={effects={{keyword="freeze",op="GIVE_KEYWORD",target={kind="CHOOSE",side="ENEMY_CHARACTER"},trigger="ON_PLAY"},{amount=1,op="EXCAVATE",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"}}}
-P["WW_024"]={effects={{condition="PLAYED_RACE_LAST_TURN",conditionRace="elemental",keyword="rush",op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="WW_024t",trigger="BATTLECRY"}},keywords={"battlecry"}}
+P["WW_024"]={effects={{condition="PLAYED_RACE_LAST_TURN",conditionRace="elemental",keyword="rush",op="SUMMON",["repeat"]=2,target={kind="ALL",side="ANY_CHARACTER"},token="WW_024t",tokenDisplay="3/3 Cow",trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["WW_026"]={effects={{amount=1,amountSource="ELEMENTAL_STREAK",improved=true,op="DAMAGE",target={kind="ALL",side="ENEMY_CHARACTER"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["WW_080"]={effects={{amount=5,op="HEAL",target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="ON_PLAY"},{amount=3,op="DISCOVER",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=2}}}
 P["WW_090"]={abilities={{0,2}},effects={{amount=6,op="DAMAGE",spell=true,target={kind="ALL",side="ANY_MINION"},trigger="ON_PLAY"},{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},token="WW_090t",trigger="ON_PLAY"}}}
 P["WW_300"]={effects={{op="FORCE_ATTACK",subjectType=1,target={kind="TRIGGER_SOURCE",side="ANY_MINION"},trigger="AFTER_OPPONENT_PLAY_CARD"}},keywords={"stealth","poisonous"}}
 P["WW_322"]={effects={{amount=1,op="EXCAVATE",target={kind="SELF",side="YOUR_HERO"},trigger="BATTLECRY"},{amount2=8,op="CARD_COST",target={kind="PREVIOUS",side="YOUR_HERO"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["WW_325"]={effects={{amount=4,op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"},{amount=1,amount2=6,condition="QUICKDRAW",op="CARD_COST",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY"}},keywords={"lifesteal"}}
-P["WW_329"]={effects={{amount=2,amount2=2,buffHand=true,keywordFilter="taunt",op="BUFF_ZONE",target={kind="ALL",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=1}},keywords={"taunt","battlecry"}}
-P["WW_331"]={effects={{op="ADD_TO_HAND",target={kind="SELF",side="ANY_CHARACTER"},token="WW_331t",trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
+P["WW_329"]={effects={{amount=2,amount2=2,buffAll=false,buffHand=true,keywordFilter="taunt",op="BUFF_ZONE",target={kind="ALL",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=1}},keywords={"taunt","battlecry"}}
+P["WW_331"]={effects={{op="ADD_TO_HAND",target={kind="SELF",side="ANY_CHARACTER"},token="WW_331t",tokenDisplay="a tradeable snake oil",trigger="DEATHRATTLE"}},keywords={"deathrattle"}}
 P["WW_331t"]={effects={{op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="ON_PLAY"}},tradeable=true}
 P["WW_334"]={effects={{amount=6,op="GAIN_ARMOR",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"},{amount=1,op="EXCAVATE",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"}}}
 P["WW_336"]={abilities={{0,2}},effects={{amount=3,op="DAMAGE",spell=true,target={kind="ALL",side="ENEMY_CHARACTER"},trigger="ON_PLAY"},{amount=-1,amount2=2,costCount="ENEMY_MINIONS",op="CARD_COST",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"}}}
@@ -3108,7 +3108,7 @@ P["WW_356"]={effects={{amount=-7,condition="EXCAVATED",conditionAmount=2,op="CAR
 P["WW_357"]={abilities={{4,1},{3,1}},effects={{amount=5,op="GAIN_CORPSES",target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="END_TURN"},{amount2=5,corpseCost=5,op="BUFF",target={kind="SELF",side="YOUR_HERO"},trigger="START_TURN"}}}
 P["WW_360"]={effects={{op="SUMMON_COPY",target={kind="SELF",side="ANY_MINION"},trigger="BATTLECRY"},{condition="QUICKDRAW",op="SUMMON_COPY",target={kind="SELF",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"taunt","battlecry"}}
 P["WW_366"]={abilities={{0,1}},effects={{amount=-1,amount2=2,costCount="OTHER_CARDS_IN_HAND",op="CARD_COST",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"}},keywords={"taunt","divine_shield"}}
-P["WW_367"]={effects={{amount=1,amount2=1,buffDeck=true,buffHand=true,keywordFilter="taunt",op="BUFF_ZONE",target={kind="ALL",side="ANY_CHARACTER"},trigger="DEATHRATTLE",type_filter=1}},keywords={"taunt","deathrattle"}}
+P["WW_367"]={effects={{amount=1,amount2=1,buffAll=false,buffDeck=true,buffHand=true,keywordFilter="taunt",op="BUFF_ZONE",target={kind="ALL",side="ANY_CHARACTER"},trigger="DEATHRATTLE",type_filter=1}},keywords={"taunt","deathrattle"}}
 P["WW_376"]={keywords={"poisonous"}}
 P["WW_378"]={effects={{amount=1,followUp={{additional=true,amount=1,op="EXCAVATE",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"}},followUpCondition="IF_DIES",op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_MINION"},trigger="ON_PLAY"}}}
 P["WW_380"]={effects={{damagedOnly=true,op="DESTROY",target={kind="CHOOSE",side="ENEMY_MINION"},trigger="ON_PLAY"},{amount=1,op="EXCAVATE",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"}}}
@@ -3143,7 +3143,7 @@ P["WW_819"]={abilities={{1,1}},effects={{amount=1,condition="HOLDING_RACE",condi
 P["WW_820"]={abilities={{1,1}},effects={{amount=5,condition="HOLDING_RACE",conditionRace="dragon",op="DAMAGE",target={kind="CHOOSE",side="ENEMY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["WW_825"]={abilities={{0,1}},effects={{amount=-1,amount2=2,costCount="GAME_MINIONS_OF_RACE",costCountRace="dragon",op="CARD_COST",target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"}},keywords={"taunt","rush","lifesteal"}}
 P["WW_826"]={abilities={{1,1}},effects={{amount=4,condition="HOLDING_RACE",conditionRace="dragon",op="REFRESH_MANA",target={kind="SELF",side="YOUR_HERO"},trigger="BATTLECRY"}},keywords={"taunt","battlecry"}}
-P["WW_827"]={abilities={{4,1}},effects={{keyword="taunt",op="ADD_TO_HAND",target={kind="SELF",side="ANY_CHARACTER"},token="WW_816t",trigger="END_TURN"}}}
+P["WW_827"]={abilities={{4,1}},effects={{keyword="taunt",op="ADD_TO_HAND",target={kind="SELF",side="ANY_CHARACTER"},token="WW_816t",tokenDisplay="1/2 whelp",trigger="END_TURN"}}}
 P["WW_901"]={effects={{condition="HOLDING_ANOTHER_COST",conditionAmount=2,op="ADD_TO_HAND",target={kind="SELF",side="ANY_CHARACTER"},token="TAVERN_COIN",trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["WW_906"]={effects={{amount=4,condition="HOLDING_ANOTHER_COST",conditionAmount=4,op="DAMAGE",target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["YOD_003"]={keywords={"taunt","reborn","elusive"}}
@@ -3163,7 +3163,7 @@ P["YOD_024"]={effects={{op="SUMMON",target={kind="ALL",side="ANY_CHARACTER"},tok
 P["YOD_028"]={effects={{costMax=1,costMin=1,op="SUMMON_FROM_DECK",target={kind="ALL",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=1}},keywords={"battlecry"}}
 P["YOD_036"]={abilities={{1,1}},effects={{condition="HOLDING_RACE",conditionRace="dragon",op="DESTROY",target={kind="RANDOM",side="ENEMY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["YOD_040"]={abilities={{1,1}},effects={{amount=5,condition="HOLDING_TYPE_COST",conditionAmount=5,conditionType=2,op="GAIN_ARMOR",target={kind="SELF",side="YOUR_HERO"},trigger="BATTLECRY"}},keywords={"battlecry"}}
-P["YOD_041"]={abilities={{0,1}},effects={{keyword="taunt",op="SUMMON",["repeat"]=3,target={kind="ALL",side="ANY_CHARACTER"},token="YOD_041t",trigger="ON_PLAY"}},overload=3}
+P["YOD_041"]={abilities={{0,1}},effects={{keyword="taunt",op="SUMMON",["repeat"]=3,target={kind="ALL",side="ANY_CHARACTER"},token="YOD_041t",tokenDisplay="elementals",trigger="ON_PLAY"}},overload=3}
 P["YOD_043"]={abilities={{1,1}},effects={{keyword="divine_shield",op="GIVE_KEYWORD",raceFilter="murloc",target={kind="ALL",side="FRIENDLY_MINIONS"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["YOG_300"]={effects={{op="HEAL_AS_DAMAGE",target={kind="SELF",side="YOUR_HERO"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["YOG_301"]={effects={{bothPlayers=true,op="FATIGUE_DAMAGE",["repeat"]=2,repeatPrinted=true,target={kind="SELF",side="YOUR_HERO"},trigger="ON_PLAY"}}}
@@ -3171,27 +3171,27 @@ P["YOG_403"]={abilities={{1,1},{2,1}},effects={{op="SUMMON",target={kind="ALL",s
 P["YOG_410"]={effects={{amount=3,op="DISCOVER",otherClass=true,raceFilter="mechanical",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=1}}}
 P["YOG_411"]={effects={{amount=2,condition="GAME_COUNT",conditionAmount=5,conditionType=18,op="DAMAGE",target={kind="ALL",side="ENEMY_CHARACTER"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["YOG_503"]={effects={{amount=1,amount2=9,op="CARD_COST",target={kind="SELF",side="ENEMY_HERO"},trigger="ON_PLAY",type_filter=1}}}
-P["YOG_505"]={effects={{amount=1,buffAll=true,buffBoard=true,buffDeck=true,buffHand=true,op="BUFF_ZONE",target={kind="ALL",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=1}}}
+P["YOG_505"]={effects={{amount=1,buffBoard=true,buffDeck=true,buffHand=true,op="BUFF_ZONE",target={kind="ALL",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=1}}}
 P["YOG_511"]={effects={{amount=3,op="DISCOVER",target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=3},{amount=1,amount2=1,corpseCost=3,op="BUFF",target={kind="PREVIOUS",side="ANY_CHARACTER"},trigger="ON_PLAY"}}}
 P["YOG_512"]={effects={{keyword="poisonous",op="GIVE_KEYWORD",subjectRace="undead",target={kind="TRIGGER_SOURCE",side="ANY_CHARACTER"},trigger="AFTER_SUMMON_MINION"}}}
 P["YOG_513"]={effects={{amount=2,amount2=2,op="BUFF",raceFilter="undead",target={kind="CHOOSE",side="FRIENDLY_MINION"},trigger="ON_PLAY"},{corpseCost=5,op="SUMMON_COPY",target={kind="PREVIOUS",side="ANY_MINION"},trigger="ON_PLAY"}}}
 P["YOG_514"]={effects={{amount2=3,amountSource="GAME_NAMED_PLAYED",costCountName="Chaotic Tendril",costMax=1,costMin=1,improved=true,op="CAST_FROM",target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY",type_filter=2}},keywords={"battlecry"},madeOnly=true}
-P["YOG_515"]={effects={{op="ADD_TO_HAND",["repeat"]=2,target={kind="SELF",side="ANY_CHARACTER"},token="YOG_514",trigger="BATTLECRY"}},keywords={"battlecry"}}
+P["YOG_515"]={effects={{op="ADD_TO_HAND",["repeat"]=2,target={kind="SELF",side="ANY_CHARACTER"},token="YOG_514",tokenDisplay="1/1 chaotic tendrils",trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["YOG_516"]={effects={{amount2=3,op="CAST_FROM",printOnly=true,["repeat"]=2,target={kind="SELF",side="ANY_CHARACTER"},trigger="ON_PLAY",type_filter=2},{amount2=3,op="CAST_FROM",["repeat"]=2,silent=true,target={kind="SELF",side="ANY_CHARACTER"},trigger="AFTER_TITAN_ABILITY",type_filter=2}},madeOnly=true,titanAbilities={"YOG_516t","YOG_516t2","YOG_516t3"}}
 P["YOG_516t"]={effects={{op="TAKE_CONTROL",printOnly=true,takeVerb=true,target={kind="CHOOSE",side="ENEMY_MINION"},trigger="ON_PLAY"},{op="TAKE_CONTROL",silent=true,takeVerb=true,target={kind="CHOOSE",side="ENEMY_MINION"},trigger="ON_PLAY"}}}
 P["YOG_516t2"]={effects={{amount2=1,op="FORCE_ATTACK",printOnly=true,target={kind="ALL",side="ENEMY_MINIONS"},trigger="ON_PLAY"},{amount2=1,op="FORCE_ATTACK",silent=true,target={kind="ALL",side="ENEMY_MINIONS"},trigger="ON_PLAY"}}}
 P["YOG_516t3"]={effects={{op="FILL_HAND",printOnly=true,target={kind="ALL",side="ANY_CHARACTER"},token="YOG_514",trigger="ON_PLAY"},{op="FILL_HAND",silent=true,target={kind="ALL",side="ANY_CHARACTER"},token="YOG_514",trigger="ON_PLAY"}}}
-P["YOG_517"]={effects={{op="ADD_TO_HAND",target={kind="SELF",side="ANY_CHARACTER"},token="YOG_514",trigger="END_TURN"}}}
+P["YOG_517"]={effects={{op="ADD_TO_HAND",target={kind="SELF",side="ANY_CHARACTER"},token="YOG_514",tokenDisplay="1/1 chaotic tendril",trigger="END_TURN"}}}
 P["YOG_518"]={effects={{amount=2,condition="GAME_COUNT",conditionAmount=5,conditionType=18,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["YOG_519"]={effects={{amount=1,condition="PLAYED_RACE_LAST_TURN",conditionRace="elemental",op="DAMAGE",["repeat"]=7,split=true,target={kind="RANDOM",side="ENEMY_CHARACTER"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["YOG_520"]={effects={{amount=2,op="DAMAGE",subjectRace="undead",target={kind="ALL",side="ENEMY_HERO"},trigger="AFTER_FRIENDLY_MINION_DIES"},{familyFilter=5,op="ADD_TO_HAND",schoolFilter=7,subjectRace="undead",target={kind="SELF",side="ANY_CHARACTER"},trigger="AFTER_FRIENDLY_MINION_DIES",type_filter=2}}}
 P["YOG_521"]={effects={{amount=4,condition="GAME_COUNT",conditionAmount=5,conditionType=18,op="BUFF",target={kind="ALL",side="YOUR_HERO"},temporary=true,trigger="BATTLECRY"}},keywords={"battlecry"}}
-P["YOG_523"]={effects={{op="ADD_TO_HAND",["repeat"]=2,target={kind="SELF",side="ANY_CHARACTER"},token="YOG_514",trigger="DEATHRATTLE"}},keywords={"taunt","deathrattle"}}
-P["YOG_526"]={effects={{amount=3,op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="ON_PLAY"},{condition="COMBO",op="ADD_TO_HAND",target={kind="SELF",side="ANY_CHARACTER"},token="YOG_514",trigger="ON_PLAY"}}}
+P["YOG_523"]={effects={{op="ADD_TO_HAND",["repeat"]=2,target={kind="SELF",side="ANY_CHARACTER"},token="YOG_514",tokenDisplay="1/1 chaotic tendrils",trigger="DEATHRATTLE"}},keywords={"taunt","deathrattle"}}
+P["YOG_526"]={effects={{amount=3,op="DAMAGE",spell=true,target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="ON_PLAY"},{condition="COMBO",op="ADD_TO_HAND",target={kind="SELF",side="ANY_CHARACTER"},token="YOG_514",tokenDisplay="1/1 chaotic tendril",trigger="ON_PLAY"}}}
 P["YOG_527"]={abilities={{1,1}},effects={{amount=4,condition="CONTROL_OTHER_RACE",conditionRace="mechanical",op="DAMAGE",target={kind="CHOOSE",side="ANY_CHARACTER"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["YOG_528"]={effects={{amount=4,condition="GAME_COUNT",conditionAmount=5,conditionType=18,op="REFRESH_MANA",target={kind="SELF",side="YOUR_HERO"},trigger="BATTLECRY"}},keywords={"battlecry"}}
 P["YOP_002"]={effects={{amount2=1,op="CANT_ATTACK_UNLESS",target={kind="SELF",side="ANY_MINION"},trigger="AURA"}}}
-P["YOP_003"]={effects={{op="SHUFFLE",["repeat"]=2,target={kind="SELF",side="YOUR_HERO"},token="SCH_307t",trigger="BATTLECRY"},{amount=1,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="CORRUPT"},{amount=2,op="HEAL",silent=true,target={kind="SELF",side="YOUR_HERO"},trigger="CAST_WHEN_DRAWN"}},keywords={"battlecry"}}
+P["YOP_003"]={effects={{op="SHUFFLE",["repeat"]=2,target={kind="SELF",side="YOUR_HERO"},token="SCH_307t",tokenDisplay="soul fragments",trigger="BATTLECRY"},{amount=1,op="DRAW",target={kind="SELF",side="ANY_CHARACTER"},trigger="CORRUPT"},{amount=2,op="HEAL",silent=true,target={kind="SELF",side="YOUR_HERO"},trigger="CAST_WHEN_DRAWN"}},keywords={"battlecry"}}
 P["YOP_010"]={abilities={{22,1}},dormantTurns=2,effects={{keyword="divine_shield",op="GIVE_KEYWORD",target={kind="ALL",side="FRIENDLY_MINIONS"},trigger="SPELLBURST"}}}
 P["YOP_011"]={effects={{keyword="lifesteal",op="BUFF",target={kind="SELF",side="ANY_MINION"},trigger="CORRUPT"}}}
 P["YOP_014"]={effects={{amount=2,amount2=2,condition="ARMOR_AT_LEAST",conditionAmount=1,op="BUFF",target={kind="SELF",side="ANY_MINION"},trigger="BATTLECRY"}},keywords={"battlecry"}}

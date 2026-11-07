@@ -108,6 +108,8 @@ def main():
     for cid in playable:
         needs(cid)
 
+    if "*" in implemented:
+        implemented = set().union(*full.values())
     ready = sorted(cid for cid in playable if full[cid] <= implemented)
     print("playable now: %d of %d (capabilities implemented: %d)" % (len(ready), len(playable), len(implemented)))
 
