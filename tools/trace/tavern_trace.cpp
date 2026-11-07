@@ -11,16 +11,21 @@
 // same move list and the same state at every step.
 //
 // Usage: tavern-trace --data DIR [--seed N] [--matches N] [--pool FILE] [--max-plies N] [--no-state]
-//        tavern-trace --data DIR --dump-programs FILE --dump-cards FILE
+//        tavern-trace --data DIR --dump-programs FILE --dump-cards FILE --dump-abilities FILE
 //
 // --dump-programs writes programs.json as the engine holds it AFTER loading: grammar-tree cards
 // lowered to their flat effect lists, which is the runtime ABI the Lua engine ports.
 // --dump-cards writes every CardDef the engine knows (tokens and system cards included) with the
 // stats and bitmasks exactly as loaded.
+// --dump-abilities writes, for every grammar-compiled card, each ability lowered ON ITS OWN (the
+// engine runs those one by one: run_program_effects), plus the trigger -> event-kind table.
 
 #include "simcore/rng.h"
 #include "tc/card.h"
 #include "tc/compiler.h"
+#include "tc/lower.h"
+#include "tc/program.h"
+#include "simcore/json.h"
 #include "tc/engine.h"
 #include "tc/loader.h"
 #include "tc/version.h"
@@ -143,6 +148,7 @@ int main(int argc, char** argv)
     bool with_state = true;
     std::string dump_path;
     std::string cards_path;
+    std::string abilities_path;
 
     for (int i = 1; i < argc; ++i)
     {
@@ -165,6 +171,8 @@ int main(int argc, char** argv)
             matches = std::atoi(next().c_str());
         else if (arg == "--max-plies")
             max_plies = std::atoi(next().c_str());
+        else if (arg == "--dump-abilities")
+            abilities_path = next();
         else if (arg == "--dump-cards")
             cards_path = next();
         else if (arg == "--dump-programs")
@@ -187,6 +195,59 @@ int main(int argc, char** argv)
     }
     tc::load_programs(catalogue, data + "/programs.json");
     catalogue.install_system_cards();
+
+    if (!abilities_path.empty())
+    {
+        std::ofstream out(abilities_path);
+        out << "{\"triggerKinds\":{";
+        bool first = true;
+        for (int i = 0; i < 256; ++i)
+        {
+            tc::Trigger const t = static_cast<tc::Trigger>(i);
+            char const* name = tc::trigger_name(t);
+            tc::Trigger back{};
+            if (name == nullptr || !tc::trigger_from_name(name, back) || back != t)
+                continue;
+            out << (first ? "" : ",") << quote(name) << ":" << static_cast<int>(tc::event_kind_from_trigger(t));
+            first = false;
+        }
+        out << "},\n\"kinds\":{";
+        // Each ability lowered alone becomes a card of a scratch catalogue ("<id>#<n>"), so the
+        // public programs.json writer encodes its effects exactly as the real data is encoded.
+        tc::Catalogue scratch;
+        first = true;
+        for (tc::CardDef const* d : catalogue.all())
+        {
+            if (d == nullptr || !d->program || d->program_origin != tc::ProgramOrigin::GRAMMAR)
+                continue;
+            out << (first ? "\n" : ",\n") << quote(d->id) << ":[";
+            for (std::size_t a = 0; a < d->program->abilities.size(); ++a)
+            {
+                tc::Program one;
+                one.ir_version = 1;
+                one.origin = tc::ProgramOrigin::GRAMMAR;
+                one.abilities.push_back(d->program->abilities[a]);
+                tc::LowerResult const lowered = tc::lower_program(one);
+                out << (a ? "," : "") << (lowered.ok ? static_cast<int>(d->program->abilities[a].on.kind) : -1);
+                tc::CardDef part;
+                part.id = d->id + "#" + std::to_string(a);
+                part.name = part.id;
+                part.implemented = true;
+                part.collectible = false;
+                part.droppable = false;
+                part.effects = lowered.effects;
+                scratch.add(std::move(part));
+            }
+            out << "]";
+            first = false;
+        }
+        out << "},\n\"lowered\":" << tc::programs_json(scratch, tc::kRulesVersion);
+        out << "}\n";
+        if (!out)
+            return 1;
+        if (dump_path.empty() && cards_path.empty())
+            return 0;
+    }
 
     if (!dump_path.empty() || !cards_path.empty())
     {

@@ -46,23 +46,34 @@ def ensure_dumps(force=False):
     os.makedirs(CACHE, exist_ok=True)
     cards = os.path.join(CACHE, "runtime_cards.json")
     programs = os.path.join(CACHE, "runtime_programs.json")
+    abilities = os.path.join(CACHE, "runtime_abilities.json")
     sources = [os.path.join(DATA, "catalogue.json"), os.path.join(DATA, "programs.json")]
-    stale = force or not all(os.path.exists(p) for p in (cards, programs)) or any(
+    stale = force or not all(os.path.exists(p) for p in (cards, programs, abilities)) or any(
         os.path.getmtime(s) > os.path.getmtime(cards) for s in sources
     )
     if stale:
         if not os.path.exists(TRACE):
             sys.exit("tavern-trace is not built: bash tools/trace/build.sh")
-        subprocess.check_call([TRACE, "--data", DATA, "--dump-programs", programs, "--dump-cards", cards])
-    return cards, programs
+        subprocess.check_call([TRACE, "--data", DATA, "--dump-programs", programs, "--dump-cards", cards,
+                               "--dump-abilities", abilities])
+    return cards, programs, abilities
 
 
 def load_runtime():
-    cards_path, programs_path = ensure_dumps()
+    cards_path, programs_path, abilities_path = ensure_dumps()
     with open(cards_path) as f:
         cards = json.load(f)
     with open(programs_path) as f:
         programs = json.load(f)
+    with open(abilities_path) as f:
+        abilities = json.load(f)
+    # Grammar cards run ability by ability (TcEngine::run_program_effects). Their flat effect list is the
+    # abilities' lowerings laid end to end, so an ability is a (kind, effect count) slice of it.
+    programs["abilityKinds"] = abilities["triggerKinds"]
+    for cid, kinds in abilities["kinds"].items():
+        lowered = abilities["lowered"]["programs"]
+        programs["programs"][cid]["abilities"] = [
+            [kind, len(lowered.get("%s#%d" % (cid, i), {}).get("effects", []))] for i, kind in enumerate(kinds)]
     with open(os.path.join(DATA, "playable.json")) as f:
         playable = json.load(f)["ids"]
     return cards, programs, playable

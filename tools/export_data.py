@@ -21,7 +21,7 @@ CHUNK = 250  # cards per Lua function, to stay far below per-function constant l
 FLAG_COLLECTIBLE, FLAG_DROPPABLE, FLAG_IMPLEMENTED, FLAG_PLAYABLE, FLAG_MADE_ONLY = 1, 2, 4, 8, 16
 
 # Program-level keys that are not runtime data for the Lua engine.
-PROGRAM_SKIP = {"program", "implemented", "displayText", "approximate"}
+PROGRAM_SKIP = {"program", "implemented", "displayText", "approximate"}  # "abilities" is kept
 EFFECT_SKIP = {"wording", "sourcePhrase", "tokenDisplay"}
 
 
@@ -115,6 +115,9 @@ def main():
         "local P = {}",
         "TC.Programs = P",
         "TC.RULES_VERSION = " + lua_string(programs_doc["rulesVersion"]),
+        "-- Trigger -> grammar event kind (event_kind_from_trigger). A card with `abilities` runs each",
+        "-- {kind, effectCount} slice of its effects on its own, as TcEngine::run_program_effects does.",
+        "TC.TriggerKinds = " + lua_value(programs_doc["abilityKinds"]),
     ]
     ids = [cid for cid in order if cid in programs]
     for start in range(0, len(ids), CHUNK):
