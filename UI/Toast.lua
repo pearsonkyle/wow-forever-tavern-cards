@@ -230,29 +230,82 @@ TC.Collection:Subscribe(function(event, p)
     Toast:Next()
 end)
 
--- Shared card tooltip (also used by the collection UI).
+-- Shared card tooltip (the card book, the hand, the board, chat links), one fact per line:
+--   Name                         Rare
+--   Minion - Beast               Hunter
+--   4 Mana       3 Attack, 2 Health
+--   rules text (its own line breaks kept)
+--   keyword glossary (Overload: ...)
+--   owned copies (card book only)
+local TRIBES = { { 0x1000, "All" }, { 0x01, "Beast" }, { 0x02, "Undead" }, { 0x04, "Elemental" }, { 0x08, "Mech" },
+    { 0x10, "Dragon" }, { 0x20, "Demon" }, { 0x40, "Pirate" }, { 0x80, "Murloc" }, { 0x100, "Draenei" },
+    { 0x200, "Naga" }, { 0x400, "Totem" }, { 0x800, "Quilboar" } }
+local RARITY_WORD = { FREE = "Basic", COMMON = "Common", RARE = "Rare", EPIC = "Epic", LEGENDARY = "Legendary" }
+local TYPE_WORD = { MINION = "Minion", SPELL = "Spell", WEAPON = "Weapon", LOCATION = "Location", HERO = "Hero",
+    HERO_POWER = "Hero Power" }
+
+function TC:TribeText(races)
+    if not races or races == 0 then return nil end
+    if bit.band(races, 0x1000) ~= 0 then return "All tribes" end
+    local out = {}
+    for _, t in ipairs(TRIBES) do
+        if bit.band(races, t[1]) ~= 0 then out[#out + 1] = t[2] end
+    end
+    return #out > 0 and table.concat(out, ", ") or nil
+end
+
 function TC:CardTooltip(id, inGame)
     local card = TC.Cards[id]
     if not card then
         return
     end
+    local tip = GameTooltip
     local r, g, b = Art:RarityColor(card.rarity)
-    GameTooltip:SetText(card.name, r, g, b)
-    local kind = card.type == "MINION" and ("%d/%d Minion"):format(card.attack, card.health)
-        or card.type == "WEAPON" and ("%d/%d Weapon"):format(card.attack, card.durability)
-        or (card.type:sub(1, 1) .. card.type:sub(2):lower())
-    local family = card.family == "NEUTRAL" and "Neutral" or (LOCALIZED_CLASS_NAMES_MALE and LOCALIZED_CLASS_NAMES_MALE[card.family]) or card.family
-    GameTooltip:AddDoubleLine(("%d Mana %s"):format(card.cost, kind), family, 1, 1, 1, 1, 1, 1)
-    local text = Art:RulesText(id)
-    if text ~= "" then
-        GameTooltip:AddLine(text, 1, 0.82, 0, true)
+    tip:SetText(card.name, r, g, b)
+    tip:AddDoubleLine(" ", RARITY_WORD[card.rarity] or "", 1, 1, 1, r, g, b)
+
+    local kind = TYPE_WORD[card.type] or card.type
+    local tribe = TC:TribeText(card.races)
+    if tribe then kind = kind .. " - " .. tribe end
+    if card.school and card.school ~= "" then kind = kind .. " - " .. card.school:sub(1, 1):upper() .. card.school:sub(2) end
+    local family, cr, cg, cb = "Neutral", 0.8, 0.8, 0.8
+    if card.family ~= "NEUTRAL" then
+        family = (LOCALIZED_CLASS_NAMES_MALE and LOCALIZED_CLASS_NAMES_MALE[card.family]) or card.family
+        local c = RAID_CLASS_COLORS and RAID_CLASS_COLORS[card.family]
+        if c then cr, cg, cb = c.r, c.g, c.b end
     end
+    tip:AddDoubleLine(kind, family, 0.9, 0.9, 0.9, cr, cg, cb)
+
+    local stats
+    if card.type == "MINION" then
+        stats = ("%d Attack, %d Health"):format(card.attack, card.health)
+    elseif card.type == "WEAPON" then
+        stats = ("%d Attack, %d Durability"):format(card.attack, card.durability)
+    elseif card.type == "LOCATION" then
+        stats = ("%d uses"):format(card.health)
+    end
+    tip:AddDoubleLine(("|cff4da6ff%d Mana|r"):format(card.cost), stats or " ", 1, 1, 1, 1, 1, 1)
+
+    local text = Art:RulesText(id, true)
+    if text ~= "" then
+        tip:AddLine(" ")
+        for line in (text .. "\n"):gmatch("(.-)\n") do
+            if line:match("%S") then tip:AddLine(line, 1, 0.82, 0, true) end
+        end
+    end
+    if TC.Keywords then TC.Keywords:AddLines(tip, id) end
+
     if inGame then
         return
     end
+    tip:AddLine(" ")
     local have = TC.Collection:Count(id)
-    GameTooltip:AddLine(("Owned: %d / %d"):format(have, TC.Collection:Cap(id)), 0.6, 0.6, 0.6)
+    if TC.Collection:IsBasic(id) then
+        tip:AddLine("Basic card: everyone has 2 copies.", 0.6, 0.6, 0.6)
+    else
+        tip:AddLine(("Owned: %d / %d"):format(have, TC.Collection:Cap(id)), 0.6, 0.6, 0.6)
+    end
     if TC.EngineReady and not TC.PlayableNow[id] then
-        GameTooltip:AddLine("Playable in a later update.", 0.5, 0.5, 0.5)
+        tip:AddLine("Playable in a later update.", 0.5, 0.5, 0.5)
     end
 end

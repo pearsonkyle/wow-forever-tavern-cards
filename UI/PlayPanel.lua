@@ -61,7 +61,7 @@ local function chosenDeck(choice)
 end
 
 -- Starts a practice match from a setup { deck = deck id or "house:CLASS", opponent = class or "random",
--- difficulty }: the Play tab's Sit Down and the board's Rematch (a house deck is shuffled anew, a random
+-- difficulty }: the Play tab's Play button and the board's Rematch (a house deck is shuffled anew, a random
 -- opponent drawn again).
 function TC:StartPractice(setup)
     local deck = chosenDeck(setup.deck)
@@ -196,7 +196,7 @@ local function build(parent)
     local start = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     start:SetSize(160, 30)
     start:SetPoint("TOPLEFT", diffInfo, "BOTTOMLEFT", 0, -24)
-    start:SetText("Sit Down")
+    start:SetText("Play")
     local resume = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     resume:SetSize(160, 30)
     resume:SetPoint("TOPLEFT", diffInfo, "BOTTOMLEFT", 0, -24)

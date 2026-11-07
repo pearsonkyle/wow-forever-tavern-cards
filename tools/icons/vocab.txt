@@ -1,0 +1,274 @@
+# icon name | what it shows. Curated from the classic/modern icon set; /tc icons in game reports any missing.
+Ability_Hunter_Pet_Bat|bat
+Ability_Hunter_Pet_Bear|bear
+Ability_Hunter_Pet_Boar|boar, pig
+Ability_Hunter_Pet_Cat|cat, panther, lynx
+Ability_Hunter_Pet_Crab|crab
+Ability_Hunter_Pet_Crocolisk|crocodile, crocolisk, lizard
+Ability_Hunter_Pet_DragonHawk|dragonhawk, fiery bird
+Ability_Hunter_Pet_Gorilla|gorilla, ape, yeti
+Ability_Hunter_Pet_Hyena|hyena, jackal
+Ability_Hunter_Pet_Moth|moth, butterfly
+Ability_Hunter_Pet_NetherRay|ray, manta, flying fish
+Ability_Hunter_Pet_Owl|owl
+Ability_Hunter_Pet_Raptor|raptor, dinosaur
+Ability_Hunter_Pet_Ravager|ravager, clawed beast
+Ability_Hunter_Pet_Scorpid|scorpion
+Ability_Hunter_Pet_Spider|spider
+Ability_Hunter_Pet_Sporebat|sporebat, floating spore creature
+Ability_Hunter_Pet_TallStrider|tallstrider, ostrich, big bird
+Ability_Hunter_Pet_Turtle|turtle, tortoise, snapjaw, shelled beast
+Ability_Hunter_Pet_Vulture|vulture, carrion bird, buzzard
+Ability_Hunter_Pet_WindSerpent|wind serpent, flying snake, snake
+Ability_Hunter_Pet_Wolf|wolf, worg, hound, dog
+Ability_Hunter_Pet_Wasp|wasp, bee, insect
+Ability_Hunter_Pet_Silithid|silithid, giant bug
+Ability_Hunter_Pet_Rhino|rhino
+Ability_Hunter_Pet_Worm|worm
+Ability_Hunter_Pet_Chimera|chimera, multi-headed beast
+Ability_Hunter_Pet_CoreHound|core hound, lava dog
+Ability_Hunter_Pet_Devilsaur|devilsaur, t-rex, huge dinosaur
+Ability_Hunter_Pet_WarpStalker|warp stalker, blinking lizard
+Ability_Hunter_BeastCall|beast tamer, calling beasts
+Ability_Hunter_Pet_Goto|beast companion
+Ability_Mount_Kodo_01|kodo
+Ability_Mount_MountainRam|ram, goat
+Ability_Mount_RidingHorse|horse
+Ability_Mount_NightmareHorse|nightmare horse, dark steed
+Ability_Mount_Dreadsteed|dreadsteed, fel horse
+Ability_Mount_Undeadhorse|skeletal horse
+Ability_Mount_WhiteTiger|white tiger
+Ability_Mount_JungleTiger|jungle tiger
+Ability_Mount_BlackDireWolf|black dire wolf
+Ability_Mount_Raptor|riding raptor
+Ability_Mount_Mechastrider|mechanostrider, robot bird
+Ability_Mount_Gryphon_01|gryphon
+Ability_Mount_Wyvern_01|wyvern
+Ability_Mount_Drake_Red|red drake
+Ability_Druid_CatForm|druid cat form, feral
+Ability_Racial_BearForm|druid bear form
+Ability_Druid_AquaticForm|seal, sea lion
+Ability_Druid_TravelForm|stag, deer
+Ability_Druid_ForceofNature|treant, tree creature, ancient
+Spell_Nature_Polymorph|sheep
+Spell_Magic_PolymorphChicken|chicken
+Spell_Magic_PolymorphPig|pig
+INV_Misc_Fish_02|fish
+INV_Misc_Fish_35|shark, big fish
+INV_Misc_MonsterClaw_04|claw, beast claw
+INV_Misc_MonsterHead_02|monster head
+INV_Misc_Head_Murloc_01|murloc
+INV_Misc_Head_Dragon_01|red dragon, dragon head
+INV_Misc_Head_Dragon_Black|black dragon
+INV_Misc_Head_Dragon_Blue|blue dragon
+INV_Misc_Head_Dragon_Green|green dragon
+INV_Misc_Head_Dragon_Bronze|bronze dragon
+INV_Misc_Head_Gnoll_01|gnoll
+INV_Misc_Head_Kobold_01|kobold, candle miner
+INV_Misc_Head_Quilboar_01|quilboar, boar-man
+INV_Misc_Head_Centaur_01|centaur
+INV_Misc_Head_Tiger_01|tiger head
+INV_Misc_Head_Undead_01|undead head, zombie
+INV_Misc_Head_Troll_01|troll head
+INV_Misc_Head_Orc_01|orc head
+INV_Misc_Head_Human_01|human head
+INV_Misc_Head_Dwarf_01|dwarf head
+INV_Misc_Head_Gnome_01|gnome head
+INV_Misc_Head_Elf_01|elf head
+INV_Misc_Head_Tauren_01|tauren head
+Achievement_Character_Human_Male|human man
+Achievement_Character_Human_Female|human woman
+Achievement_Character_Dwarf_Male|dwarf man
+Achievement_Character_Dwarf_Female|dwarf woman
+Achievement_Character_Gnome_Male|gnome man
+Achievement_Character_Gnome_Female|gnome woman
+Achievement_Character_Nightelf_Male|night elf man
+Achievement_Character_Nightelf_Female|night elf woman
+Achievement_Character_Orc_Male|orc man
+Achievement_Character_Orc_Female|orc woman
+Achievement_Character_Troll_Male|troll man
+Achievement_Character_Troll_Female|troll woman
+Achievement_Character_Tauren_Male|tauren man, minotaur
+Achievement_Character_Tauren_Female|tauren woman
+Achievement_Character_Undead_Male|undead man, forsaken
+Achievement_Character_Undead_Female|undead woman, banshee
+Achievement_Character_Bloodelf_Male|blood elf man, high elf
+Achievement_Character_Bloodelf_Female|blood elf woman, high elf
+Achievement_Character_Draenei_Male|draenei man
+Achievement_Character_Draenei_Female|draenei woman
+Achievement_Character_Goblin_Male|goblin man
+Achievement_Character_Goblin_Female|goblin woman
+Achievement_Character_Ogre|ogre
+Spell_Shadow_SummonImp|imp
+Spell_Shadow_SummonVoidWalker|voidwalker
+Spell_Shadow_SummonSuccubus|succubus, temptress
+Spell_Shadow_SummonFelHunter|felhunter, demon dog
+Spell_Shadow_SummonInfernal|infernal, burning rock demon
+Spell_Shadow_SummonFelGuard|felguard, demon warrior
+Spell_Shadow_Metamorphosis|demon form, big demon
+Spell_Shadow_RaiseDead|skeleton, raised dead
+Spell_Shadow_AnimateDead|ghoul, risen corpse
+Spell_Shadow_DeathCoil|necromancer, death magic
+Spell_Shadow_Haunting|ghost, spirit, specter
+Spell_Shadow_Possession|possession, wraith
+Spell_DeathKnight_ArmyOfTheDead|army of undead
+INV_Misc_Bone_HumanSkull_01|skull
+INV_Misc_Bone_ElfSkull_01|skull, bones
+Spell_Fire_Elemental_Totem|fire elemental
+Spell_Frost_SummonWaterElemental|water elemental
+Spell_Nature_EarthElemental_Totem|earth elemental, rock creature
+Spell_Nature_Cyclone|air elemental, cyclone, tornado
+INV_Elemental_Primal_Fire|living flame, fire mote
+INV_Elemental_Primal_Water|water mote
+INV_Elemental_Primal_Earth|earth mote, stone
+INV_Elemental_Primal_Air|air mote, wind
+INV_Elemental_Primal_Shadow|shadow mote
+INV_Elemental_Primal_Life|life essence, plant spirit
+INV_Elemental_Primal_Mana|mana wraith, arcane essence
+Spell_Fire_Volcano|volcano, lava
+INV_Gizmo_02|mechanical gizmo, robot
+INV_Misc_Gear_01|gear, cog
+INV_Misc_Gear_08|golem, construct
+INV_Misc_Bomb_05|bomb
+INV_Misc_Bomb_08|explosive barrel
+Trade_Engineering|engineer, tinker, goggles
+INV_Misc_Bandana_03|pirate, bandana
+INV_Misc_Spyglass_02|spyglass, lookout, captain
+INV_Misc_Coin_02|gold coin, treasure
+INV_Misc_Bag_10|loot bag
+INV_Misc_MonsterScales_08|naga, scales
+Spell_Nature_StoneSkinTotem|stone totem
+Spell_Fire_SearingTotem|fire totem
+Spell_Nature_ManaRegenTotem|mana totem, water totem
+Spell_Nature_InvisibilityTotem|wind totem
+Spell_Nature_TremorTotem|tremor totem
+Ability_Warrior_DefensiveStance|knight, defender, shield warrior
+Ability_Warrior_BattleShout|warchief, commander, leader
+Ability_Warrior_Charge|charging warrior
+Ability_Warrior_InnerRage|berserker, enraged warrior
+Ability_Warrior_Cleave|warrior swinging, gladiator
+INV_Helmet_03|soldier helmet
+Ability_TownWatch|town guard, watchman
+INV_Shield_06|shield, guardian
+Ability_Rogue_Ambush|assassin, rogue, thief
+Ability_Stealth|stealthy, hidden figure
+Ability_Rogue_Disguise|spy, disguise
+Spell_Holy_HolyBolt|holy light, paladin
+Spell_Holy_PowerWordShield|priest, cleric, shield of light
+Spell_Holy_SealOfMight|crusader, paladin knight
+Spell_Holy_Heal|healer, heal
+Spell_Holy_Resurrection|resurrection, angelic
+Spell_Holy_DivineSpirit|divine spirit, angel
+Spell_Holy_MagicalSentry|mage, wizard, arcane scholar
+Spell_Arcane_Blink|blink, teleport
+Spell_Nature_HealingTouch|druid, nature healer
+Spell_Nature_Lightning|lightning, shaman
+Spell_Nature_Thorns|thorns, briar, plant
+Spell_Nature_Regeneration|regrowth, leaves
+Spell_Nature_StarFall|starfall, moonkin, astral
+Spell_Nature_ResistNature|nature, forest
+Spell_Nature_WispSplode|wisp, tiny spirit light
+Spell_Nature_FaerieFire|faerie, sprite, pixie
+INV_Misc_Slime_01|ooze, slime
+INV_Stone_15|giant, boulder, rock
+Spell_Shadow_ShadowWordPain|shadow priest, pain
+Spell_Shadow_Charm|charm, mind control, mime
+Spell_Shadow_MindSteal|mind steal, illusion
+Spell_Holy_MindVision|vision, seer, oracle
+Spell_Shadow_Teleport|cultist, ritual
+INV_Weapon_Bow_07|archer, ranger, bow
+INV_Weapon_Rifle_01|rifleman, gun
+Ability_Marksmanship|marksman, hunter shot
+INV_Misc_Food_15|cook, chef, food
+INV_Misc_Food_57|rat, rodent, cheese
+INV_Drink_05|brewer, barkeep, innkeeper, ale
+INV_Misc_Book_09|book, librarian, scholar
+INV_Scroll_03|scroll, scribe
+INV_Misc_Bag_08|dummy, sack, bag
+INV_Misc_Lantern_01|lantern, light
+INV_Misc_Key_03|key, jailer
+INV_Misc_Herb_01|herb, flower
+INV_Misc_Flower_02|flower, bloom
+INV_Misc_Rune_01|rune, arcane runestone
+INV_Misc_Orb_01|orb, crystal ball
+INV_Enchant_EssenceMagicLarge|magic essence, enchanter
+INV_Misc_Gem_Pearl_05|pearl
+INV_Misc_Toy_10|toy, puppet
+INV_Musket_04|blunderbuss
+INV_Misc_Drum_02|drum, music, bard
+INV_Misc_Ear_NightElf_02|elf ear
+Achievement_Boss_EdwinVancleef|Edwin VanCleef, Defias leader
+Achievement_Boss_Onyxia|Onyxia
+Achievement_Boss_Ragnaros|Ragnaros, fire lord
+Achievement_Boss_Nefarion|Nefarian
+Achievement_Boss_CThun|C'Thun, old god eye
+Achievement_Boss_Kelthuzad_01|Kel'Thuzad, lich
+Achievement_Boss_Illidan|Illidan
+Achievement_Boss_LadyVashj|Lady Vashj
+Achievement_Boss_Kiljaedan|Kil'jaeden
+Achievement_Boss_Archimonde|Archimonde
+Achievement_Boss_LichKing|Lich King, Arthas
+Achievement_Boss_Malygos|Malygos
+Achievement_Boss_Mutanus|Mutanus
+Achievement_Boss_Mekgineer_Thermaplugg|Mekgineer, mad gnome
+Achievement_Boss_Gruul|Gruul, gronn giant
+Achievement_Boss_Magtheridon|Magtheridon, pit lord
+Achievement_Boss_PrinceMalchezaar|Prince Malchezaar
+Achievement_Boss_Hakkar|Hakkar, blood god
+Achievement_Boss_Ossirian|Ossirian
+Achievement_Boss_Thaddius|Thaddius
+Achievement_Boss_Patchwerk|Patchwerk, abomination
+Achievement_Boss_Sapphiron_01|Sapphiron, frost wyrm
+Achievement_Boss_Yogg-Saron_01|Yogg-Saron
+INV_Axe_09|axe
+INV_Hammer_04|hammer
+INV_Mace_01|mace
+INV_Weapon_ShortBlade_05|dagger, knife
+INV_Sword_04|sword
+INV_Sword_27|great blade
+INV_Sword_39|runed blade
+INV_Staff_08|staff
+INV_Spear_04|spear, polearm
+INV_Weapon_Glaive_01|glaive
+INV_Gauntlets_04|fist weapon, gauntlet
+INV_Wand_01|wand
+Spell_Fire_FlameBolt|fire bolt
+Spell_Fire_Fireball02|fireball
+Spell_Fire_Flamestrike|flamestrike, fire column
+Spell_Fire_Immolation|immolation, burning
+Spell_Fire_FelFlameRing|fel fire
+Spell_Frost_FrostBolt02|frostbolt
+Spell_Frost_FrostNova|frost nova, freeze
+Spell_Frost_IceStorm|blizzard, ice storm
+Spell_Frost_FrostArmor02|ice armor, ice block
+Spell_Nature_StarFall|starfall
+Spell_Arcane_StarFire|starfire, arcane missiles
+Spell_Holy_SearingLight|smite, searing light
+Spell_Holy_HolyNova|holy nova
+Spell_Holy_FlashHeal|flash heal
+Spell_Holy_Excorcism|exorcism, consecration
+Spell_Holy_SealOfWisdom|blessing, wisdom
+Spell_Holy_FistOfJustice|hammer of justice, stun
+Spell_Shadow_ShadowBolt|shadow bolt
+Spell_Shadow_UnholyFrenzy|frenzy, blood rage
+Spell_Shadow_RainOfFire|rain of fire, hellfire
+Spell_Shadow_Twilight|twilight, void
+Spell_Nature_Rejuvenation|rejuvenation, growth
+Spell_Nature_StrangleVines|entangling roots, vines
+Spell_Nature_ChainLightning|chain lightning
+Spell_Nature_EarthShock|earth shock
+Spell_Nature_Bloodlust|bloodlust, heroism
+Spell_Nature_RavenForm|raven, crow
+Spell_Nature_Swiftness|swiftness, speed
+Ability_Rogue_Eviscerate|eviscerate, finishing blow
+Ability_Rogue_Sprint|sprint, quick
+Ability_Poisons|poison vial
+Ability_BackStab|backstab
+Ability_Warrior_Rampage|rampage, brawl
+Ability_ThunderClap|thunder clap, slam
+Ability_Warrior_ShieldWall|shield wall, armor
+Ability_GolemThunderClap|golem stomp
+Ability_Hunter_SniperShot|aimed shot
+Ability_Hunter_Misdirection|trap, misdirection
+Spell_Arcane_PortalStormWind|portal
+INV_Misc_Ticket_Tarot_Stack_01|cards, gambling, fortune

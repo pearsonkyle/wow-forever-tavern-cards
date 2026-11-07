@@ -138,7 +138,9 @@ function CardWidget:Create(parent)
 
     w.kind = w:CreateFontString(nil, "OVERLAY", "GameFontBlackTiny")
     w.kind:SetPoint("TOP", w.name, "BOTTOM", 0, -1)
-    w.kind:SetTextColor(0.2, 0.13, 0.06)
+    w.kind:SetTextColor(0.12, 0.07, 0.02)
+    w.kind:SetShadowColor(1, 0.95, 0.8, 0.35)
+    w.kind:SetShadowOffset(1, -1)
 
     w.cost = gem(w, 24, 0.15, 0.4, 0.95, "GameFontHighlight")
     w.cost:SetPoint("TOPLEFT", -4, 4)
@@ -161,9 +163,28 @@ function CardWidget:Create(parent)
     w.newText:SetText(NEW or "New")
     w.newText:SetTextColor(0.1, 1, 0.1)
 
+    -- Whose card it is: the class crest in the top-right corner (none for Neutral).
+    w.crest = CreateFrame("Frame", nil, w)
+    w.crest:SetSize(22, 22)
+    w.crest:SetPoint("TOPRIGHT", 4, 4)
+    w.crest.rim = w.crest:CreateTexture(nil, "ARTWORK", nil, 1)
+    w.crest.rim:SetAllPoints()
+    w.crest.rim:SetColorTexture(0.08, 0.06, 0.04, 1)
+    local crestRimMask = w.crest:CreateMaskTexture()
+    crestRimMask:SetTexture(MASK, "CLAMPTOBLACKADDITIVE", "CLAMPTOBLACKADDITIVE")
+    crestRimMask:SetAllPoints(w.crest.rim)
+    w.crest.rim:AddMaskTexture(crestRimMask)
+    w.crest.icon = w.crest:CreateTexture(nil, "ARTWORK", nil, 2)
+    w.crest.icon:SetPoint("TOPLEFT", 2, -2)
+    w.crest.icon:SetPoint("BOTTOMRIGHT", -2, 2)
+    local crestMask = w.crest:CreateMaskTexture()
+    crestMask:SetTexture(MASK, "CLAMPTOBLACKADDITIVE", "CLAMPTOBLACKADDITIVE")
+    crestMask:SetAllPoints(w.crest.icon)
+    w.crest.icon:AddMaskTexture(crestMask)
+
     w.later = w:CreateTexture(nil, "OVERLAY")
     w.later:SetSize(14, 14)
-    w.later:SetPoint("TOPRIGHT", -6, -6)
+    w.later:SetPoint("TOPRIGHT", -6, -22)
     w.later:SetTexture("Interface\\Icons\\INV_Misc_PocketWatch_01")
 
     w:SetHighlightTexture("Interface\\Buttons\\ButtonHilight-Square", "ADD")
@@ -243,11 +264,21 @@ function CardWidget.SetCard(w, id)
         w.attack:Hide()
         w.health:Hide()
     end
-    if card.family ~= "NEUTRAL" then
-        local cls = LOCALIZED_CLASS_NAMES_MALE and LOCALIZED_CLASS_NAMES_MALE[card.family]
-        kind = (cls or card.family) .. " " .. kind
-    end
+    local tribe = TC.TribeText and TC:TribeText(card.races)
+    if tribe and not tribe:find(",") then kind = kind .. " - " .. tribe end
     w.kind:SetText(kind)
+    local coords = card.family ~= "NEUTRAL" and CLASS_ICON_TCOORDS and CLASS_ICON_TCOORDS[card.family]
+    if coords then
+        w.crest.icon:SetTexture("Interface\\GLUES\\CHARACTERCREATE\\UI-CHARACTERCREATE-CLASSES")
+        w.crest.icon:SetTexCoord(unpack(coords))
+        w.crest:Show()
+    elseif card.family ~= "NEUTRAL" then
+        w.crest.icon:SetTexture(Art:ClassIcon(card.family))
+        w.crest.icon:SetTexCoord(0.08, 0.92, 0.08, 0.92)
+        w.crest:Show()
+    else
+        w.crest:Hide()
+    end
 
     if w.game then
         -- A card in a match: always "owned"; the cost shown is what it costs now.

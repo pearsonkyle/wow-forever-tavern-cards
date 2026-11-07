@@ -21,6 +21,7 @@ Data\Cards.lua
 Data\Wave.lua
 Data\QuestMap.lua
 Data\QuestInfo.lua
+Data\Icons.lua
 
 Engine\Rng.lua
 Engine\Data\Programs.lua
@@ -35,6 +36,7 @@ Collection\Collection.lua
 Collection\Decks.lua
 
 UI\Art.lua
+UI\Keywords.lua
 UI\Toast.lua
 UI\CardWidget.lua
 UI\Match.lua

@@ -58,6 +58,12 @@ function commands.who()
     end
 end
 
+function commands.icons()
+    local missing, total = TC.Art:CheckIcons()
+    TC:Print("%d of %d card icons exist in this client.%s", total - #missing, total,
+        #missing > 0 and (" Missing: " .. table.concat(missing, ", ", 1, math.min(#missing, 12))) or "")
+end
+
 function commands.probe()
     TC.Compat:Probe()
     TC.Compat:Report()

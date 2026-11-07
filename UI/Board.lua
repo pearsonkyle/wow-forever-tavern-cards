@@ -14,7 +14,7 @@ local band = bit.band
 local Board = {}
 TC.Board = Board
 
-local W, H = 1000, 670
+local W, H = 1000, 692
 local SLOT_W, SLOT_H, SLOT_GAP = 84, 104, 6
 local HAND_SCALE = 0.85
 local GLOW = "Interface\\Buttons\\UI-ActionButton-Border"
@@ -52,8 +52,10 @@ local function setClassIcon(tex, class)
     end
 end
 
+local allGlows = {}
 local function addGlow(f, scale)
     local g = f:CreateTexture(nil, "OVERLAY", nil, 7)
+    allGlows[#allGlows + 1] = g
     g:SetTexture(GLOW)
     g:SetBlendMode("ADD")
     g:SetPoint("CENTER")
@@ -130,7 +132,7 @@ end
 -- An attack: the attacker's portrait lunges at its target and springs back.
 local ghosts = {}
 local LUNGE = 0.45
-local function lunge(from, to, texture)
+local function lunge(from, to, texture, mode)
     local g
     for _, x in ipairs(ghosts) do
         if not x.active then g = x break end
@@ -144,8 +146,11 @@ local function lunge(from, to, texture)
         g.tex = roundTexture(g, "OVERLAY", 3)
         ghosts[#ghosts + 1] = g
     end
-    g.from, g.to, g.t, g.active = from, to, 0, true
+    g.from, g.to, g.t, g.active, g.mode = from, to, 0, true, mode or "lunge"
     g.tex:SetTexture(texture)
+    g:SetScale(1)
+    g:SetAlpha(1)
+    g.ring:SetColorTexture(g.mode == "die" and 0.4 or 0.9, g.mode == "die" and 0.4 or 0.75, g.mode == "die" and 0.4 or 0.3, 1)
     g:ClearAllPoints()
     g:SetPoint("CENTER", frame, "BOTTOMLEFT", from[1], from[2])
     g:Show()
@@ -155,10 +160,16 @@ local function updateGhosts(elapsed)
     for _, g in ipairs(ghosts) do
         if g.active then
             g.t = g.t + elapsed
-            local p = g.t / LUNGE
+            local p = g.t / (g.mode == "die" and 0.6 or LUNGE)
             if p >= 1 then
                 g.active = false
                 g:Hide()
+            elseif g.mode == "die" then
+                -- A dying minion: greys, shrinks and fades where it stood.
+                local scale = 1 - 0.5 * p
+                g:SetScale(scale)
+                g:SetAlpha(1 - p)
+                g:SetPoint("CENTER", frame, "BOTTOMLEFT", g.from[1] / scale, (g.from[2] - 20 * p) / scale)
             else
                 local k = p < 0.5 and p * 2 or (1 - p) * 2
                 k = k * k * (3 - 2 * k) * 0.85
@@ -167,6 +178,159 @@ local function updateGhosts(elapsed)
             end
         end
     end
+end
+
+-- ---- effects: flashes, fades, flying cards, the targeting arrow ---------------------------------
+
+local flashing, fading = {}, {}
+
+local function addFlash(w)
+    local t = w:CreateTexture(nil, "OVERLAY", nil, 6)
+    t:SetPoint("TOPLEFT", 3, -3)
+    t:SetPoint("BOTTOMRIGHT", -3, 3)
+    t:SetColorTexture(1, 1, 1, 1)
+    t:SetBlendMode("ADD")
+    t:SetAlpha(0)
+    w.flash = t
+end
+
+-- A quick colored flash over a widget (hit = red, power = gold).
+local function flash(w, r, g, b, length)
+    if not w or not w.flash then return end
+    w.flash:SetVertexColor(r, g, b)
+    w.flashLeft, w.flashLength = length or 0.45, length or 0.45
+    flashing[w] = true
+end
+
+-- A widget fades in (new minion); `delay` keeps it hidden while a card flies to it.
+local function fadeIn(w, delay)
+    w.fadeT = -(delay or 0)
+    w:SetAlpha(0)
+    fading[w] = true
+end
+
+local function updateEffects(elapsed)
+    for w in pairs(flashing) do
+        w.flashLeft = w.flashLeft - elapsed
+        if w.flashLeft <= 0 then
+            w.flash:SetAlpha(0)
+            flashing[w] = nil
+        else
+            w.flash:SetAlpha(0.65 * w.flashLeft / w.flashLength)
+        end
+    end
+    for w in pairs(fading) do
+        w.fadeT = w.fadeT + elapsed
+        local k = math.max(0, math.min(1, w.fadeT / 0.3))
+        w:SetAlpha(k * (w.baseAlpha or 1))
+        if k >= 1 then fading[w] = nil end
+    end
+end
+
+-- Flying cards: a card face moving from the hand to where it lands, shrinking as it goes.
+local flyers = {}
+local FLY = 0.35
+local function flyCard(cardId, from, to)
+    local g
+    for _, x in ipairs(flyers) do
+        if not x.active then g = x break end
+    end
+    if not g then
+        g = CardWidget:CreateGame(frame)
+        g:EnableMouse(false)
+        g:SetFrameLevel(frame:GetFrameLevel() + 40)
+        flyers[#flyers + 1] = g
+    end
+    g.from, g.to, g.t, g.active = from, to, 0, true
+    g.costNow = nil
+    g:SetCard(cardId)
+    g:Show()
+end
+
+local function updateFlyers(elapsed)
+    for _, g in ipairs(flyers) do
+        if g.active then
+            g.t = g.t + elapsed
+            local p = math.min(1, g.t / FLY)
+            local k = 1 - (1 - p) * (1 - p)
+            local scale = 0.95 - 0.35 * k
+            g:SetScale(scale)
+            g:ClearAllPoints()
+            g:SetPoint("CENTER", frame, "BOTTOMLEFT", (g.from[1] + (g.to[1] - g.from[1]) * k) / scale,
+                (g.from[2] + (g.to[2] - g.from[2]) * k) / scale)
+            g:SetAlpha(p < 0.75 and 1 or (1 - p) * 4)
+            if p >= 1 then
+                g.active = false
+                g:Hide()
+            end
+        end
+    end
+end
+
+-- The targeting arrow: marching dots from the card or minion being used to the cursor, an arrowhead at
+-- the cursor, red when the cursor is over a legal target.
+local arrow
+local function buildArrow(f)
+    arrow = CreateFrame("Frame", nil, f)
+    arrow:SetAllPoints()
+    arrow:SetFrameLevel(f:GetFrameLevel() + 45)
+    arrow.dots = {}
+    for i = 1, 18 do
+        local t = arrow:CreateTexture(nil, "OVERLAY")
+        t:SetTexture(MASK)
+        t:SetBlendMode("ADD")
+        arrow.dots[i] = t
+    end
+    arrow.head = arrow:CreateTexture(nil, "OVERLAY", nil, 2)
+    arrow.head:SetTexture("Interface\\Minimap\\MinimapArrow")
+    arrow.head:SetSize(40, 40)
+    arrow.head:SetBlendMode("ADD")
+    arrow:Hide()
+end
+
+local function frameXY(w)
+    local x, y = w:GetCenter()
+    if not x then return nil end
+    local ws = w:GetEffectiveScale() / frame:GetEffectiveScale()
+    return x * ws - frame:GetLeft(), y * ws - frame:GetBottom()
+end
+
+local function updateArrow()
+    if not arrow then return end
+    local src = sel and sel.step == "target" and (sel.source and widgets[sel.source] or (sel.power and frame.powers[0]))
+    if not src or not src:IsShown() then
+        arrow:Hide()
+        return
+    end
+    local sx, sy = frameXY(src)
+    if not sx then arrow:Hide() return end
+    local scale = frame:GetEffectiveScale()
+    local cx, cy = GetCursorPosition()
+    cx, cy = cx / scale - frame:GetLeft(), cy / scale - frame:GetBottom()
+    local dx, dy = cx - sx, cy - sy
+    local valid = false
+    if Board.hover then
+        for _, x in ipairs(sel.list) do
+            if x.move.raw.target == Board.hover then valid = true break end
+        end
+    end
+    local r, g, b = 1, 0.8, 0.2
+    if valid then r, g, b = 1, 0.25, 0.15 end
+    local n = #arrow.dots
+    local phase = (GetTime() * 1.6) % 1
+    for i, t in ipairs(arrow.dots) do
+        local k = (i - 1 + phase) / n
+        local size = 5 + 9 * k
+        t:SetSize(size, size)
+        t:ClearAllPoints()
+        t:SetPoint("CENTER", arrow, "BOTTOMLEFT", sx + dx * k, sy + dy * k)
+        t:SetVertexColor(r, g, b, 0.35 + 0.6 * k)
+    end
+    arrow.head:ClearAllPoints()
+    arrow.head:SetPoint("CENTER", arrow, "BOTTOMLEFT", cx, cy)
+    arrow.head:SetVertexColor(r, g, b)
+    arrow.head:SetRotation(math.atan2(dy, dx) - math.pi / 2)
+    arrow:Show()
 end
 
 -- Where each entity's widget sits now (board coordinates), so numbers can float over the dead too.
@@ -201,8 +365,20 @@ local function entityTooltip(owner, id)
             or (record and record.opponent and record.opponent.name) or "Opponent"
         GameTooltip:SetText(name, 1, 0.82, 0)
         GameTooltip:AddLine(("Health %d / %d"):format(e.health, e.max_health), 1, 1, 1)
-        if e.armor > 0 then GameTooltip:AddLine(("Armor %d"):format(e.armor), 0.8, 0.8, 0.8) end
-        if e.attack > 0 then GameTooltip:AddLine(("Attack %d"):format(e.attack), 1, 1, 1) end
+        if e.armor > 0 then
+            GameTooltip:AddLine(("Armor %d"):format(e.armor), 0.8, 0.8, 0.8)
+            GameTooltip:AddLine("  Armor soaks up damage before Health.", 0.6, 0.6, 0.6, true)
+        end
+        if e.attack > 0 then
+            GameTooltip:AddLine(("Attack %d"):format(e.attack), 1, 1, 1)
+            local w = eng:ent(p.weapon_id)
+            local wcard = w and w.zone == ZONE.WEAPON and TC.Cards[w.card_id]
+            GameTooltip:AddLine(wcard and ("  From your weapon, %s (%d uses left)."):format(wcard.name, w.durability)
+                or "  A temporary boost: the hero can attack this turn; it wears off when the turn ends.", 0.6, 0.6, 0.6, true)
+            if e.owner == 0 then
+                GameTooltip:AddLine("  Click your hero, then an enemy, to attack.", 0.5, 0.75, 1, true)
+            end
+        end
         GameTooltip:AddLine(("Deck %d  ·  Hand %d"):format(#eng:deck_ids(e.owner), #eng:hand_ids(e.owner)), 0.7, 0.7, 0.7)
         if #p.secrets > 0 then
             GameTooltip:AddLine(("%d secret(s) in play"):format(#p.secrets), 0.8, 0.4, 1)
@@ -216,10 +392,22 @@ local function entityTooltip(owner, id)
         end
     else
         TC:CardTooltip(e.card_id, true)
-        if e.zone == ZONE.BOARD then
-            GameTooltip:AddLine(("Now %d / %d"):format(e.attack, e.health), 1, 1, 1)
+        local card = TC.Cards[e.card_id]
+        if e.zone == ZONE.BOARD and card and card.type ~= "LOCATION" then
+            GameTooltip:AddLine(" ")
+            local atk = e.attack > card.attack and ("|cff40ff40%d Attack|r"):format(e.attack) or ("%d Attack"):format(e.attack)
+            local hp = e.health < e.max_health and ("|cffff5050%d|r of %d Health"):format(e.health, e.max_health)
+                or (e.max_health > card.health and ("|cff40ff40%d Health|r"):format(e.health) or ("%d Health"):format(e.health))
+            GameTooltip:AddLine("On the board: " .. atk .. ", " .. hp, 1, 1, 1)
+            if e.flags.exhausted and e.owner == 0 and not e.flags.frozen then
+                GameTooltip:AddLine("Can't attack until your next turn.", 0.6, 0.6, 0.6)
+            end
+        elseif e.zone == ZONE.BOARD then
+            GameTooltip:AddLine(" ")
+            GameTooltip:AddLine(("%d uses left%s"):format(e.durability, e.flags.has_attacked and ", used this turn" or ""), 1, 1, 1)
         elseif e.zone == ZONE.WEAPON then
-            GameTooltip:AddLine(("Now %d / %d"):format(e.attack, e.durability), 1, 1, 1)
+            GameTooltip:AddLine(" ")
+            GameTooltip:AddLine(("Equipped: %d Attack, %d uses left"):format(e.attack, e.durability), 1, 1, 1)
         end
     end
     local words = {}
@@ -284,10 +472,11 @@ local function minionWidget(parent)
     b.status:SetPoint("CENTER", b.art, "CENTER")
     b.status:SetShadowOffset(2, -2)
     addGlow(b, 1.7)
+    addFlash(b)
     b:RegisterForClicks("LeftButtonUp", "RightButtonUp")
     b:SetScript("OnClick", onEntityClick)
-    b:SetScript("OnEnter", function(self) entityTooltip(self, self.entity) end)
-    b:SetScript("OnLeave", function() GameTooltip:Hide() end)
+    b:SetScript("OnEnter", function(self) Board.hover = self.entity entityTooltip(self, self.entity) end)
+    b:SetScript("OnLeave", function() Board.hover = nil GameTooltip:Hide() end)
     return b
 end
 
@@ -329,7 +518,8 @@ local function setMinion(b, e)
     end
     b.taunt:SetShown(band(e.keywords, KW.TAUNT) ~= 0 and not e.flags.silenced)
     b.shield:SetShown(e.flags.divine_shield)
-    b:SetAlpha(e.flags.stealth and 0.6 or 1)
+    b.baseAlpha = e.flags.stealth and 0.6 or 1
+    if not fading[b] then b:SetAlpha(b.baseAlpha) end
     if e.flags.frozen then
         b.art:SetVertexColor(0.55, 0.8, 1)
         b.status:SetText("|cff99ddffFrozen|r")
@@ -370,10 +560,14 @@ local function heroWidget(parent, seat)
     b.deck = b:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
     b.deck:SetPoint("TOPRIGHT", b.name, "BOTTOMRIGHT", 0, -4)
     addGlow(b, 1.6)
+    b.flash = roundTexture(b, "OVERLAY", 4)
+    b.flash:SetColorTexture(1, 1, 1, 1)
+    b.flash:SetBlendMode("ADD")
+    b.flash:SetAlpha(0)
     b:RegisterForClicks("LeftButtonUp", "RightButtonUp")
     b:SetScript("OnClick", onEntityClick)
-    b:SetScript("OnEnter", function(self) entityTooltip(self, self.entity) end)
-    b:SetScript("OnLeave", function() GameTooltip:Hide() end)
+    b:SetScript("OnEnter", function(self) Board.hover = self.entity entityTooltip(self, self.entity) end)
+    b:SetScript("OnLeave", function() Board.hover = nil GameTooltip:Hide() end)
     return b
 end
 
@@ -386,6 +580,10 @@ local function powerButton(parent)
     b.cost = gem(b, 22, 0.15, 0.4, 0.95, "GameFontHighlightSmall")
     b.cost:SetPoint("TOP", 0, 10)
     addGlow(b, 1.7)
+    b.flash = roundTexture(b, "OVERLAY", 3)
+    b.flash:SetColorTexture(1, 1, 1, 1)
+    b.flash:SetBlendMode("ADD")
+    b.flash:SetAlpha(0)
     b:RegisterForClicks("LeftButtonUp", "RightButtonUp")
     b:SetScript("OnEnter", function(self)
         if not self.power then return end
@@ -416,24 +614,44 @@ end
 
 local function manaBar(parent)
     local f = CreateFrame("Frame", nil, parent)
-    f:SetSize(170, 34)
+    f:SetSize(200, 42)
     f.text = f:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
     f.text:SetPoint("TOPLEFT")
     f.crystals = {}
     for i = 1, 10 do
         local t = f:CreateTexture(nil, "ARTWORK")
-        t:SetSize(15, 15)
-        t:SetPoint("BOTTOMLEFT", (i - 1) * 16, 0)
+        t:SetSize(19, 19)
+        t:SetPoint("BOTTOMLEFT", (i - 1) * 20, 0)
         t:SetTexture(Art:SafeIcon("INV_Misc_Gem_Sapphire_02"))
         f.crystals[i] = t
     end
+    f:EnableMouse(true)
+    f:SetScript("OnEnter", function(self)
+        local p = self.player
+        if not p then return end
+        GameTooltip:SetOwner(self, "ANCHOR_TOP")
+        GameTooltip:SetText("Mana", 0.3, 0.65, 1)
+        GameTooltip:AddLine(("%d of %d crystals available."):format(p.mana, p.max_mana), 1, 1, 1)
+        GameTooltip:AddLine("You gain a crystal each turn (up to 10), refilled at the start of your turn.", 0.75, 0.75, 0.75, true)
+        if p.overload_locked > 0 then
+            GameTooltip:AddLine(("|cffff6040%d locked by Overload|r this turn."):format(p.overload_locked), 1, 1, 1, true)
+        end
+        if p.overload_next > 0 then
+            GameTooltip:AddLine(("|cffff6040%d will be locked next turn|r (Overload)."):format(p.overload_next), 1, 1, 1, true)
+        end
+        GameTooltip:AddLine("|cffffd100Overload:|r " .. (TC.Keywords:Explain("Overload") or ""), 0.75, 0.75, 0.75, true)
+        GameTooltip:Show()
+    end)
+    f:SetScript("OnLeave", function() GameTooltip:Hide() end)
     return f
 end
 
 local function setMana(f, p)
+    f.player = p
     local overload = p.overload_locked
-    f.text:SetText(("Mana |cff66aaff%d|r / %d%s"):format(p.mana, p.max_mana,
-        overload > 0 and ("  |cffff5533(%d locked)|r"):format(overload) or ""))
+    f.text:SetText(("Mana |cff66aaff%d|r / %d%s%s"):format(p.mana, p.max_mana,
+        overload > 0 and ("  |cffff5533%d locked|r"):format(overload) or "",
+        p.overload_next > 0 and ("  |cffff9966(%d next turn)|r"):format(p.overload_next) or ""))
     for i = 1, 10 do
         local t = f.crystals[i]
         if i > math.max(p.max_mana, p.mana) then
@@ -597,6 +815,15 @@ local function build()
     felt:SetHeight(244)
     felt:SetColorTexture(1, 1, 1, 1)
     felt:SetGradient("VERTICAL", CreateColor(0.12, 0.22, 0.12, 0.85), CreateColor(0.1, 0.18, 0.1, 0.85))
+    local feltEdge = CreateFrame("Frame", nil, f, "BackdropTemplate")
+    feltEdge:SetPoint("TOPLEFT", felt, -4, 4)
+    feltEdge:SetPoint("BOTTOMRIGHT", felt, 4, -4)
+    feltEdge:SetBackdrop({ edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border", edgeSize = 14 })
+    feltEdge:SetBackdropBorderColor(0.75, 0.6, 0.3, 0.9)
+    local vignette = f:CreateTexture(nil, "BACKGROUND", nil, 3)
+    vignette:SetAllPoints(felt)
+    vignette:SetTexture("Interface\\FrameGeneral\\UI-Background-Marble")
+    vignette:SetVertexColor(0.35, 0.55, 0.35, 0.18)
     local line = f:CreateTexture(nil, "BORDER")
     line:SetPoint("LEFT", felt, "LEFT", 0, 0)
     line:SetPoint("RIGHT", felt, "RIGHT", 0, 0)
@@ -672,7 +899,7 @@ local function build()
     f.hand = CreateFrame("Frame", nil, f)
     f.hand:SetScale(HAND_SCALE)
     f.hand:SetSize(760 / HAND_SCALE, CardWidget.HEIGHT)
-    f.hand:SetPoint("BOTTOM", 0, 14)
+    f.hand:SetPoint("BOTTOM", 0, 26)
     f.hand.cards = {}
     for i = 1, 10 do
         local w = CardWidget:CreateGame(f.hand)
@@ -696,20 +923,63 @@ local function build()
     end
 
     -- Log (left) and turn controls (right).
-    local log = CreateFrame("ScrollingMessageFrame", nil, f)
-    log:SetPoint("TOPLEFT", 18, -180)
-    log:SetSize(166, 240)
-    log:SetFontObject(GameFontHighlightSmall)
-    log:SetJustifyH("LEFT")
-    log:SetFading(false)
-    log:SetMaxLines(60)
+    -- The match log: our own little panel (newest at the bottom, mouse wheel scrolls back).
+    local log = CreateFrame("Frame", nil, f, "BackdropTemplate")
+    log:SetPoint("TOPLEFT", 16, -184)
+    log:SetSize(168, 236)
+    log:SetBackdrop({ bgFile = "Interface\\Buttons\\WHITE8x8", edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
+        edgeSize = 12, insets = { left = 3, right = 3, top = 3, bottom = 3 } })
+    log:SetBackdropColor(0.05, 0.03, 0.02, 0.75)
+    log:SetBackdropBorderColor(0.6, 0.5, 0.3, 0.8)
+    log.lines, log.entries, log.offset = {}, {}, 0
+    local LOG_LINES = 13
+    for i = 1, LOG_LINES do
+        local fs = log:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
+        fs:SetPoint("BOTTOMLEFT", 8, 6 + (i - 1) * 17)
+        fs:SetWidth(154)
+        fs:SetJustifyH("LEFT")
+        fs:SetWordWrap(false)
+        log.lines[i] = fs
+    end
+    function log:Render()
+        local n = #self.entries
+        for i = 1, LOG_LINES do
+            local e = self.entries[n - self.offset - i + 1]
+            self.lines[i]:SetText(e or "")
+        end
+    end
+    function log:Clear()
+        wipe(self.entries)
+        self.offset = 0
+        self:Render()
+    end
+    function log:AddMessage(line)
+        line = tostring(line)
+        line = line:gsub("^You: ", "|cff60ff60You:|r "):gsub("^Opponent: ", "|cffff7050Them:|r ")
+        self.entries[#self.entries + 1] = line
+        self.offset = 0
+        self:Render()
+    end
     log:EnableMouseWheel(true)
     log:SetScript("OnMouseWheel", function(self, delta)
-        if delta > 0 then self:ScrollUp() else self:ScrollDown() end
+        self.offset = math.max(0, math.min(#self.entries - LOG_LINES, self.offset + delta))
+        self:Render()
     end)
+    log:EnableMouse(true)
+    log:SetScript("OnEnter", function(self)
+        -- Lines are cut to fit; the tooltip shows the last few in full.
+        GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+        GameTooltip:SetText("Match log", 1, 0.82, 0)
+        for i = math.max(1, #self.entries - 11), #self.entries do
+            GameTooltip:AddLine(self.entries[i], 1, 1, 1, true)
+        end
+        GameTooltip:AddLine("Mouse wheel scrolls back.", 0.5, 0.5, 0.5)
+        GameTooltip:Show()
+    end)
+    log:SetScript("OnLeave", function() GameTooltip:Hide() end)
     f.log = log
-    local logTitle = f:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
-    logTitle:SetPoint("BOTTOMLEFT", log, "TOPLEFT", 0, 4)
+    local logTitle = f:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+    logTitle:SetPoint("BOTTOMLEFT", log, "TOPLEFT", 4, 4)
     logTitle:SetText("Match log")
 
     f.endTurn = CreateFrame("Button", nil, f, "UIPanelButtonTemplate")
@@ -788,11 +1058,19 @@ local function build()
     f.over:Hide()
 
     f.choice = buildChoice()
+    buildArrow(f)
 
     local bannerTime = 0
     f:SetScript("OnUpdate", function(_, elapsed)
         updateFloats(elapsed)
         updateGhosts(elapsed)
+        updateEffects(elapsed)
+        updateFlyers(elapsed)
+        updateArrow()
+        local pulse = 0.6 + 0.4 * math.sin(GetTime() * 5)
+        for _, g in ipairs(allGlows) do
+            if g:IsShown() then g:SetAlpha(pulse) end
+        end
         if f.banner:IsShown() then
             bannerTime = bannerTime + elapsed
             if bannerTime > 1.6 then
@@ -1225,8 +1503,8 @@ function Board:Advance()
     apply(list[1].index)
 end
 
-function Board:Begin(list, source)
-    sel = { list = list, source = source }
+function Board:Begin(list, source, power)
+    sel = { list = list, source = source, power = power }
     Art:Play("IG_ABILITY_ICON_DROP")
     self:Advance()
 end
@@ -1323,7 +1601,7 @@ function Board:ClickPower()
         UIErrorsFrame:AddMessage("You can't use your hero power now.", 1, 0.1, 0.1)
         return
     end
-    self:Begin(list, nil)
+    self:Begin(list, nil, true)
 end
 
 function Board:ClickEndTurn()
@@ -1401,6 +1679,24 @@ local function onMatch(what, seat, move)
         Board:Refresh()
         local after = positions()
         local turnStarted
+        -- The played card flies from the hand (yours, or the opponent's card backs) to where it lands.
+        local flownTo
+        if move and move.action == "play" and move.raw.entity then
+            local e = eng:ent(move.raw.entity)
+            local d = e and eng:def_of(e.id)
+            if e and not (seat == 1 and d and d.secret) then
+                local from = before[e.id]
+                if seat == 1 then
+                    local ox, oy = frameXY(frame.oppHand)
+                    from = ox and { ox, oy }
+                end
+                local to = after[e.id] or { W / 2, H / 2 + 20 }
+                if from then
+                    flyCard(e.card_id, from, to)
+                    flownTo = e.id
+                end
+            end
+        end
         for _, ev in ipairs(eng.events or {}) do
             local at = after[ev.subject] or before[ev.subject]
             if ev.kind == "ATTACK_DECLARED" then
@@ -1419,10 +1715,19 @@ local function onMatch(what, seat, move)
                 end
             elseif ev.kind == "DAMAGED" and at then
                 floatText(at[1], at[2], "-" .. ev.amount, 1, 0.2, 0.15)
+                flash(widgets[ev.subject], 1, 0.15, 0.1)
+            elseif ev.kind == "SUMMONED" and widgets[ev.subject] then
+                fadeIn(widgets[ev.subject], flownTo == ev.subject and FLY * 0.8 or 0)
+            elseif ev.kind == "HERO_POWER_USED" then
+                flash(frame.powers[ev.seat], 1, 0.85, 0.3, 0.6)
             elseif ev.kind == "DAMAGE_PREVENTED" and at then
                 floatText(at[1], at[2], "Blocked", 1, 0.9, 0.4)
             elseif ev.kind == "DIED" and at then
                 floatText(at[1], at[2] - 24, "Died", 0.7, 0.7, 0.7)
+                local dead = eng:ent(ev.subject)
+                if dead and not after[ev.subject] then
+                    local ghost = lunge(at, at, Art:Icon(dead.card_id), "die")
+                end
             elseif ev.kind == "TURN_STARTED" then
                 turnStarted = ev.seat
             end

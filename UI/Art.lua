@@ -119,6 +119,21 @@ local function icon(name)
     return exists[path] and path or nil
 end
 
+-- A class's own icon (Death Knight / Demon Hunter have no slot in the old class-crest sheet).
+function Art:ClassIcon(family)
+    return icon(CLASS_ICONS[family] or "") or FALLBACK
+end
+
+-- /tc icons: which vocabulary icons this client lacks (saved for tools/match_icons.py to prune).
+function Art:CheckIcons()
+    local missing = {}
+    for _, name in ipairs(TC.IconVocab or {}) do
+        if not icon(name) then missing[#missing + 1] = name end
+    end
+    TC.db.missingIcons = missing
+    return missing, #(TC.IconVocab or {})
+end
+
 -- An icon path by name if this client has it, else `fallback`.
 function Art:SafeIcon(name, fallback)
     return icon(name) or fallback or FALLBACK
@@ -130,8 +145,9 @@ function Art:Icon(id)
         return cache[id]
     end
     local card = TC.Cards[id]
-    local path
-    if card then
+    -- A matched icon (Data/Icons.lua, tools/match_icons.py) when the client has it.
+    local path = TC.CardIcons and TC.CardIcons[id] and icon(TC.CardIcons[id])
+    if card and not path then
         if card.type == "SPELL" then
             path = SCHOOL_ICONS[card.school] and icon(SCHOOL_ICONS[card.school])
         elseif card.type == "WEAPON" then
@@ -198,15 +214,30 @@ function Art:ColoredName(id)
 end
 
 -- Rules text for display: the engine's shown text, with its markup turned into WoW color codes.
-function Art:RulesText(id)
+local LINE_KEYWORDS = { "Battlecry", "Deathrattle", "Overload", "Combo", "Secret", "Spellburst", "Honorable Kill",
+    "Corrupt", "Inspire", "Outcast", "Overkill", "Kindred", "Frenzy", "Overheal", "Finale", "Quickdraw", "Forge",
+    "Infuse", "Manathirst", "Choose One", "Excavate" }
+
+-- keepLines: keep the card's own line breaks (tooltips); otherwise one line.
+function Art:RulesText(id, keepLines)
     local card = TC.Cards[id]
     if not card then
         return ""
     end
     local text = card.shown or card.text or ""
     text = text:gsub("%[x%]", ""):gsub("%$(%d+)", "%1"):gsub("#(%d+)", "%1")
-    text = text:gsub("<b>(.-)</b>", "|cffffd100%1|r"):gsub("<i>(.-)</i>", "%1"):gsub("</?%a+>", "")
-    text = text:gsub("@", ""):gsub("\n", " ")
+    text = text:gsub("<b>(.-)</b>", "|cffffffff%1|r"):gsub("<i>(.-)</i>", "%1"):gsub("</?%a+>", "")
+    text = text:gsub("@", "")
+    if keepLines then
+        -- Keyword lists like "Spell Damage +1 Overload: (1)" each get their own line.
+        -- Card-frame line breaks mid-sentence are joined; breaks after a sentence stay.
+        text = text:gsub("%s*\n%s*", "\n"):gsub("([^%.%!%)%:])\n", "%1 ")
+        for _, kw in ipairs(LINE_KEYWORDS) do
+            text = text:gsub("([^\n]) (" .. kw .. ":)", "%1\n%2")
+        end
+    else
+        text = text:gsub("\n", " ")
+    end
     return text
 end
 
