@@ -346,6 +346,44 @@ local function updateArrow()
     arrow:Show()
 end
 
+-- Gliding: widgets ease to their new places (the hand closing up after a play, the row closing up after
+-- a death, a hovered card lifting) instead of jumping. Widgets are per slot, so each remembers where its
+-- card/minion was drawn last and starts from there when the slot now shows that entity.
+local gliders = {}
+local lastHand, lastBoard = {}, {}
+
+local function placeHand(w, x, y)
+    w:SetPoint("BOTTOMLEFT", frame.hand, "BOTTOM", x, y)
+end
+local function placeBoard(w, x, y)
+    w:SetPoint("TOPLEFT", frame, "TOP", x, y)
+end
+
+local function glideTo(w, place, x, y, from)
+    w.place, w.tx, w.ty = place, x, y
+    if from then
+        w.gx, w.gy = from[1], from[2]
+    elseif not w.gx then
+        w.gx, w.gy = x, y
+    end
+    w:ClearAllPoints()
+    place(w, w.gx, w.gy)
+    if math.abs(w.gx - x) > 0.5 or math.abs(w.gy - y) > 0.5 then gliders[w] = true end
+end
+
+local function updateGliders(elapsed)
+    local k = 1 - math.exp(-elapsed * 14)
+    for w in pairs(gliders) do
+        w.gx = w.gx + (w.tx - w.gx) * k
+        w.gy = w.gy + (w.ty - w.gy) * k
+        if math.abs(w.gx - w.tx) < 0.5 and math.abs(w.gy - w.ty) < 0.5 then
+            w.gx, w.gy = w.tx, w.ty
+            gliders[w] = nil
+        end
+        w.place(w, w.gx, w.gy)
+    end
+end
+
 -- Ends every running effect at once (the board was hidden, or a new match begins): nothing may resume
 -- half-way over a later state.
 local function finishEffects()
@@ -362,6 +400,11 @@ local function finishEffects()
         g:Hide()
     end
     if arrow then arrow:Hide() end
+    for w in pairs(gliders) do
+        w.gx, w.gy = w.tx, w.ty
+        w.place(w, w.gx, w.gy)
+    end
+    wipe(gliders)
 end
 
 -- Where each entity's widget sits now (board coordinates), so numbers can float over the dead too.
@@ -942,13 +985,15 @@ local function build()
         addGlow(w, 1.45)
         -- Hovered cards lift above their neighbours so the whole card can be read.
         w.onEnter = function(self)
+            self.hovered = true
             if not self.baseX then return end
-            self:SetPoint("BOTTOMLEFT", f.hand, "BOTTOM", self.baseX, 28)
+            glideTo(self, placeHand, self.baseX, 28)
             self:SetFrameLevel(f.hand:GetFrameLevel() + 45)
         end
         w.onLeave = function(self)
+            self.hovered = false
             if not self.baseX then return end
-            self:SetPoint("BOTTOMLEFT", f.hand, "BOTTOM", self.baseX, 0)
+            glideTo(self, placeHand, self.baseX, 0)
             self:SetFrameLevel(self.baseLevel or f.hand:GetFrameLevel())
         end
         w.onClick = function(self, button)
@@ -1110,6 +1155,7 @@ local function build()
         updateGhosts(elapsed)
         updateEffects(elapsed)
         updateFlyers(elapsed)
+        updateGliders(elapsed)
         updateArrow()
         local pulse = 0.6 + 0.4 * math.sin(GetTime() * 5)
         for _, g in ipairs(allGlows) do
@@ -1181,8 +1227,11 @@ local function layoutRow(side)
         local b = row[i]
         local id = ids[i]
         if id then
-            b:ClearAllPoints()
-            b:SetPoint("TOPLEFT", frame, "TOP", -total / 2 + (i - 1) * (SLOT_W + SLOT_GAP), y)
+            local x = -total / 2 + (i - 1) * (SLOT_W + SLOT_GAP)
+            local from = b.entity ~= id and lastBoard[id] or nil
+            if b.entity ~= id and not from then b.gx = nil end   -- a newcomer appears in place
+            glideTo(b, placeBoard, x, y, from)
+            lastBoard[id] = { x, y }
             setMinion(b, eng:ent(id))
             widgets[id] = b
         else
@@ -1259,13 +1308,19 @@ local function refreshHand()
         local id = ids[i]
         if id then
             local e = eng:ent(id)
+            local x = -total / 2 + (i - 1) * step
+            local from
+            if w.entity ~= id then
+                -- Another card moved into this slot: start where that card was, or (a new card) below.
+                from = lastHand[id] or { x + 40, -CardWidget.HEIGHT }
+            end
             w.entity = id
             w.costNow = eng:card_cost(ME(), id)
-            w:ClearAllPoints()
-            w.baseX = -total / 2 + (i - 1) * step
+            w.baseX = x
             w.baseLevel = frame.hand:GetFrameLevel() + i * 3
-            w:SetPoint("BOTTOMLEFT", frame.hand, "BOTTOM", w.baseX, 0)
-            w:SetFrameLevel(w.baseLevel)
+            glideTo(w, placeHand, x, w.hovered and 28 or 0, from)
+            lastHand[id] = { x, 0 }
+            w:SetFrameLevel(w.hovered and (frame.hand:GetFrameLevel() + 45) or w.baseLevel)
             w:SetCard(e.card_id)
             widgets[id] = w
         else
@@ -1732,6 +1787,8 @@ local function onMatch(what, seat, move)
     if what == "load" then
         sel = nil
         finishEffects()
+        wipe(lastHand)
+        wipe(lastBoard)
         frame.log:Clear()
         local record = Match:Record()
         for _, line in ipairs(record and record.log or {}) do frame.log:AddMessage(line) end
