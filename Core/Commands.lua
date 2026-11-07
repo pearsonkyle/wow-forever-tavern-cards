@@ -3,7 +3,7 @@ local TC = TavernCards_NS
 local HELP = {
     "/tc        - open the card book (also: minimap button)",
     "/tc status - card data and engine build",
-    "/tc minimap - show or hide the minimap button",
+    "/tc minimap - show or hide the minimap button (reports its state)",
     "/tc probe  - report which UI templates, atlases, events and APIs this client has",
     "/tc rng    - run the RNG self-test (must match the reference engine)",
     "/tc collection - collection progress and dust",
@@ -41,13 +41,17 @@ function commands.rng()
     end
 end
 
-function commands.minimap()
-    local settings = TC.db.settings.minimap
-    settings.hide = not settings.hide
-    local DBIcon = LibStub("LibDBIcon-1.0", true)
-    if DBIcon then
-        if settings.hide then DBIcon:Hide("TavernCards") else DBIcon:Show("TavernCards") end
+function commands.minimap(arg)
+    local M = TC.MinimapButton
+    if arg == "own" then
+        -- Force the hand-made button (if the library one misbehaves).
+        TC.db.settings.minimap.forceOwn = true
+        TC:Print("Using the built-in minimap button after the next /reload.")
+        return
     end
+    M:SetHidden(not TC.db.settings.minimap.hide)
+    TC:Print("Minimap button %s.", TC.db.settings.minimap.hide and "hidden" or "shown")
+    M:Report()
 end
 
 function commands.collection()

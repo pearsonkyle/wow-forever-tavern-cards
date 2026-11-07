@@ -19,15 +19,35 @@ function TC:On(event, fn)
     table.insert(handlers[event], fn)
 end
 
+-- Errors are kept (last 20, in TavernCardsDB.errors) as well as reported, because the default
+-- error display is off for most players and a silent failure is otherwise invisible.
+function TC:ReportError(where, err)
+    local db = _G.TavernCardsDB
+    if type(db) == "table" then
+        db.errors = db.errors or {}
+        table.insert(db.errors, { t = time(), where = where, err = tostring(err), stack = debugstack and debugstack(2, 6, 0) })
+        while #db.errors > 20 do
+            table.remove(db.errors, 1)
+        end
+    end
+    geterrorhandler()(err)
+end
+
+local function traceback(e)
+    return tostring(e) .. "\n" .. (debugstack and debugstack(2, 8, 0) or "")
+end
+
 frame:SetScript("OnEvent", function(_, event, ...)
     local list = handlers[event]
     if not list then
         return
     end
+    local n, args = select("#", ...), { ... }
     for i = 1, #list do
-        local ok, err = pcall(list[i], ...)
+        local fn = list[i]
+        local ok, err = xpcall(function() return fn(unpack(args, 1, n)) end, traceback)
         if not ok then
-            geterrorhandler()(err)
+            TC:ReportError(event, err)
         end
     end
 end)
