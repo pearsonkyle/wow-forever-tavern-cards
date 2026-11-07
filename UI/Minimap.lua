@@ -43,9 +43,10 @@ local function onClick(owner, button)
 end
 
 local function tooltip(tip)
-    local owned, total = TC.Collection:Stats()
+    local collected, total, _, basics = TC.Collection:Stats()
     tip:AddLine("Tavern Cards", 1, 0.82, 0)
-    tip:AddDoubleLine("Collected", ("%d / %d"):format(owned, total), 1, 1, 1, 1, 1, 1)
+    tip:AddDoubleLine("Collected", ("%d / %d"):format(collected, total), 1, 1, 1, 1, 1, 1)
+    tip:AddLine(("plus %d Basic cards everyone starts with"):format(basics), 0.6, 0.6, 0.6)
     tip:AddDoubleLine("Dust", tostring(TC.db.dust), 1, 1, 1, 0.6, 0.8, 1)
     tip:AddLine(" ")
     tip:AddLine("|cffffffffClick|r to open your card book", 0.7, 0.7, 0.7)

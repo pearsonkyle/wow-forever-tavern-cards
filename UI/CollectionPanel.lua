@@ -298,11 +298,13 @@ local function build(parent)
     end
 
     function panel:Refresh()
-        local owned = rebuild()
+        rebuild()
         page = math.min(page, self:Pages())
-        bar:SetMinMaxValues(0, math.max(1, #list))
-        bar:SetValue(owned)
-        bar.text:SetText(("%d / %d collected"):format(owned, #list))
+        -- The same account-wide number as the minimap and the ledger, whatever the filter shows.
+        local collected, total = TC.Collection:Stats()
+        bar:SetMinMaxValues(0, math.max(1, total))
+        bar:SetValue(collected)
+        bar.text:SetText(TC.Collection:ProgressText())
         dust:SetText(("|TInterface\\Icons\\INV_Enchant_DustArcane:14:14|t %d"):format(TC.db.dust))
         self:Draw()
     end

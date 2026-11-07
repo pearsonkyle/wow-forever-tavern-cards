@@ -132,7 +132,7 @@ function Quests:Retro()
     if not done then
         return
     end
-    local cards, dust = {}, 0
+    local cards, dust, extra = {}, 0, 0
     for _, completed in ipairs(done) do
         local questID = self:Canon(completed)
         local id = classMap and classMap[questID]
@@ -141,14 +141,16 @@ function Quests:Retro()
             if result then
                 cards[#cards + 1] = id
                 dust = dust + (gained or 0)
+                if result == "dust" then extra = extra + 1 end
             end
         end
     end
     TC.char.retroDone = true
     if #cards > 0 then
         TC.Collection:NotifyBatch(cards, dust, "Your journey so far")
-        TC:Print("Your past adventures earned you |cffffffff%d|r cards%s. Open |cffffffff/tc|r to see them.",
-            #cards, dust > 0 and (" and |cffffffff" .. dust .. "|r dust") or "")
+        TC:Print("This character's past quests earned |cffffffff%d|r cards%s. Your collection: %s (shared by all your characters). Open |cffffffff/tc|r to see them.",
+            #cards, extra > 0 and (" (|cffffffff%d|r extra copies became |cffffffff%d|r dust)"):format(extra, dust) or "",
+            TC.Collection:ProgressText())
     end
 end
 

@@ -156,17 +156,31 @@ function Collection:Craft(id)
     return true
 end
 
+-- The one "collected" number every screen shows: distinct cards earned out of the cards that can be
+-- earned (collectible, not Basic). Basic cards are everyone's from the start and are counted apart.
+-- The collection is account-wide: every character adds to it.
+--   collected, total, copies, basics
 function Collection:Stats()
-    local owned, copies, total = 0, 0, 0
+    local collected, total, copies, basics = 0, 0, 0, 0
     for id, card in pairs(TC.Cards) do
-        if bit.band(card.flags, 8) ~= 0 then
-            total = total + 1
-            local n = TC.db.collection[id] or (self:IsBasic(id) and 2)
-            if n then
-                owned = owned + 1
-                copies = copies + n
+        if bit.band(card.flags, 1) ~= 0 then
+            if card.rarity == "FREE" then
+                basics = basics + 1
+            else
+                total = total + 1
+                local n = TC.db.collection[id]
+                if n and n > 0 then
+                    collected = collected + 1
+                    copies = copies + n
+                end
             end
         end
     end
-    return owned, total, copies
+    return collected, total, copies, basics
+end
+
+-- "25 / 2878" with the same wording everywhere.
+function Collection:ProgressText()
+    local collected, total = self:Stats()
+    return ("%d / %d cards collected"):format(collected, total)
 end

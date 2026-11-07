@@ -70,4 +70,17 @@ T.craft_and_disenchant = function(TC)
     assert(C:Disenchant("EX1_116") == true and TC.db.dust == 400 and C:Count("EX1_116") == 0)
 end
 
+T.stats_count_distinct_earned_cards_only = function(TC)
+    local C = setup(TC)
+    local collected, total, copies, basics = C:Stats()
+    assert(collected == 0 and copies == 0, "basic cards are not 'collected'")
+    assert(basics > 100 and total > 2000)
+    C:AddCard("EX1_556", "test")
+    C:AddCard("EX1_556", "test")
+    C:AddCard("EX1_556", "test")  -- third copy: dust
+    C:AddCard("NEW1_040", "test")
+    collected, _, copies = C:Stats()
+    assert(collected == 2 and copies == 3, ("%d %d"):format(collected, copies))
+    assert(C:ProgressText():find("^2 / %d+ cards collected$"))
+end
 return T

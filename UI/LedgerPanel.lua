@@ -84,8 +84,9 @@ local function buildLedger(parent)
             end
         end
         box:SetDataProvider(provider)
-        local owned, total = TC.Collection:Stats()
-        sub:SetText(("%d of %d cards collected  -  %d dust"):format(owned, total, TC.db.dust))
+        local n = provider:GetSize()
+        sub:SetText(("%s  -  %d dust  -  %d card%s received (every copy, all characters)"):format(
+            TC.Collection:ProgressText(), TC.db.dust, n, n == 1 and "" or "s"))
     end
     return panel
 end

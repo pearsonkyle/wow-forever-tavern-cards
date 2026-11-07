@@ -87,8 +87,9 @@ function commands.minimap(arg)
 end
 
 function commands.collection()
-    local owned, total, copies = TC.Collection:Stats()
-    TC:Print("%d of %d cards collected (%d copies), %d dust.", owned, total, copies, TC.db.dust)
+    local _, _, copies, basics = TC.Collection:Stats()
+    TC:Print("%s (%d copies), %d dust. Plus %d Basic cards everyone starts with. Shared by all your characters.",
+        TC.Collection:ProgressText(), copies, TC.db.dust, basics)
     local ledger = TC.db.ledger
     for i = math.max(1, #ledger - 4), #ledger do
         local e = ledger[i]
