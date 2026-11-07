@@ -213,7 +213,9 @@ int main(int argc, char** argv)
                     << ",\"school\":" << quote(tc::school_name(d->school))
                     << ",\"cost\":" << d->cost << ",\"attack\":" << d->attack << ",\"health\":" << d->health
                     << ",\"durability\":" << d->durability << ",\"keywords\":" << d->keywords
-                    << ",\"races\":" << d->races << ",\"collectible\":" << (d->collectible ? "true" : "false")
+                    << ",\"races\":" << d->races << ",\"spellDamage\":" << d->spell_damage
+                    << ",\"madeOnly\":" << (d->made_only ? "true" : "false")
+                    << ",\"collectible\":" << (d->collectible ? "true" : "false")
                     << ",\"droppable\":" << (d->droppable ? "true" : "false")
                     << ",\"implemented\":" << (d->implemented ? "true" : "false")
                     << ",\"text\":" << quote(d->text) << "}";
@@ -275,6 +277,13 @@ int main(int argc, char** argv)
             std::cerr << "tavern-trace: the engine refused the decks (seed " << match_seed << ")\n";
             return 1;
         }
+
+        // As the realm and jankcraft's own simulator do (tc/ai/sim.cpp): each seat plays its family's
+        // class and hero power.
+        engine->set_class(tc::Seat::A, picked[0]);
+        engine->set_class(tc::Seat::B, picked[1]);
+        engine->set_hero_power(tc::Seat::A, tc::TcEngine::hero_power_for(picked[0]));
+        engine->set_hero_power(tc::Seat::B, tc::TcEngine::hero_power_for(picked[1]));
 
         std::cout << "{\"t\":\"match\",\"seed\":" << match_seed
                   << ",\"rulesVersion\":" << quote(tc::kRulesVersion)
