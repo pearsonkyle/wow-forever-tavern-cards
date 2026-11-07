@@ -84,6 +84,7 @@ local function setup(TC)
     TC.Compat = { HasAtlas = function() return false end }
     TC.Presence = { Online = function() return {} end, Subscribe = function() end, AskWho = function() end }
     TC.Channel = { Number = function() return nil end }
+    TC.Duel = { Subscribe = function() end, Pending = function() return nil end, Cancel = function() end, FullName = function(n) return n end }
     C_Timer = { After = function() end }
     TC.db = { collection = {}, dust = 0, ledger = {}, decks = {}, settings = { mute = true } }
     TC.char = { granted = {} }

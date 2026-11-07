@@ -56,4 +56,7 @@ Social\Chat.lua
 Social\Channel.lua
 Social\Presence.lua
 
+Net\Sha256.lua
+Net\Duel.lua
+
 Core\Commands.lua

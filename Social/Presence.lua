@@ -19,7 +19,8 @@ local HELLO_EVERY = 300
 local ONLINE_FOR = 660
 local WHO_GAP, ANSWER_GAP, GROUP_GAP = 60, 60, 8
 
-local online = {}   -- [full name] = { at, version, collected, wins }
+local online = {}     -- [full name] = { at, version, collected, wins }
+local answered = {}   -- [full name] = when we last answered their "who is online?"
 local listeners = {}
 
 function Presence:Subscribe(fn)
@@ -81,8 +82,20 @@ local function joinedNumber()
     return num
 end
 
+local function prune()
+    local t = GetTime()
+    for k, at in pairs(answered) do
+        if t - at > ANSWER_GAP then answered[k] = nil end
+    end
+    for k, e in pairs(online) do
+        if t - e.at > ONLINE_FOR then online[k] = nil end
+    end
+end
+
 function Presence:Hello()
-    if TC.Chat.Busy() then return end
+    prune()
+    -- Players who left the tavern channel (/tc channel off) aren't joined to the hidden one either.
+    if TC.Chat.Busy() or (TC.Channel and not TC.Channel:Enabled()) then return end
     local text = hello()
     local num = joinedNumber()
     if num then send(text, "CHANNEL", num) end
@@ -109,7 +122,6 @@ function Presence:AskWho()
     return true
 end
 
-local answered = {}
 local function answer(sender)
     local t = GetTime()
     if answered[sender] and t - answered[sender] < ANSWER_GAP then return end
@@ -134,12 +146,13 @@ function Presence:Online()
     return list
 end
 
-TC:On("CHAT_MSG_ADDON", function(prefix, text, _, sender)
+TC:On("CHAT_MSG_ADDON", function(prefix, text, channel, sender)
     if prefix ~= PREFIX or TC.Chat.IsSecret(text) or TC.Chat.IsSecret(sender) then return end
     local name = full(sender)
     if not name or name == me() then return end
     if text == "W" then
-        answer(name)
+        -- Only questions asked on the hidden channel (your realm) are answered.
+        if channel == "CHANNEL" then answer(name) end
         return
     end
     local version, collected, wins = text:match("^H:([^:]*):(%d*):(%d*)")
@@ -162,6 +175,16 @@ TC:On("PLAYER_LOGIN", function()
             C_Timer.NewTicker(HELLO_EVERY, function() TC:Safe("presence", Presence.Hello, Presence) end)
         end
     end)
+end)
+
+-- Joining is asynchronous: once the hidden channel is ours, hide it from chat and say hello.
+TC:On("CHAT_MSG_CHANNEL_NOTICE", function(notice, ...)
+    local base = select(8, ...)
+    if (notice == "YOU_JOINED" or notice == "YOU_CHANGED") and type(base) == "string" and not TC.Chat.IsSecret(base)
+        and base:lower() == HIDDEN:lower() then
+        hideHidden()
+        C_Timer.After(1, function() TC:Safe("presence", Presence.Hello, Presence) end)
+    end
 end)
 
 TC:On("GROUP_ROSTER_UPDATE", function()

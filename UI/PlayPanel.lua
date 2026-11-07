@@ -39,7 +39,14 @@ local function settings()
 end
 
 -- The chosen deck: a saved deck, or a house deck ("house:CLASS") built for you.
-local function chosenDeck(choice)
+local chosenDeck
+
+-- The deck the Play tab has selected (duels use it too).
+function TC:ChosenDeck()
+    return chosenDeck()
+end
+
+function chosenDeck(choice)
     if choice == nil then choice = settings().deck end
     if type(choice) == "string" and choice:find("^house:") then
         local class = choice:sub(7)
@@ -259,33 +266,82 @@ local function build(parent)
     history:SetJustifyH("LEFT")
     history:SetSpacing(2)
 
-    -- Who else is around (the hidden presence channel, Social/Presence.lua).
-    local onlineBtn = CreateFrame("Button", nil, panel)
-    onlineBtn:SetPoint("BOTTOMLEFT", panel, "BOTTOM", 24, 30)
-    onlineBtn:SetSize(pageW - 70, 36)
-    local onlineText = onlineBtn:CreateFontString(nil, "OVERLAY", "QuestFontNormalSmall")
-    onlineText:SetPoint("LEFT")
+    -- Duel a friend: anyone with the addon in your group (any realm) or on your realm.
+    local duelTitle = panel:CreateFontString(nil, "OVERLAY", "QuestFontNormalSmall")
+    duelTitle:SetPoint("BOTTOMLEFT", panel, "BOTTOM", 24, 108)
+    duelTitle:SetText("|cff5a3a10Duel a friend|r")
+    local duelBtn = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
+    duelBtn:SetSize(150, 24)
+    duelBtn:SetPoint("TOPLEFT", duelTitle, "BOTTOMLEFT", 0, -6)
+    duelBtn:SetText("Challenge...")
+    local cancelBtn = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
+    cancelBtn:SetSize(90, 24)
+    cancelBtn:SetPoint("LEFT", duelBtn, "RIGHT", 6, 0)
+    cancelBtn:SetText(CANCEL or "Cancel")
+    cancelBtn:SetScript("OnClick", function() TC.Duel:Cancel() end)
+
+    local function groupNames()
+        local out = {}
+        if not (IsInGroup and IsInGroup()) then return out end
+        local raid = IsInRaid and IsInRaid()
+        local n = raid and GetNumGroupMembers() or GetNumSubgroupMembers()
+        for i = 1, n do
+            local name, realm = UnitName(raid and ("raid" .. i) or ("party" .. i))
+            if name and not UnitIsUnit(raid and ("raid" .. i) or ("party" .. i), "player") then
+                out[#out + 1] = (realm and realm ~= "") and (name .. "-" .. realm) or name
+            end
+        end
+        return out
+    end
+
+    duelBtn:SetScript("OnClick", function(self)
+        MenuUtil.CreateContextMenu(self, function(_, root)
+            root:CreateTitle("Challenge to a duel")
+            local any = false
+            if UnitIsPlayer and UnitIsPlayer("target") and not UnitIsUnit("target", "player") then
+                local name, realm = UnitName("target")
+                local fullName = (realm and realm ~= "") and (name .. "-" .. realm) or name
+                root:CreateButton("Your target: " .. name, function() TC.Duel:Challenge(fullName) end)
+                any = true
+            end
+            local seen = {}
+            for _, name in ipairs(groupNames()) do
+                seen[TC.Duel.FullName(name):lower()] = true
+                root:CreateButton("Group: " .. name, function() TC.Duel:Challenge(name) end)
+                any = true
+            end
+            for _, p in ipairs(TC.Presence:Online()) do
+                if not seen[p.name:lower()] then
+                    local short = Ambiguate and Ambiguate(p.name, "short") or p.name
+                    root:CreateButton(("%s |cff999999(%d cards)|r"):format(short, p.collected or 0), function() TC.Duel:Challenge(p.name) end)
+                    any = true
+                end
+            end
+            if not any then root:CreateTitle("|cff999999Nobody with Tavern Cards found yet.|r") end
+            root:CreateDivider()
+            root:CreateButton("Ask who is around", function()
+                if TC.Presence:AskWho() then TC:Print("Asking the tavern who is around...") end
+                C_Timer.After(7, function() if panel:IsVisible() then panel:Refresh() end end)
+            end)
+        end)
+    end)
+    duelBtn:SetScript("OnEnter", function(self)
+        GameTooltip:SetOwner(self, "ANCHOR_TOP")
+        GameTooltip:SetText("Duel a friend", 1, 0.82, 0)
+        GameTooltip:AddLine("Challenge your target, someone in your group, or a Tavern Cards player online. You play the deck chosen on the left.", 1, 1, 1, true)
+        GameTooltip:AddLine("Players on other realms must be in your group (that's how WoW: Forever lets addons talk across realms).", 0.7, 0.7, 0.7, true)
+        GameTooltip:AddLine("Also: /tc duel Name", 0.5, 0.75, 1)
+        GameTooltip:Show()
+    end)
+    duelBtn:SetScript("OnLeave", function() GameTooltip:Hide() end)
+
+    local onlineText = panel:CreateFontString(nil, "OVERLAY", "QuestFontNormalSmall")
+    onlineText:SetPoint("TOPLEFT", duelBtn, "BOTTOMLEFT", 0, -8)
     onlineText:SetWidth(pageW - 70)
     onlineText:SetJustifyH("LEFT")
     onlineText:SetTextColor(0.25, 0.15, 0.05)
-    onlineBtn:SetScript("OnEnter", function(self)
-        local list = TC.Presence:Online()
-        GameTooltip:SetOwner(self, "ANCHOR_TOP")
-        GameTooltip:SetText("Tavern Cards players online", 1, 0.82, 0)
-        for i = 1, math.min(#list, 15) do
-            local p = list[i]
-            GameTooltip:AddDoubleLine(p.name, ("%d cards, %d wins"):format(p.collected or 0, p.wins or 0), 1, 1, 1, 0.7, 0.7, 0.7)
-        end
-        if #list == 0 then GameTooltip:AddLine("Nobody heard from yet.", 0.7, 0.7, 0.7) end
-        GameTooltip:AddLine("Click to ask who is around. Challenges between players are coming.", 0.5, 0.75, 1, true)
-        GameTooltip:Show()
-    end)
-    onlineBtn:SetScript("OnLeave", function() GameTooltip:Hide() end)
-    onlineBtn:SetScript("OnClick", function()
-        if TC.Presence:AskWho() then TC:Print("Asking the tavern who is around...") end
-        C_Timer.After(7, function() if panel:IsVisible() then panel:Refresh() end end)
-    end)
     TC.Presence:Subscribe(function() if panel:IsVisible() then panel:Refresh() end end)
+    TC.Duel:Subscribe(function() if panel:IsVisible() then panel:Refresh() end end)
 
     function panel:Open(deckId)
         if deckId then settings().deck = deckId end
@@ -361,8 +417,17 @@ local function build(parent)
         end
         history:SetText(#rows > 0 and table.concat(rows, "\n") or "No matches yet.")
 
+        local pend = TC.Duel:Pending()
+        duelBtn:SetEnabled(not active and not pend)
+        cancelBtn:SetShown(pend ~= nil)
         local n = #TC.Presence:Online()
         local chan = TC.Channel:Number()
+        if pend then
+            local who = Ambiguate and Ambiguate(pend.peer, "short") or pend.peer
+            onlineText:SetText(pend.role == "challenger" and ("|cff1a4a80Waiting for %s to answer...|r"):format(who)
+                or ("|cff1a4a80Setting up the duel with %s...|r"):format(who))
+            return
+        end
         onlineText:SetText(("|cff5a3a10Tavern players online:|r %d%s"):format(n,
             chan and ("\nChat with them in channel |cff1a4a80/%d|r."):format(chan) or "\n|cffaaaaaa/tc channel on to join the tavern chat.|r"))
     end

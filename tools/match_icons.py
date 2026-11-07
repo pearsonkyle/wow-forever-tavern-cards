@@ -57,7 +57,9 @@ def load_cards():
 
 
 STOP = set("a an the of and or with in on its his her their to from for at by small large big tiny giant "
-           "holding wearing who that is are card picture shows man woman person creature figure glowing".split())
+           "holding wearing who that is are card picture shows man woman person creature figure glowing dark armored "
+           "powerful mighty wild fierce massive huge little young old evil angry crazed brave swift strange magical "
+           "mysterious beast monster".split())
 
 
 def words(text):
@@ -70,10 +72,14 @@ def words(text):
     return out
 
 
+NAME_SKIP = ("ability", "spell", "pet", "hunter", "achievement", "character", "boss", "misc", "inv", "mount", "weapon",
+             "warrior", "rogue", "druid", "racial", "head", "male", "female", "primal")
+
+
+# (description words, words from the icon's file name). Description words count fully, file-name words half.
 def icon_words(name, desc):
-    parts = re.findall(r"[A-Z]?[a-z]+|[A-Z]+(?![a-z])", name.split("_", 1)[-1] if name.startswith("INV_") else name)
-    return set(words(desc)) | set(words(" ".join(p for p in parts if p.lower() not in ("ability", "spell", "pet", "hunter", "achievement", "character", "boss", "misc", "inv", "mount",
-                                                                                                                                    "weapon", "warrior", "rogue", "druid", "racial", "head", "male", "female", "primal"))))
+    parts = re.findall(r"[A-Z]?[a-z]+|[A-Z]+(?![a-z])", name)
+    return set(words(desc)), set(words(" ".join(p for p in parts if p.lower() not in NAME_SKIP)))
 
 
 # Card -> best vocabulary icon by word overlap: the card name counts most, then the LLM's description of the
@@ -84,8 +90,11 @@ def pick(card, subject, vocab):
     female = bool(re.search(r"\b(woman|female|girl|lady|queen|priestess|sister|she|her)\b", subject.lower() + " " + card["name"].lower()))
     best, best_score = None, 0
     for name, desc in vocab:
-        iw = icon_words(name, desc)
-        score = 3 * sum(1 for w in name_w if w in iw) + 2 * sum(1 for w in subj_w if w in iw) + 3 * sum(1 for w in extra if w in iw)
+        dw, nw = icon_words(name, desc)
+
+        def hit(w):
+            return 1 if w in dw else (0.5 if w in nw else 0)
+        score = 3 * sum(hit(w) for w in name_w) + 2 * sum(hit(w) for w in subj_w) + 3 * sum(hit(w) for w in extra)
         if score == 0:
             continue
         if card["type"] == "SPELL" and not name.startswith(("Spell_", "Ability_", "INV_Misc_", "INV_Elemental", "Achievement_Boss")):

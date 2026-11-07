@@ -267,7 +267,9 @@ function CardWidget.SetCard(w, id)
     local tribe = TC.TribeText and TC:TribeText(card.races)
     if tribe and not tribe:find(",") then kind = kind .. " - " .. tribe end
     w.kind:SetText(kind)
-    local coords = card.family ~= "NEUTRAL" and CLASS_ICON_TCOORDS and CLASS_ICON_TCOORDS[card.family]
+    -- The old class sheet has no Death Knight / Demon Hunter cell even where the coordinate table lists them.
+    local oldSheet = card.family ~= "DEATHKNIGHT" and card.family ~= "DEMONHUNTER"
+    local coords = oldSheet and card.family ~= "NEUTRAL" and CLASS_ICON_TCOORDS and CLASS_ICON_TCOORDS[card.family]
     if coords then
         w.crest.icon:SetTexture("Interface\\GLUES\\CHARACTERCREATE\\UI-CHARACTERCREATE-CLASSES")
         w.crest.icon:SetTexCoord(unpack(coords))

@@ -105,8 +105,11 @@ function Decks:Problems(deck)
     if n ~= self.SIZE then
         problems[#problems + 1] = ("%d / %d cards"):format(n, self.SIZE)
     end
-    local missing, unplayable = 0, 0
+    local missing, unplayable, illegal = 0, 0, 0
     for id, count in pairs(deck.cards) do
+        if not self:AllowsCard(deck, id) or count > TC.Collection:Cap(id) then
+            illegal = illegal + count
+        end
         if TC.Collection:Count(id) < count then
             missing = missing + (count - TC.Collection:Count(id))
         end
@@ -119,6 +122,9 @@ function Decks:Problems(deck)
     end
     if unplayable > 0 then
         problems[#problems + 1] = ("%d card(s) not playable yet"):format(unplayable)
+    end
+    if illegal > 0 then
+        problems[#problems + 1] = ("%d card(s) not allowed in this deck"):format(illegal)
     end
     return problems
 end
@@ -236,13 +242,14 @@ end
 -- A deck table (not saved) from a code, or nil, why.
 function Decks:Decode(code)
     if type(code) ~= "string" then return nil, "format" end
-    local class, body = code:gsub("%s", ""):match("^TCD1%.(%u+)%.([%w%+/]*)$")
+    local class, body = code:gsub("%s", ""):gsub("%.$", ""):match("^TCD1%.(%u+)%.([%w%+/]*)$")
     if not class or #body % 4 ~= 0 then return nil, "format" end
     local valid = false
     for _, c in ipairs(self.CLASSES) do
         if c == class then valid = true end
     end
     if not valid then return nil, "class" end
+    if #body / 4 > self.SIZE then return nil, "size" end
     local deck = { class = class, cards = {} }
     for i = 1, #body, 4 do
         local n = 0
@@ -251,7 +258,9 @@ function Decks:Decode(code)
         end
         local id = cardForHash(n)
         if not id then return nil, "unknown" end
+        if not self:AllowsCard(deck, id) then return nil, "illegal" end
         deck.cards[id] = (deck.cards[id] or 0) + 1
+        if deck.cards[id] > TC.Collection:Cap(id) then return nil, "illegal" end
     end
     return deck
 end
@@ -274,7 +283,9 @@ function Decks:Import(code, name)
 end
 
 local IMPORT_ERRORS = { format = "That is not a Tavern Cards deck code.", class = "That deck code names an unknown class.",
-    unknown = "That deck has cards this version of Tavern Cards doesn't know." }
+    unknown = "That deck has cards this version of Tavern Cards doesn't know.",
+    size = "That deck code has more than 30 cards.",
+    illegal = "That deck breaks the deck rules (cards of another class, or too many copies)." }
 Decks.IMPORT_ERRORS = IMPORT_ERRORS
 
 -- A deck link was clicked in chat: confirm, then import and open it.

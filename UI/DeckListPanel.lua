@@ -68,7 +68,7 @@ local function build(parent)
     import:SetScript("OnClick", function()
         TC:Prompt("Paste a Tavern Cards deck code (Ctrl+V):", "", function(text)
             local name = text:match("%[Tavern Deck: ([^%]]+)%]")
-            local code = text:match("(TCD%d%.[%w%.%+/]+)") or text
+            local code = text:match("(TCD%d%.%u+%.[%w%+/]+)") or text
             local deck, why = Decks:Import(code, name)
             if deck then
                 TC:Print("Deck \"%s\" imported.", deck.name)

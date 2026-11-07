@@ -1,6 +1,7 @@
 -- A match in progress: the engine, the opponent's brain, and the record that lets a /reload resume.
 --
--- The player is always seat 0, the opponent seat 1. Every move applied is appended to
+-- Practice: the player is seat 0 and the AI seat 1. Duels (Net/Duel.lua): the challenger is seat 0, and
+-- each side's moves travel by addon message; `mySeat` says which side this client plays. Every move applied is appended to
 -- TavernCardsCharDB.match.moves, so the match is rebuilt exactly by replaying them from the seed
 -- (the engine is deterministic). The AI thinks in a coroutine, a few milliseconds per frame.
 
@@ -18,9 +19,9 @@ function Match:Subscribe(fn)
     listeners[#listeners + 1] = fn
 end
 
-local function notify(what)
+local function notify(...)
     for _, fn in ipairs(listeners) do
-        TC:Safe("match listener", fn, what)
+        TC:Safe("match listener", fn, ...)
     end
 end
 
@@ -55,6 +56,37 @@ end
 
 function Match:Record()
     return TC.char.match
+end
+
+function Match:IsDuel()
+    local record = TC.char.match
+    return record ~= nil and record.kind == "duel"
+end
+
+-- A cheap fingerprint of the game state, compared after every duel move to catch a desync.
+function Match.StateHash(engine)
+    local s = engine.state
+    local h = 5381
+    local function add(n)
+        h = (h * 33 + (n % 65536)) % 4294967291
+    end
+    add(s.v) add(s.turn) add(s.active) add(s.next_entity_id) add(s.phase)
+    for id = 1, s.next_entity_id - 1 do
+        local e = s.entities[id]
+        if e then
+            add(e.zone) add(e.zone_pos) add(e.attack + 100) add(e.health + 100) add(e.armor) add(e.owner)
+            for i = 1, #e.card_id do add(e.card_id:byte(i)) end
+        end
+    end
+    for _, p in ipairs(s.players) do add(p.mana) add(p.max_mana) end
+    return ("%08x"):format(h)
+end
+
+-- A duel agreed by both sides (Net/Duel.lua): decks, classes and the shared seed are settled.
+function Match:StartDuel(record)
+    record.kind, record.moves, record.started = "duel", {}, time()
+    TC.char.match = record
+    return self:Load()
 end
 
 -- opts: { deck = Decks entry, opponent = { name, class, profile, npc } }
@@ -96,6 +128,7 @@ function Match:Load()
     end
     engine.events = {}
     self.engine = engine
+    self.mySeat = record.mySeat or 0
     self.aiRng = Rng.new(record.seed[1], (record.seed[2] + #record.moves * 7919) % 4294967296)
     self.thinking = nil
     self.waitUntil = nil
@@ -108,13 +141,13 @@ end
 -- Short log line for a move: the engine's description without its board-slot detail.
 local function describe(engine, move, seat)
     local desc = move and move.desc or "?"
-    if seat == 1 and move and move.action == "play" then
+    if seat ~= (Match.mySeat or 0) and move and move.action == "play" then
         -- The opponent's secrets stay secret.
         local d = engine:def_of(move.raw.entity)
         if d and d.secret then return "Opponent: Play a Secret" end
     end
     desc = desc:gsub(" at position %d+", ""):gsub(" #[%d%.]+$", "")
-    return (seat == 0 and "You: " or "Opponent: ") .. desc
+    return (seat == (Match.mySeat or 0) and "You: " or "Opponent: ") .. desc
 end
 
 -- The opponent's way out when a chosen move is refused or its search fails: end the turn, or take the
@@ -139,9 +172,12 @@ function Match:Apply(index, isFallback)
             -- The rules looped (E_LOOP): the engine called the match a draw.
             TC:Print(Match.ErrorText(engine.last_error))
             self:Finish()
-        elseif seat == 1 and not isFallback then
-            local fb = fallbackIndex(engine)
+        elseif seat == 1 and not self:IsDuel() then
+            -- The house can't move at all: it concedes rather than stall the table.
+            local fb = not isFallback and fallbackIndex(engine)
             if fb then return self:Apply(fb, true) end
+            TC:Print("Your opponent got muddled and conceded.")
+            self:EndLocally(1, TC.EngineDefs.REASON.CONCEDE)
         else
             UIErrorsFrame:AddMessage(Match.ErrorText(engine.last_error), 1, 0.1, 0.1)
         end
@@ -164,8 +200,16 @@ end
 
 -- The player's moves: only on their own decision and never while the opponent is thinking.
 function Match:PlayerApply(index)
-    if not self:Active() or self.engine:current_player() ~= 0 or self.thinking then return false end
-    return self:Apply(index)
+    if not self:Active() or self.engine:current_player() ~= (self.mySeat or 0) or self.thinking then return false end
+    local record = TC.char.match
+    local n, duel = #record.moves, record.kind == "duel"
+    -- Captured first: a winning move finishes (and clears) the match inside Apply, and must still be sent.
+    local matchId = record.matchId
+    local ok = self:Apply(index)
+    if ok and duel and TC.Duel then
+        TC.Duel:SendMove(matchId, n, index, Match.StateHash(self.engine))
+    end
+    return ok
 end
 
 -- The last lines of the match log (kept with the record, so a reload keeps them).
@@ -192,17 +236,27 @@ end
 function Match:Concede()
     if not self:Active() then return end
     self.thinking = nil
-    if self.engine:current_player() == 0 then
+    local me = self.mySeat or 0
+    if self.engine:current_player() == me then
         for i, m in ipairs(self.engine:legal_moves()) do
             if m.action == "concede" then
-                self:Apply(i)
+                self:PlayerApply(i)
                 return
             end
         end
     end
+    if self:IsDuel() and TC.Duel then TC.Duel:SendConcede() end
+    self:EndLocally(me, TC.EngineDefs.REASON.CONCEDE)
+end
+
+-- Ends the match without a move (a concede out of turn, an opponent who conceded or left).
+function Match:EndLocally(loser, reason)
+    if not self:Active() then return end
+    local D = TC.EngineDefs
     local s = self.engine.state
-    s.result.result, s.result.reason, s.result.winner = TC.EngineDefs.RESULT.WIN_B, TC.EngineDefs.REASON.CONCEDE, 1
-    s.phase = TC.EngineDefs.PHASE.MATCH_FINISHED
+    s.result.result = loser == 0 and D.RESULT.WIN_B or D.RESULT.WIN_A
+    s.result.reason, s.result.winner = reason, 1 - loser
+    s.phase = D.PHASE.MATCH_FINISHED
     self:Finish()
 end
 
@@ -265,13 +319,20 @@ end
 
 function Match:Finish()
     local s = self.engine.state
-    local won = s.result.result == TC.EngineDefs.RESULT.WIN_A
+    local me = self.mySeat or 0
+    local won = s.result.result == (me == 0 and TC.EngineDefs.RESULT.WIN_A or TC.EngineDefs.RESULT.WIN_B)
     local draw = s.result.result == TC.EngineDefs.RESULT.DRAW
     local record = TC.char.match
     local stats = TC.db.stats or {}
     TC.db.stats = stats
-    stats.played = (stats.played or 0) + 1
-    if won then stats.won = (stats.won or 0) + 1 end
+    local duel = record and record.kind == "duel"
+    if duel then
+        stats.duelsPlayed = (stats.duelsPlayed or 0) + 1
+        if won then stats.duelsWon = (stats.duelsWon or 0) + 1 end
+    else
+        stats.played = (stats.played or 0) + 1
+        if won then stats.won = (stats.won or 0) + 1 end
+    end
     self.result = draw and "draw" or (won and "win" or "loss")
     self.reward = nil
     if won and record then
@@ -286,11 +347,12 @@ function Match:Finish()
     if record then
         local history = self:History()
         table.insert(history, 1, { t = time(), result = self.result, reason = self.reason, opponent = record.opponent,
-            deck = record.deckName, class = record.classes[1], turns = math.floor((self.engine.state.turn + 1) / 2),
+            deck = record.deckName, class = record.classes[me + 1], duel = duel or nil, turns = math.floor((self.engine.state.turn + 1) / 2),
             dust = self.reward and self.reward.dust, card = self.reward and self.reward.card })
         while #history > 20 do table.remove(history) end
     end
     TC.char.match = nil
+    if duel and TC.Duel then TC.Duel:MatchEnded(record) end
     notify("end")
 end
 
@@ -298,7 +360,7 @@ end
 function Match:Pump()
     local engine = self.engine
     if not engine or engine:is_terminal() then return end
-    if engine:current_player() ~= 1 then return end
+    if self:IsDuel() or engine:current_player() ~= 1 then return end
     if self.thinking then return end
     self.waitUntil = GetTime() + AI_PACE
     local profile = (TC.char.match and TC.char.match.opponent and TC.char.match.opponent.profile) or "regular"
@@ -338,8 +400,8 @@ driver:SetScript("OnUpdate", function()
             return
         end
         self.thinking = nil
-        if result and self.engine and self.engine:current_player() == 1 and not self.engine:is_terminal() then
-            self:Apply(result)
+        if self.engine and self.engine:current_player() == 1 and not self.engine:is_terminal() then
+            self:Apply(result or fallbackIndex(self.engine) or 0)
         end
     end
 end)

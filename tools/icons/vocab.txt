@@ -12,7 +12,7 @@ Ability_Hunter_Pet_Moth|moth, butterfly
 Ability_Hunter_Pet_NetherRay|ray, manta, flying fish
 Ability_Hunter_Pet_Owl|owl
 Ability_Hunter_Pet_Raptor|raptor, dinosaur
-Ability_Hunter_Pet_Ravager|ravager, clawed beast
+Ability_Hunter_Pet_Ravager|ravager, clawed hunter
 Ability_Hunter_Pet_Scorpid|scorpion
 Ability_Hunter_Pet_Spider|spider
 Ability_Hunter_Pet_Sporebat|sporebat, floating spore creature
@@ -29,8 +29,8 @@ Ability_Hunter_Pet_Chimera|chimera, multi-headed beast
 Ability_Hunter_Pet_CoreHound|core hound, lava dog
 Ability_Hunter_Pet_Devilsaur|devilsaur, t-rex, huge dinosaur
 Ability_Hunter_Pet_WarpStalker|warp stalker, blinking lizard
-Ability_Hunter_BeastCall|beast tamer, calling beasts
-Ability_Hunter_Pet_Goto|beast companion
+Ability_Hunter_BeastCall|tamer, animal trainer
+Ability_Hunter_Pet_Goto|animal companion
 Ability_Mount_Kodo_01|kodo
 Ability_Mount_MountainRam|ram, goat
 Ability_Mount_RidingHorse|horse
@@ -55,7 +55,7 @@ Spell_Magic_PolymorphChicken|chicken
 Spell_Magic_PolymorphPig|pig
 INV_Misc_Fish_02|fish
 INV_Misc_Fish_35|shark, big fish
-INV_Misc_MonsterClaw_04|claw, beast claw
+INV_Misc_MonsterClaw_04|claw, talon
 INV_Misc_MonsterHead_02|monster head
 INV_Misc_Head_Murloc_01|murloc
 INV_Misc_Head_Dragon_01|red dragon, dragon head
@@ -68,14 +68,6 @@ INV_Misc_Head_Kobold_01|kobold, candle miner
 INV_Misc_Head_Quilboar_01|quilboar, boar-man
 INV_Misc_Head_Centaur_01|centaur
 INV_Misc_Head_Tiger_01|tiger head
-INV_Misc_Head_Undead_01|undead head, zombie
-INV_Misc_Head_Troll_01|troll head
-INV_Misc_Head_Orc_01|orc head
-INV_Misc_Head_Human_01|human head
-INV_Misc_Head_Dwarf_01|dwarf head
-INV_Misc_Head_Gnome_01|gnome head
-INV_Misc_Head_Elf_01|elf head
-INV_Misc_Head_Tauren_01|tauren head
 Achievement_Character_Human_Male|human man
 Achievement_Character_Human_Female|human woman
 Achievement_Character_Dwarf_Male|dwarf man
@@ -99,12 +91,20 @@ Achievement_Character_Draenei_Female|draenei woman
 Achievement_Character_Goblin_Male|goblin man
 Achievement_Character_Goblin_Female|goblin woman
 Achievement_Character_Ogre|ogre
+INV_Misc_Head_Undead_01|undead head, zombie
+INV_Misc_Head_Troll_01|troll head
+INV_Misc_Head_Orc_01|orc head
+INV_Misc_Head_Human_01|human head
+INV_Misc_Head_Dwarf_01|dwarf head
+INV_Misc_Head_Gnome_01|gnome head
+INV_Misc_Head_Elf_01|elf head
+INV_Misc_Head_Tauren_01|tauren head
 Spell_Shadow_SummonImp|imp
 Spell_Shadow_SummonVoidWalker|voidwalker
 Spell_Shadow_SummonSuccubus|succubus, temptress
 Spell_Shadow_SummonFelHunter|felhunter, demon dog
 Spell_Shadow_SummonInfernal|infernal, burning rock demon
-Spell_Shadow_SummonFelGuard|felguard, demon warrior
+Spell_Shadow_SummonFelGuard|felguard, horned demon
 Spell_Shadow_Metamorphosis|demon form, big demon
 Spell_Shadow_RaiseDead|skeleton, raised dead
 Spell_Shadow_AnimateDead|ghoul, risen corpse

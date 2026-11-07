@@ -136,7 +136,7 @@ end
 function Chat.Linkify(msg)
     if type(msg) ~= "string" or Chat.IsSecret(msg) or not msg:find("[Tavern ", 1, true) then return nil end
     local changed = false
-    local out = msg:gsub("%[Tavern Deck: ([^%]|]+)%] (TCD%d%.[%w%.%+/]+)", function(name, code)
+    local out = msg:gsub("%[Tavern Deck: ([^%]|]+)%] (TCD%d%.%u+%.[%w%+/]+)", function(name, code)
         changed = true
         return deckLink(name, code)
     end)
@@ -199,8 +199,10 @@ end
 -- Hover: the card's tooltip, like an item link.
 local hooked = {}
 local function hookChatFrames()
-    for i = 1, (NUM_CHAT_WINDOWS or 10) do
-        local cf = _G["ChatFrame" .. i]
+    local frames = {}
+    for i = 1, (NUM_CHAT_WINDOWS or 10) do frames[#frames + 1] = _G["ChatFrame" .. i] end
+    for _, name in ipairs(CHAT_FRAMES or {}) do frames[#frames + 1] = _G[name] end
+    for _, cf in ipairs(frames) do
         if cf and not hooked[cf] and cf.HookScript then
             hooked[cf] = true
             cf:HookScript("OnHyperlinkEnter", function(self, link)
@@ -228,4 +230,10 @@ local function hookChatFrames()
         end
     end
 end
-TC:On("PLAYER_LOGIN", hookChatFrames)
+TC:On("PLAYER_LOGIN", function()
+    hookChatFrames()
+    -- Whisper windows popped out later get the hover tooltips too.
+    if hooksecurefunc and FCF_OpenTemporaryWindow then
+        hooksecurefunc("FCF_OpenTemporaryWindow", function() TC:Safe("chat hooks", hookChatFrames) end)
+    end
+end)

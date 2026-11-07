@@ -93,6 +93,18 @@ local function engine()
     return Match:Engine()
 end
 
+-- Your seat in the engine (0, or 1 when a friend challenged you) and theirs. The board's own tables are
+-- by side instead: [0] is the bottom (you), [1] the top (the opponent).
+local function ME()
+    return Match.mySeat or 0
+end
+local function OPP()
+    return 1 - ME()
+end
+local function sideOf(seat)
+    return seat == ME() and 0 or 1
+end
+
 -- ---- floating numbers --------------------------------------------------------------------------
 
 local floats = {}
@@ -205,6 +217,7 @@ end
 -- A widget fades in (new minion); `delay` keeps it hidden while a card flies to it.
 local function fadeIn(w, delay)
     w.fadeT = -(delay or 0)
+    w.fadeEntity = w.entity
     w:SetAlpha(0)
     fading[w] = true
 end
@@ -333,6 +346,24 @@ local function updateArrow()
     arrow:Show()
 end
 
+-- Ends every running effect at once (the board was hidden, or a new match begins): nothing may resume
+-- half-way over a later state.
+local function finishEffects()
+    for w in pairs(flashing) do w.flash:SetAlpha(0) end
+    wipe(flashing)
+    for w in pairs(fading) do w:SetAlpha(w.baseAlpha or 1) end
+    wipe(fading)
+    for _, g in ipairs(flyers) do
+        g.active = false
+        g:Hide()
+    end
+    for _, g in ipairs(ghosts) do
+        g.active = false
+        g:Hide()
+    end
+    if arrow then arrow:Hide() end
+end
+
 -- Where each entity's widget sits now (board coordinates), so numbers can float over the dead too.
 local function positions()
     local out = {}
@@ -361,7 +392,7 @@ local function entityTooltip(owner, id)
     if e.zone == ZONE.HERO then
         local p = eng:player(e.owner)
         local record = Match:Record()
-        local name = e.owner == 0 and (UnitName("player") or "You")
+        local name = e.owner == ME() and (UnitName("player") or "You")
             or (record and record.opponent and record.opponent.name) or "Opponent"
         GameTooltip:SetText(name, 1, 0.82, 0)
         GameTooltip:AddLine(("Health %d / %d"):format(e.health, e.max_health), 1, 1, 1)
@@ -375,14 +406,14 @@ local function entityTooltip(owner, id)
             local wcard = w and w.zone == ZONE.WEAPON and TC.Cards[w.card_id]
             GameTooltip:AddLine(wcard and ("  From your weapon, %s (%d uses left)."):format(wcard.name, w.durability)
                 or "  A temporary boost: the hero can attack this turn; it wears off when the turn ends.", 0.6, 0.6, 0.6, true)
-            if e.owner == 0 then
+            if e.owner == ME() then
                 GameTooltip:AddLine("  Click your hero, then an enemy, to attack.", 0.5, 0.75, 1, true)
             end
         end
         GameTooltip:AddLine(("Deck %d  ·  Hand %d"):format(#eng:deck_ids(e.owner), #eng:hand_ids(e.owner)), 0.7, 0.7, 0.7)
         if #p.secrets > 0 then
             GameTooltip:AddLine(("%d secret(s) in play"):format(#p.secrets), 0.8, 0.4, 1)
-            if e.owner == 0 then
+            if e.owner == ME() then
                 for _, sid in ipairs(p.secrets) do
                     local se = eng:ent(sid)
                     local card = se and TC.Cards[se.card_id]
@@ -399,7 +430,7 @@ local function entityTooltip(owner, id)
             local hp = e.health < e.max_health and ("|cffff5050%d|r of %d Health"):format(e.health, e.max_health)
                 or (e.max_health > card.health and ("|cff40ff40%d Health|r"):format(e.health) or ("%d Health"):format(e.health))
             GameTooltip:AddLine("On the board: " .. atk .. ", " .. hp, 1, 1, 1)
-            if e.flags.exhausted and e.owner == 0 and not e.flags.frozen then
+            if e.flags.exhausted and e.owner == ME() and not e.flags.frozen then
                 GameTooltip:AddLine("Can't attack until your next turn.", 0.6, 0.6, 0.6)
             end
         elseif e.zone == ZONE.BOARD then
@@ -482,6 +513,10 @@ end
 
 local function setMinion(b, e)
     local eng = engine()
+    if fading[b] and b.fadeEntity ~= e.id then
+        -- The row shifted mid-fade: this slot now shows another minion, which is already there.
+        fading[b] = nil
+    end
     local d = eng:def_of(e.id)
     local card = TC.Cards[e.card_id]
     b.entity = e.id
@@ -498,7 +533,8 @@ local function setMinion(b, e)
         b.health.text:SetTextColor(1, 1, 1)
         b.taunt:Hide()
         b.shield:Hide()
-        b:SetAlpha(1)
+        b.baseAlpha = 1
+        if not fading[b] then b:SetAlpha(1) end
         b.art:SetVertexColor(e.flags.has_attacked and 0.5 or 1, e.flags.has_attacked and 0.5 or 1, e.flags.has_attacked and 0.5 or 1)
         b.status:SetText(e.flags.has_attacked and "|cffccccccUsed|r" or "")
         b:Show()
@@ -779,7 +815,7 @@ end
 
 local function myDecisionNow()
     local eng = engine()
-    return eng and not eng:is_terminal() and eng:current_player() == 0 and not Match.thinking
+    return eng and not eng:is_terminal() and eng:current_player() == ME() and not Match.thinking
 end
 
 -- ---- building the frame ------------------------------------------------------------------------
@@ -995,13 +1031,21 @@ local function build()
         if self.index and myDecisionNow() then Match:PlayerApply(self.index) end
     end)
     f.launch:Hide()
+    f.claim = CreateFrame("Button", nil, f, "UIPanelButtonTemplate")
+    f.claim:SetSize(140, 24)
+    f.claim:SetPoint("TOP", f.endTurn, "BOTTOM", 0, -52)
+    f.claim:SetText("Claim Win")
+    f.claim:SetScript("OnClick", function()
+        TC:Confirm("Your opponent hasn't answered for a while. Claim the win?", function() TC.Duel:ClaimWin() end)
+    end)
+    f.claim:Hide()
 
     -- Escape cancels a half-made move before it closes the table.
     f:EnableKeyboard(true)
     f:SetPropagateKeyboardInput(true)
     f:SetScript("OnKeyDown", function(self, key)
         if InCombatLockdown and InCombatLockdown() then return end
-        if key == "ESCAPE" and (sel or (f.choice:IsShown() and not (engine() and engine().state.phase == PHASE.MULLIGAN))) then
+        if key == "ESCAPE" and sel then
             Board:Cancel()
             self:SetPropagateKeyboardInput(false)
         else
@@ -1088,6 +1132,16 @@ local function build()
         end
         if Match.thinking then
             f.status:SetText("Opponent is thinking" .. string.rep(".", math.floor(GetTime() * 2) % 4))
+        elseif TC.Duel and Match:IsDuel() then
+            local quiet = TC.Duel:Silence()
+            if quiet > TC.Duel.SILENT_WARN then
+                local left = math.ceil(TC.Duel.SILENT_CLAIM - quiet)
+                f.status:SetText(left > 0 and ("|cffff6040No word from your opponent.|r\nYou can claim the win in %ds."):format(left)
+                    or "|cffff6040Your opponent seems to have left.|r")
+            end
+            f.claim:SetShown(quiet >= TC.Duel.SILENT_CLAIM)
+        else
+            f.claim:Hide()
         end
     end)
     f:SetScript("OnMouseUp", function(_, button)
@@ -1095,6 +1149,7 @@ local function build()
     end)
     f:SetScript("OnShow", function() Art:Play("IG_MAINMENU_OPEN") Board:Refresh() end)
     f:SetScript("OnHide", function()
+        finishEffects()
         Board:Cancel(true)
         GameTooltip:Hide()
     end)
@@ -1104,7 +1159,7 @@ end
 
 local function myDecision()
     local eng = engine()
-    return eng and not eng:is_terminal() and eng:current_player() == 0 and not Match.thinking
+    return eng and not eng:is_terminal() and eng:current_player() == ME() and not Match.thinking
 end
 
 local function movesWhere(test)
@@ -1115,13 +1170,13 @@ local function movesWhere(test)
     return out
 end
 
-local function layoutRow(seat)
+local function layoutRow(side)
     local eng = engine()
-    local ids = eng:board_ids(seat)
-    local row = frame.rows[seat]
+    local ids = eng:board_ids(side == 0 and ME() or OPP())
+    local row = frame.rows[side]
     local n = #ids
     local total = n * SLOT_W + math.max(0, n - 1) * SLOT_GAP
-    local y = seat == 1 and -186 or -310
+    local y = side == 1 and -186 or -310
     for i = 1, 7 do
         local b = row[i]
         local id = ids[i]
@@ -1138,12 +1193,13 @@ local function layoutRow(seat)
     return ids, total, y
 end
 
-local function refreshHero(seat)
+local function refreshHero(side)
+    local seat = side == 0 and ME() or OPP()
     local eng = engine()
     local s = eng.state
     local p = eng:player(seat)
     local hero = eng:hero_of(seat)
-    local b = frame.heroes[seat]
+    local b = frame.heroes[side]
     local record = Match:Record()
     local classes = record and record.classes or Match.lastClasses or {}
     setClassIcon(b.portrait, classes[seat + 1])
@@ -1160,12 +1216,12 @@ local function refreshHero(seat)
         b.frozen:SetShown(hero.flags.frozen)
     end
     b.secrets:SetText(#p.secrets > 0 and string.rep("?", #p.secrets) or "")
-    local name = seat == 0 and (UnitName("player") or "You")
-        or (record and record.opponent and record.opponent.name) or "Opponent"
+    local name = seat == ME() and (UnitName("player") or "You")
+        or (record and record.opponent and Ambiguate and Ambiguate(record.opponent.name, "short") or record and record.opponent and record.opponent.name) or "Opponent"
     b.name:SetText(name .. "  |cffaaaaaa" .. className(classes[seat + 1] or "") .. "|r")
     b.deck:SetText(("Deck %d   Fatigue %d"):format(#eng:deck_ids(seat), p.fatigue))
 
-    local power = frame.powers[seat]
+    local power = frame.powers[side]
     power.power = p.hero_power_id
     power.costNow = eng:hero_power_cost(seat)
     power.cost.text:SetText(power.costNow)
@@ -1174,7 +1230,7 @@ local function refreshHero(seat)
     power.icon:SetDesaturated(used and true or false)
     power:SetShown(p.hero_power_id ~= 0)
 
-    local wpn = frame.weapons[seat]
+    local wpn = frame.weapons[side]
     local w = p.weapon_id ~= 0 and eng:ent(p.weapon_id)
     if w and w.zone == ZONE.WEAPON then
         wpn.entity = w.id
@@ -1187,12 +1243,12 @@ local function refreshHero(seat)
         wpn.entity = nil
         wpn:Hide()
     end
-    setMana(frame.mana[seat], p)
+    setMana(frame.mana[side], p)
 end
 
 local function refreshHand()
     local eng = engine()
-    local ids = eng:hand_ids(0)
+    local ids = eng:hand_ids(ME())
     local n = #ids
     local cw = CardWidget.WIDTH
     local avail = 760 / HAND_SCALE
@@ -1204,7 +1260,7 @@ local function refreshHand()
         if id then
             local e = eng:ent(id)
             w.entity = id
-            w.costNow = eng:card_cost(0, id)
+            w.costNow = eng:card_cost(ME(), id)
             w:ClearAllPoints()
             w.baseX = -total / 2 + (i - 1) * step
             w.baseLevel = frame.hand:GetFrameLevel() + i * 3
@@ -1218,7 +1274,7 @@ local function refreshHand()
         end
     end
     local backs = frame.oppHand.backs
-    local m = #eng:hand_ids(1)
+    local m = #eng:hand_ids(OPP())
     for i = 1, 10 do
         local back = backs[i]
         if i <= m then
@@ -1249,7 +1305,7 @@ local function refreshGlows()
             end
         end
         if sel.step == "position" then
-            local ids = eng:board_ids(0)
+            local ids = eng:board_ids(ME())
             local n = #ids
             local total = n * SLOT_W + math.max(0, n - 1) * SLOT_GAP
             local seen = {}
@@ -1293,7 +1349,9 @@ function Board:Refresh()
     local s = eng.state
     local record = Match:Record()
     local opp = record and record.opponent
-    frame.title:SetText(("Tavern Table — %s"):format(opp and opp.name or (Match.lastOpponent or "Practice")))
+    local oppName = opp and opp.name or Match.lastOpponent or "Practice"
+    if Ambiguate then oppName = Ambiguate(oppName, "short") end
+    frame.title:SetText(((record and record.kind == "duel") and "Duel with %s" or "Tavern Table — %s"):format(oppName))
     layoutRow(1)
     layoutRow(0)
     refreshHero(0)
@@ -1312,10 +1370,11 @@ function Board:Refresh()
         frame.endTurn:Enable()
         frame.status:SetText(("|cff40ff40Your turn|r  (turn %d)"):format(math.floor((s.turn + 1) / 2)))
     else
-        frame.endTurn:SetText(eng:current_player() == 1 and "Enemy Turn" or "Your Turn")
+        frame.endTurn:SetText(eng:current_player() == OPP() and "Enemy Turn" or "Your Turn")
         frame.endTurn:Disable()
         if not Match.thinking then
-            frame.status:SetText(eng:current_player() == 1 and "|cffff6040Enemy turn|r" or "")
+            frame.status:SetText(eng:current_player() == OPP()
+                and (Match:IsDuel() and "|cffff6040Waiting for your opponent...|r" or "|cffff6040Enemy turn|r") or "")
         end
     end
     local launch
@@ -1331,7 +1390,7 @@ function Board:Refresh()
     -- Decisions that need a dialog: the opening hand, then any pending choice.
     if mine and s.phase == PHASE.MULLIGAN then
         self:ShowMulligan()
-    elseif mine and s.pending.active and s.pending.seat == 0 then
+    elseif mine and s.pending.active and s.pending.seat == ME() then
         self:ShowPending()
     elseif sel and sel.step == "choice" then
         -- stays open
@@ -1352,7 +1411,7 @@ local mulliganMarks = { match = nil, replace = {} }
 
 function Board:ShowMulligan()
     local eng = engine()
-    local ids = eng:mulligan_ids(0)
+    local ids = eng:mulligan_ids(ME())
     local record = Match:Record()
     local key = record and record.started
     if mulliganMarks.match ~= key then
@@ -1529,8 +1588,8 @@ function Board:ClickHand(id, widget)
     end
     if #kinds == 0 then
         local eng = engine()
-        local cost = eng:card_cost(0, id)
-        UIErrorsFrame:AddMessage(cost > eng:player(0).mana and "Not enough mana." or "You can't play that now.", 1, 0.1, 0.1)
+        local cost = eng:card_cost(ME(), id)
+        UIErrorsFrame:AddMessage(cost > eng:player(ME()).mana and "Not enough mana." or "You can't play that now.", 1, 0.1, 0.1)
         return
     end
     if #kinds == 1 and kinds[1] == "play" then
@@ -1574,7 +1633,7 @@ function Board:ClickEntity(id)
         return self:Begin(list, id)
     end
     local e = engine():ent(id)
-    if e and e.owner == 0 and e.zone == ZONE.BOARD then
+    if e and e.owner == ME() and e.zone == ZONE.BOARD then
         local why = e.flags.frozen and "That minion is frozen." or e.flags.exhausted and "That minion can't attack yet."
             or "That minion can't attack."
         UIErrorsFrame:AddMessage(why, 1, 0.1, 0.1)
@@ -1643,8 +1702,15 @@ function Board:ShowGameOver()
 end
 
 function Board:Rematch()
-    local setup = Match.lastSetup or (TC.char.lastMatch and TC.char.lastMatch.setup)
     frame.over:Hide()
+    local last = TC.char.lastMatch
+    if last and last.opponent and last.opponent.duel and TC.Duel then
+        -- A duel rematch is a new challenge to the same player.
+        frame:Hide()
+        TC.Duel:Challenge(last.opponent.name)
+        return
+    end
+    local setup = Match.lastSetup or (last and last.setup)
     if not setup or not TC:StartPractice(setup) then
         frame:Hide()
         TC:ShowWindow("play")
@@ -1665,6 +1731,7 @@ local function onMatch(what, seat, move)
     if not frame then return end
     if what == "load" then
         sel = nil
+        finishEffects()
         frame.log:Clear()
         local record = Match:Record()
         for _, line in ipairs(record and record.log or {}) do frame.log:AddMessage(line) end
@@ -1684,9 +1751,9 @@ local function onMatch(what, seat, move)
         if move and move.action == "play" and move.raw.entity then
             local e = eng:ent(move.raw.entity)
             local d = e and eng:def_of(e.id)
-            if e and not (seat == 1 and d and d.secret) then
+            if e and not (seat == OPP() and d and d.secret) then
                 local from = before[e.id]
-                if seat == 1 then
+                if seat == OPP() then
                     local ox, oy = frameXY(frame.oppHand)
                     from = ox and { ox, oy }
                 end
@@ -1719,7 +1786,7 @@ local function onMatch(what, seat, move)
             elseif ev.kind == "SUMMONED" and widgets[ev.subject] then
                 fadeIn(widgets[ev.subject], flownTo == ev.subject and FLY * 0.8 or 0)
             elseif ev.kind == "HERO_POWER_USED" then
-                flash(frame.powers[ev.seat], 1, 0.85, 0.3, 0.6)
+                flash(frame.powers[sideOf(ev.seat)], 1, 0.85, 0.3, 0.6)
             elseif ev.kind == "DAMAGE_PREVENTED" and at then
                 floatText(at[1], at[2], "Blocked", 1, 0.9, 0.4)
             elseif ev.kind == "DIED" and at then
@@ -1732,7 +1799,7 @@ local function onMatch(what, seat, move)
                 turnStarted = ev.seat
             end
         end
-        if seat == 1 and move and move.action == "play" and move.raw.entity then
+        if seat == OPP() and move and move.action == "play" and move.raw.entity then
             local e = eng:ent(move.raw.entity)
             local d = e and eng:def_of(e.id)
             if d and d.secret then
@@ -1746,7 +1813,7 @@ local function onMatch(what, seat, move)
                 frame.showcaseUntil = GetTime() + 2.2
             end
         end
-        if turnStarted == 0 and not eng:is_terminal() then
+        if turnStarted == ME() and not eng:is_terminal() then
             showBanner("Your Turn")
             Art:Play("READY_CHECK")
         end

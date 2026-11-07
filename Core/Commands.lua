@@ -5,6 +5,7 @@ local HELP = {
     "/tc play   - return to your match, or open the Play tab",
     "/tc channel [on|off] - the tavern chat channel",
     "/tc who    - other Tavern Cards players online",
+    "/tc duel [Name] - challenge a player (your target if no name) with your Play-tab deck",
     "/tc status - card data and engine build",
     "/tc minimap - show or hide the minimap button (reports its state)",
     "/tc probe  - report which UI templates, atlases, events and APIs this client has",
@@ -40,6 +41,15 @@ end
 
 function commands.channel(arg)
     TC.Channel:Command(arg)
+end
+
+function commands.duel(arg)
+    local name = arg ~= "" and arg or nil
+    if not name and UnitIsPlayer and UnitIsPlayer("target") then
+        local n, realm = UnitName("target")
+        name = (realm and realm ~= "") and (n .. "-" .. realm) or n
+    end
+    TC.Duel:Challenge(name)
 end
 
 function commands.who()

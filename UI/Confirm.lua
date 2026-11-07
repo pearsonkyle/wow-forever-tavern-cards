@@ -49,6 +49,12 @@ end
 
 function TC:Confirm(text, onAccept, onDecline, acceptText, declineText, timeout)
     dialog = dialog or build()
+    if dialog:IsShown() and dialog.onDecline then
+        -- A new question replaces an open one: the old one counts as declined.
+        local old = dialog.onDecline
+        dialog.onDecline = nil
+        TC:Safe("confirm", old)
+    end
     dialog.text:SetText(text)
     dialog.onAccept, dialog.onDecline = onAccept, onDecline
     dialog.yes:SetText(acceptText or YES or "Yes")
