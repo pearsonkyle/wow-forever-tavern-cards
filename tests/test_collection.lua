@@ -83,4 +83,25 @@ T.stats_count_distinct_earned_cards_only = function(TC)
     assert(collected == 2 and copies == 3, ("%d %d"):format(collected, copies))
     assert(C:ProgressText():find("^2 / %d+ cards collected$"))
 end
+T.craft_and_disenchant_one_copy_at_a_time = function(TC)
+    local C = setup(TC)
+    TC.db.dust = 1000
+    assert(C:AddCard("EX1_556", "test") == "new")               -- own 1 of 2
+    local ok = C:Craft("EX1_556")
+    assert(ok and C:Count("EX1_556") == 2 and TC.db.dust == 960, "craft the second copy")
+    local ok2, why = C:Craft("EX1_556")
+    assert(not ok2 and why == "cap", "no third copy")
+    assert(C:Disenchant("EX1_556") and C:Count("EX1_556") == 1 and TC.db.dust == 965)
+    assert(C:Disenchant("EX1_556") and C:Count("EX1_556") == 0)
+    assert(not C:Disenchant("EX1_556"), "nothing left to disenchant")
+    TC.db.dust = 10
+    local ok3, why3 = C:Craft("EX1_556")
+    assert(not ok3 and why3 == "dust")
+    local basic
+    for id, card in pairs(TC.Cards) do
+        if card.rarity == "FREE" and bit.band(card.flags, 8) ~= 0 then basic = id break end
+    end
+    assert(not C:Disenchant(basic), "basic cards stay")
+    assert(TC.db.ledger[#TC.db.ledger].s ~= nil)
+end
 return T

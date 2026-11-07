@@ -124,6 +124,11 @@ function Art:ClassIcon(family)
     return icon(CLASS_ICONS[family] or "") or FALLBACK
 end
 
+-- The square class icon (Interface\Icons\ClassIcon_*), or nil when this client lacks it.
+function Art:SquareClassIcon(family)
+    return CLASS_ICONS[family] and icon(CLASS_ICONS[family]) or nil
+end
+
 -- Data/Icons.lua ranks up to three icons per card, cards in pick order. Resolved once: each card takes
 -- its first choice this client has and no earlier card took. The misses are kept in
 -- TavernCardsDB.missingIcons (tools/icons/catalog.py import-missing feeds them back).
@@ -249,6 +254,9 @@ local LINE_KEYWORDS = { "Battlecry", "Deathrattle", "Overload", "Combo", "Secret
     "Corrupt", "Inspire", "Outcast", "Overkill", "Kindred", "Frenzy", "Overheal", "Finale", "Quickdraw", "Forge",
     "Infuse", "Manathirst", "Choose One", "Excavate" }
 
+local STATIC_KEYWORDS = { "Taunt", "Charge", "Rush", "Divine Shield", "Windfury", "Lifesteal", "Stealth", "Poisonous",
+    "Reborn", "Elusive", "Immune", "Tradeable", "Echo", "Magnetic", "Twinspell", "Dormant" }
+
 -- keepLines: keep the card's own line breaks (tooltips); otherwise one line.
 function Art:RulesText(id, keepLines)
     local card = TC.Cards[id]
@@ -265,6 +273,10 @@ function Art:RulesText(id, keepLines)
         text = text:gsub("%s*\n%s*", "\n"):gsub("([^%.%!%)%:])\n", "%1 ")
         for _, kw in ipairs(LINE_KEYWORDS) do
             text = text:gsub("([^\n]) (" .. kw .. ":)", "%1\n%2")
+        end
+        -- A bare keyword before the card's sentence ("Reborn Has +2 Attack...") gets its own line.
+        for _, kw in ipairs(STATIC_KEYWORDS) do
+            text = ("\n" .. text):gsub("\n(" .. kw .. ") (%u)", "\n%1\n%2"):sub(2)
         end
     else
         text = text:gsub("\n", " ")

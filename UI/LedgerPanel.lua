@@ -4,12 +4,7 @@ local TC = TavernCards_NS
 local Art = TC.Art
 
 local function parchment(parent)
-    local bg = parent:CreateTexture(nil, "BACKGROUND")
-    bg:SetPoint("TOPLEFT", 2, -2)
-    bg:SetPoint("BOTTOMRIGHT", -2, 2)
-    bg:SetTexture("Interface\\QuestFrame\\QuestBG")
-    bg:SetTexCoord(0, 0.6, 0, 0.75)
-    return bg
+    return TC:BookPages(parent)
 end
 
 local function buildLedger(parent)

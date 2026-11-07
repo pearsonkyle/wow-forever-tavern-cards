@@ -151,8 +151,11 @@ function Collection:Craft(id)
         return false, "dust"
     end
     TC.db.dust = TC.db.dust - cost
-    TC.db.collection[id] = self:Count(id) + 1
-    notify("card", { id = id, source = "Crafted", result = "new", dust = 0 })
+    local have = self:Count(id)
+    TC.db.collection[id] = have + 1
+    local ledger = TC.db.ledger
+    ledger[#ledger + 1] = { t = time(), c = id, s = "Crafted" }
+    notify("card", { id = id, source = "Crafted", result = have == 0 and "new" or "copy", dust = 0 })
     return true
 end
 

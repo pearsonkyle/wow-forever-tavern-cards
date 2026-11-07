@@ -45,6 +45,39 @@ end
 
 CardWidget.Gem = gem
 
+-- Crafting and disenchanting, one copy at a time: Alt + Right-click crafts, Ctrl + Right-click
+-- disenchants (Epic and Legendary ask first); a plain Right-click opens the menu with both.
+local CRAFT_WHY = { dust = "Not enough dust.", cap = "You already have the most copies a deck can use." }
+
+local function craftOne(id)
+    local ok, why = TC.Collection:Craft(id)
+    if ok then
+        TC.Art:Play("IG_ABILITY_ICON_DROP")
+    else
+        UIErrorsFrame:AddMessage(CRAFT_WHY[why] or "That card can't be crafted.", 1, 0.1, 0.1)
+    end
+    return ok
+end
+
+local function disenchantOne(id, confirmed)
+    local C = TC.Collection
+    local card = TC.Cards[id]
+    if C:IsBasic(id) then
+        UIErrorsFrame:AddMessage("Basic cards can't be disenchanted.", 1, 0.1, 0.1)
+        return
+    end
+    if C:Count(id) == 0 then
+        UIErrorsFrame:AddMessage("You don't have a copy to disenchant.", 1, 0.1, 0.1)
+        return
+    end
+    if not confirmed and (card.rarity == "EPIC" or card.rarity == "LEGENDARY") then
+        TC:Confirm(("Disenchant %s for %d dust?"):format(TC.Art:ColoredName(id), C.DISENCHANT[card.rarity] or 0),
+            function() disenchantOne(id, true) end)
+        return
+    end
+    if C:Disenchant(id) then TC.Art:Play("IG_BACKPACK_COIN_SELECT") end
+end
+
 local function onEnter(self)
     if not self.id then
         return
@@ -56,15 +89,24 @@ local function onEnter(self)
     end
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
     TC:CardTooltip(self.id)
+    local C = TC.Collection
     local card = TC.Cards[self.id]
-    local have = TC.Collection:Count(self.id)
-    if have > 0 then
-        GameTooltip:AddLine(("Right-click: disenchant for %d dust"):format(TC.Collection.DISENCHANT[card.rarity] or 0), 0.5, 0.75, 1)
+    local have, cap = C:Count(self.id), C:Cap(self.id)
+    local blue, grey = { 0.5, 0.75, 1 }, { 0.5, 0.5, 0.5 }
+    if not C:IsBasic(self.id) then
+        local craftCost = C.CRAFT[card.rarity] or 0
+        if have >= cap then
+            GameTooltip:AddLine("Alt + Right-click: craft (you have the most a deck can use)", unpack(grey))
+        elseif TC.db.dust < craftCost then
+            GameTooltip:AddLine(("Alt + Right-click: craft (%d dust; you have %d)"):format(craftCost, TC.db.dust), unpack(grey))
+        else
+            GameTooltip:AddLine(("Alt + Right-click: craft a copy for %d dust"):format(craftCost), unpack(blue))
+        end
+        if have > 0 then
+            GameTooltip:AddLine(("Ctrl + Right-click: disenchant a copy for %d dust"):format(C.DISENCHANT[card.rarity] or 0), unpack(blue))
+        end
     end
-    if have < TC.Collection:Cap(self.id) then
-        GameTooltip:AddLine(("Right-click: craft for %d dust"):format(TC.Collection.CRAFT[card.rarity] or 0), 0.5, 0.75, 1)
-    end
-    GameTooltip:AddLine("Shift-click: link in chat", 0.5, 0.75, 1)
+    GameTooltip:AddLine("Right-click: more options   Shift-click: link in chat", unpack(blue))
     GameTooltip:Show()
 end
 
@@ -78,17 +120,11 @@ local function contextMenu(self)
     MenuUtil.CreateContextMenu(self, function(_, root)
         root:CreateTitle(card.name)
         local craftCost = C.CRAFT[card.rarity] or 0
-        local craft = root:CreateButton(("Craft (%d dust)"):format(craftCost), function()
-            local ok, why = C:Craft(id)
-            if not ok then
-                TC:Print(why == "dust" and "Not enough dust." or "You already have the most copies a deck can use.")
-            end
-        end)
-        craft:SetEnabled(C:Count(id) < C:Cap(id) and TC.db.dust >= craftCost)
-        local dis = root:CreateButton(("Disenchant (+%d dust)"):format(C.DISENCHANT[card.rarity] or 0), function()
-            C:Disenchant(id)
-        end)
-        dis:SetEnabled(C:Count(id) > 0)
+        local craft = root:CreateButton(("Craft a copy (%d dust)"):format(craftCost), function() craftOne(id) end)
+        craft:SetEnabled(not C:IsBasic(id) and C:Count(id) < C:Cap(id) and TC.db.dust >= craftCost)
+        local dis = root:CreateButton(("Disenchant a copy (+%d dust)"):format(C.DISENCHANT[card.rarity] or 0),
+            function() disenchantOne(id) end)
+        dis:SetEnabled(not C:IsBasic(id) and C:Count(id) > 0)
         root:CreateDivider()
         root:CreateButton("Link in chat", function() TC.Chat:InsertCard(id) end)
         local show = root:CreateButton("Show off in the tavern channel", function() TC.Channel:Say(TC.Chat:CardText(id)) end)
@@ -138,8 +174,9 @@ function CardWidget:Create(parent)
 
     w.kind = w:CreateFontString(nil, "OVERLAY", "GameFontBlackTiny")
     w.kind:SetPoint("TOP", w.name, "BOTTOM", 0, -1)
-    w.kind:SetTextColor(0.12, 0.07, 0.02)
-    w.kind:SetShadowColor(1, 0.95, 0.8, 0.35)
+    -- Light ink: the card body under the name banner is a dark parchment.
+    w.kind:SetTextColor(0.93, 0.86, 0.68)
+    w.kind:SetShadowColor(0, 0, 0, 1)
     w.kind:SetShadowOffset(1, -1)
 
     w.cost = gem(w, 24, 0.15, 0.4, 0.95, "GameFontHighlight")
@@ -196,7 +233,13 @@ function CardWidget:Create(parent)
     w:SetScript("OnEnter", onEnter)
     w:SetScript("OnLeave", function() GameTooltip:Hide() end)
     w:SetScript("OnClick", function(self, button)
-        if button == "RightButton" then
+        if button == "RightButton" and self.id and IsAltKeyDown and IsAltKeyDown() then
+            craftOne(self.id)
+            if self:IsMouseOver() then onEnter(self) end
+        elseif button == "RightButton" and self.id and IsControlKeyDown and IsControlKeyDown() then
+            disenchantOne(self.id)
+            if self:IsMouseOver() then onEnter(self) end
+        elseif button == "RightButton" then
             contextMenu(self)
         elseif self.id and IsModifiedClick and IsModifiedClick("CHATLINK") then
             TC.Chat:InsertCard(self.id)
@@ -270,7 +313,12 @@ function CardWidget.SetCard(w, id)
     -- The old class sheet has no Death Knight / Demon Hunter cell even where the coordinate table lists them.
     local oldSheet = card.family ~= "DEATHKNIGHT" and card.family ~= "DEMONHUNTER"
     local coords = oldSheet and card.family ~= "NEUTRAL" and CLASS_ICON_TCOORDS and CLASS_ICON_TCOORDS[card.family]
-    if coords then
+    local square = card.family ~= "NEUTRAL" and Art:SquareClassIcon(card.family)
+    if square then
+        w.crest.icon:SetTexture(square)
+        w.crest.icon:SetTexCoord(0.08, 0.92, 0.08, 0.92)
+        w.crest:Show()
+    elseif coords then
         w.crest.icon:SetTexture("Interface\\GLUES\\CHARACTERCREATE\\UI-CHARACTERCREATE-CLASSES")
         w.crest.icon:SetTexCoord(unpack(coords))
         w.crest:Show()

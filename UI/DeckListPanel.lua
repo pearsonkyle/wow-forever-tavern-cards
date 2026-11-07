@@ -25,11 +25,7 @@ end
 
 local function build(parent)
     local panel = CreateFrame("Frame", nil, parent)
-    local bg = panel:CreateTexture(nil, "BACKGROUND")
-    bg:SetPoint("TOPLEFT", 2, -2)
-    bg:SetPoint("BOTTOMRIGHT", -2, 2)
-    bg:SetTexture("Interface\\QuestFrame\\QuestBG")
-    bg:SetTexCoord(0, 0.6, 0, 0.75)
+    TC:BookPages(panel)
 
     local header = panel:CreateFontString(nil, "OVERLAY", "QuestFont_Huge")
     header:SetPoint("TOPLEFT", 58, -22)

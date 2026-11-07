@@ -78,6 +78,7 @@ local function setup(TC)
     TC.Confirm = function(_, _, yes) yes() end
     TC.CardTooltip = function() end
     TC.PageSize = function() return 400, 470 end
+    TC.BookPages = function() return {} end
     TC.ShowWindow = function() end
     local panels = {}
     TC.RegisterPanel = function(_, key, _, builder) panels[key] = builder end

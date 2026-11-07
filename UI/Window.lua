@@ -29,6 +29,30 @@ function TC:PageSize()
     return width, PAGE_HEIGHT
 end
 
+-- A full open book behind a panel: the same spellbook pages the card book uses, so every tab has a
+-- complete, readable parchment (the old quest-scroll texture left a dark band at the bottom).
+function TC:BookPages(panel)
+    local pages = {}
+    for i, atlasName in ipairs({ "spellbook-Page-Left-C60", "spellbook-Page-Right-C60" }) do
+        local t = panel:CreateTexture(nil, "BACKGROUND")
+        if i == 1 then
+            t:SetPoint("TOPLEFT", 2, -2)
+            t:SetPoint("BOTTOMRIGHT", panel, "BOTTOM", 0, 2)
+        else
+            t:SetPoint("TOPLEFT", panel, "TOP", 0, -2)
+            t:SetPoint("BOTTOMRIGHT", -2, 2)
+        end
+        if TC.Compat:HasAtlas(atlasName) then
+            t:SetAtlas(atlasName)
+        else
+            t:SetTexture("Interface\\QuestFrame\\QuestBG")
+            t:SetTexCoord(0, 0.6, 0, 0.75)
+        end
+        pages[i] = t
+    end
+    return pages
+end
+
 local function createFrame()
     local f
     for _, template in ipairs({ "PortraitFrameTemplate", "ButtonFrameTemplate" }) do

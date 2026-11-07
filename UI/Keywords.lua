@@ -91,15 +91,70 @@ function Keywords:For(id)
     return out
 end
 
--- Adds the glossary lines for a card to GameTooltip (blank line first).
-function Keywords:AddLines(tip, id)
-    local list = self:For(id)
-    if #list == 0 then return end
-    tip:AddLine(" ")
-    for _, entry in ipairs(list) do
-        tip:AddLine(("|cffffd100%s:|r %s"):format(entry[1], entry[2]), 0.75, 0.75, 0.75, true)
+-- The glossary window: a second tooltip beside the card tooltip, opened when that tooltip shows.
+-- CardTooltip queues the card last (setting tooltip text clears it, and clearing drops the queue).
+local side, pendingTip, pendingId
+
+local function sideTooltip()
+    if not side then
+        side = CreateFrame("GameTooltip", "TavernCardsKeywordTooltip", UIParent, "GameTooltipTemplate")
+        side:SetFrameStrata("TOOLTIP")
     end
+    return side
 end
+
+function Keywords:Queue(tip, id)
+    pendingTip, pendingId = tip, id
+end
+
+function Keywords:ShowBeside(tip, id)
+    local list = self:For(id)
+    local s = sideTooltip()
+    if #list == 0 then
+        s:Hide()
+        return
+    end
+    s:SetOwner(tip, "ANCHOR_NONE")
+    s:ClearAllPoints()
+    -- Beside the card tooltip, on whichever side has room.
+    local right = tip:GetRight()
+    if right and right + 260 > (GetScreenWidth and GetScreenWidth() or 1920) then
+        s:SetPoint("TOPRIGHT", tip, "TOPLEFT", -2, 0)
+    else
+        s:SetPoint("TOPLEFT", tip, "TOPRIGHT", 2, 0)
+    end
+    for i, entry in ipairs(list) do
+        if i == 1 then
+            s:SetText(entry[1], 1, 0.82, 0)
+        else
+            s:AddLine(" ")
+            s:AddLine(entry[1], 1, 0.82, 0)
+        end
+        s:AddLine(entry[2], 0.9, 0.9, 0.9, true)
+    end
+    s:Show()
+end
+
+local function hook(tip)
+    if not tip or tip.tavernKeywordsHooked then return end
+    tip.tavernKeywordsHooked = true
+    hooksecurefunc(tip, "Show", function(self)
+        if pendingTip == self and pendingId then
+            local id = pendingId
+            pendingTip, pendingId = nil, nil
+            TC:Safe("keywords", Keywords.ShowBeside, Keywords, self, id)
+        end
+    end)
+    tip:HookScript("OnHide", function()
+        if side and side:IsShown() then side:Hide() end
+    end)
+    tip:HookScript("OnTooltipCleared", function(self)
+        if pendingTip == self then pendingTip, pendingId = nil, nil end
+        if side and side:IsShown() then side:Hide() end
+    end)
+end
+
+if GameTooltip and hooksecurefunc then hook(GameTooltip) end
 
 function Keywords:Explain(word)
     for _, entry in ipairs(GLOSSARY) do

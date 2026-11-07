@@ -42,6 +42,12 @@ local function className(class)
 end
 
 local function setClassIcon(tex, class)
+    local square = Art:SquareClassIcon(class)
+    if square then
+        tex:SetTexture(square)
+        tex:SetTexCoord(0.07, 0.93, 0.07, 0.93)
+        return
+    end
     local coords = CLASS_ICON_TCOORDS and CLASS_ICON_TCOORDS[class]
     if coords then
         tex:SetTexture("Interface\\GLUES\\CHARACTERCREATE\\UI-CHARACTERCREATE-CLASSES")
@@ -86,6 +92,25 @@ local function roundTexture(f, layer, inset)
     mask:SetTexture(MASK, "CLAMPTOBLACKADDITIVE", "CLAMPTOBLACKADDITIVE")
     mask:SetAllPoints(t)
     t:AddMaskTexture(mask)
+    return t
+end
+
+-- A square framed portrait: a gold tooltip-style border and the picture inset, icon edges trimmed.
+local function squareFrame(b, r, g, bl)
+    b:SetBackdrop({ bgFile = "Interface\\Buttons\\WHITE8x8", edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
+        edgeSize = 14, insets = { left = 3, right = 3, top = 3, bottom = 3 } })
+    b:SetBackdropColor(0.05, 0.04, 0.03, 1)
+    b:SetBackdropBorderColor(r or 0.85, g or 0.7, bl or 0.3, 1)
+    local t = b:CreateTexture(nil, "ARTWORK")
+    t:SetPoint("TOPLEFT", 4, -4)
+    t:SetPoint("BOTTOMRIGHT", -4, 4)
+    t:SetTexCoord(0.07, 0.93, 0.07, 0.93)
+    local f = b:CreateTexture(nil, "OVERLAY", nil, 6)
+    f:SetAllPoints(t)
+    f:SetColorTexture(1, 1, 1, 1)
+    f:SetBlendMode("ADD")
+    f:SetAlpha(0)
+    b.flash = f
     return t
 end
 
@@ -153,9 +178,13 @@ local function lunge(from, to, texture, mode)
         g = CreateFrame("Frame", nil, frame)
         g:SetSize(62, 62)
         g:SetFrameLevel(frame:GetFrameLevel() + 30)
-        g.ring = roundTexture(g, "ARTWORK", 0)
+        g.ring = g:CreateTexture(nil, "ARTWORK")
+        g.ring:SetAllPoints()
         g.ring:SetColorTexture(0.9, 0.75, 0.3, 1)
-        g.tex = roundTexture(g, "OVERLAY", 3)
+        g.tex = g:CreateTexture(nil, "OVERLAY")
+        g.tex:SetPoint("TOPLEFT", 3, -3)
+        g.tex:SetPoint("BOTTOMRIGHT", -3, 3)
+        g.tex:SetTexCoord(0.07, 0.93, 0.07, 0.93)
         ghosts[#ghosts + 1] = g
     end
     g.from, g.to, g.t, g.active, g.mode = from, to, 0, true, mode or "lunge"
@@ -469,18 +498,7 @@ local function entityTooltip(owner, id)
     local eng = engine()
     local e = eng and eng:ent(id)
     if not e then return end
-    if e.zone == ZONE.BOARD or e.zone == ZONE.WEAPON then
-        local z, right = showZoom(owner, e.card_id)
-        GameTooltip:SetOwner(z, right and "ANCHOR_NONE" or "ANCHOR_NONE")
-        GameTooltip:ClearAllPoints()
-        if right then
-            GameTooltip:SetPoint("TOPLEFT", z, "TOPRIGHT", 6, 0)
-        else
-            GameTooltip:SetPoint("TOPRIGHT", z, "TOPLEFT", -6, 0)
-        end
-    else
-        GameTooltip:SetOwner(owner, "ANCHOR_RIGHT")
-    end
+    GameTooltip:SetOwner(owner, "ANCHOR_RIGHT")
     if e.zone == ZONE.HERO then
         local p = eng:player(e.owner)
         local record = Match:Record()
@@ -666,11 +684,9 @@ local function setMinion(b, e)
 end
 
 local function heroWidget(parent, seat)
-    local b = CreateFrame("Button", nil, parent)
+    local b = CreateFrame("Button", nil, parent, "BackdropTemplate")
     b:SetSize(84, 84)
-    b.ring = roundTexture(b, "BACKGROUND", 0)
-    b.ring:SetColorTexture(0.75, 0.6, 0.25, 1)
-    b.portrait = roundTexture(b, "ARTWORK", 4)
+    b.portrait = squareFrame(b)
     b.attack = gem(b, 30, 0.85, 0.65, 0.15, "GameFontHighlightLarge")
     b.attack:SetPoint("BOTTOMLEFT", -8, -4)
     b.health = gem(b, 30, 0.75, 0.12, 0.1, "GameFontHighlightLarge")
@@ -688,10 +704,6 @@ local function heroWidget(parent, seat)
     b.deck = b:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
     b.deck:SetPoint("TOPRIGHT", b.name, "BOTTOMRIGHT", 0, -4)
     addGlow(b, 1.6)
-    b.flash = roundTexture(b, "OVERLAY", 4)
-    b.flash:SetColorTexture(1, 1, 1, 1)
-    b.flash:SetBlendMode("ADD")
-    b.flash:SetAlpha(0)
     b:RegisterForClicks("LeftButtonUp", "RightButtonUp")
     b:SetScript("OnClick", onEntityClick)
     b:SetScript("OnEnter", function(self) Board.hover = self.entity entityTooltip(self, self.entity) end)
@@ -700,18 +712,12 @@ local function heroWidget(parent, seat)
 end
 
 local function powerButton(parent)
-    local b = CreateFrame("Button", nil, parent)
+    local b = CreateFrame("Button", nil, parent, "BackdropTemplate")
     b:SetSize(52, 52)
-    b.ring = roundTexture(b, "BACKGROUND", 0)
-    b.ring:SetColorTexture(0.55, 0.45, 0.2, 1)
-    b.icon = roundTexture(b, "ARTWORK", 3)
+    b.icon = squareFrame(b, 0.75, 0.6, 0.3)
     b.cost = gem(b, 22, 0.15, 0.4, 0.95, "GameFontHighlightSmall")
     b.cost:SetPoint("TOP", 0, 10)
     addGlow(b, 1.7)
-    b.flash = roundTexture(b, "OVERLAY", 3)
-    b.flash:SetColorTexture(1, 1, 1, 1)
-    b.flash:SetBlendMode("ADD")
-    b.flash:SetAlpha(0)
     b:RegisterForClicks("LeftButtonUp", "RightButtonUp")
     b:SetScript("OnEnter", function(self)
         if not self.power then return end
@@ -726,11 +732,9 @@ local function powerButton(parent)
 end
 
 local function weaponWidget(parent)
-    local b = CreateFrame("Button", nil, parent)
+    local b = CreateFrame("Button", nil, parent, "BackdropTemplate")
     b:SetSize(52, 52)
-    b.ring = roundTexture(b, "BACKGROUND", 0)
-    b.ring:SetColorTexture(0.35, 0.35, 0.38, 1)
-    b.icon = roundTexture(b, "ARTWORK", 3)
+    b.icon = squareFrame(b, 0.6, 0.6, 0.65)
     b.attack = gem(b, 22, 0.85, 0.65, 0.15, "GameFontHighlightSmall")
     b.attack:SetPoint("BOTTOMLEFT", -6, -4)
     b.durability = gem(b, 22, 0.45, 0.45, 0.5, "GameFontHighlightSmall")
@@ -937,24 +941,45 @@ local function build()
     top:SetPoint("BOTTOMRIGHT", -10, 10)
     top:SetColorTexture(1, 1, 1, 1)
     top:SetGradient("VERTICAL", CreateColor(0.16, 0.1, 0.06, 0.93), CreateColor(0.22, 0.14, 0.08, 0.93))
-    local felt = f:CreateTexture(nil, "BACKGROUND", nil, 2)
-    felt:SetPoint("TOPLEFT", 190, -178)
-    felt:SetPoint("TOPRIGHT", -190, -178)
-    felt:SetHeight(244)
+    -- The play mat: a world map (the zone you're in, Board:SetMat) under a felt-and-glass tint.
+    local mat = CreateFrame("Frame", nil, f)
+    mat:SetPoint("TOPLEFT", 190, -178)
+    mat:SetPoint("TOPRIGHT", -190, -178)
+    mat:SetHeight(244)
+    mat:SetFrameLevel(f:GetFrameLevel())
+    if mat.SetClipsChildren then mat:SetClipsChildren(true) end
+    local matW = W - 380
+    local tile = matW / 4
+    mat.grid = CreateFrame("Frame", nil, mat)
+    mat.grid:SetFrameLevel(f:GetFrameLevel())
+    mat.grid:SetSize(matW, tile * 3)
+    mat.grid:SetPoint("CENTER", mat, "CENTER", 0, 0)
+    mat.tiles = {}
+    for i = 1, 12 do
+        local t = mat.grid:CreateTexture(nil, "BACKGROUND", nil, 1)
+        t:SetSize(tile, tile)
+        t:SetPoint("TOPLEFT", ((i - 1) % 4) * tile, -math.floor((i - 1) / 4) * tile)
+        mat.tiles[i] = t
+    end
+    local felt = mat.grid:CreateTexture(nil, "BORDER")
+    felt:SetAllPoints(mat)
     felt:SetColorTexture(1, 1, 1, 1)
-    felt:SetGradient("VERTICAL", CreateColor(0.12, 0.22, 0.12, 0.85), CreateColor(0.1, 0.18, 0.1, 0.85))
+    felt:SetGradient("VERTICAL", CreateColor(0.06, 0.12, 0.07, 0.62), CreateColor(0.05, 0.1, 0.06, 0.55))
+    f.felt = felt
+    local glass = mat.grid:CreateTexture(nil, "BORDER", nil, 1)
+    glass:SetAllPoints(mat)
+    glass:SetTexture("Interface\\FrameGeneral\\UI-Background-Marble")
+    glass:SetVertexColor(0.35, 0.55, 0.35, 0.12)
+    f.mat = mat
     local feltEdge = CreateFrame("Frame", nil, f, "BackdropTemplate")
-    feltEdge:SetPoint("TOPLEFT", felt, -4, 4)
-    feltEdge:SetPoint("BOTTOMRIGHT", felt, 4, -4)
+    feltEdge:SetPoint("TOPLEFT", mat, -4, 4)
+    feltEdge:SetPoint("BOTTOMRIGHT", mat, 4, -4)
     feltEdge:SetBackdrop({ edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border", edgeSize = 14 })
     feltEdge:SetBackdropBorderColor(0.75, 0.6, 0.3, 0.9)
-    local vignette = f:CreateTexture(nil, "BACKGROUND", nil, 3)
-    vignette:SetAllPoints(felt)
-    vignette:SetTexture("Interface\\FrameGeneral\\UI-Background-Marble")
-    vignette:SetVertexColor(0.35, 0.55, 0.35, 0.18)
-    local line = f:CreateTexture(nil, "BORDER")
-    line:SetPoint("LEFT", felt, "LEFT", 0, 0)
-    line:SetPoint("RIGHT", felt, "RIGHT", 0, 0)
+    feltEdge:SetFrameLevel(f:GetFrameLevel() + 1)
+    local line = mat.grid:CreateTexture(nil, "ARTWORK")
+    line:SetPoint("LEFT", mat, "LEFT", 0, 0)
+    line:SetPoint("RIGHT", mat, "RIGHT", 0, 0)
     line:SetHeight(2)
     line:SetColorTexture(0.8, 0.65, 0.3, 0.5)
 
@@ -1836,6 +1861,9 @@ local function onMatch(what, seat, move)
     if what == "load" then
         sel = nil
         finishEffects()
+        local rec = Match:Record()
+        if rec and rec.mat == nil then rec.mat = Board.PickMat() or false end
+        Board:SetMat(rec and rec.mat)
         wipe(lastHand)
         wipe(lastBoard)
         frame.log:Clear()
@@ -1943,6 +1971,58 @@ end
 
 Match:Subscribe(onMatch)
 
+-- Play mats: the painted world maps (4x3 tiles of Interface\WorldMap\<zone>\<zone>N). The mat is the
+-- map of the zone you're in when the match starts (kept with the match), else one of these at random.
+local ZONE_MAPS = {
+    ["Elwynn Forest"] = "Elwynn", ["Westfall"] = "Westfall", ["Duskwood"] = "Duskwood",
+    ["Redridge Mountains"] = "Redridge", ["Stranglethorn Vale"] = "Stranglethorn", ["The Barrens"] = "Barrens",
+    ["Durotar"] = "Durotar", ["Mulgore"] = "Mulgore", ["Ashenvale"] = "Ashenvale", ["Darkshore"] = "Darkshore",
+    ["Teldrassil"] = "Teldrassil", ["Dun Morogh"] = "DunMorogh", ["Loch Modan"] = "LochModan", ["Wetlands"] = "Wetlands",
+    ["Arathi Highlands"] = "Arathi", ["Hillsbrad Foothills"] = "Hilsbrad", ["Alterac Mountains"] = "Alterac",
+    ["Tirisfal Glades"] = "Tirisfal", ["Silverpine Forest"] = "Silverpine", ["Tanaris"] = "Tanaris", ["Feralas"] = "Feralas",
+    ["Desolace"] = "Desolace", ["Stonetalon Mountains"] = "StonetalonMountains", ["Thousand Needles"] = "ThousandNeedles",
+    ["Dustwallow Marsh"] = "Dustwallow", ["Burning Steppes"] = "BurningSteppes", ["Searing Gorge"] = "SearingGorge",
+    ["Badlands"] = "Badlands", ["Swamp of Sorrows"] = "SwampOfSorrows", ["Blasted Lands"] = "BlastedLands",
+    ["Deadwind Pass"] = "DeadwindPass", ["Eastern Plaguelands"] = "EasternPlaguelands",
+    ["Western Plaguelands"] = "WesternPlaguelands", ["Winterspring"] = "Winterspring", ["Felwood"] = "Felwood",
+    ["Azshara"] = "Aszhara", ["Un'Goro Crater"] = "UngoroCrater", ["Silithus"] = "Silithus", ["Moonglade"] = "Moonglade",
+    ["The Hinterlands"] = "Hinterlands", ["Ironforge"] = "Ironforge", ["Orgrimmar"] = "Ogrimmar",
+    ["Thunder Bluff"] = "ThunderBluff", ["Undercity"] = "Undercity", ["Darnassus"] = "Darnassis",
+}
+local MAT_POOL = { "Elwynn", "Westfall", "Duskwood", "Barrens", "Durotar", "Mulgore", "Ashenvale", "DunMorogh",
+    "Stranglethorn", "Tanaris", "Feralas", "Arathi", "Wetlands", "Tirisfal", "Hinterlands", "Winterspring", "Silithus" }
+
+local function mapExists(zone)
+    return not GetFileIDFromPath or GetFileIDFromPath(("Interface\\WorldMap\\%s\\%s1"):format(zone, zone)) ~= nil
+end
+
+-- Picks the mat for a new match: where you stand, else a random classic zone the client has.
+function Board.PickMat()
+    local here = GetRealZoneText and GetRealZoneText()
+    local zone = here and ZONE_MAPS[here]
+    if zone and mapExists(zone) then return zone end
+    for _ = 1, 6 do
+        local z = MAT_POOL[math.random(#MAT_POOL)]
+        if mapExists(z) then return z end
+    end
+end
+
+function Board:SetMat(zone)
+    if not frame then return end
+    local ok = zone and mapExists(zone)
+    for i, t in ipairs(frame.mat.tiles) do
+        if ok then
+            t:SetTexture(("Interface\\WorldMap\\%s\\%s%d"):format(zone, zone, i))
+            t:Show()
+        else
+            t:Hide()
+        end
+    end
+    -- Without a map the tint is the felt itself: make it solid.
+    frame.felt:SetGradient("VERTICAL", CreateColor(0.06, 0.12, 0.07, ok and 0.62 or 0.92),
+        CreateColor(0.05, 0.1, 0.06, ok and 0.55 or 0.9))
+end
+
 function Board:Open()
     if not frame then build() end
     if not Match:Engine() then
@@ -1953,6 +2033,10 @@ function Board:Open()
         TC:Print("The tavern table opens when you leave combat.")
         return
     end
+    local record = Match:Record()
+    if record and not record.mat then record.mat = Board.PickMat() or false end
+    self:SetMat(record and record.mat or Board.lastMat)
+    Board.lastMat = record and record.mat or Board.lastMat
     if not frame:IsShown() then
         frame.log:Clear()
         local record = Match:Record()

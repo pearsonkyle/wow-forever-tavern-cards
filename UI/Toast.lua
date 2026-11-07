@@ -293,7 +293,8 @@ function TC:CardTooltip(id, inGame)
             if line:match("%S") then tip:AddLine(line, 1, 0.82, 0, true) end
         end
     end
-    if TC.Keywords then TC.Keywords:AddLines(tip, id) end
+    -- Keyword explanations go in their own window beside this one (UI/Keywords.lua).
+    if TC.Keywords then TC.Keywords:Queue(tip, id) end
 
     if inGame then
         return
