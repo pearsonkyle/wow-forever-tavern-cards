@@ -39,12 +39,12 @@ local function settings()
 end
 
 -- The chosen deck: a saved deck, or a house deck ("house:CLASS") built for you.
-local function chosenDeck()
-    local choice = settings().deck
+local function chosenDeck(choice)
+    if choice == nil then choice = settings().deck end
     if type(choice) == "string" and choice:find("^house:") then
         local class = choice:sub(7)
         local hi = math.floor(time() % 2147483647)
-        local cards = TC.AI.buildDeck(class, hi, 977, function(id) return TC.PlayableNow[id] end)
+        local cards = TC.AI.buildDeck(class, hi, math.random(4294967295), function(id) return TC.PlayableNow[id] end)
         if not cards then return nil end
         local deck = { id = choice, class = class, name = className(class) .. " House Deck", cards = {} }
         for _, id in ipairs(cards) do deck.cards[id] = (deck.cards[id] or 0) + 1 end
@@ -58,6 +58,32 @@ local function chosenDeck()
         end
     end
     return deck
+end
+
+-- Starts a practice match from a setup { deck = deck id or "house:CLASS", opponent = class or "random",
+-- difficulty }: the Play tab's Sit Down and the board's Rematch (a house deck is shuffled anew, a random
+-- opponent drawn again).
+function TC:StartPractice(setup)
+    local deck = chosenDeck(setup.deck)
+    if not deck then
+        TC:Print("That deck is gone; pick another in the Play tab.")
+        return false
+    end
+    if not Decks:IsReady(deck) and not tostring(deck.id):find("^house:") then
+        TC:Print("That deck isn't ready: %s.", table.concat(Decks:Problems(deck), "; "))
+        return false
+    end
+    local oppClass = setup.opponent
+    if oppClass == "random" or not oppClass then
+        oppClass = OPPONENT_CLASSES[math.random(#OPPONENT_CLASSES)]
+    end
+    local d = difficulty(setup.difficulty)
+    local opponent = { name = d.title, class = oppClass, profile = d.key }
+    if not Match:StartPractice(deck, opponent, { deck = setup.deck, opponent = setup.opponent, difficulty = d.key }) then
+        return false
+    end
+    TC.Board:Open()
+    return true
 end
 
 local function build(parent)
@@ -103,7 +129,8 @@ local function build(parent)
         end
         root:CreateTitle("Borrow a house deck")
         local _, myClass = UnitClass("player")
-        local classes = { myClass }
+        local classes = {}
+        if TC.EngineDefs.FAMILY[myClass] and myClass ~= "NEUTRAL" then classes[1] = myClass end
         for _, c in ipairs(OPPONENT_CLASSES) do
             if c ~= myClass then classes[#classes + 1] = c end
         end
@@ -181,18 +208,11 @@ local function build(parent)
 
     start:SetScript("OnClick", function()
         TC:Safe("start match", function()
+            local st = settings()
             local deck = chosenDeck()
             if not deck then return end
-            local s = settings()
-            local oppClass = s.opponent
-            if oppClass == "random" or not oppClass then
-                oppClass = OPPONENT_CLASSES[math.random(#OPPONENT_CLASSES)]
-            end
-            local d = difficulty(s.difficulty)
-            local opponent = { name = d.title, class = oppClass, profile = d.key }
-            if Match:StartPractice(deck, opponent) then
+            if TC:StartPractice({ deck = st.deck or deck.id, opponent = st.opponent, difficulty = st.difficulty }) then
                 parent:GetParent():Hide()
-                TC.Board:Open()
             end
         end)
     end)
@@ -223,19 +243,49 @@ local function build(parent)
     help:SetTextColor(0.25, 0.15, 0.05)
     help:SetText(table.concat({
         "|cff5a3a10How to play|r",
+        "Click a card to play it; minions ask where to stand, and targets glow red. Click a glowing minion, then an enemy, to attack. Right-click cancels.",
         "",
-        "Each turn you gain a mana crystal (up to 10). Spend mana to play cards from your hand.",
-        "",
-        "Click a card to play it. Minions ask where to stand, and spells and battlecries ask for a target: legal targets glow red.",
-        "",
-        "Click one of your glowing minions, then an enemy, to attack. Taunt minions must be attacked first.",
-        "",
-        "Click your hero power beside your portrait once per turn.",
-        "",
-        "Right-click anywhere to cancel. Reduce the enemy hero to 0 health to win.",
-        "",
-        "Matches are saved as you play: close the table, or even log out, and pick up where you left off.",
+        "|cff5a3a10Winnings|r",
+        ("Each of your first %d wins a day pays dust: %d / %d / %d / %d by difficulty. The day's first win also brings a card."):format(
+            Match.PAID_WINS_PER_DAY, Match.WIN_DUST.novice, Match.WIN_DUST.regular, Match.WIN_DUST.skilled, Match.WIN_DUST.expert),
     }, "\n"))
+
+    local historyTitle = panel:CreateFontString(nil, "OVERLAY", "QuestFontNormalSmall")
+    historyTitle:SetPoint("TOPLEFT", help, "BOTTOMLEFT", 0, -16)
+    historyTitle:SetText("|cff5a3a10Recent matches|r")
+    local history = panel:CreateFontString(nil, "OVERLAY", "GameFontBlackSmall")
+    history:SetPoint("TOPLEFT", historyTitle, "BOTTOMLEFT", 0, -6)
+    history:SetWidth(pageW - 70)
+    history:SetJustifyH("LEFT")
+    history:SetSpacing(2)
+
+    -- Who else is around (the hidden presence channel, Social/Presence.lua).
+    local onlineBtn = CreateFrame("Button", nil, panel)
+    onlineBtn:SetPoint("BOTTOMLEFT", panel, "BOTTOM", 24, 30)
+    onlineBtn:SetSize(pageW - 70, 36)
+    local onlineText = onlineBtn:CreateFontString(nil, "OVERLAY", "QuestFontNormalSmall")
+    onlineText:SetPoint("LEFT")
+    onlineText:SetWidth(pageW - 70)
+    onlineText:SetJustifyH("LEFT")
+    onlineText:SetTextColor(0.25, 0.15, 0.05)
+    onlineBtn:SetScript("OnEnter", function(self)
+        local list = TC.Presence:Online()
+        GameTooltip:SetOwner(self, "ANCHOR_TOP")
+        GameTooltip:SetText("Tavern Cards players online", 1, 0.82, 0)
+        for i = 1, math.min(#list, 15) do
+            local p = list[i]
+            GameTooltip:AddDoubleLine(p.name, ("%d cards, %d wins"):format(p.collected or 0, p.wins or 0), 1, 1, 1, 0.7, 0.7, 0.7)
+        end
+        if #list == 0 then GameTooltip:AddLine("Nobody heard from yet.", 0.7, 0.7, 0.7) end
+        GameTooltip:AddLine("Click to ask who is around. Challenges between players are coming.", 0.5, 0.75, 1, true)
+        GameTooltip:Show()
+    end)
+    onlineBtn:SetScript("OnLeave", function() GameTooltip:Hide() end)
+    onlineBtn:SetScript("OnClick", function()
+        if TC.Presence:AskWho() then TC:Print("Asking the tavern who is around...") end
+        C_Timer.After(7, function() if panel:IsVisible() then panel:Refresh() end end)
+    end)
+    TC.Presence:Subscribe(function() if panel:IsVisible() then panel:Refresh() end end)
 
     function panel:Open(deckId)
         if deckId then settings().deck = deckId end
@@ -292,7 +342,29 @@ local function build(parent)
             lines[#lines + 1] = ("Last match: you %s against the %s."):format(word,
                 last.opponent and last.opponent.name or "house")
         end
+        local daily = TC.db.daily
+        local wins = daily and daily.day == date("%Y-%m-%d") and daily.wins or 0
+        lines[#lines + 1] = wins < Match.PAID_WINS_PER_DAY
+            and ("Paid wins left today: %d of %d%s."):format(Match.PAID_WINS_PER_DAY - wins, Match.PAID_WINS_PER_DAY,
+                wins == 0 and " (the first also brings a card)" or "")
+            or "Today's winnings are collected; wins still count for your record."
         matchInfo:SetText(table.concat(lines, "\n"))
+
+        local rows = {}
+        for i, h in ipairs(Match:History()) do
+            if i > 8 then break end
+            local word = h.result == "win" and "|cff1a6010Won|r" or h.result == "loss" and "|cff902010Lost|r" or "Drew"
+            local extra = h.dust and ("  +%d dust"):format(h.dust) or ""
+            if h.card and TC.Cards[h.card] then extra = extra .. ", " .. TC.Art:ColoredName(h.card) end
+            rows[#rows + 1] = ("%s vs %s (%s), %d turns%s"):format(word, h.opponent and h.opponent.name or "?",
+                className(h.opponent and h.opponent.class or ""), h.turns or 0, extra)
+        end
+        history:SetText(#rows > 0 and table.concat(rows, "\n") or "No matches yet.")
+
+        local n = #TC.Presence:Online()
+        local chan = TC.Channel:Number()
+        onlineText:SetText(("|cff5a3a10Tavern players online:|r %d%s"):format(n,
+            chan and ("\nChat with them in channel |cff1a4a80/%d|r."):format(chan) or "\n|cffaaaaaa/tc channel on to join the tavern chat.|r"))
     end
 
     Match:Subscribe(function(what)

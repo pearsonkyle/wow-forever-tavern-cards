@@ -127,6 +127,48 @@ local function updateFloats(elapsed)
     end
 end
 
+-- An attack: the attacker's portrait lunges at its target and springs back.
+local ghosts = {}
+local LUNGE = 0.45
+local function lunge(from, to, texture)
+    local g
+    for _, x in ipairs(ghosts) do
+        if not x.active then g = x break end
+    end
+    if not g then
+        g = CreateFrame("Frame", nil, frame)
+        g:SetSize(62, 62)
+        g:SetFrameLevel(frame:GetFrameLevel() + 30)
+        g.ring = roundTexture(g, "ARTWORK", 0)
+        g.ring:SetColorTexture(0.9, 0.75, 0.3, 1)
+        g.tex = roundTexture(g, "OVERLAY", 3)
+        ghosts[#ghosts + 1] = g
+    end
+    g.from, g.to, g.t, g.active = from, to, 0, true
+    g.tex:SetTexture(texture)
+    g:ClearAllPoints()
+    g:SetPoint("CENTER", frame, "BOTTOMLEFT", from[1], from[2])
+    g:Show()
+end
+
+local function updateGhosts(elapsed)
+    for _, g in ipairs(ghosts) do
+        if g.active then
+            g.t = g.t + elapsed
+            local p = g.t / LUNGE
+            if p >= 1 then
+                g.active = false
+                g:Hide()
+            else
+                local k = p < 0.5 and p * 2 or (1 - p) * 2
+                k = k * k * (3 - 2 * k) * 0.85
+                g:SetPoint("CENTER", frame, "BOTTOMLEFT", g.from[1] + (g.to[1] - g.from[1]) * k,
+                    g.from[2] + (g.to[2] - g.from[2]) * k)
+            end
+        end
+    end
+end
+
 -- Where each entity's widget sits now (board coordinates), so numbers can float over the dead too.
 local function positions()
     local out = {}
@@ -164,6 +206,13 @@ local function entityTooltip(owner, id)
         GameTooltip:AddLine(("Deck %d  ·  Hand %d"):format(#eng:deck_ids(e.owner), #eng:hand_ids(e.owner)), 0.7, 0.7, 0.7)
         if #p.secrets > 0 then
             GameTooltip:AddLine(("%d secret(s) in play"):format(#p.secrets), 0.8, 0.4, 1)
+            if e.owner == 0 then
+                for _, sid in ipairs(p.secrets) do
+                    local se = eng:ent(sid)
+                    local card = se and TC.Cards[se.card_id]
+                    if card then GameTooltip:AddLine("  " .. card.name, 0.85, 0.6, 1) end
+                end
+            end
         end
     else
         TC:CardTooltip(e.card_id, true)
@@ -252,6 +301,21 @@ local function setMinion(b, e)
     local r, g, bl = Art:RarityColor(card and card.rarity or "FREE")
     b:SetBackdropBorderColor(r, g, bl, 1)
     b.name:SetTextColor(r, g, bl)
+    if card and card.type == "LOCATION" then
+        -- Locations: uses left instead of attack/health, and a marker once used this turn.
+        b.attack:Hide()
+        b.health:Show()
+        b.health.text:SetText(e.durability)
+        b.health.text:SetTextColor(1, 1, 1)
+        b.taunt:Hide()
+        b.shield:Hide()
+        b:SetAlpha(1)
+        b.art:SetVertexColor(e.flags.has_attacked and 0.5 or 1, e.flags.has_attacked and 0.5 or 1, e.flags.has_attacked and 0.5 or 1)
+        b.status:SetText(e.flags.has_attacked and "|cffccccccUsed|r" or "")
+        b:Show()
+        return
+    end
+    b.attack:Show()
     b.attack.text:SetText(e.attack)
     b.health.text:SetText(e.health)
     local baseAttack = card and card.attack or e.attack
@@ -417,7 +481,7 @@ local function buildChoice()
     c.title = c:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
     c.title:SetPoint("TOP", 0, -16)
     c.cards = {}
-    for i = 1, 5 do
+    for i = 1, 10 do
         local w = CardWidget:CreateGame(c)
         w.mark = w:CreateTexture(nil, "OVERLAY", nil, 7)
         w.mark:SetTexture("Interface\\Buttons\\UI-GroupLoot-Pass-Up")
@@ -450,12 +514,15 @@ function Board:ShowChoice(title, options, pick, multi, confirmText, onConfirm)
     local n = #options
     if cardsShown then
         local step = 112
-        local x0 = -(n - 1) * step / 2
+        local perRow = n > 5 and math.ceil(n / 2) or n
+        local rows = math.ceil(n / perRow)
         for i, opt in ipairs(options) do
             local w = c.cards[i]
             if w then
+                local row, col = math.floor((i - 1) / perRow), (i - 1) % perRow
+                local inRow = math.min(perRow, n - row * perRow)
                 w:ClearAllPoints()
-                w:SetPoint("CENTER", c, "CENTER", x0 + (i - 1) * step, 0)
+                w:SetPoint("CENTER", c, "CENTER", -(inRow - 1) * step / 2 + col * step, (rows - 1) * 75 - row * 150)
                 w.costNow = nil
                 w:SetCard(opt.card)
                 w.onClick = function(_, button)
@@ -463,7 +530,7 @@ function Board:ShowChoice(title, options, pick, multi, confirmText, onConfirm)
                 end
             end
         end
-        c:SetSize(math.max(360, n * step + 40), 250)
+        c:SetSize(math.max(360, perRow * step + 40), 250 + (rows - 1) * 150)
     else
         for i, opt in ipairs(options) do
             local b = c.buttons[i]
@@ -490,6 +557,11 @@ end
 
 function Board:HideChoice()
     if frame and frame.choice then frame.choice:Hide() end
+end
+
+local function myDecisionNow()
+    local eng = engine()
+    return eng and not eng:is_terminal() and eng:current_player() == 0 and not Match.thinking
 end
 
 -- ---- building the frame ------------------------------------------------------------------------
@@ -605,6 +677,17 @@ local function build()
     for i = 1, 10 do
         local w = CardWidget:CreateGame(f.hand)
         addGlow(w, 1.45)
+        -- Hovered cards lift above their neighbours so the whole card can be read.
+        w.onEnter = function(self)
+            if not self.baseX then return end
+            self:SetPoint("BOTTOMLEFT", f.hand, "BOTTOM", self.baseX, 28)
+            self:SetFrameLevel(f.hand:GetFrameLevel() + 45)
+        end
+        w.onLeave = function(self)
+            if not self.baseX then return end
+            self:SetPoint("BOTTOMLEFT", f.hand, "BOTTOM", self.baseX, 0)
+            self:SetFrameLevel(self.baseLevel or f.hand:GetFrameLevel())
+        end
         w.onClick = function(self, button)
             if button == "RightButton" then return Board:Cancel() end
             TC:Safe("hand click", Board.ClickHand, Board, self.entity, self)
@@ -634,6 +717,27 @@ local function build()
     f.endTurn:SetPoint("RIGHT", -28, 35)
     f.endTurn:SetScript("OnClick", function() TC:Safe("end turn", Board.ClickEndTurn, Board) end)
     f.endGlow = addGlow(f.endTurn, 1.3)
+    f.launch = CreateFrame("Button", nil, f, "UIPanelButtonTemplate")
+    f.launch:SetSize(140, 24)
+    f.launch:SetPoint("BOTTOM", f.endTurn, "TOP", 0, 8)
+    f.launch:SetText("Launch Starship")
+    f.launch:SetScript("OnClick", function(self)
+        if self.index and myDecisionNow() then Match:PlayerApply(self.index) end
+    end)
+    f.launch:Hide()
+
+    -- Escape cancels a half-made move before it closes the table.
+    f:EnableKeyboard(true)
+    f:SetPropagateKeyboardInput(true)
+    f:SetScript("OnKeyDown", function(self, key)
+        if InCombatLockdown and InCombatLockdown() then return end
+        if key == "ESCAPE" and (sel or (f.choice:IsShown() and not (engine() and engine().state.phase == PHASE.MULLIGAN))) then
+            Board:Cancel()
+            self:SetPropagateKeyboardInput(false)
+        else
+            self:SetPropagateKeyboardInput(true)
+        end
+    end)
     f.status = f:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
     f.status:SetPoint("TOP", f.endTurn, "BOTTOM", 0, -10)
     f.status:SetWidth(170)
@@ -666,6 +770,8 @@ local function build()
     f.over.text:SetPoint("TOP", 0, -26)
     f.over.reason = f.over:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
     f.over.reason:SetPoint("TOP", f.over.text, "BOTTOM", 0, -10)
+    f.over.reward = f.over:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+    f.over.reward:SetPoint("TOP", f.over.reason, "BOTTOM", 0, -8)
     local leave = CreateFrame("Button", nil, f.over, "UIPanelButtonTemplate")
     leave:SetSize(130, 26)
     leave:SetPoint("BOTTOMRIGHT", f.over, "BOTTOM", -6, 20)
@@ -686,6 +792,7 @@ local function build()
     local bannerTime = 0
     f:SetScript("OnUpdate", function(_, elapsed)
         updateFloats(elapsed)
+        updateGhosts(elapsed)
         if f.banner:IsShown() then
             bannerTime = bannerTime + elapsed
             if bannerTime > 1.6 then
@@ -821,8 +928,10 @@ local function refreshHand()
             w.entity = id
             w.costNow = eng:card_cost(0, id)
             w:ClearAllPoints()
-            w:SetPoint("BOTTOMLEFT", frame.hand, "BOTTOM", -total / 2 + (i - 1) * step, 0)
-            w:SetFrameLevel(frame.hand:GetFrameLevel() + i * 3)
+            w.baseX = -total / 2 + (i - 1) * step
+            w.baseLevel = frame.hand:GetFrameLevel() + i * 3
+            w:SetPoint("BOTTOMLEFT", frame.hand, "BOTTOM", w.baseX, 0)
+            w:SetFrameLevel(w.baseLevel)
             w:SetCard(e.card_id)
             widgets[id] = w
         else
@@ -923,12 +1032,20 @@ function Board:Refresh()
     elseif mine and s.phase == PHASE.PLAYER_ACTIONS and not s.pending.active then
         frame.endTurn:SetText("End Turn")
         frame.endTurn:Enable()
-        frame.status:SetText(("Turn %d"):format(math.floor((s.turn + 1) / 2)))
+        frame.status:SetText(("|cff40ff40Your turn|r  (turn %d)"):format(math.floor((s.turn + 1) / 2)))
     else
         frame.endTurn:SetText(eng:current_player() == 1 and "Enemy Turn" or "Your Turn")
         frame.endTurn:Disable()
-        if not Match.thinking then frame.status:SetText("") end
+        if not Match.thinking then
+            frame.status:SetText(eng:current_player() == 1 and "|cffff6040Enemy turn|r" or "")
+        end
     end
+    local launch
+    for i, m in ipairs(moves) do
+        if m.action == "launch" then launch = i end
+    end
+    frame.launch.index = launch
+    frame.launch:SetShown(launch ~= nil and not sel)
     frame.concede:SetEnabled(not eng:is_terminal())
     frame.hint:SetText(sel and sel.hint or "")
     refreshGlows()
@@ -952,10 +1069,18 @@ end
 
 -- ---- decisions ---------------------------------------------------------------------------------
 
+-- Cards marked to replace survive refreshes (they are keyed by the match, so a new match starts clean).
+local mulliganMarks = { match = nil, replace = {} }
+
 function Board:ShowMulligan()
     local eng = engine()
     local ids = eng:mulligan_ids(0)
-    local replace = {}
+    local record = Match:Record()
+    local key = record and record.started
+    if mulliganMarks.match ~= key then
+        mulliganMarks.match, mulliganMarks.replace = key, {}
+    end
+    local replace = mulliganMarks.replace
     local options = {}
     for i, id in ipairs(ids) do options[i] = { card = eng:ent(id).card_id } end
     self:ShowChoice("Your opening hand — click cards to replace them", options, function(i, w)
@@ -975,12 +1100,16 @@ function Board:ShowMulligan()
                 end
                 if same then
                     self:HideChoice()
+                    mulliganMarks.replace = {}
                     Match:PlayerApply(index)
                     return
                 end
             end
         end
     end)
+    for i in ipairs(ids) do
+        frame.choice.cards[i].mark:SetShown(replace[i] and true or false)
+    end
 end
 
 function Board:ShowPending()
@@ -1224,14 +1353,24 @@ function Board:ShowGameOver()
     local reasons = { life = "", fatigue = "Out of cards.", concede = "Conceded.", turn_limit = "Turn limit reached.",
         loop = "The rules got stuck in a loop.", errored = "The match ended in an error." }
     over.reason:SetText(reasons[Match.reason or ""] or "")
+    local reward = Match.reward
+    local parts = {}
+    if reward and reward.dust then
+        parts[#parts + 1] = ("|TInterface\\Icons\\INV_Enchant_DustArcane:14:14|t +%d dust"):format(reward.dust)
+    end
+    if reward and reward.card then parts[#parts + 1] = "and " .. Art:ColoredName(reward.card) end
+    if reward and not reward.dust and not reward.card then parts[#parts + 1] = "|cffaaaaaaToday's winnings are already collected.|r" end
+    over.reward:SetText(table.concat(parts, "  "))
     over:Show()
 end
 
 function Board:Rematch()
-    local last = Match.lastSetup
-    if not last then return end
+    local setup = Match.lastSetup or (TC.char.lastMatch and TC.char.lastMatch.setup)
     frame.over:Hide()
-    Match:StartPractice(last.deck, last.opponent)
+    if not setup or not TC:StartPractice(setup) then
+        frame:Hide()
+        TC:ShowWindow("play")
+    end
 end
 
 local function showBanner(text)
@@ -1264,7 +1403,21 @@ local function onMatch(what, seat, move)
         local turnStarted
         for _, ev in ipairs(eng.events or {}) do
             local at = after[ev.subject] or before[ev.subject]
-            if ev.kind == "DAMAGED" and at then
+            if ev.kind == "ATTACK_DECLARED" then
+                local a, b = before[ev.subject] or after[ev.subject], before[ev.source] or after[ev.source]
+                local e = eng:ent(ev.subject)
+                if a and b and e then
+                    local tex
+                    if e.zone == ZONE.HERO then
+                        local w = eng:ent(eng:player(e.owner).weapon_id)
+                        tex = w and Art:Icon(w.card_id) or Art:SafeIcon("INV_Sword_04")
+                    else
+                        tex = Art:Icon(e.card_id)
+                    end
+                    lunge(a, b, tex)
+                    Art:Play("IG_ABILITY_ICON_DROP")
+                end
+            elseif ev.kind == "DAMAGED" and at then
                 floatText(at[1], at[2], "-" .. ev.amount, 1, 0.2, 0.15)
             elseif ev.kind == "DAMAGE_PREVENTED" and at then
                 floatText(at[1], at[2], "Blocked", 1, 0.9, 0.4)
@@ -1276,7 +1429,12 @@ local function onMatch(what, seat, move)
         end
         if seat == 1 and move and move.action == "play" and move.raw.entity then
             local e = eng:ent(move.raw.entity)
-            if e then
+            local d = e and eng:def_of(e.id)
+            if d and d.secret then
+                frame.showcase:Hide()
+                frame.showcaseLabel:SetText("Opponent played a |cffcc66ffSecret|r")
+                frame.showcaseUntil = GetTime() + 2.2
+            elseif e then
                 frame.showcase.costNow = nil
                 frame.showcase:SetCard(e.card_id)
                 frame.showcaseLabel:SetText("Opponent played")

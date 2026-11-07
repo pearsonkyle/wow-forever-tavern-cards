@@ -50,6 +50,7 @@ local clock = 0
 local function setup(TC)
     clock = 0
     time = os.time
+    date = os.date
     GetTime = function() return clock end
     debugprofilestop = function() return os.clock() * 1000 end
     geterrorhandler = function() return error end
@@ -81,6 +82,9 @@ local function setup(TC)
     local panels = {}
     TC.RegisterPanel = function(_, key, _, builder) panels[key] = builder end
     TC.Compat = { HasAtlas = function() return false end }
+    TC.Presence = { Online = function() return {} end, Subscribe = function() end, AskWho = function() end }
+    TC.Channel = { Number = function() return nil end }
+    C_Timer = { After = function() end }
     TC.db = { collection = {}, dust = 0, ledger = {}, decks = {}, settings = { mute = true } }
     TC.char = { granted = {} }
     for _, file in ipairs({ "Collection/Collection.lua", "Collection/Decks.lua", "UI/Art.lua", "UI/CardWidget.lua",

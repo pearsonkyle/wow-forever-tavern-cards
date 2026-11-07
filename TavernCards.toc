@@ -50,4 +50,8 @@ UI\Minimap.lua
 
 Sources\Quests.lua
 
+Social\Chat.lua
+Social\Channel.lua
+Social\Presence.lua
+
 Core\Commands.lua

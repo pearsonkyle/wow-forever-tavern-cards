@@ -61,6 +61,24 @@ local function build(parent)
         end
     end)
 
+    local import = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
+    import:SetSize(110, 24)
+    import:SetPoint("RIGHT", newDeck, "LEFT", -8, 0)
+    import:SetText("Import Deck")
+    import:SetScript("OnClick", function()
+        TC:Prompt("Paste a Tavern Cards deck code (Ctrl+V):", "", function(text)
+            local name = text:match("%[Tavern Deck: ([^%]]+)%]")
+            local code = text:match("(TCD%d%.[%w%.%+/]+)") or text
+            local deck, why = Decks:Import(code, name)
+            if deck then
+                TC:Print("Deck \"%s\" imported.", deck.name)
+                panel:Refresh()
+            else
+                TC:Print(Decks.IMPORT_ERRORS[why] or "That deck can't be imported.")
+            end
+        end, "Import")
+    end)
+
     local tiles = {}
     local empty = panel:CreateFontString(nil, "OVERLAY", "QuestFont_Large")
     empty:SetPoint("CENTER", 0, 20)
@@ -104,6 +122,14 @@ local function build(parent)
                     root:CreateButton("Play", function() TC:ShowWindow("play", deck.id) end)
                 end
                 root:CreateButton("Duplicate", function() Decks:Duplicate(deck.id); panel:Refresh() end)
+                root:CreateDivider()
+                root:CreateButton("Link in chat", function() TC.Chat:Insert(TC.Chat:DeckText(deck)) end)
+                local show = root:CreateButton("Share in the tavern channel", function() TC.Channel:Say(TC.Chat:DeckText(deck)) end)
+                show:SetEnabled(TC.Channel:Number() ~= nil)
+                root:CreateButton("Copy deck code", function()
+                    TC:Prompt(("Deck code for \"%s\" (Ctrl+C to copy):"):format(deck.name), Decks:Encode(deck))
+                end)
+                root:CreateDivider()
                 local del = root:CreateButton("|cffff4040Delete|r", function()
                     TC:Confirm(("Delete the deck \"%s\"?"):format(deck.name), function()
                         Decks:Delete(deck.id)
@@ -121,7 +147,7 @@ local function build(parent)
             for _, p in ipairs(Decks:Problems(deck)) do
                 GameTooltip:AddLine(p, 1, 0.4, 0.3)
             end
-            GameTooltip:AddLine("Click to edit, right-click for more.", 0.5, 0.5, 0.5)
+            GameTooltip:AddLine("Click to edit, right-click to play, share or copy its code.", 0.5, 0.5, 0.5)
             GameTooltip:Show()
         end)
         t:SetScript("OnLeave", function() GameTooltip:Hide() end)

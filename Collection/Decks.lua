@@ -186,3 +186,111 @@ function Decks:Fill(deck)
     end
     return self:Count(deck)
 end
+
+-- ---- deck codes --------------------------------------------------------------------------------
+-- "TCD1.MAGE.<4 chars per copy>": each card is a 24-bit hash of its id in base64, so codes survive
+-- data rebuilds that reorder cards (tests/test_decks.lua checks the hashes never collide).
+
+local B64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
+
+local function hash24(id)
+    local h = 7
+    for i = 1, #id do
+        h = (h * 131 + id:byte(i)) % 16777213
+    end
+    return h
+end
+Decks.Hash24 = hash24
+
+local function enc4(n)
+    local out = {}
+    for i = 4, 1, -1 do
+        local d = n % 64
+        out[i] = B64:sub(d + 1, d + 1)
+        n = math.floor(n / 64)
+    end
+    return table.concat(out)
+end
+
+local byHash
+local function cardForHash(h)
+    if not byHash then
+        byHash = {}
+        for _, id in ipairs(TC.CardOrder) do
+            if bit.band(TC.Cards[id].flags, 1) ~= 0 then
+                byHash[hash24(id)] = id
+            end
+        end
+    end
+    return byHash[h]
+end
+
+function Decks:Encode(deck)
+    local parts = {}
+    for _, id in ipairs(self:CardList(deck)) do
+        parts[#parts + 1] = enc4(hash24(id))
+    end
+    return ("TCD1.%s.%s"):format(deck.class, table.concat(parts))
+end
+
+-- A deck table (not saved) from a code, or nil, why.
+function Decks:Decode(code)
+    if type(code) ~= "string" then return nil, "format" end
+    local class, body = code:gsub("%s", ""):match("^TCD1%.(%u+)%.([%w%+/]*)$")
+    if not class or #body % 4 ~= 0 then return nil, "format" end
+    local valid = false
+    for _, c in ipairs(self.CLASSES) do
+        if c == class then valid = true end
+    end
+    if not valid then return nil, "class" end
+    local deck = { class = class, cards = {} }
+    for i = 1, #body, 4 do
+        local n = 0
+        for k = i, i + 3 do
+            n = n * 64 + (B64:find(body:sub(k, k), 1, true) - 1)
+        end
+        local id = cardForHash(n)
+        if not id then return nil, "unknown" end
+        deck.cards[id] = (deck.cards[id] or 0) + 1
+    end
+    return deck
+end
+
+function Decks:OwnedCount(deck)
+    local n = 0
+    for id, count in pairs(deck.cards) do
+        n = n + math.min(count, TC.Collection:Count(id))
+    end
+    return n
+end
+
+-- Saves a decoded deck as a new deck of yours (cards you don't own yet show as missing).
+function Decks:Import(code, name)
+    local parsed, why = self:Decode(code)
+    if not parsed then return nil, why end
+    local deck = self:Create(parsed.class, name and name ~= "" and name or nil)
+    deck.cards = parsed.cards
+    return deck
+end
+
+local IMPORT_ERRORS = { format = "That is not a Tavern Cards deck code.", class = "That deck code names an unknown class.",
+    unknown = "That deck has cards this version of Tavern Cards doesn't know." }
+Decks.IMPORT_ERRORS = IMPORT_ERRORS
+
+-- A deck link was clicked in chat: confirm, then import and open it.
+function Decks:OfferImport(code, name)
+    local parsed, why = self:Decode(code)
+    if not parsed then
+        TC:Print(IMPORT_ERRORS[why] or "That deck can't be imported.")
+        return
+    end
+    local cls = (LOCALIZED_CLASS_NAMES_MALE and LOCALIZED_CLASS_NAMES_MALE[parsed.class]) or parsed.class
+    TC:Confirm(("Copy the %s deck \"%s\" into your decks?\nYou own %d of its %d cards."):format(cls, name or "", self:OwnedCount(parsed),
+        self:Count(parsed)), function()
+        local deck = self:Import(code, name)
+        if deck then
+            TC:Print("Deck \"%s\" added. Missing cards can be crafted with dust.", deck.name)
+            TC:ShowWindow("decks")
+        end
+    end, nil, "Copy deck", CANCEL or "Cancel")
+end

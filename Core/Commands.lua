@@ -3,6 +3,8 @@ local TC = TavernCards_NS
 local HELP = {
     "/tc        - open the card book (also: minimap button)",
     "/tc play   - return to your match, or open the Play tab",
+    "/tc channel [on|off] - the tavern chat channel",
+    "/tc who    - other Tavern Cards players online",
     "/tc status - card data and engine build",
     "/tc minimap - show or hide the minimap button (reports its state)",
     "/tc probe  - report which UI templates, atlases, events and APIs this client has",
@@ -33,6 +35,26 @@ function commands.play()
         TC.Board:Open()
     else
         TC:ShowWindow("play")
+    end
+end
+
+function commands.channel(arg)
+    TC.Channel:Command(arg)
+end
+
+function commands.who()
+    local list = TC.Presence:Online()
+    if TC.Presence:AskWho() then
+        TC:Print("Asking the tavern who is around... try again in a few seconds for the full list.")
+    end
+    if #list == 0 then
+        TC:Print("No other Tavern Cards players heard from yet.")
+        return
+    end
+    TC:Print("%d Tavern Cards player(s) online:", #list)
+    for i = 1, math.min(#list, 20) do
+        local p = list[i]
+        DEFAULT_CHAT_FRAME:AddMessage(("  %s  |cffaaaaaa%d cards, %d wins|r"):format(p.name, p.collected or 0, p.wins or 0))
     end
 end
 

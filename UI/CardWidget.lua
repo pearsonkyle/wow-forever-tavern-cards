@@ -64,6 +64,7 @@ local function onEnter(self)
     if have < TC.Collection:Cap(self.id) then
         GameTooltip:AddLine(("Right-click: craft for %d dust"):format(TC.Collection.CRAFT[card.rarity] or 0), 0.5, 0.75, 1)
     end
+    GameTooltip:AddLine("Shift-click: link in chat", 0.5, 0.75, 1)
     GameTooltip:Show()
 end
 
@@ -88,6 +89,10 @@ local function contextMenu(self)
             C:Disenchant(id)
         end)
         dis:SetEnabled(C:Count(id) > 0)
+        root:CreateDivider()
+        root:CreateButton("Link in chat", function() TC.Chat:InsertCard(id) end)
+        local show = root:CreateButton("Show off in the tavern channel", function() TC.Channel:Say(TC.Chat:CardText(id)) end)
+        show:SetEnabled(TC.Channel:Number() ~= nil)
     end)
 end
 
@@ -172,6 +177,8 @@ function CardWidget:Create(parent)
     w:SetScript("OnClick", function(self, button)
         if button == "RightButton" then
             contextMenu(self)
+        elseif self.id and IsModifiedClick and IsModifiedClick("CHATLINK") then
+            TC.Chat:InsertCard(self.id)
         elseif self.onLeftClick and self.id then
             self.onLeftClick(self.id)
         end

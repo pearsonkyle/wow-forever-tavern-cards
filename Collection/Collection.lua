@@ -86,6 +86,13 @@ function Collection:AddCard(id, source, quiet, questID)
     return result, dust
 end
 
+-- Dust from anything but a card (match rewards).
+function Collection:AddDust(amount, source)
+    if amount <= 0 then return end
+    TC.db.dust = TC.db.dust + amount
+    notify("dust", { amount = amount, source = source })
+end
+
 -- Pays a source once per character. `key` identifies the source ("q:176", "lvl:20").
 function Collection:Grant(key, id, source, quiet, questID)
     local granted = TC.char.granted

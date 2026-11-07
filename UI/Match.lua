@@ -58,7 +58,9 @@ function Match:Record()
 end
 
 -- opts: { deck = Decks entry, opponent = { name, class, profile, npc } }
-function Match:StartPractice(deck, opponent)
+-- `setup` (optional) is what the Play tab chose ({deck, opponent, difficulty}); kept so Rematch works
+-- after a reload too.
+function Match:StartPractice(deck, opponent, setup)
     local cards = TC.Decks:CardList(deck)
     local hi, lo = newSeed()
     local oppDeck = AI.buildDeck(opponent.class, (hi * 31 + 7) % 4294967296, lo, function(id) return TC.PlayableNow[id] end)
@@ -66,8 +68,9 @@ function Match:StartPractice(deck, opponent)
         TC:Print("Could not build a deck for the opponent.")
         return false
     end
-    self.lastSetup = { deck = deck, opponent = opponent }
+    self.lastSetup = setup
     TC.char.match = {
+        setup = setup,
         seed = { hi, lo }, decks = { cards, oppDeck }, classes = { deck.class, opponent.class },
         opponent = opponent, deckName = deck.name, moves = {}, started = time(),
     }
@@ -103,27 +106,52 @@ function Match:Load()
 end
 
 -- Short log line for a move: the engine's description without its board-slot detail.
-local function describe(move, seat)
+local function describe(engine, move, seat)
     local desc = move and move.desc or "?"
+    if seat == 1 and move and move.action == "play" then
+        -- The opponent's secrets stay secret.
+        local d = engine:def_of(move.raw.entity)
+        if d and d.secret then return "Opponent: Play a Secret" end
+    end
     desc = desc:gsub(" at position %d+", ""):gsub(" #[%d%.]+$", "")
     return (seat == 0 and "You: " or "Opponent: ") .. desc
 end
 
-function Match:Apply(index)
+-- The opponent's way out when a chosen move is refused or its search fails: end the turn, or take the
+-- first option of a pending choice, so the table never stalls.
+local function fallbackIndex(engine)
+    local first
+    for i, m in ipairs(engine:legal_moves()) do
+        if m.action == "end_turn" then return i end
+        if not first and m.action ~= "concede" then first = i end
+    end
+    return first
+end
+
+function Match:Apply(index, isFallback)
     local engine = self.engine
     if not engine or engine:is_terminal() then return false end
     local seat = engine:current_player()
     local moves = engine:legal_moves()
     local ok = engine:apply_move(index)
     if not ok then
-        UIErrorsFrame:AddMessage(Match.ErrorText(engine.last_error), 1, 0.1, 0.1)
+        if engine:is_terminal() then
+            -- The rules looped (E_LOOP): the engine called the match a draw.
+            TC:Print(Match.ErrorText(engine.last_error))
+            self:Finish()
+        elseif seat == 1 and not isFallback then
+            local fb = fallbackIndex(engine)
+            if fb then return self:Apply(fb, true) end
+        else
+            UIErrorsFrame:AddMessage(Match.ErrorText(engine.last_error), 1, 0.1, 0.1)
+        end
         return false
     end
     local record = TC.char.match
     record.moves[#record.moves + 1] = index
     local move = moves[index]
     if move and move.action ~= "mulligan" and move.action ~= "resolve" then
-        self:Log(describe(move, seat))
+        self:Log(describe(engine, move, seat))
     end
     notify("move", seat, move)
     if engine:is_terminal() then
@@ -178,6 +206,63 @@ function Match:Concede()
     self:Finish()
 end
 
+-- ---- rewards and history ---------------------------------------------------------------------
+-- Practice wins pay dust by difficulty, for the first few wins each day; the day's first win also
+-- brings a card. Nothing for losses: practice is for fun, quests are where the cards come from.
+
+Match.WIN_DUST = { novice = 5, regular = 10, skilled = 20, expert = 40 }
+Match.PAID_WINS_PER_DAY = 5
+local CARD_ODDS = { { "LEGENDARY", 2 }, { "EPIC", 6 }, { "RARE", 22 }, { "COMMON", 70 } }
+
+local function today()
+    return date("%Y-%m-%d")
+end
+
+local function rewardCard(class, rng)
+    local roll, rarity = rng:intBelow(100), "COMMON"
+    for _, entry in ipairs(CARD_ODDS) do
+        if roll < entry[2] then rarity = entry[1] break end
+        roll = roll - entry[2]
+    end
+    local pool = {}
+    for _, id in ipairs(TC.CardOrder) do
+        local card = TC.Cards[id]
+        if card.rarity == rarity and bit.band(card.flags, 3) == 3 and (card.family == class or card.family == "NEUTRAL") then
+            pool[#pool + 1] = id
+        end
+    end
+    return #pool > 0 and pool[rng:intBelow(#pool) + 1] or nil
+end
+
+function Match:Reward(record)
+    local daily = TC.db.daily
+    if not daily or daily.day ~= today() then
+        daily = { day = today(), wins = 0 }
+        TC.db.daily = daily
+    end
+    daily.wins = daily.wins + 1
+    local reward = {}
+    local profile = record.opponent and record.opponent.profile or "regular"
+    if daily.wins <= self.PAID_WINS_PER_DAY then
+        reward.dust = self.WIN_DUST[profile] or 10
+        TC.Collection:AddDust(reward.dust, "Tavern win")
+    end
+    if daily.wins == 1 then
+        local rng = TC.Rng.new(math.floor(time() % 2147483647), #record.moves)
+        reward.card = rewardCard(record.classes[1], rng)
+        if reward.card then
+            TC.Collection:AddCard(reward.card, "First tavern win of the day")
+        end
+    end
+    reward.left = math.max(0, self.PAID_WINS_PER_DAY - daily.wins)
+    return reward
+end
+
+function Match:History()
+    TC.char.history = TC.char.history or {}
+    return TC.char.history
+end
+
 function Match:Finish()
     local s = self.engine.state
     local won = s.result.result == TC.EngineDefs.RESULT.WIN_A
@@ -188,13 +273,23 @@ function Match:Finish()
     stats.played = (stats.played or 0) + 1
     if won then stats.won = (stats.won or 0) + 1 end
     self.result = draw and "draw" or (won and "win" or "loss")
-    if won and record and record.opponent and record.opponent.npc and TC.Duels then
-        TC.Duels:Reward(record.opponent)
+    self.reward = nil
+    if won and record then
+        self.reward = self:Reward(record)
     end
     self.reason = self.engine:end_reason()
     self.lastClasses = record and record.classes
     self.lastOpponent = record and record.opponent and record.opponent.name
-    TC.char.lastMatch = { result = self.result, opponent = record and record.opponent, ended = time() }
+    TC.char.lastMatch = { result = self.result, opponent = record and record.opponent, ended = time(),
+        setup = record and record.setup }
+    self.lastSetup = record and record.setup or self.lastSetup
+    if record then
+        local history = self:History()
+        table.insert(history, 1, { t = time(), result = self.result, reason = self.reason, opponent = record.opponent,
+            deck = record.deckName, class = record.classes[1], turns = math.floor((self.engine.state.turn + 1) / 2),
+            dust = self.reward and self.reward.dust, card = self.reward and self.reward.card })
+        while #history > 20 do table.remove(history) end
+    end
     TC.char.match = nil
     notify("end")
 end
@@ -226,6 +321,11 @@ driver:SetScript("OnUpdate", function()
     if not ok then
         self.thinking = nil
         TC:ReportError("ai", result)
+        local engine = self.engine
+        if engine and not engine:is_terminal() and engine:current_player() == 1 then
+            local fb = fallbackIndex(engine)
+            if fb then self:Apply(fb, true) end
+        end
         return
     end
     if coroutine.status(co) == "dead" then

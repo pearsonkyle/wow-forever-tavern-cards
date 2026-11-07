@@ -6,6 +6,7 @@ local clock = 0
 local function setup(TC)
     clock = 0
     time = os.time
+    date = os.date
     GetTime = function() return clock end
     debugprofilestop = function() return os.clock() * 1000 end
     geterrorhandler = function() return error end
@@ -23,7 +24,24 @@ local function setup(TC)
     dofile("Collection/Collection.lua")
     dofile("Collection/Decks.lua")
     dofile("UI/Match.lua")
-    return TC.Match, function()
+    T.bad_ai_move_falls_back = function(TC)
+    local Match, tick = setup(TC)
+    local real = TC.AI.choose
+    local broken = 0
+    TC.AI.choose = function(engine, ...)
+        if engine:current_player() == 1 and broken < 3 and engine.state.phase == TC.EngineDefs.PHASE.PLAYER_ACTIONS then
+            broken = broken + 1
+            return 9999  -- a move that doesn't exist
+        end
+        return real(engine, ...)
+    end
+    assert(Match:StartPractice(houseDeck(TC, "MAGE", 2), { name = "Test", class = "DRUID", profile = "novice" }))
+    playOut(TC, Match, tick, 20000)
+    TC.AI.choose = real
+    assert(broken == 3 and Match:Engine():is_terminal(), "the opponent should play on after a refused move")
+end
+
+return TC.Match, function()
         clock = clock + 0.1
         scripts.OnUpdate()
     end
@@ -79,9 +97,11 @@ end
 T.resume_replays_to_same_state = function(TC)
     local Match, tick = setup(TC)
     assert(Match:StartPractice(houseDeck(TC, "PRIEST", 8), { name = "Test", class = "ROGUE", profile = "novice" }))
-    playOut(TC, Match, tick, 20000, 40)
+    playOut(TC, Match, tick, 20000, 12)
     -- Let the opponent finish any thinking, then rebuild from the record as a /reload would.
     while Match.thinking do tick() end
+    assert(TC.char.match, ("match ended early: %s %s after %d"):format(tostring(Match.result), tostring(Match.reason),
+        Match:Engine().state.turn))
     local before = snapshot(Match:Engine())
     Match.engine = nil
     assert(Match:Load())
@@ -98,6 +118,23 @@ T.concede_on_opponents_turn = function(TC)
     end
     Match:Concede()
     assert(Match.result == "loss" and TC.char.match == nil and not Match.thinking)
+end
+
+T.bad_ai_move_falls_back = function(TC)
+    local Match, tick = setup(TC)
+    local real = TC.AI.choose
+    local broken = 0
+    TC.AI.choose = function(engine, ...)
+        if engine:current_player() == 1 and broken < 3 and engine.state.phase == TC.EngineDefs.PHASE.PLAYER_ACTIONS then
+            broken = broken + 1
+            return 9999  -- a move that doesn't exist
+        end
+        return real(engine, ...)
+    end
+    assert(Match:StartPractice(houseDeck(TC, "MAGE", 2), { name = "Test", class = "DRUID", profile = "novice" }))
+    playOut(TC, Match, tick, 20000)
+    TC.AI.choose = real
+    assert(broken == 3 and Match:Engine():is_terminal(), "the opponent should play on after a refused move")
 end
 
 return T
