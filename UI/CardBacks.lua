@@ -1,7 +1,7 @@
 -- Card backs: what your opponent sees of your cards. Each deck can wear one (TC.CardBacks:Choose); the
 -- house picks one at random each match. A back is a crop of one of the game's dungeon and raid paintings
--- (the loading screens) under a vignette and a gold frame, with an emblem seal in the middle; the class
--- and faction backs are plain colours with their emblem (always present in the client).
+-- (the loading screens) under a light vignette and a gold frame; the class and faction backs show their
+-- emblem art (always present in the client).
 --
 --   local b = TC.CardBacks:Create(parent, w, h)    b:SetBack(id)
 
@@ -12,7 +12,6 @@ local CardBacks = {}
 TC.CardBacks = CardBacks
 
 local SCREENS = "Interface\\Glues\\LoadingScreens\\"
-local MASK = "Interface\\CharacterFrame\\TempPortraitAlphaMask"
 
 -- { id, name, painting (loading screen) or colour {r,g,b}, emblem icon }
 local LIST = {
@@ -99,24 +98,23 @@ end
 local function setBack(self, id)
     local b = byId[id] or byId[CardBacks.DEFAULT]
     local path = paintingPath(b)
+    local w, h = self.bw, self.bh
     if path and (not GetFileIDFromPath or GetFileIDFromPath(path)) then
         -- A centred slice of the 4:3 painting with the card's proportions.
-        local w, h = self.bw, self.bh
         local frac = math.min(1, (w / h) * 0.75)
         self.paint:SetTexture(path)
         self.paint:SetTexCoord(0.5 - frac / 2, 0.5 + frac / 2, 0, 1)
-        self.paint:SetVertexColor(1, 1, 1)
     else
-        local c = type(b[3]) == "table" and b[3] or { 0.28, 0.16, 0.08 }
-        self.paint:SetTexture("Interface\\FrameGeneral\\UI-Background-Marble")
-        self.paint:SetTexCoord(0, 1, 0, 1)
-        self.paint:SetVertexColor(c[1] * 1.6, c[2] * 1.6, c[3] * 1.6)
+        -- The faction and class backs: their emblem art fills the card (a centred slice of the icon).
+        local frac = math.min(0.86, (w / h) * 0.86)
+        self.paint:SetTexture(Art:SafeIcon(b[4]))
+        self.paint:SetTexCoord(0.5 - frac / 2, 0.5 + frac / 2, 0.07, 0.93)
     end
-    self.emblem:SetTexture(Art:SafeIcon(b[4]))
+    self.paint:SetVertexColor(1, 1, 1)
     self.backId = b[1]
 end
 
--- A card back of the given size: painting, vignette, gold frame, emblem seal.
+-- A card back of the given size: the art, a light vignette, a gold frame.
 function CardBacks:Create(parent, w, h)
     local f = CreateFrame("Frame", nil, parent, "BackdropTemplate")
     f:SetSize(w, h)
@@ -131,24 +129,7 @@ function CardBacks:Create(parent, w, h)
     f.vignette = f:CreateTexture(nil, "BORDER")
     f.vignette:SetAllPoints(f.paint)
     f.vignette:SetColorTexture(1, 1, 1, 1)
-    f.vignette:SetGradient("VERTICAL", CreateColor(0, 0, 0, 0.55), CreateColor(0, 0, 0, 0.15))
-    local seal = math.floor(math.min(w, h) * 0.46)
-    f.ring = f:CreateTexture(nil, "ARTWORK", nil, 1)
-    f.ring:SetSize(seal + 4, seal + 4)
-    f.ring:SetPoint("CENTER")
-    f.ring:SetColorTexture(0.85, 0.68, 0.3, 1)
-    local ringMask = f:CreateMaskTexture()
-    ringMask:SetTexture(MASK, "CLAMPTOBLACKADDITIVE", "CLAMPTOBLACKADDITIVE")
-    ringMask:SetAllPoints(f.ring)
-    f.ring:AddMaskTexture(ringMask)
-    f.emblem = f:CreateTexture(nil, "ARTWORK", nil, 2)
-    f.emblem:SetSize(seal, seal)
-    f.emblem:SetPoint("CENTER")
-    f.emblem:SetTexCoord(0.07, 0.93, 0.07, 0.93)
-    local mask = f:CreateMaskTexture()
-    mask:SetTexture(MASK, "CLAMPTOBLACKADDITIVE", "CLAMPTOBLACKADDITIVE")
-    mask:SetAllPoints(f.emblem)
-    f.emblem:AddMaskTexture(mask)
+    f.vignette:SetGradient("VERTICAL", CreateColor(0, 0, 0, 0.35), CreateColor(0, 0, 0, 0.05))
     f.SetBack = setBack
     f:SetBack(CardBacks.DEFAULT)
     return f

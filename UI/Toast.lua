@@ -231,7 +231,7 @@ TC.Collection:Subscribe(function(event, p)
 end)
 
 -- Shared card tooltip (the card book, the hand, the board, chat links), one fact per line:
---   Name                         Rare
+--   Name (in its rarity colour)
 --   Minion - Beast               Hunter
 --   4 Mana       3 Attack, 2 Health
 --   rules text (its own line breaks kept)
@@ -240,7 +240,6 @@ end)
 local TRIBES = { { 0x1000, "All" }, { 0x01, "Beast" }, { 0x02, "Undead" }, { 0x04, "Elemental" }, { 0x08, "Mech" },
     { 0x10, "Dragon" }, { 0x20, "Demon" }, { 0x40, "Pirate" }, { 0x80, "Murloc" }, { 0x100, "Draenei" },
     { 0x200, "Naga" }, { 0x400, "Totem" }, { 0x800, "Quilboar" } }
-local RARITY_WORD = { FREE = "Basic", COMMON = "Common", RARE = "Rare", EPIC = "Epic", LEGENDARY = "Legendary" }
 local TYPE_WORD = { MINION = "Minion", SPELL = "Spell", WEAPON = "Weapon", LOCATION = "Location", HERO = "Hero",
     HERO_POWER = "Hero Power" }
 
@@ -262,7 +261,7 @@ function TC:CardTooltip(id, inGame)
     local tip = GameTooltip
     local r, g, b = Art:RarityColor(card.rarity)
     tip:SetText(card.name, r, g, b)
-    tip:AddDoubleLine(" ", RARITY_WORD[card.rarity] or "", 1, 1, 1, r, g, b)
+    -- (No rarity word: the name's colour already says it.)
 
     local kind = TYPE_WORD[card.type] or card.type
     local tribe = TC:TribeText(card.races)

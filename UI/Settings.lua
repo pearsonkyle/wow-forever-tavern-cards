@@ -87,9 +87,31 @@ local function build()
         function(on) TC.Channel:Command(on and "on" or "off") end)
     channel:SetPoint("TOPLEFT", minimap, "BOTTOMLEFT", 0, -4)
 
+    -- Card book size.
+    local sizeLabel = p:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
+    sizeLabel:SetPoint("TOPLEFT", channel, "BOTTOMLEFT", 4, -12)
+    local function showSize()
+        sizeLabel:SetText(("Card book size: %d%%"):format(math.floor(TC:BookScale() * 100 + 0.5)))
+    end
+    local function step(dir)
+        local cur, list = TC:BookScale(), TC.BOOK_SCALES
+        local best = 1
+        for i, v in ipairs(list) do
+            if math.abs(v - cur) < math.abs(list[best] - cur) then best = i end
+        end
+        TC:SetBookScale(list[math.max(1, math.min(#list, best + dir))])
+        showSize()
+    end
+    local smaller = button(p, "Smaller", "Shrink the card book window.", function() step(-1) end, 80)
+    smaller:SetPoint("LEFT", sizeLabel, "LEFT", 200, 0)
+    local bigger = button(p, "Bigger", "Enlarge the card book window: cards, text and pages.", function() step(1) end, 80)
+    bigger:SetPoint("LEFT", smaller, "RIGHT", 6, 0)
+    p:HookScript("OnShow", showSize)
+    showSize()
+
     -- Play.
     local h2 = heading(p, "Play", channel, -18)
-    h2:SetPoint("TOPLEFT", channel, "BOTTOMLEFT", 2, -18)
+    h2:SetPoint("TOPLEFT", sizeLabel, "BOTTOMLEFT", -2, -20)
     local col1 = {
         button(p, "Open the card book", "Your collection, decks, the Play tab and the ledger.  (/tc)",
             function() TC:ShowWindow("collection") end),

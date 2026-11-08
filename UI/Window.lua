@@ -18,6 +18,19 @@ function TC:RegisterPanel(key, title, builder)
     order[#order + 1] = key
 end
 
+-- The card book's size (Options > AddOns > Tavern Cards): a little bigger than the game's own windows by
+-- default, so the cards and their text read comfortably.
+TC.BOOK_SCALES = { 0.85, 0.95, 1.05, 1.15, 1.25, 1.35, 1.5 }
+function TC:BookScale()
+    local s = self.db and self.db.settings.bookScale
+    return (type(s) == "number" and s >= 0.7 and s <= 1.6) and s or 1.15
+end
+
+function TC:SetBookScale(scale)
+    self.db.settings.bookScale = scale
+    if window then window:SetScale(scale) end
+end
+
 -- The page art decides the book's proportions; fall back to a sensible ratio if it is missing.
 function TC:PageSize()
     local info = C_Texture and C_Texture.GetAtlasInfo and C_Texture.GetAtlasInfo("spellbook-Page-Left-C60")
@@ -143,6 +156,7 @@ local function build()
     window = f
     f:SetSize(pageW * 2 + 28, pageH + TOOLBAR + FOOTER + 30)
     f:SetPoint("CENTER", 0, 20)
+    f:SetScale(TC:BookScale())
     f:SetFrameStrata("HIGH")
     f:SetToplevel(true)
     f:SetClampedToScreen(true)
