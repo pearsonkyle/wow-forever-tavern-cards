@@ -1033,26 +1033,13 @@ local function build()
     -- The table top: dark wood with a lighter felt where the minions stand.
     -- The table: a dungeon painting (Board:SetTable) under a dark wash so cards and text read; plain dark
     -- wood when there's no painting.
-    -- A soft-focus painting: the picture plus four faint copies nudged a few pixels each way (WoW has no
-    -- blur), muted colours, a dark wash and darker edges, so the cards stand out against it.
+    -- A soft-focus painting (a small patch, enlarged: the texture filter blurs it), muted colours, a dark
+    -- wash and darker edges, so the cards stand out against it.
     f.tableArt = f:CreateTexture(nil, "BACKGROUND", nil, 1)
     f.tableArt:SetPoint("TOPLEFT", 10, -10)
     f.tableArt:SetPoint("BOTTOMRIGHT", -10, 10)
     f.tableArt:Hide()
-    -- Two rings of faint copies (8 at 5px, 8 at 10px) approximate a gaussian blur.
     f.tableSoft = {}
-    for ring, spec in ipairs({ { 5, 0.32 }, { 10, 0.2 } }) do
-        for k = 0, 7 do
-            local a = k * math.pi / 4 + (ring == 2 and math.pi / 8 or 0)
-            local dx, dy = math.floor(spec[1] * math.cos(a) + 0.5), math.floor(spec[1] * math.sin(a) + 0.5)
-            local t = f:CreateTexture(nil, "BACKGROUND", nil, 2)
-            t:SetPoint("TOPLEFT", 10 + dx, -10 + dy)
-            t:SetPoint("BOTTOMRIGHT", -10 + dx, 10 + dy)
-            t:SetAlpha(spec[2])
-            t:Hide()
-            f.tableSoft[#f.tableSoft + 1] = t
-        end
-    end
     f.tableEdge = f:CreateTexture(nil, "BACKGROUND", nil, 4)
     f.tableEdge:SetPoint("TOPLEFT", 10, -10)
     f.tableEdge:SetPoint("BOTTOMRIGHT", -10, 10)
@@ -2293,17 +2280,18 @@ function Board:SetTable(painting)
         -- Below the game logo the loading screens carry across their top, cropped to the board's shape
         -- (which also zooms it a little: softer).
         local w, h = W - 20, H - 20
-        -- Zoomed in a little further (a smaller region, enlarged, is softer).
-        local top, bottom = 0.26, 0.96
-        local hfrac = bottom - top
-        local wfrac = math.min(1, (w / h) * 0.75 * hfrac)
-        for _, t in ipairs(layers) do
-            t:SetTexture("Interface\\Glues\\LoadingScreens\\LoadScreen" .. painting)
-            t:SetTexCoord(0.5 - wfrac / 2, 0.5 + wfrac / 2, top, bottom)
-            if t.SetDesaturation then pcall(t.SetDesaturation, t, 0.35) end
-            t:SetVertexColor(0.95, 0.9, 0.85)
-            t:Show()
-        end
+        -- A true soft focus without ghosting: a small patch of the painting (about a sixth of its width)
+        -- stretched over the whole board. The texture filter smooths it into the painting's colours and
+        -- light, with no shapes to catch the eye.
+        local wfrac = 0.17
+        local hfrac = wfrac * 4 / (3 * (w / h))
+        local cx, cy = 0.5, 0.62
+        frame.tableArt:SetTexture("Interface\\Glues\\LoadingScreens\\LoadScreen" .. painting)
+        frame.tableArt:SetTexCoord(cx - wfrac / 2, cx + wfrac / 2, cy - hfrac / 2, cy + hfrac / 2)
+        if frame.tableArt.SetDesaturation then pcall(frame.tableArt.SetDesaturation, frame.tableArt, 0.3) end
+        frame.tableArt:SetVertexColor(0.95, 0.9, 0.85)
+        frame.tableArt:Show()
+        for _, t in ipairs(frame.tableSoft) do t:Hide() end
     else
         for _, t in ipairs(layers) do t:Hide() end
     end
