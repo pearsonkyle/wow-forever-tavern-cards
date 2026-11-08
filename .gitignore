@@ -4,3 +4,4 @@ tools/trace/.build/
 tools/trace/tavern-trace
 *.jsonl
 __pycache__/
+dist/

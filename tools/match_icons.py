@@ -18,7 +18,7 @@ import sys
 import urllib.request
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-LLM_URL = os.environ.get("LLM_URL", "http://192.168.1.68:1234/v1")
+LLM_URL = os.environ.get("LLM_URL", "http://localhost:1234/v1")
 CACHE = os.path.join(REPO, "tools", "cache", "icon_subjects.json")
 BATCH = 25
 WORKERS = 4

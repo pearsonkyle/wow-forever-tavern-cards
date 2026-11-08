@@ -1,0 +1,26 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install LuaJIT and xz
+        run: sudo apt-get update && sudo apt-get install -y luajit xz-utils zip
+      - name: Tests must pass
+        run: |
+          python3 tools/lint_addon.py
+          luajit tests/run.lua
+      - name: Build the addon zip
+        run: bash tools/package.sh "${GITHUB_REF_NAME#v}"
+      - name: Publish the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" dist/TavernCards-*.zip --generate-notes --title "Tavern Cards $GITHUB_REF_NAME"

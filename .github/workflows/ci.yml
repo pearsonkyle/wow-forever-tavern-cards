@@ -1,0 +1,81 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install LuaJIT
+        run: sudo apt-get update && sudo apt-get install -y luajit
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Toc, syntax and globals
+        run: python3 tools/lint_addon.py
+      - name: Engine stays headless (no WoW API)
+        run: python3 tools/lint_engine.py
+      - name: Python tools compile
+        run: python3 -m compileall -q tools tests
+
+  test:
+    name: Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install LuaJIT and xz
+        run: sudo apt-get update && sudo apt-get install -y luajit xz-utils
+      - name: Unit, scenario, UI, duel and whole-addon tests
+        run: luajit tests/run.lua
+      - name: C++ parity (committed reference traces)
+        run: luajit tests/trace.lua fixtures/traces/*.jsonl.xz
+
+  coverage:
+    name: Coverage
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install LuaJIT and xz
+        run: sudo apt-get update && sudo apt-get install -y luajit xz-utils
+      - name: Line coverage (gated)
+        # Minimums sit just under the current numbers: a change may not lower coverage noticeably.
+        run: >
+          luajit tests/coverage.lua --report coverage.md
+          --min-total 76 --min Engine=78 --min Collection=87 --min Net=80 --min UI=72
+      - name: Coverage summary
+        if: always()
+        run: test -f coverage.md && cat coverage.md >> "$GITHUB_STEP_SUMMARY" || true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: coverage
+          path: coverage.md
+          if-no-files-found: ignore
+
+  package:
+    name: Package
+    needs: [lint, test, coverage]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build the addon zip (only what WoW loads)
+        run: |
+          sudo apt-get update && sudo apt-get install -y zip
+          bash tools/package.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: TavernCards
+          path: dist/TavernCards-*.zip

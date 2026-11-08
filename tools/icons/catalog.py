@@ -31,7 +31,7 @@ IMG = os.path.join(CACHE, "img")
 NAMES = os.path.join(CACHE, "names.txt")
 LISTFILE_URL = "https://github.com/wowdev/wow-listfile/releases/latest/download/community-listfile.csv"
 CDN = "https://wow.zamimg.com/images/wow/icons/large/%s.jpg"
-VISION_URL = os.environ.get("VISION_URL", "http://192.168.1.68:1234/v1")
+VISION_URL = os.environ.get("VISION_URL", "http://localhost:1234/v1")
 VISION_MODEL = os.environ.get("VISION_MODEL", "gemma4-31b-imatrix-mtp")
 
 # Icons that never make good card art (UI chrome, zones, mounts gear sets...). Matched on lower-case names.
