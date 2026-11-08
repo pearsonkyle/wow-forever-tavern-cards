@@ -240,6 +240,18 @@ function Art:RarityColor(rarity)
     return 1, 1, 1
 end
 
+-- The rarity color deepened to ink, for names written on parchment (bright greens and oranges are
+-- made for dark tooltips).
+function Art:InkName(id)
+    local card = TC.Cards[id]
+    if not card then
+        return id
+    end
+    local r, g, b = self:RarityColor(card.rarity)
+    if card.rarity == "FREE" or card.rarity == nil then r, g, b = 0.25, 0.17, 0.08 end
+    return ("|cff%02x%02x%02x%s|r"):format(r * 140, g * 140, b * 140, card.name)
+end
+
 function Art:ColoredName(id)
     local card = TC.Cards[id]
     if not card then

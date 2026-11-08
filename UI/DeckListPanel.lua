@@ -5,8 +5,7 @@ local TC = TavernCards_NS
 local Art = TC.Art
 local Decks = TC.Decks
 
-local TILE_W, TILE_H = 250, 58
-local COLS = 3
+local TILE_H = 58
 
 local function className(class)
     return (LOCALIZED_CLASS_NAMES_MALE and LOCALIZED_CLASS_NAMES_MALE[class]) or class
@@ -28,12 +27,15 @@ local function build(parent)
     TC:BookPages(panel)
 
     local header = panel:CreateFontString(nil, "OVERLAY", "QuestFont_Huge")
-    header:SetPoint("TOPLEFT", 58, -22)
+    local L = TC:BookLayout()
+    header:SetPoint("TOPLEFT", L.left, L.top)
     header:SetText("Your Decks")
     header:SetTextColor(0.25, 0.15, 0.05)
     local sub = panel:CreateFontString(nil, "OVERLAY", "QuestFont")
     sub:SetPoint("TOPLEFT", header, "BOTTOMLEFT", 0, -4)
     sub:SetTextColor(0.3, 0.2, 0.1)
+    sub:SetWidth(L.width)
+    sub:SetJustifyH("LEFT")
     sub:SetText("30 cards from one class and Neutral. Basic cards are yours from the start.")
 
     local _, myClass = UnitClass("player")
@@ -84,9 +86,12 @@ local function build(parent)
     local function tile(i)
         if tiles[i] then return tiles[i] end
         local t = CreateFrame("Button", nil, panel, "BackdropTemplate")
-        t:SetSize(TILE_W, TILE_H)
-        local col, row = (i - 1) % COLS, math.floor((i - 1) / COLS)
-        t:SetPoint("TOPLEFT", 40 + col * (TILE_W + 14), -86 - row * (TILE_H + 10))
+        -- Down the left page, then down the right one; never across the crease.
+        local perPage = math.max(1, math.floor((select(2, TC:PageSize()) - 110) / (TILE_H + 10)))
+        local onRight = (i - 1) >= perPage
+        local row = (i - 1) % perPage
+        t:SetSize(L.width + 20, TILE_H)
+        t:SetPoint("TOPLEFT", (onRight and L.right or L.left) - 10, L.top - 56 - row * (TILE_H + 10))
         t:SetBackdrop({ bgFile = "Interface\\Buttons\\WHITE8X8", edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
             edgeSize = 12, insets = { left = 3, right = 3, top = 3, bottom = 3 } })
         t:SetBackdropColor(0.1, 0.07, 0.04, 0.85)

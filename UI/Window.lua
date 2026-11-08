@@ -53,6 +53,13 @@ function TC:BookPages(panel)
     return pages
 end
 
+-- Where text goes on those pages: below the page's top edge, inside each page and clear of the
+-- crease between them. Offsets are from the panel's top-left.
+function TC:BookLayout()
+    local pageW = self:PageSize()
+    return { top = -72, left = 46, right = pageW + 36, width = pageW - 84 }
+end
+
 local function createFrame()
     local f
     for _, template in ipairs({ "PortraitFrameTemplate", "ButtonFrameTemplate" }) do

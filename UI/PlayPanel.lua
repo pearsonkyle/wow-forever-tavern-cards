@@ -97,14 +97,17 @@ local function build(parent)
     local panel = CreateFrame("Frame", nil, parent)
     TC:BookPages(panel)
 
+    local L = TC:BookLayout()
     local header = panel:CreateFontString(nil, "OVERLAY", "QuestFont_Huge")
-    header:SetPoint("TOPLEFT", 58, -22)
+    header:SetPoint("TOPLEFT", L.left, L.top)
     header:SetText("The Tavern Table")
     header:SetTextColor(0.25, 0.15, 0.05)
     local sub = panel:CreateFontString(nil, "OVERLAY", "QuestFont")
     sub:SetPoint("TOPLEFT", header, "BOTTOMLEFT", 0, -4)
+    sub:SetWidth(L.width)
+    sub:SetJustifyH("LEFT")
     sub:SetTextColor(0.3, 0.2, 0.1)
-    sub:SetText("Practice against the house. Duels with innkeepers and other players are coming.")
+    sub:SetText("Practice against the house, or duel a friend.")
 
     local function label(text, anchor, y)
         local fs = panel:CreateFontString(nil, "OVERLAY", "QuestFontNormalSmall")
@@ -239,8 +242,8 @@ local function build(parent)
     -- Right page: how to play.
     local pageW = TC:PageSize()
     local help = panel:CreateFontString(nil, "OVERLAY", "QuestFontNormalSmall")
-    help:SetPoint("TOPLEFT", panel, "TOP", 24, -80)
-    help:SetWidth(pageW - 70)
+    help:SetPoint("TOPLEFT", panel, "TOPLEFT", L.right, L.top)
+    help:SetWidth(L.width)
     help:SetJustifyH("LEFT")
     help:SetSpacing(3)
     help:SetTextColor(0.25, 0.15, 0.05)
@@ -258,13 +261,13 @@ local function build(parent)
     historyTitle:SetText("|cff5a3a10Recent matches|r")
     local history = panel:CreateFontString(nil, "OVERLAY", "GameFontBlackSmall")
     history:SetPoint("TOPLEFT", historyTitle, "BOTTOMLEFT", 0, -6)
-    history:SetWidth(pageW - 70)
+    history:SetWidth(L.width)
     history:SetJustifyH("LEFT")
     history:SetSpacing(2)
 
     -- Duel a friend: anyone with the addon in your group (any realm) or on your realm.
     local duelTitle = panel:CreateFontString(nil, "OVERLAY", "QuestFontNormalSmall")
-    duelTitle:SetPoint("BOTTOMLEFT", panel, "BOTTOM", 24, 108)
+    duelTitle:SetPoint("BOTTOMLEFT", panel, "BOTTOMLEFT", L.right, 118)
     duelTitle:SetText("|cff5a3a10Duel a friend|r")
     local duelBtn = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     duelBtn:SetSize(150, 24)
@@ -333,7 +336,7 @@ local function build(parent)
 
     local onlineText = panel:CreateFontString(nil, "OVERLAY", "QuestFontNormalSmall")
     onlineText:SetPoint("TOPLEFT", duelBtn, "BOTTOMLEFT", 0, -8)
-    onlineText:SetWidth(pageW - 70)
+    onlineText:SetWidth(L.width)
     onlineText:SetJustifyH("LEFT")
     onlineText:SetTextColor(0.25, 0.15, 0.05)
     TC.Presence:Subscribe(function() if panel:IsVisible() then panel:Refresh() end end)
@@ -407,7 +410,7 @@ local function build(parent)
             if i > 8 then break end
             local word = h.result == "win" and "|cff1a6010Won|r" or h.result == "loss" and "|cff902010Lost|r" or "Drew"
             local extra = h.dust and ("  +%d dust"):format(h.dust) or ""
-            if h.card and TC.Cards[h.card] then extra = extra .. ", " .. TC.Art:ColoredName(h.card) end
+            if h.card and TC.Cards[h.card] then extra = extra .. ", " .. TC.Art:InkName(h.card) end
             rows[#rows + 1] = ("%s vs %s (%s), %d turns%s"):format(word, h.opponent and h.opponent.name or "?",
                 className(h.opponent and h.opponent.class or ""), h.turns or 0, extra)
         end

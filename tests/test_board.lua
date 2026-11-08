@@ -79,6 +79,7 @@ local function setup(TC)
     TC.CardTooltip = function() end
     TC.PageSize = function() return 400, 470 end
     TC.BookPages = function() return {} end
+    TC.BookLayout = function() return { top = -72, left = 46, right = 436, width = 316 } end
     TC.ShowWindow = function() end
     local panels = {}
     TC.RegisterPanel = function(_, key, _, builder) panels[key] = builder end
