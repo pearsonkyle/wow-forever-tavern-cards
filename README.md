@@ -32,12 +32,66 @@ the tavern table against the house or your friends, all without leaving the game
 All settings and commands are in **Options → AddOns → Tavern Cards** (or `/tc settings`); the most used
 ones: `/tc` (card book), `/tc play` (back to your match), `/tc duel Name`, `/tc help`.
 
-| | |
-|---|---|
-| ![Card book](docs/screenshots/collection.jpg) | ![Deck builder](docs/screenshots/deck-builder.jpg) |
-| ![Your decks](docs/screenshots/decks.jpg) | ![The Play tab](docs/screenshots/play.jpg) |
-| ![Choosing a card back](docs/screenshots/card-backs.jpg) | ![Ledger](docs/screenshots/ledger.jpg) |
-| ![A legendary from a quest](docs/screenshots/legendary-toast.jpg) | |
+## A closer look
+
+<table>
+<tr>
+<td width="38%">
+<h3>The card book</h3>
+Every card you earn goes into a two-page binder. Filter by class, rarity and mana cost, search by name,
+and hover any card for its full text with every keyword explained in a side tooltip. Cards named after
+a creature of the game show it in 3D.
+</td>
+<td><img src="docs/screenshots/collection.jpg" alt="The card book"></td>
+</tr>
+<tr>
+<td><img src="docs/screenshots/deck-builder.jpg" alt="Building a deck"></td>
+<td width="38%">
+<h3>Build decks</h3>
+30 cards from one class plus Neutral, as many decks as you like. Click cards on the left page to add
+them; the right page shows your list and mana curve. Auto-fill finishes a deck for you.
+</td>
+</tr>
+<tr>
+<td width="38%">
+<h3>Pick your card back</h3>
+Dress each deck in one of dozens of card backs painted from the game's dungeons and raids, or your
+class and faction crest. Your opponents see it on your hand and deck during the match.
+</td>
+<td><img src="docs/screenshots/card-backs.jpg" alt="Choosing a card back"></td>
+</tr>
+<tr>
+<td><img src="docs/screenshots/decks.jpg" alt="Your decks"></td>
+<td width="38%">
+<h3>Your decks</h3>
+Preview a deck at a glance, play it, share it in chat as a link or a code, or copy a friend's deck
+straight from theirs.
+</td>
+</tr>
+<tr>
+<td width="38%">
+<h3>The Play tab</h3>
+Choose a deck, an opponent class, a difficulty and the table you play on, then sit down against the
+house. Wins pay dust, and the day's first win brings a card. Challenge a friend from here too.
+</td>
+<td><img src="docs/screenshots/play.jpg" alt="The Play tab"></td>
+</tr>
+<tr>
+<td><img src="docs/screenshots/ledger.jpg" alt="The card ledger"></td>
+<td width="38%">
+<h3>The ledger</h3>
+Where every card came from: the quest, its giver and location, or the win that earned it.
+</td>
+</tr>
+<tr>
+<td width="38%">
+<h3>Legendary finds</h3>
+Quests hide legendary cards too. A toast tells you what you earned and from where; click it to open the
+card in your book.
+</td>
+<td><img src="docs/screenshots/legendary-toast.jpg" alt="A legendary from a quest"></td>
+</tr>
+</table>
 
 ## Licence
 
