@@ -6,7 +6,9 @@ local HELP = {
     "/tc channel [on|off] - the tavern chat channel",
     "/tc who    - other Tavern Cards players online",
     "/tc duel [Name] - challenge a player (your target if no name) with your Play-tab deck",
+    "/tc settings - all settings and commands (also Options > AddOns > Tavern Cards)",
     "/tc sound  - turn the card game's sounds on or off",
+    "/tc models - turn the 3D creatures and heroes on or off",
     "/tc status - card data and engine build",
     "/tc minimap - show or hide the minimap button (reports its state)",
     "/tc probe  - report which UI templates, atlases, events and APIs this client has",
@@ -17,6 +19,7 @@ local HELP = {
 }
 
 local commands = {}
+TC.Commands, TC.CommandHelp = commands, HELP   -- the Options > AddOns page (UI/Settings.lua) uses them
 
 function commands.status()
     local total, playable, ready = #TC.CardOrder, 0, 0
@@ -81,6 +84,16 @@ function commands.mat()
     TC:Print("Map here: %s (%s). Play mat now: %s.", tostring(id),
         layer and ("%d tiles, %dx%d"):format(#tiles, layer.layerWidth, layer.layerHeight) or "no map art from the client",
         tostring(TC.Board.matShown or "plain felt"))
+end
+
+function commands.settings()
+    TC:OpenSettings()
+end
+
+function commands.models()
+    TC.db.settings.noModels = not TC.db.settings.noModels
+    TC:Print("3D models %s. They change on the next refresh (turn a page, or a move on the table).",
+        TC.db.settings.noModels and "off" or "on")
 end
 
 function commands.sound()

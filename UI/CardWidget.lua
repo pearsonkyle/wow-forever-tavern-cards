@@ -10,7 +10,7 @@ local Art = TC.Art
 local CardWidget = {}
 TC.CardWidget = CardWidget
 
-CardWidget.WIDTH, CardWidget.HEIGHT = 100, 140
+CardWidget.WIDTH, CardWidget.HEIGHT = 100, 148
 
 local MASK = "Interface\\CharacterFrame\\TempPortraitAlphaMask"
 local PARCHMENT = "Interface\\AchievementFrame\\UI-Achievement-Parchment-Horizontal-Desaturated"
@@ -146,20 +146,29 @@ function CardWidget:Create(parent)
 
     -- Art window with a dark frame line.
     w.artFrame = w:CreateTexture(nil, "BORDER")
-    w.artFrame:SetPoint("TOPLEFT", 9, -14)
-    w.artFrame:SetPoint("TOPRIGHT", -9, -14)
-    w.artFrame:SetHeight(58)
+    -- The whole square icon, with an equal border on the top, left and right; name and type below.
+    w.artFrame:SetPoint("TOPLEFT", 7, -7)
+    w.artFrame:SetPoint("TOPRIGHT", -7, -7)
+    w.artFrame:SetHeight(CardWidget.WIDTH - 14)
     w.artFrame:SetColorTexture(0.12, 0.09, 0.06, 1)
     w.art = w:CreateTexture(nil, "ARTWORK")
     w.art:SetPoint("TOPLEFT", w.artFrame, 1, -1)
     w.art:SetPoint("BOTTOMRIGHT", w.artFrame, -1, 1)
-    w.art:SetTexCoord(0.08, 0.92, 0.22, 0.78)
+    w.art:SetTexCoord(0.07, 0.93, 0.07, 0.93)
+
+    -- Cards named after a creature of the game show it: its 3D portrait in the art window (UI/Models.lua).
+    if TC.Models then
+        w.model = TC.Models:Create(w)
+        w.model:SetPoint("TOPLEFT", w.art, "TOPLEFT")
+        w.model:SetPoint("BOTTOMRIGHT", w.art, "BOTTOMRIGHT")
+        w.model:SetFrameLevel(w:GetFrameLevel() + 1)
+    end
 
     -- Dark banner behind the name so rarity colors read on parchment.
     w.banner = w:CreateTexture(nil, "BORDER", nil, 1)
     w.banner:SetPoint("TOPLEFT", w.artFrame, "BOTTOMLEFT", -5, -2)
     w.banner:SetPoint("TOPRIGHT", w.artFrame, "BOTTOMRIGHT", 5, -2)
-    w.banner:SetHeight(26)
+    w.banner:SetHeight(25)
     w.banner:SetColorTexture(0.06, 0.04, 0.03, 0.82)
 
     w.name = w:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
@@ -187,7 +196,7 @@ function CardWidget:Create(parent)
     w.health:SetPoint("BOTTOMRIGHT", 3, -3)
 
     w.count = w:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
-    w.count:SetPoint("BOTTOM", 0, 7)
+    w.count:SetPoint("BOTTOM", 0, 3)
 
     w.newGlow = w:CreateTexture(nil, "OVERLAY")
     if TC.Compat:HasAtlas("collections-newglow") then
@@ -224,6 +233,14 @@ function CardWidget:Create(parent)
     w.later:SetPoint("TOPRIGHT", -6, -22)
     w.later:SetTexture("Interface\\Icons\\INV_Misc_PocketWatch_01")
 
+    -- Above a 3D portrait: gems, crest and the New / later markers.
+    if w.model then
+        w.top = CreateFrame("Frame", nil, w)
+        w.top:SetAllPoints()
+        w.top:SetFrameLevel(w:GetFrameLevel() + 2)
+        for _, r in ipairs({ w.newGlow, w.newText, w.later }) do r:SetParent(w.top) end
+        for _, f in ipairs({ w.cost, w.attack, w.health, w.crest }) do f:SetFrameLevel(w:GetFrameLevel() + 3) end
+    end
     w:SetHighlightTexture("Interface\\Buttons\\ButtonHilight-Square", "ADD")
     w:GetHighlightTexture():SetPoint("TOPLEFT", 3, -3)
     w:GetHighlightTexture():SetPoint("BOTTOMRIGHT", -3, 3)
@@ -285,6 +302,14 @@ function CardWidget.SetCard(w, id)
     w:SetBackdropBorderColor(r, g, b, 1)
 
     w.art:SetTexture(Art:Icon(id))
+    local npc = w.model and TC.CardNamedNPC and TC.CardNamedNPC[id] and TC.CardModels and TC.CardModels[id]
+    if npc and TC.Models:Show(w.model, "npc", npc, 0.85, 1, nil, function() w.art:SetAlpha(1) end) then
+        w.art:SetAlpha(0.25)
+        w.model:SetAlpha((w.game or TC.Collection:Count(id) > 0) and 1 or 0.55)
+    else
+        if w.model then TC.Models:Hide(w.model) end
+        w.art:SetAlpha(1)
+    end
     w.name:SetText(card.name)
     w.name:SetTextColor(r, g, b)
     w.cost.text:SetText(card.cost)

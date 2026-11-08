@@ -22,6 +22,7 @@ local function menu(owner)
         root:CreateButton("Play", function() TC:ShowWindow("play") end)
         root:CreateButton("Card Ledger", function() TC:ShowWindow("ledger") end)
         root:CreateDivider()
+        root:CreateButton("Settings...", function() TC:OpenSettings() end)
         root:CreateCheckbox("Sounds", function() return not TC.db.settings.mute end, function()
             TC.db.settings.mute = not TC.db.settings.mute
         end)

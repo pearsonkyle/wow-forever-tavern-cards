@@ -90,7 +90,7 @@ local function setup(TC)
     C_Timer = { After = function() end }
     TC.db = { collection = {}, dust = 0, ledger = {}, decks = {}, settings = { mute = true } }
     TC.char = { granted = {} }
-    for _, file in ipairs({ "Collection/Collection.lua", "Collection/Decks.lua", "UI/Art.lua", "UI/CardWidget.lua",
+    for _, file in ipairs({ "Collection/Collection.lua", "Collection/Decks.lua", "UI/Art.lua", "UI/CardWidget.lua", "UI/CardBacks.lua", "UI/Models.lua",
         "UI/Match.lua", "UI/Board.lua", "UI/PlayPanel.lua" }) do
         dofile(file)
     end

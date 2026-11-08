@@ -202,7 +202,7 @@ T.whole_addon_loads_and_runs = function()
     tick(1)
 
     -- Slash commands.
-    for _, cmd in ipairs({ "", "status", "collection", "who", "channel", "icons", "sound", "sound", "help", "play" }) do
+    for _, cmd in ipairs({ "", "status", "collection", "who", "channel", "icons", "sound", "sound", "models", "models", "mat", "settings", "help", "play" }) do
         SlashCmdList.TAVERNCARDS(cmd)
     end
     setmetatable(_G, nil)

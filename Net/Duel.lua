@@ -158,7 +158,7 @@ function Duel:Challenge(target)
     local deck, why = myDeck()
     if not deck then return TC:Print(why) end
     pending = { id = newId(), peer = target, role = "challenger", state = "sent", deck = deck, t = GetTime() }
-    send(target, "CH", pending.id, PROTO, TC.RULES_VERSION or "?", deck.class)
+    send(target, "CH", pending.id, PROTO, TC.RULES_VERSION or "?", deck.class, deck.back or "")
     TC:Print("Challenge sent to %s. Waiting for an answer...%s", Ambiguate and Ambiguate(target, "short") or target,
         groupChannel(target) and "" or " (not in your group: this only reaches players on your realm; invite them to a party to duel across realms)")
     notify("pending")
@@ -213,7 +213,14 @@ local function maybeStart()
         matchId = pending.id, seed = { tonumber(seedHex:sub(1, 8), 16), tonumber(seedHex:sub(9, 16), 16) },
         decks = { a[1], b[1] }, classes = { a[2], b[2] }, mySeat = challenger and 0 or 1,
         opponent = { name = pending.peer, class = pending.peerClass, duel = true }, deckName = pending.deck.name,
+        backs = challenger and { pending.deck.back, pending.peerBack } or { pending.peerBack, pending.deck.back },
     }
+    for i = 1, 2 do
+        local b = record.backs[i]
+        if not (TC.CardBacks and type(b) == "string" and TC.CardBacks:Valid(b)) then
+            record.backs[i] = TC.CardBacks and TC.CardBacks.DEFAULT or "tavern"
+        end
+    end
     local peer = pending.peer
     pending = nil
     notify("pending")
@@ -255,7 +262,7 @@ local function incomingChallenge(sender, id, proto, rules, class)
         end
         pending.deck = d
         pending.state = "accepted"
-        send(sender, "AC", id, d.class)
+        send(sender, "AC", id, d.class, d.back or "")
         sendCommit()
         maybeReveal()
     end, function()
@@ -348,13 +355,14 @@ end
 
 local handlers = {}
 
-function handlers.CH(sender, id, proto, rules, class)
+function handlers.CH(sender, id, proto, rules, class, back)
     incomingChallenge(sender, id, proto, rules, class)
+    if pending and pending.id == id then pending.peerBack = back end
 end
 
-function handlers.AC(sender, id, class)
+function handlers.AC(sender, id, class, back)
     if not (pending and pending.id == id and same(pending.peer, sender) and pending.state == "sent") then return end
-    pending.peerClass = class
+    pending.peerClass, pending.peerBack = class, back
     pending.state = "accepted"
     sendCommit()
     maybeReveal()

@@ -22,6 +22,7 @@ Data\Wave.lua
 Data\QuestMap.lua
 Data\QuestInfo.lua
 Data\Icons.lua
+Data\Models.lua
 
 Engine\Rng.lua
 Engine\Data\Programs.lua
@@ -39,6 +40,8 @@ UI\Art.lua
 UI\Keywords.lua
 UI\Toast.lua
 UI\CardWidget.lua
+UI\CardBacks.lua
+UI\Models.lua
 UI\Match.lua
 UI\Window.lua
 UI\Confirm.lua
@@ -49,6 +52,7 @@ UI\DeckListPanel.lua
 UI\PlayPanel.lua
 UI\LedgerPanel.lua
 UI\Minimap.lua
+UI\Settings.lua
 
 Sources\Quests.lua
 

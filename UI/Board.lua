@@ -15,7 +15,7 @@ local Board = {}
 TC.Board = Board
 
 local W, H = 1000, 692
-local SLOT_W, SLOT_H, SLOT_GAP = 84, 104, 6
+local SLOT_W, SLOT_H, SLOT_GAP = 84, 108, 6
 local HAND_SCALE = 0.85
 local GLOW = "Interface\\Buttons\\UI-ActionButton-Border"
 local MASK = "Interface\\CharacterFrame\\TempPortraitAlphaMask"
@@ -83,6 +83,16 @@ local function setHeroPortrait(b, class, unit)
         else
             setClassIcon(tex, class)
         end
+    end
+    -- 3D on top when available: the unit, else (the house) an innkeeper chosen for this match.
+    local house = TC.HouseModels and #TC.HouseModels > 0 and not unit
+        and TC.HouseModels[(b.houseSeed or 0) % #TC.HouseModels + 1]
+    if unit and UnitExists and UnitExists(unit) then
+        TC.Models:Show(b.model, "unit", unit, 0.85, 1)
+    elseif house then
+        TC.Models:Show(b.model, "npc", house, 0.85, 1)
+    else
+        TC.Models:Hide(b.model)
     end
     local badge = CLASS_BADGE[class] and Art:IconIfExists(CLASS_BADGE[class])
     b.badge:SetShown(badge ~= nil)
@@ -637,32 +647,42 @@ local function minionWidget(parent)
     b.art = b:CreateTexture(nil, "ARTWORK")
     b.art:SetPoint("TOPLEFT", 6, -6)
     b.art:SetPoint("TOPRIGHT", -6, -6)
-    b.art:SetHeight(62)
-    b.art:SetTexCoord(0.08, 0.92, 0.18, 0.82)
+    b.art:SetHeight(SLOT_W - 12)   -- square: the whole portrait, no stretching
+    b.art:SetTexCoord(0.07, 0.93, 0.07, 0.93)
     b.name = b:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
     b.name:SetPoint("TOPLEFT", b.art, "BOTTOMLEFT", -2, -1)
     b.name:SetPoint("TOPRIGHT", b.art, "BOTTOMRIGHT", 2, -1)
     b.name:SetHeight(14)
     b.name:SetWordWrap(false)
+    -- The creature in 3D over its (dimmed) icon, when it has one; markers and gems stay on top.
+    b.model = TC.Models:Create(b)
+    b.model:SetAllPoints(b.art)
+    b.model:SetFrameLevel(b:GetFrameLevel() + 1)
+    b.top = CreateFrame("Frame", nil, b)
+    b.top:SetAllPoints()
+    b.top:SetFrameLevel(b:GetFrameLevel() + 2)
     b.attack = gem(b, 26, 0.85, 0.65, 0.15, "GameFontHighlight")
     b.attack:SetPoint("BOTTOMLEFT", -5, -5)
+    b.attack:SetFrameLevel(b:GetFrameLevel() + 3)
     b.health = gem(b, 26, 0.75, 0.12, 0.1, "GameFontHighlight")
     b.health:SetPoint("BOTTOMRIGHT", 5, -5)
-    b.taunt = b:CreateTexture(nil, "OVERLAY")
+    b.health:SetFrameLevel(b:GetFrameLevel() + 3)
+    b.taunt = b.top:CreateTexture(nil, "OVERLAY")
     b.taunt:SetSize(22, 22)
     b.taunt:SetPoint("TOP", 0, 8)
     b.taunt:SetTexture(Art:SafeIcon("INV_Shield_06"))
-    b.shield = b:CreateTexture(nil, "OVERLAY", nil, 2)
+    b.shield = b.top:CreateTexture(nil, "OVERLAY", nil, 2)
     b.shield:SetTexture("Interface\\Buttons\\CheckButtonGlow")
     b.shield:SetBlendMode("ADD")
     b.shield:SetVertexColor(1, 0.9, 0.3, 0.9)
     b.shield:SetPoint("TOPLEFT", -10, 10)
     b.shield:SetPoint("BOTTOMRIGHT", 10, -10)
-    b.status = b:CreateFontString(nil, "OVERLAY", "GameFontHighlightLarge")
+    b.status = b.top:CreateFontString(nil, "OVERLAY", "GameFontHighlightLarge")
     b.status:SetPoint("CENTER", b.art, "CENTER")
     b.status:SetShadowOffset(2, -2)
     addGlow(b, 1.7)
-    addFlash(b)
+    addFlash(b.top)
+    b.flash = b.top.flash
     b:RegisterForClicks("LeftButtonUp", "RightButtonUp")
     b:SetScript("OnClick", onEntityClick)
     b:SetScript("OnEnter", function(self) Board.hover = self.entity entityTooltip(self, self.entity) end)
@@ -680,6 +700,14 @@ local function setMinion(b, e)
     local card = TC.Cards[e.card_id]
     b.entity = e.id
     b.art:SetTexture(Art:Icon(e.card_id))
+    local npc = TC.CardModels and TC.CardModels[e.card_id]
+    if npc and card and card.type ~= "LOCATION" and TC.Models:Show(b.model, "npc", npc, 0.6, 1.05, nil,
+        function() b.art:SetAlpha(1) end) then
+        b.art:SetAlpha(0.3)
+    else
+        TC.Models:Hide(b.model)
+        b.art:SetAlpha(1)
+    end
     b.name:SetText(card and card.name or (d and d.name) or e.card_id)
     local r, g, bl = Art:RarityColor(card and card.rarity or "FREE")
     b:SetBackdropBorderColor(r, g, bl, 1)
@@ -736,10 +764,14 @@ local function heroWidget(parent, seat)
     local b = CreateFrame("Button", nil, parent, "BackdropTemplate")
     b:SetSize(84, 84)
     b.portrait = squareFrame(b)
+    -- The hero in 3D (your character, a grouped friend, the house's innkeeper) over the flat portrait.
+    b.model = TC.Models:Create(b)
+    b.model:SetAllPoints(b.portrait)
+    b.model:SetFrameLevel(b:GetFrameLevel() + 1)
     b.badge = CreateFrame("Frame", nil, b, "BackdropTemplate")
     b.badge:SetSize(24, 24)
     b.badge:SetPoint("TOPLEFT", -7, 7)
-    b.badge:SetFrameLevel(b:GetFrameLevel() + 3)
+    b.badge:SetFrameLevel(b:GetFrameLevel() + 4)
     b.badge.icon = squareFrame(b.badge, 0.85, 0.7, 0.3)
     b.badge:EnableMouse(true)
     b.badge:SetScript("OnEnter", function(self)
@@ -754,6 +786,7 @@ local function heroWidget(parent, seat)
     b.health:SetPoint("BOTTOMRIGHT", 8, -4)
     b.armor = gem(b, 26, 0.55, 0.55, 0.6, "GameFontHighlight")
     b.armor:SetPoint("BOTTOM", b.health, "TOP", 0, -2)
+    for _, g in ipairs({ b.attack, b.health, b.armor }) do g:SetFrameLevel(b:GetFrameLevel() + 3) end
     b.secrets = b:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
     b.secrets:SetPoint("TOP", 0, 10)
     b.secrets:SetTextColor(0.8, 0.45, 1)
@@ -863,19 +896,15 @@ local function setMana(f, p)
     end
 end
 
-local function cardBack(parent)
-    local b = CreateFrame("Frame", nil, parent, "BackdropTemplate")
-    b:SetSize(34, 48)
-    b:SetBackdrop({ bgFile = "Interface\\Buttons\\WHITE8x8", edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
-        edgeSize = 10, insets = { left = 2, right = 2, top = 2, bottom = 2 } })
-    b:SetBackdropColor(0.22, 0.12, 0.06, 1)
-    b:SetBackdropBorderColor(0.8, 0.65, 0.3, 1)
-    local t = b:CreateTexture(nil, "ARTWORK")
-    t:SetSize(22, 22)
-    t:SetPoint("CENTER")
-    t:SetTexture(Art:SafeIcon("INV_Misc_Ticket_Tarot_Stack_01"))
-    t:SetAlpha(0.8)
-    return b
+local function cardBack(parent, w, h)
+    return TC.CardBacks:Create(parent, w or 34, h or 48)
+end
+
+-- The two sides' card backs (kept with the match): yours from your deck, the house's at random.
+local function backOf(seat)
+    local record = Match:Record()
+    local backs = record and record.backs
+    return backs and backs[seat + 1] or TC.CardBacks.DEFAULT
 end
 
 -- ---- the choice dialog (discover, adapt, dredge, choose one, mulligan) -------------------------
@@ -1062,6 +1091,29 @@ local function build()
     f.oppHand:SetSize(400, 48)
     f.oppHand:SetPoint("TOP", 0, -26)
     f.oppHand.backs = {}
+    -- Each side's deck: a pile of its card backs with the cards left.
+    f.piles = {}
+    for side = 0, 1 do
+        local pile = cardBack(f, 42, 60)
+        pile:SetPoint("TOPRIGHT", f, "TOPRIGHT", -150, side == 1 and -96 or -446)
+        pile.count = pile:CreateFontString(nil, "OVERLAY", "GameFontHighlightLarge")
+        pile.count:SetPoint("BOTTOM", 0, 4)
+        pile.count:SetShadowOffset(1, -1)
+        pile.shadow = pile:CreateTexture(nil, "BACKGROUND", nil, -1)
+        pile.shadow:SetPoint("TOPLEFT", 3, -3)
+        pile.shadow:SetPoint("BOTTOMRIGHT", 5, -5)
+        pile.shadow:SetColorTexture(0, 0, 0, 0.5)
+        pile:EnableMouse(true)
+        pile:SetScript("OnEnter", function(self)
+            GameTooltip:SetOwner(self, "ANCHOR_LEFT")
+            GameTooltip:SetText(side == 0 and "Your deck" or "Opponent's deck", 1, 0.82, 0)
+            GameTooltip:AddLine(("%s cards left. Card back: %s."):format(self.count:GetText() or "?",
+                TC.CardBacks:Name(self.backId)), 1, 1, 1, true)
+            GameTooltip:Show()
+        end)
+        pile:SetScript("OnLeave", function() GameTooltip:Hide() end)
+        f.piles[side] = pile
+    end
     for i = 1, 10 do
         local back = cardBack(f.oppHand)
         f.oppHand.backs[i] = back
@@ -1392,6 +1444,7 @@ local function refreshHero(side)
     elseif record and record.kind == "duel" and record.opponent then
         unit = unitForName(record.opponent.name)
     end
+    b.houseSeed = record and record.seed and record.seed[2] or 0
     setHeroPortrait(b, classes[seat + 1], unit)
     if hero then
         b.entity = hero.id
@@ -1410,6 +1463,11 @@ local function refreshHero(side)
         or (record and record.opponent and Ambiguate and Ambiguate(record.opponent.name, "short") or record and record.opponent and record.opponent.name) or "Opponent"
     b.name:SetText(name .. "  |cffaaaaaa" .. className(classes[seat + 1] or "") .. "|r")
     b.deck:SetText(("Deck %d   Fatigue %d"):format(#eng:deck_ids(seat), p.fatigue))
+    local pile = frame.piles[side]
+    local left = #eng:deck_ids(seat)
+    if pile.backId ~= backOf(seat) then pile:SetBack(backOf(seat)) end
+    pile.count:SetText(left)
+    pile:SetAlpha(left > 0 and 1 or 0.35)
 
     local power = frame.powers[side]
     power.power = p.hero_power_id
@@ -1471,8 +1529,10 @@ local function refreshHand()
     end
     local backs = frame.oppHand.backs
     local m = #eng:hand_ids(OPP())
+    local oppBack = backOf(OPP())
     for i = 1, 10 do
         local back = backs[i]
+        if back.backId ~= oppBack then back:SetBack(oppBack) end
         if i <= m then
             back:ClearAllPoints()
             back:SetPoint("TOPLEFT", frame.oppHand, "TOP", -(m * 30) / 2 + (i - 1) * 30, 0)
@@ -1981,11 +2041,14 @@ local function onMatch(what, seat, move)
                     end
                     lunge(a, b, tex)
                     Art:Sfx("attack")
+                    local aw = widgets[ev.subject]
+                    if aw and aw.model then TC.Models:Animate(aw.model, "attack") end
                 end
             elseif ev.kind == "DAMAGED" and at then
                 floatText(at[1], at[2], "-" .. ev.amount, 1, 0.2, 0.15)
                 flash(widgets[ev.subject], 1, 0.15, 0.1)
                 local hit = widgets[ev.subject]
+                if hit and hit.model then TC.Models:Animate(hit.model, "hit") end
                 if hit and hit.place then
                     -- A short shake on the minion that took the hit.
                     hit.shake = 0.3
@@ -1996,6 +2059,7 @@ local function onMatch(what, seat, move)
                 fadeIn(widgets[ev.subject], flownTo == ev.subject and FLY * 0.8 or 0)
             elseif ev.kind == "HERO_POWER_USED" then
                 flash(frame.powers[sideOf(ev.seat)], 1, 0.85, 0.3, 0.6)
+                TC.Models:Animate(frame.heroes[sideOf(ev.seat)].model, "cast")
                 Art:Sfx("power")
             elseif ev.kind == "DAMAGE_PREVENTED" and at then
                 floatText(at[1], at[2], "Blocked", 1, 0.9, 0.4)

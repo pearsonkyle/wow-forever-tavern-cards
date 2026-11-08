@@ -102,6 +102,8 @@ function Match:StartPractice(deck, opponent, setup)
     end
     self.lastSetup = setup
     TC.char.match = {
+        backs = { deck.back or (TC.CardBacks and TC.CardBacks.DEFAULT) or "tavern",
+            TC.CardBacks and TC.CardBacks:Random(lo) or "tavern" },
         setup = setup,
         seed = { hi, lo }, decks = { cards, oppDeck }, classes = { deck.class, opponent.class },
         opponent = opponent, deckName = deck.name, moves = {}, started = time(),
