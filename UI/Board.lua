@@ -923,7 +923,11 @@ local function buildChoice()
     c.cards = {}
     for i = 1, 10 do
         local w = CardWidget:CreateGame(c)
-        w.mark = w:CreateTexture(nil, "OVERLAY", nil, 7)
+        -- Above everything on the card (a 3D portrait included), so the replace mark always shows.
+        w.markFrame = CreateFrame("Frame", nil, w)
+        w.markFrame:SetAllPoints()
+        w.markFrame:SetFrameLevel(w:GetFrameLevel() + 6)
+        w.mark = w.markFrame:CreateTexture(nil, "OVERLAY", nil, 7)
         w.mark:SetTexture("Interface\\Buttons\\UI-GroupLoot-Pass-Up")
         w.mark:SetSize(40, 40)
         w.mark:SetPoint("CENTER", 0, 10)
@@ -1019,9 +1023,10 @@ local function build()
     f:RegisterForDrag("LeftButton")
     f:SetScript("OnDragStart", f.StartMoving)
     f:SetScript("OnDragStop", f.StopMovingOrSizing)
-    f:SetBackdrop({ bgFile = "Interface\\FrameGeneral\\UI-Background-Rock",
-        edgeFile = "Interface\\DialogFrame\\UI-DialogBox-Gold-Border", tile = true, tileSize = 256, edgeSize = 32,
+    f:SetBackdrop({ bgFile = "Interface\\Buttons\\WHITE8x8",
+        edgeFile = "Interface\\DialogFrame\\UI-DialogBox-Gold-Border", edgeSize = 32,
         insets = { left = 8, right = 8, top = 8, bottom = 8 } })
+    f:SetBackdropColor(0.1, 0.07, 0.05, 1)
     f:Hide()
     tinsert(UISpecialFrames, "TavernCardsBoard")
 
@@ -1030,34 +1035,34 @@ local function build()
     -- wood when there's no painting.
     -- A soft-focus painting: the picture plus four faint copies nudged a few pixels each way (WoW has no
     -- blur), muted colours, a dark wash and darker edges, so the cards stand out against it.
-    f.tableArt = f:CreateTexture(nil, "BACKGROUND", nil, -2)
+    f.tableArt = f:CreateTexture(nil, "BACKGROUND", nil, 1)
     f.tableArt:SetPoint("TOPLEFT", 10, -10)
     f.tableArt:SetPoint("BOTTOMRIGHT", -10, 10)
     f.tableArt:Hide()
     f.tableSoft = {}
     for i, d in ipairs({ { 3, 0 }, { -3, 0 }, { 0, 3 }, { 0, -3 } }) do
-        local t = f:CreateTexture(nil, "BACKGROUND", nil, -1)
+        local t = f:CreateTexture(nil, "BACKGROUND", nil, 2)
         t:SetPoint("TOPLEFT", 10 + d[1], -10 + d[2])
         t:SetPoint("BOTTOMRIGHT", -10 + d[1], 10 + d[2])
         t:SetAlpha(0.5)
         t:Hide()
         f.tableSoft[i] = t
     end
-    f.tableEdge = f:CreateTexture(nil, "BACKGROUND", nil, 2)
+    f.tableEdge = f:CreateTexture(nil, "BACKGROUND", nil, 4)
     f.tableEdge:SetPoint("TOPLEFT", 10, -10)
     f.tableEdge:SetPoint("BOTTOMRIGHT", -10, 10)
     f.tableEdge:SetTexture("Interface\\Buttons\\WHITE8x8")
-    f.tableEdge:SetGradient("HORIZONTAL", CreateColor(0, 0, 0, 0.45), CreateColor(0, 0, 0, 0))
+    f.tableEdge:SetGradient("HORIZONTAL", CreateColor(0, 0, 0, 0.3), CreateColor(0, 0, 0, 0))
     f.tableEdge:Hide()
-    f.tableEdgeR = f:CreateTexture(nil, "BACKGROUND", nil, 2)
+    f.tableEdgeR = f:CreateTexture(nil, "BACKGROUND", nil, 4)
     f.tableEdgeR:SetPoint("TOPRIGHT", -10, -10)
     f.tableEdgeR:SetPoint("BOTTOMRIGHT", -10, 10)
     f.tableEdgeR:SetWidth(220)
     f.tableEdgeR:SetTexture("Interface\\Buttons\\WHITE8x8")
-    f.tableEdgeR:SetGradient("HORIZONTAL", CreateColor(0, 0, 0, 0), CreateColor(0, 0, 0, 0.45))
+    f.tableEdgeR:SetGradient("HORIZONTAL", CreateColor(0, 0, 0, 0), CreateColor(0, 0, 0, 0.3))
     f.tableEdgeR:Hide()
     f.tableEdge:SetPoint("BOTTOMRIGHT", f, "BOTTOMLEFT", 230, 10)
-    local top = f:CreateTexture(nil, "BACKGROUND", nil, 1)
+    local top = f:CreateTexture(nil, "BACKGROUND", nil, 3)
     top:SetPoint("TOPLEFT", 10, -10)
     top:SetPoint("BOTTOMRIGHT", -10, 10)
     top:SetColorTexture(1, 1, 1, 1)
@@ -1110,9 +1115,34 @@ local function build()
     local close = CreateFrame("Button", nil, f, "UIPanelCloseButton")
     close:SetPoint("TOPRIGHT", -6, -6)
     close:SetScript("OnClick", function() f:Hide() end)
+    -- Sound on/off, right on the table.
+    f.sound = CreateFrame("Button", nil, f)
+    f.sound:SetSize(22, 22)
+    f.sound:SetPoint("RIGHT", close, "LEFT", -4, 0)
+    f.sound.icon = f.sound:CreateTexture(nil, "ARTWORK")
+    f.sound.icon:SetAllPoints()
+    f.sound:SetHighlightTexture("Interface\\Buttons\\ButtonHilight-Square", "ADD")
+    local function soundIcon()
+        local muted = TC.db.settings.mute
+        f.sound.icon:SetTexture(Art:SafeIcon(muted and "Spell_Shadow_SoulLeech_3" or "Spell_Holy_Silence"))
+        f.sound.icon:SetDesaturated(muted and true or false)
+    end
+    f.sound:SetScript("OnClick", function()
+        TC.db.settings.mute = not TC.db.settings.mute
+        soundIcon()
+    end)
+    f.sound:SetScript("OnEnter", function(self)
+        GameTooltip:SetOwner(self, "ANCHOR_BOTTOM")
+        GameTooltip:SetText(TC.db.settings.mute and "Sounds off" or "Sounds on", 1, 0.82, 0)
+        GameTooltip:AddLine("Click to turn the card game's sounds " .. (TC.db.settings.mute and "on." or "off."), 1, 1, 1)
+        GameTooltip:Show()
+    end)
+    f.sound:SetScript("OnLeave", function() GameTooltip:Hide() end)
+    f.sound:SetScript("OnShow", soundIcon)
+    soundIcon()
     f.concede = CreateFrame("Button", nil, f, "UIPanelButtonTemplate")
     f.concede:SetSize(90, 22)
-    f.concede:SetPoint("RIGHT", close, "LEFT", -4, 0)
+    f.concede:SetPoint("RIGHT", f.sound, "LEFT", -6, 0)
     f.concede:SetText("Concede")
     f.concede:SetScript("OnClick", function()
         TC:Confirm("Concede this match?", function() Match:Concede() end)
@@ -2265,7 +2295,7 @@ function Board:SetTable(painting)
             t:SetTexture("Interface\\Glues\\LoadingScreens\\LoadScreen" .. painting)
             t:SetTexCoord(0.5 - wfrac / 2, 0.5 + wfrac / 2, top, 1)
             if t.SetDesaturation then pcall(t.SetDesaturation, t, 0.35) end
-            t:SetVertexColor(0.85, 0.8, 0.75)
+            t:SetVertexColor(0.95, 0.9, 0.85)
             t:Show()
         end
     else
@@ -2274,8 +2304,8 @@ function Board:SetTable(painting)
     frame.tableEdge:SetShown(ok and true or false)
     frame.tableEdgeR:SetShown(ok and true or false)
     Board.tableShown = ok and painting or nil
-    frame.wash:SetGradient("VERTICAL", CreateColor(0.06, 0.04, 0.03, ok and 0.74 or 0.93),
-        CreateColor(0.1, 0.07, 0.04, ok and 0.66 or 0.93))
+    frame.wash:SetGradient("VERTICAL", CreateColor(0.06, 0.04, 0.03, ok and 0.55 or 0.93),
+        CreateColor(0.1, 0.07, 0.04, ok and 0.45 or 0.93))
     self:SetMat(Board.matCurrent)
 end
 
@@ -2344,7 +2374,7 @@ function Board:SetMat(mat)
     -- Over a map the felt is a light tint so the map reads; over a painted table it is translucent green
     -- felt; on the plain table it is solid.
     local a1, a2 = 0.92, 0.9
-    if ok then a1, a2 = 0.42, 0.36 elseif Board.tableShown then a1, a2 = 0.72, 0.66 end
+    if ok then a1, a2 = 0.42, 0.36 elseif Board.tableShown then a1, a2 = 0.6, 0.52 end
     frame.felt:SetGradient("VERTICAL", CreateColor(0.06, 0.12, 0.07, a1), CreateColor(0.05, 0.1, 0.06, a2))
 end
 
