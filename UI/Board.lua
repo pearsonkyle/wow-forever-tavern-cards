@@ -1028,10 +1028,35 @@ local function build()
     -- The table top: dark wood with a lighter felt where the minions stand.
     -- The table: a dungeon painting (Board:SetTable) under a dark wash so cards and text read; plain dark
     -- wood when there's no painting.
-    f.tableArt = f:CreateTexture(nil, "BACKGROUND", nil, 0)
+    -- A soft-focus painting: the picture plus four faint copies nudged a few pixels each way (WoW has no
+    -- blur), muted colours, a dark wash and darker edges, so the cards stand out against it.
+    f.tableArt = f:CreateTexture(nil, "BACKGROUND", nil, -2)
     f.tableArt:SetPoint("TOPLEFT", 10, -10)
     f.tableArt:SetPoint("BOTTOMRIGHT", -10, 10)
     f.tableArt:Hide()
+    f.tableSoft = {}
+    for i, d in ipairs({ { 3, 0 }, { -3, 0 }, { 0, 3 }, { 0, -3 } }) do
+        local t = f:CreateTexture(nil, "BACKGROUND", nil, -1)
+        t:SetPoint("TOPLEFT", 10 + d[1], -10 + d[2])
+        t:SetPoint("BOTTOMRIGHT", -10 + d[1], 10 + d[2])
+        t:SetAlpha(0.5)
+        t:Hide()
+        f.tableSoft[i] = t
+    end
+    f.tableEdge = f:CreateTexture(nil, "BACKGROUND", nil, 2)
+    f.tableEdge:SetPoint("TOPLEFT", 10, -10)
+    f.tableEdge:SetPoint("BOTTOMRIGHT", -10, 10)
+    f.tableEdge:SetTexture("Interface\\Buttons\\WHITE8x8")
+    f.tableEdge:SetGradient("HORIZONTAL", CreateColor(0, 0, 0, 0.45), CreateColor(0, 0, 0, 0))
+    f.tableEdge:Hide()
+    f.tableEdgeR = f:CreateTexture(nil, "BACKGROUND", nil, 2)
+    f.tableEdgeR:SetPoint("TOPRIGHT", -10, -10)
+    f.tableEdgeR:SetPoint("BOTTOMRIGHT", -10, 10)
+    f.tableEdgeR:SetWidth(220)
+    f.tableEdgeR:SetTexture("Interface\\Buttons\\WHITE8x8")
+    f.tableEdgeR:SetGradient("HORIZONTAL", CreateColor(0, 0, 0, 0), CreateColor(0, 0, 0, 0.45))
+    f.tableEdgeR:Hide()
+    f.tableEdge:SetPoint("BOTTOMRIGHT", f, "BOTTOMLEFT", 230, 10)
     local top = f:CreateTexture(nil, "BACKGROUND", nil, 1)
     top:SetPoint("TOPLEFT", 10, -10)
     top:SetPoint("BOTTOMRIGHT", -10, 10)
@@ -2224,19 +2249,29 @@ end
 function Board:SetTable(painting)
     if not frame then return end
     local ok = painting and paintingExists(painting)
+    local layers = { frame.tableArt, unpack(frame.tableSoft) }
     if ok then
-        -- The board is a little wider than the 4:3 painting: crop a sliver off the top and bottom.
+        -- Below the game logo the loading screens carry across their top, cropped to the board's shape
+        -- (which also zooms it a little: softer).
         local w, h = W - 20, H - 20
-        local band = math.min(1, (4 / 3) / (w / h))
-        frame.tableArt:SetTexture("Interface\\Glues\\LoadingScreens\\LoadScreen" .. painting)
-        frame.tableArt:SetTexCoord(0, 1, 0.5 - band / 2, 0.5 + band / 2)
-        frame.tableArt:Show()
+        local top = 0.22
+        local hfrac = 1 - top
+        local wfrac = math.min(1, (w / h) * 0.75 * hfrac)
+        for _, t in ipairs(layers) do
+            t:SetTexture("Interface\\Glues\\LoadingScreens\\LoadScreen" .. painting)
+            t:SetTexCoord(0.5 - wfrac / 2, 0.5 + wfrac / 2, top, 1)
+            if t.SetDesaturation then pcall(t.SetDesaturation, t, 0.35) end
+            t:SetVertexColor(0.85, 0.8, 0.75)
+            t:Show()
+        end
     else
-        frame.tableArt:Hide()
+        for _, t in ipairs(layers) do t:Hide() end
     end
+    frame.tableEdge:SetShown(ok and true or false)
+    frame.tableEdgeR:SetShown(ok and true or false)
     Board.tableShown = ok and painting or nil
-    frame.wash:SetGradient("VERTICAL", CreateColor(0.08, 0.05, 0.03, ok and 0.62 or 0.93),
-        CreateColor(0.12, 0.08, 0.05, ok and 0.5 or 0.93))
+    frame.wash:SetGradient("VERTICAL", CreateColor(0.06, 0.04, 0.03, ok and 0.74 or 0.93),
+        CreateColor(0.1, 0.07, 0.04, ok and 0.66 or 0.93))
     self:SetMat(Board.matCurrent)
 end
 
@@ -2305,7 +2340,7 @@ function Board:SetMat(mat)
     -- Over a map the felt is a light tint so the map reads; over a painted table it is translucent green
     -- felt; on the plain table it is solid.
     local a1, a2 = 0.92, 0.9
-    if ok then a1, a2 = 0.42, 0.36 elseif Board.tableShown then a1, a2 = 0.58, 0.5 end
+    if ok then a1, a2 = 0.42, 0.36 elseif Board.tableShown then a1, a2 = 0.72, 0.66 end
     frame.felt:SetGradient("VERTICAL", CreateColor(0.06, 0.12, 0.07, a1), CreateColor(0.05, 0.1, 0.06, a2))
 end
 
