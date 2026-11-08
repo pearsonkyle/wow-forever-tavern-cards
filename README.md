@@ -1,6 +1,6 @@
 # Tavern Cards
 
-[![CI](https://github.com/OWNER/REPO/actions/workflows/ci.yml/badge.svg)](https://github.com/OWNER/REPO/actions/workflows/ci.yml)
+[![CI](https://github.com/pearsonkyle/wow-forever-tavern-cards/actions/workflows/ci.yml/badge.svg)](https://github.com/pearsonkyle/wow-forever-tavern-cards/actions/workflows/ci.yml)
 
 A collectible card game inside **WoW: Forever** (Interface 16001). Every quest you finish earns a card;
 build decks, play the house at the tavern table, and duel your friends, all without leaving the game.
@@ -84,6 +84,10 @@ python3 tools/make_fixtures.py       # refresh fixtures/traces (CI's parity chec
 ```
 
 See [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## Licence
+
+The addon's code is [MIT](LICENSE). Card names and text are Blizzard's (see Credits).
 
 ## Credits
 
