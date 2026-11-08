@@ -58,7 +58,7 @@ jobs:
       - name: Coverage summary
         if: always()
         run: test -f coverage.md && cat coverage.md >> "$GITHUB_STEP_SUMMARY" || true
-      - uses: actions/upload-artifact@v5
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: coverage
@@ -75,7 +75,7 @@ jobs:
         run: |
           sudo apt-get update && sudo apt-get install -y zip
           bash tools/package.sh
-      - uses: actions/upload-artifact@v5
+      - uses: actions/upload-artifact@v7
         with:
           name: TavernCards
           path: dist/TavernCards-*.zip
