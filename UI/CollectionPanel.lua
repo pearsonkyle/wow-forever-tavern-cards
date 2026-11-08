@@ -55,15 +55,18 @@ local function build(parent)
 
     local gridW = COLS * CardWidget.WIDTH + (COLS - 1) * GAP_X
     local gridH = ROWS * CardWidget.HEIGHT + (ROWS - 1) * GAP_Y
-    local scale = math.min(1, (pageW - 64) / gridW, (pageH - 56) / gridH)
+    -- Room on all sides: the page art's parchment is narrower than the page frame at the top and bottom.
+    local scale = math.min(1, (pageW - 70) / gridW, (pageH - 84) / gridH)
     local widgets, grids = {}, {}
     for i, p in ipairs(pages) do
         local grid = CreateFrame("Frame", nil, p)
         grids[i] = grid
         grid:SetSize(gridW, gridH)
         grid:SetScale(scale)
-        -- Lean each grid away from the book's spine.
-        grid:SetPoint("CENTER", (i == 1 and -6 or 6) / scale, -4 / scale)
+        -- Centred on the visible parchment: the page art's outer margin is wider than its spine side,
+        -- and its top edge sits lower than the frame's, so each grid shifts a little toward the spine
+        -- and down.
+        grid:SetPoint("CENTER", (i == 1 and 9 or -13) / scale, -14 / scale)
         for n = 1, PER_PAGE do
             local w = CardWidget:Create(grid)
             local col, row = (n - 1) % COLS, math.floor((n - 1) / COLS)
