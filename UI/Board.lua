@@ -1026,11 +1026,18 @@ local function build()
     tinsert(UISpecialFrames, "TavernCardsBoard")
 
     -- The table top: dark wood with a lighter felt where the minions stand.
+    -- The table: a dungeon painting (Board:SetTable) under a dark wash so cards and text read; plain dark
+    -- wood when there's no painting.
+    f.tableArt = f:CreateTexture(nil, "BACKGROUND", nil, 0)
+    f.tableArt:SetPoint("TOPLEFT", 10, -10)
+    f.tableArt:SetPoint("BOTTOMRIGHT", -10, 10)
+    f.tableArt:Hide()
     local top = f:CreateTexture(nil, "BACKGROUND", nil, 1)
     top:SetPoint("TOPLEFT", 10, -10)
     top:SetPoint("BOTTOMRIGHT", -10, 10)
     top:SetColorTexture(1, 1, 1, 1)
     top:SetGradient("VERTICAL", CreateColor(0.16, 0.1, 0.06, 0.93), CreateColor(0.22, 0.14, 0.08, 0.93))
+    f.wash = top
     -- The play mat: a world map (the zone you're in, Board:SetMat) under a felt-and-glass tint.
     local mat = CreateFrame("Frame", nil, f)
     mat:SetPoint("TOPLEFT", 190, -178)
@@ -1989,8 +1996,14 @@ local function onMatch(what, seat, move)
         sel = nil
         finishEffects()
         local rec = Match:Record()
+        -- Matches from before the painted table kept their painting as the mat: it is the table now.
+        if rec and type(rec.mat) == "string" and rec.mat:find("^paint:") then
+            rec.table, rec.mat = rec.mat:sub(7), nil
+        end
         if rec and not rec.mat then rec.mat = Board.PickMat() end
+        if rec and rec.table == nil then rec.table = Board.PickTable() end
         Board:SetMat(rec and rec.mat)
+        Board:SetTable(rec and rec.table)
         wipe(lastHand)
         wipe(lastBoard)
         frame.log:Clear()
@@ -2187,12 +2200,44 @@ function Board.PickMat()
     local here = GetRealZoneText and GetRealZoneText()
     local zone = here and ZONE_MAPS[here]
     if zone and mapExists(zone) then return zone end
+end
+
+-- The table painting for a new match: the Play tab's choice (TC.db.settings.tableArt: a painting file,
+-- "plain", or automatic), automatic being the dungeon nearest to where you stand, else a random one.
+function Board.PickTable()
+    local choice = TC.db and TC.db.settings.tableArt
+    if choice == "plain" then return false end
+    if type(choice) == "string" and choice ~= "auto" and paintingExists(choice:gsub("^LoadScreen", "")) then
+        return (choice:gsub("^LoadScreen", ""))
+    end
+    local here = GetRealZoneText and GetRealZoneText()
     local painting = here and ZONE_PAINTINGS[here]
-    if painting and paintingExists(painting) then return "paint:" .. painting end
+    if painting and paintingExists(painting) then return painting end
     for _ = 1, 8 do
         local p = PAINTINGS[math.random(#PAINTINGS)]
-        if paintingExists(p) then return "paint:" .. p end
+        if paintingExists(p) then return p end
     end
+    return false
+end
+
+-- painting: a loading-screen name ("Deadmines") or false (plain table).
+function Board:SetTable(painting)
+    if not frame then return end
+    local ok = painting and paintingExists(painting)
+    if ok then
+        -- The board is a little wider than the 4:3 painting: crop a sliver off the top and bottom.
+        local w, h = W - 20, H - 20
+        local band = math.min(1, (4 / 3) / (w / h))
+        frame.tableArt:SetTexture("Interface\\Glues\\LoadingScreens\\LoadScreen" .. painting)
+        frame.tableArt:SetTexCoord(0, 1, 0.5 - band / 2, 0.5 + band / 2)
+        frame.tableArt:Show()
+    else
+        frame.tableArt:Hide()
+    end
+    Board.tableShown = ok and painting or nil
+    frame.wash:SetGradient("VERTICAL", CreateColor(0.08, 0.05, 0.03, ok and 0.62 or 0.93),
+        CreateColor(0.12, 0.08, 0.05, ok and 0.5 or 0.93))
+    self:SetMat(Board.matCurrent)
 end
 
 local function tileTexture(i)
@@ -2256,10 +2301,12 @@ function Board:SetMat(mat)
         end
         ok = true
     end
-    Board.matShown = ok and mat or nil
-    -- Over a map the felt is a light tint so the map reads; without one it is the solid table.
-    frame.felt:SetGradient("VERTICAL", CreateColor(0.06, 0.12, 0.07, ok and 0.42 or 0.92),
-        CreateColor(0.05, 0.1, 0.06, ok and 0.36 or 0.9))
+    Board.matShown, Board.matCurrent = ok and mat or nil, mat
+    -- Over a map the felt is a light tint so the map reads; over a painted table it is translucent green
+    -- felt; on the plain table it is solid.
+    local a1, a2 = 0.92, 0.9
+    if ok then a1, a2 = 0.42, 0.36 elseif Board.tableShown then a1, a2 = 0.58, 0.5 end
+    frame.felt:SetGradient("VERTICAL", CreateColor(0.06, 0.12, 0.07, a1), CreateColor(0.05, 0.1, 0.06, a2))
 end
 
 function Board:Open()
@@ -2273,9 +2320,16 @@ function Board:Open()
         return
     end
     local record = Match:Record()
+    -- Matches from before the painted table kept their painting as the mat: it is the table now.
+    if record and type(record.mat) == "string" and record.mat:find("^paint:") then
+        record.table, record.mat = record.mat:sub(7), nil
+    end
     if record and not record.mat then record.mat = Board.PickMat() end
+    if record and record.table == nil then record.table = Board.PickTable() end
     self:SetMat(record and record.mat or Board.lastMat)
+    self:SetTable(record and record.table or Board.lastTable)
     Board.lastMat = record and record.mat or Board.lastMat
+    Board.lastTable = record and record.table or Board.lastTable
     if not frame:IsShown() then
         frame.log:Clear()
         local record = Match:Record()

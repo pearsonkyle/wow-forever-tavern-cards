@@ -77,6 +77,18 @@ function CardBacks:List()
     return available
 end
 
+-- The paintings this client has, as { name, file } (the Play tab's Table choice uses them too).
+function CardBacks:Paintings()
+    local out = {}
+    for _, b in ipairs(LIST) do
+        local path = paintingPath(b)
+        if path and (not GetFileIDFromPath or GetFileIDFromPath(path)) then
+            out[#out + 1] = { name = b[2], file = b[3] }
+        end
+    end
+    return out
+end
+
 function CardBacks:Valid(id)
     for _, b in ipairs(self:List()) do
         if b.id == id then return true end

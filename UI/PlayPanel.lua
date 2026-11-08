@@ -198,14 +198,42 @@ local function build(parent)
     diffInfo:SetJustifyH("LEFT")
     diffInfo:SetTextColor(0.3, 0.2, 0.1)
 
+    -- The table: which painting the board is laid on.
+    local tableLabel = label("Table", diffInfo, -14)
+    local tableDrop = CreateFrame("DropdownButton", nil, panel, "WowStyle1DropdownTemplate")
+    tableDrop:SetPoint("TOPLEFT", tableLabel, "BOTTOMLEFT", -2, -6)
+    tableDrop:SetWidth(200)
+    local function tableChoice() return TC.db.settings.tableArt or "auto" end
+    local function tableName()
+        local c = tableChoice()
+        if c == "auto" then return "Where you are" end
+        if c == "plain" then return "Plain table" end
+        for _, p in ipairs(TC.CardBacks:Paintings()) do
+            if p.file == c then return p.name end
+        end
+        return "Where you are"
+    end
+    tableDrop:SetupMenu(function(_, root)
+        local function radio(text, value)
+            root:CreateRadio(text, function() return tableChoice() == value end, function()
+                TC.db.settings.tableArt = value
+                panel:Refresh()
+            end)
+        end
+        radio("Where you are (the nearest dungeon)", "auto")
+        radio("Plain table", "plain")
+        root:CreateDivider()
+        for _, p in ipairs(TC.CardBacks:Paintings()) do radio(p.name, p.file) end
+    end)
+
     -- Start / resume.
     local start = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     start:SetSize(160, 30)
-    start:SetPoint("TOPLEFT", diffInfo, "BOTTOMLEFT", 0, -24)
+    start:SetPoint("TOPLEFT", tableDrop, "BOTTOMLEFT", 2, -20)
     start:SetText("Play")
     local resume = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     resume:SetSize(160, 30)
-    resume:SetPoint("TOPLEFT", diffInfo, "BOTTOMLEFT", 0, -24)
+    resume:SetPoint("TOPLEFT", tableDrop, "BOTTOMLEFT", 2, -20)
     resume:SetText("Return to Table")
     local concede = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     concede:SetSize(100, 30)
@@ -374,6 +402,7 @@ local function build(parent)
         local d = difficulty(s.difficulty)
         setDropText(diffDrop, d.label)
         diffInfo:SetText(d.blurb)
+        setDropText(tableDrop, tableName())
 
         local active = Match:Active()
         start:SetShown(not active)
