@@ -1,0 +1,27 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - run: sudo apt-get update && sudo apt-get install -y luajit xz-utils zip
+      - run: |
+          python3 tests/lint.py
+          luajit tests/run.lua
+      - run: bash .github/package.sh "${GITHUB_REF_NAME#v}"
+      - name: Publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          pre=""
+          case "$GITHUB_REF_NAME" in *-alpha*|*-beta*|*-rc*) pre="--prerelease" ;; esac
+          gh release create "$GITHUB_REF_NAME" dist/TavernCards-*.zip $pre --generate-notes \
+            --title "Tavern Cards $GITHUB_REF_NAME"

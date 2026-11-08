@@ -1,0 +1,62 @@
+## Interface: 16001
+## Title: Tavern Cards
+## Notes: Collect cards from your quests and adventures, build decks, and play other adventurers at the tavern table.
+## Author: kpearson
+## Version: 0.1.0
+## SavedVariables: TavernCardsDB
+## SavedVariablesPerCharacter: TavernCardsCharDB
+## IconTexture: Interface\Icons\INV_Misc_Ticket_Tarot_Stack_01
+## AddonCompartmentFunc: TavernCards_OnAddonCompartmentClick
+
+Libs\LibStub\LibStub.lua
+Libs\CallbackHandler-1.0\CallbackHandler-1.0.lua
+Libs\LibDataBroker-1.1\LibDataBroker-1.1.lua
+Libs\LibDBIcon-1.0\LibDBIcon-1.0.lua
+
+Core\Init.lua
+Core\Events.lua
+Core\Compat.lua
+
+Data\Cards.lua
+Data\Wave.lua
+Data\QuestMap.lua
+Data\QuestInfo.lua
+Data\Icons.lua
+
+Engine\Rng.lua
+Engine\Data\Programs.lua
+Engine\Defs.lua
+Engine\Engine.lua
+Engine\Effects.lua
+Engine\Ops.lua
+Engine\Actions.lua
+Engine\AI.lua
+
+Collection\Collection.lua
+Collection\Decks.lua
+
+UI\Art.lua
+UI\Keywords.lua
+UI\Toast.lua
+UI\CardWidget.lua
+UI\Match.lua
+UI\Window.lua
+UI\Confirm.lua
+UI\Board.lua
+UI\DeckSheet.lua
+UI\CollectionPanel.lua
+UI\DeckListPanel.lua
+UI\PlayPanel.lua
+UI\LedgerPanel.lua
+UI\Minimap.lua
+
+Sources\Quests.lua
+
+Social\Chat.lua
+Social\Channel.lua
+Social\Presence.lua
+
+Net\Sha256.lua
+Net\Duel.lua
+
+Core\Commands.lua

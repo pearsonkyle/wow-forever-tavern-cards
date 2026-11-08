@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - run: sudo apt-get update && sudo apt-get install -y luajit
+      - run: python3 tests/lint.py
+
+  test:
+    name: Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - run: sudo apt-get update && sudo apt-get install -y luajit xz-utils
+      - run: luajit tests/run.lua
+
+  coverage:
+    name: Coverage
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - run: sudo apt-get update && sudo apt-get install -y luajit xz-utils
+      - name: Line coverage (gated)
+        run: >
+          luajit tests/coverage.lua --report coverage.md
+          --min-total 76 --min Engine=78 --min Collection=87 --min Net=80 --min UI=72
+      - if: always()
+        run: test -f coverage.md && cat coverage.md >> "$GITHUB_STEP_SUMMARY" || true
+
+  package:
+    name: Package
+    needs: [lint, test, coverage]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - run: bash .github/package.sh
+      - uses: actions/upload-artifact@v5
+        with:
+          name: TavernCards
+          path: dist/TavernCards-*.zip
