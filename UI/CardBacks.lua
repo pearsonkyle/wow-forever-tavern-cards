@@ -100,12 +100,11 @@ local function setBack(self, id)
     local path = paintingPath(b)
     local w, h = self.bw, self.bh
     if path and (not GetFileIDFromPath or GetFileIDFromPath(path)) then
-        -- A centred slice of the 4:3 painting with the card's proportions, below the game logo that the
-        -- loading screens carry across their top.
-        local top = 0.2
-        local frac = math.min(1, (w / h) * 0.75 * (1 - top))
+        -- A centred slice of the whole 4:3 painting (with the World of Warcraft logo across its top) in the
+        -- card's proportions.
+        local frac = math.min(1, (w / h) * 0.75)
         self.paint:SetTexture(path)
-        self.paint:SetTexCoord(0.5 - frac / 2, 0.5 + frac / 2, top, 1)
+        self.paint:SetTexCoord(0.5 - frac / 2, 0.5 + frac / 2, 0, 1)
     else
         -- The faction and class backs: their emblem art fills the card (a centred slice of the icon).
         local frac = math.min(0.86, (w / h) * 0.86)
