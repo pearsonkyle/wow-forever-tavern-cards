@@ -2022,7 +2022,8 @@ local function onMatch(what, seat, move)
         finishEffects()
         local rec = Match:Record()
         -- Matches from before the painted table kept their painting as the mat: it is the table now.
-        if rec and type(rec.mat) == "string" and rec.mat:find("^paint:") then
+        if rec and type(rec.mat) == "number" then rec.mat = nil end   -- map art Forever lacks
+    if rec and type(rec.mat) == "string" and rec.mat:find("^paint:") then
             rec.table, rec.mat = rec.mat:sub(7), nil
         end
         if rec and not rec.mat then rec.mat = Board.PickMat() end
@@ -2209,6 +2210,9 @@ end
 -- The mat for a new match: the map of where you stand (or the zone around your city/sub-zone), else a
 -- random classic zone; the old world-map file paths as a last resort.
 function Board.PickMat()
+    -- WoW: Forever's client reports map art (tile file ids) for its zones but doesn't ship the files: the
+    -- tiles draw nothing. The play field is felt over the painted table instead.
+    if true then return nil end
     if C_Map and C_Map.GetBestMapForUnit then
         local id = C_Map.GetBestMapForUnit("player")
         for _ = 1, 4 do
@@ -2356,6 +2360,7 @@ function Board:Open()
     end
     local record = Match:Record()
     -- Matches from before the painted table kept their painting as the mat: it is the table now.
+    if record and type(record.mat) == "number" then record.mat = nil end   -- map art Forever lacks
     if record and type(record.mat) == "string" and record.mat:find("^paint:") then
         record.table, record.mat = record.mat:sub(7), nil
     end
