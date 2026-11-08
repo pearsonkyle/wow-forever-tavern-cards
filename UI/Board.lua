@@ -16,7 +16,7 @@ TC.Board = Board
 
 local W, H = 1000, 692
 local SLOT_W, SLOT_H, SLOT_GAP = 84, 108, 6
-local HAND_SCALE = 0.85
+local HAND_SCALE = 0.92
 local GLOW = "Interface\\Buttons\\UI-ActionButton-Border"
 local MASK = "Interface\\CharacterFrame\\TempPortraitAlphaMask"
 local gem = CardWidget.Gem
@@ -2145,6 +2145,29 @@ local function mapArt(mapID)
 end
 Board.MapArt = mapArt
 
+-- When the client offers no map art: the painting of the dungeon nearest to where you stand (the game's
+-- loading screens), else a random one, as a wide crop.
+local ZONE_PAINTINGS = {
+    ["Durotar"] = "RagefireChasm", ["Orgrimmar"] = "RagefireChasm", ["The Barrens"] = "WailingCaverns",
+    ["Westfall"] = "Deadmines", ["Elwynn Forest"] = "StormwindStockade", ["Stormwind City"] = "StormwindStockade",
+    ["Silverpine Forest"] = "ShadowfangKeep", ["Ashenvale"] = "BlackfathomDeeps", ["Darkshore"] = "BlackfathomDeeps",
+    ["Dun Morogh"] = "Gnomeregan", ["Ironforge"] = "Gnomeregan", ["Tirisfal Glades"] = "Monastery",
+    ["Undercity"] = "Monastery", ["Badlands"] = "Uldaman", ["Loch Modan"] = "Uldaman", ["Tanaris"] = "ZulFarrak",
+    ["Desolace"] = "Maraudon", ["Swamp of Sorrows"] = "SunkenTemple", ["Burning Steppes"] = "BlackrockDepths",
+    ["Searing Gorge"] = "BlackrockDepths", ["Feralas"] = "DireMaul", ["Western Plaguelands"] = "Scholomance",
+    ["Eastern Plaguelands"] = "Strathome", ["Stranglethorn Vale"] = "ZulGurub", ["Silithus"] = "AhnQiraj40man",
+    ["Thousand Needles"] = "RazorfenDowns", ["Mulgore"] = "RazorfenKraul", ["Thunder Bluff"] = "RazorfenKraul",
+    ["Winterspring"] = "Kalimdor", ["Moonglade"] = "Kalimdor", ["Teldrassil"] = "Kalimdor", ["Darnassus"] = "Kalimdor",
+    ["Duskwood"] = "EasternKingdom", ["Redridge Mountains"] = "BlackrockSpire", ["Wetlands"] = "EasternKingdom",
+}
+local PAINTINGS = { "Deadmines", "WailingCaverns", "ShadowfangKeep", "Gnomeregan", "Monastery", "Uldaman", "ZulFarrak",
+    "Maraudon", "SunkenTemple", "BlackrockDepths", "DireMaul", "Scholomance", "Strathome", "MoltenCore", "ZulGurub",
+    "BlackwingLair", "AhnQiraj40man", "Naxxramas", "Kalimdor", "EasternKingdom" }
+
+local function paintingExists(name)
+    return not GetFileIDFromPath or GetFileIDFromPath("Interface\\Glues\\LoadingScreens\\LoadScreen" .. name) ~= nil
+end
+
 -- The mat for a new match: the map of where you stand (or the zone around your city/sub-zone), else a
 -- random classic zone; the old world-map file paths as a last resort.
 function Board.PickMat()
@@ -2164,9 +2187,11 @@ function Board.PickMat()
     local here = GetRealZoneText and GetRealZoneText()
     local zone = here and ZONE_MAPS[here]
     if zone and mapExists(zone) then return zone end
-    for _ = 1, 6 do
-        local z = MAT_POOL[math.random(#MAT_POOL)]
-        if mapExists(z) then return z end
+    local painting = here and ZONE_PAINTINGS[here]
+    if painting and paintingExists(painting) then return "paint:" .. painting end
+    for _ = 1, 8 do
+        local p = PAINTINGS[math.random(#PAINTINGS)]
+        if paintingExists(p) then return "paint:" .. p end
     end
 end
 
@@ -2182,6 +2207,7 @@ end
 function Board:SetMat(mat)
     if not frame then return end
     for _, t in ipairs(frame.mat.tiles) do t:Hide() end
+    if frame.mat.paint then frame.mat.paint:Hide() end
     local matW = frame.mat:GetWidth()
     if not matW or matW <= 0 then matW = W - 380 end
     local ok = false
@@ -2202,6 +2228,21 @@ function Board:SetMat(mat)
             end
             ok = true
         end
+    elseif type(mat) == "string" and mat:find("^paint:") and paintingExists(mat:sub(7)) then
+        -- A wide band across the middle of the 4:3 painting.
+        local t = frame.mat.paint
+        if not t then
+            t = frame.mat.grid:CreateTexture(nil, "BACKGROUND", nil, 2)
+            frame.mat.paint = t
+        end
+        local band = math.min(1, (4 / 3) * (frame.mat:GetHeight() or 244) / matW)
+        frame.mat.grid:SetSize(matW, frame.mat:GetHeight() or 244)
+        t:ClearAllPoints()
+        t:SetAllPoints(frame.mat)
+        t:SetTexture("Interface\\Glues\\LoadingScreens\\LoadScreen" .. mat:sub(7))
+        t:SetTexCoord(0, 1, 0.5 - band / 2, 0.5 + band / 2)
+        t:Show()
+        ok = true
     elseif type(mat) == "string" and mapExists(mat) then
         local tile = matW / 4
         frame.mat.grid:SetSize(matW, tile * 3)

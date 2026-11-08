@@ -6,7 +6,7 @@
 local TC = TavernCards_NS
 local Art = TC.Art
 
-local PAGE_HEIGHT = 470
+local PAGE_HEIGHT = 530
 local TOOLBAR = 64   -- title bar + toolbar above the pages
 local FOOTER = 42    -- paging + progress under the pages
 
@@ -23,7 +23,7 @@ end
 TC.BOOK_SCALES = { 0.85, 0.95, 1.05, 1.15, 1.25, 1.35, 1.5 }
 function TC:BookScale()
     local s = self.db and self.db.settings.bookScale
-    return (type(s) == "number" and s >= 0.7 and s <= 1.6) and s or 1.15
+    return (type(s) == "number" and s >= 0.7 and s <= 1.6) and s or 1.05
 end
 
 function TC:SetBookScale(scale)

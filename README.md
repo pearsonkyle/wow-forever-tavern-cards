@@ -21,21 +21,22 @@ the tavern table against the house or your friends, all without leaving the game
 
 - **Collect**: every quest you complete earns a card; quests you already finished pay out on your first
   login. Extra copies turn into dust automatically.
-- **Build decks**: 30 cards from one class plus Neutral. Craft missing cards with dust
-  (Alt + Right-click a card) or disenchant spares (Ctrl + Right-click).
+- **Build decks**: 30 cards from one class plus Neutral, each with the card back of your choice. Craft
+  missing cards with dust (Alt + Right-click a card) or disenchant spares (Ctrl + Right-click).
 - **Play**: in the **Play** tab, pick a deck and a difficulty and press Play. Click a card to play it,
   click a glowing minion and then an enemy to attack, right-click to cancel.
 - **Duel a friend** who has the addon: **Challenge...** in the Play tab, or `/tc duel Name`.
   Friends on another realm need to be in your party.
 - **Share** cards and decks: Shift-click a card into chat, or right-click a deck for its code.
 
-Commands: `/tc` (card book), `/tc play` (back to your match), `/tc duel Name`, `/tc channel on|off`,
-`/tc sound`, `/tc help`.
+All settings and commands are in **Options → AddOns → Tavern Cards** (or `/tc settings`); the most used
+ones: `/tc` (card book), `/tc play` (back to your match), `/tc duel Name`, `/tc help`.
 
 | | |
 |---|---|
 | ![Card book](docs/screenshots/collection.jpg) | ![Deck builder](docs/screenshots/deck-builder.jpg) |
-| ![Ledger](docs/screenshots/ledger.jpg) | ![Legendary](docs/screenshots/legendary-toast.jpg) |
+| ![Your decks](docs/screenshots/decks.jpg) | ![The Play tab](docs/screenshots/play.jpg) |
+| ![Ledger](docs/screenshots/ledger.jpg) | ![A legendary from a quest](docs/screenshots/legendary-toast.jpg) |
 
 ## Licence
 
