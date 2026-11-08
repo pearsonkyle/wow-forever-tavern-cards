@@ -18,10 +18,10 @@ jobs:
     name: Lint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Install LuaJIT
         run: sudo apt-get update && sudo apt-get install -y luajit
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.11"
       - name: Toc, syntax and globals
@@ -35,7 +35,7 @@ jobs:
     name: Tests
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Install LuaJIT and xz
         run: sudo apt-get update && sudo apt-get install -y luajit xz-utils
       - name: Unit, scenario, UI, duel and whole-addon tests
@@ -47,7 +47,7 @@ jobs:
     name: Coverage
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Install LuaJIT and xz
         run: sudo apt-get update && sudo apt-get install -y luajit xz-utils
       - name: Line coverage (gated)
@@ -58,7 +58,7 @@ jobs:
       - name: Coverage summary
         if: always()
         run: test -f coverage.md && cat coverage.md >> "$GITHUB_STEP_SUMMARY" || true
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         if: always()
         with:
           name: coverage
@@ -70,12 +70,12 @@ jobs:
     needs: [lint, test, coverage]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Build the addon zip (only what WoW loads)
         run: |
           sudo apt-get update && sudo apt-get install -y zip
           bash tools/package.sh
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         with:
           name: TavernCards
           path: dist/TavernCards-*.zip
