@@ -2283,7 +2283,7 @@ function Board:SetTable(painting)
         -- A true soft focus without ghosting: a patch of the painting (just under a third of its width)
         -- stretched over the whole board. The texture filter smooths it into the painting's colours and
         -- light, with no shapes to catch the eye.
-        local wfrac = 0.3   -- smaller = blurrier, larger = more of the painting's detail
+        local wfrac = 0.42  -- smaller = blurrier, larger = more of the painting's detail
         local hfrac = wfrac * 4 / (3 * (w / h))
         local cx, cy = 0.5, 0.62
         frame.tableArt:SetTexture("Interface\\Glues\\LoadingScreens\\LoadScreen" .. painting)
