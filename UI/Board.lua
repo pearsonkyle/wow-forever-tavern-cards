@@ -1039,14 +1039,19 @@ local function build()
     f.tableArt:SetPoint("TOPLEFT", 10, -10)
     f.tableArt:SetPoint("BOTTOMRIGHT", -10, 10)
     f.tableArt:Hide()
+    -- Two rings of faint copies (8 at 5px, 8 at 10px) approximate a gaussian blur.
     f.tableSoft = {}
-    for i, d in ipairs({ { 3, 0 }, { -3, 0 }, { 0, 3 }, { 0, -3 } }) do
-        local t = f:CreateTexture(nil, "BACKGROUND", nil, 2)
-        t:SetPoint("TOPLEFT", 10 + d[1], -10 + d[2])
-        t:SetPoint("BOTTOMRIGHT", -10 + d[1], 10 + d[2])
-        t:SetAlpha(0.5)
-        t:Hide()
-        f.tableSoft[i] = t
+    for ring, spec in ipairs({ { 5, 0.32 }, { 10, 0.2 } }) do
+        for k = 0, 7 do
+            local a = k * math.pi / 4 + (ring == 2 and math.pi / 8 or 0)
+            local dx, dy = math.floor(spec[1] * math.cos(a) + 0.5), math.floor(spec[1] * math.sin(a) + 0.5)
+            local t = f:CreateTexture(nil, "BACKGROUND", nil, 2)
+            t:SetPoint("TOPLEFT", 10 + dx, -10 + dy)
+            t:SetPoint("BOTTOMRIGHT", -10 + dx, 10 + dy)
+            t:SetAlpha(spec[2])
+            t:Hide()
+            f.tableSoft[#f.tableSoft + 1] = t
+        end
     end
     f.tableEdge = f:CreateTexture(nil, "BACKGROUND", nil, 4)
     f.tableEdge:SetPoint("TOPLEFT", 10, -10)
@@ -2288,12 +2293,13 @@ function Board:SetTable(painting)
         -- Below the game logo the loading screens carry across their top, cropped to the board's shape
         -- (which also zooms it a little: softer).
         local w, h = W - 20, H - 20
-        local top = 0.22
-        local hfrac = 1 - top
+        -- Zoomed in a little further (a smaller region, enlarged, is softer).
+        local top, bottom = 0.26, 0.96
+        local hfrac = bottom - top
         local wfrac = math.min(1, (w / h) * 0.75 * hfrac)
         for _, t in ipairs(layers) do
             t:SetTexture("Interface\\Glues\\LoadingScreens\\LoadScreen" .. painting)
-            t:SetTexCoord(0.5 - wfrac / 2, 0.5 + wfrac / 2, top, 1)
+            t:SetTexCoord(0.5 - wfrac / 2, 0.5 + wfrac / 2, top, bottom)
             if t.SetDesaturation then pcall(t.SetDesaturation, t, 0.35) end
             t:SetVertexColor(0.95, 0.9, 0.85)
             t:Show()
