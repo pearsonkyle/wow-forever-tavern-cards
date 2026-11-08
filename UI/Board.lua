@@ -2280,10 +2280,10 @@ function Board:SetTable(painting)
         -- Below the game logo the loading screens carry across their top, cropped to the board's shape
         -- (which also zooms it a little: softer).
         local w, h = W - 20, H - 20
-        -- A true soft focus without ghosting: a small patch of the painting (about a sixth of its width)
+        -- A true soft focus without ghosting: a patch of the painting (just under a third of its width)
         -- stretched over the whole board. The texture filter smooths it into the painting's colours and
         -- light, with no shapes to catch the eye.
-        local wfrac = 0.17
+        local wfrac = 0.3   -- smaller = blurrier, larger = more of the painting's detail
         local hfrac = wfrac * 4 / (3 * (w / h))
         local cx, cy = 0.5, 0.62
         frame.tableArt:SetTexture("Interface\\Glues\\LoadingScreens\\LoadScreen" .. painting)
