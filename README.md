@@ -36,7 +36,8 @@ ones: `/tc` (card book), `/tc play` (back to your match), `/tc duel Name`, `/tc 
 |---|---|
 | ![Card book](docs/screenshots/collection.jpg) | ![Deck builder](docs/screenshots/deck-builder.jpg) |
 | ![Your decks](docs/screenshots/decks.jpg) | ![The Play tab](docs/screenshots/play.jpg) |
-| ![Ledger](docs/screenshots/ledger.jpg) | ![A legendary from a quest](docs/screenshots/legendary-toast.jpg) |
+| ![Choosing a card back](docs/screenshots/card-backs.jpg) | ![Ledger](docs/screenshots/ledger.jpg) |
+| ![A legendary from a quest](docs/screenshots/legendary-toast.jpg) | |
 
 ## Licence
 

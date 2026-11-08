@@ -55,7 +55,27 @@ function DeckSheet:Create(page, onDone)
 
     sheet.problems = sheet:CreateFontString(nil, "OVERLAY", "GameFontBlackSmall")
     sheet.problems:SetPoint("TOPLEFT", 190, -50)
-    sheet.problems:SetPoint("RIGHT", 0, 0)
+    sheet.problems:SetPoint("RIGHT", -46, 0)
+
+    -- The deck's card back: click it (or Card back below) to choose another.
+    sheet.back = TC.CardBacks:Create(sheet, 34, 50)
+    sheet.back:SetPoint("TOPRIGHT", -4, -34)
+    local backBtn = CreateFrame("Button", nil, sheet)
+    backBtn:SetAllPoints(sheet.back)
+    backBtn:SetHighlightTexture("Interface\\Buttons\\ButtonHilight-Square", "ADD")
+    backBtn:SetScript("OnEnter", function(self)
+        GameTooltip:SetOwner(self, "ANCHOR_LEFT")
+        GameTooltip:SetText("Card back: " .. TC.CardBacks:Name(sheet.back.backId), 1, 0.82, 0)
+        GameTooltip:AddLine("Click to choose the back your opponents see.", 1, 1, 1, true)
+        GameTooltip:Show()
+    end)
+    backBtn:SetScript("OnLeave", function() GameTooltip:Hide() end)
+    local function chooseBack()
+        if sheet.deck then
+            TC.CardBacks:Choose(sheet.deck, function(id) sheet.back:SetBack(id) end)
+        end
+    end
+    backBtn:SetScript("OnClick", chooseBack)
     sheet.problems:SetJustifyH("LEFT")
     sheet.problems:SetJustifyV("TOP")
 
@@ -128,6 +148,11 @@ function DeckSheet:Create(page, onDone)
     fill:SetSize(96, 24)
     fill:SetPoint("RIGHT", done, "LEFT", -8, 0)
     fill:SetText("Auto-fill")
+    local backButton = CreateFrame("Button", nil, sheet, "UIPanelButtonTemplate")
+    backButton:SetSize(96, 24)
+    backButton:SetPoint("RIGHT", fill, "LEFT", -8, 0)
+    backButton:SetText("Card back")
+    backButton:SetScript("OnClick", chooseBack)
     fill:SetScript("OnClick", function()
         if not sheet.deck then return end
         local before = Decks:Count(sheet.deck)
@@ -156,6 +181,7 @@ function DeckSheet:Create(page, onDone)
             self.classIcon:SetTexture(Art:Icon(TC.CardOrder[1]))
         end
         name:SetText(deck.name)
+        self.back:SetBack(deck.back or TC.CardBacks.DEFAULT)
         self:Refresh()
     end
 
