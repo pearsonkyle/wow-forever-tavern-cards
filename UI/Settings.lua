@@ -76,11 +76,24 @@ local function build()
     sound:SetPoint("TOPLEFT", h1, "BOTTOMLEFT", -2, -8)
     local models = checkbox(p, "3D creatures and heroes",
         "Creatures on the battlefield, your character as your hero, and named creatures on card faces. Turn off on slower machines.",
-        function() return not s.noModels end, function(on) s.noModels = not on end)
+        function() return not s.noModels end, function(on)
+            s.noModels = not on
+            TC:RefreshWindow()
+            if TC.Board:IsShown() then TC.Board:Refresh() end
+        end)
     models:SetPoint("TOPLEFT", sound, "BOTTOMLEFT", 0, -4)
+    local behind = checkbox(p, "Card art behind 3D creatures",
+        "Also show the card's icon, faded, behind its 3D creature or hero. Off: just the creature.",
+        function() return s.artBehindModels and true or false end,
+        function(on)
+            s.artBehindModels = on or nil
+            TC:RefreshWindow()
+            if TC.Board:IsShown() then TC.Board:Refresh() end
+        end)
+    behind:SetPoint("TOPLEFT", models, "BOTTOMLEFT", 0, -4)
     local minimap = checkbox(p, "Minimap button", "The tarot-cards button on the minimap (left-click: card book).",
         function() return not s.minimap.hide end, function(on) TC.MinimapButton:SetHidden(not on) end)
-    minimap:SetPoint("TOPLEFT", models, "BOTTOMLEFT", 0, -4)
+    minimap:SetPoint("TOPLEFT", behind, "BOTTOMLEFT", 0, -4)
     local channel = checkbox(p, "Tavern chat channel",
         "A chat channel for everyone with Tavern Cards on your faction: talk, find opponents, share cards and decks.",
         function() return not s.noChannel end,

@@ -211,4 +211,59 @@ T.board_plays_whole_games_by_clicks = function(TC)
     assert(TC.db.stats.played == 3)
 end
 
+-- The house's innkeeper is one steady face for the whole match: across a reload (the match replayed from
+-- its record), closing and reopening the table, and the result screen after the match ends.
+T.board_opponent_face_is_steady = function(TC)
+    local Match, Board, tick = setup(TC)
+    TC.HouseModels = { 1001, 1002, 1003, 1004, 1005 }
+    local shown = {}
+    local realShow = TC.Models.Show
+    TC.Models.Show = function(self, m, kind, id, ...)
+        if kind == "npc" and id and id > 1000 and id < 1010 then shown[#shown + 1] = id end
+        return realShow(self, m, kind, id, ...)
+    end
+    local cards = TC.AI.buildDeck("MAGE", 5, 3)
+    local deck = { id = 1, class = "MAGE", name = "Test", cards = {} }
+    for _, id in ipairs(cards) do deck.cards[id] = (deck.cards[id] or 0) + 1 end
+    for round = 1, 4 do
+        wipe(shown)
+        assert(Match:StartPractice(deck, { name = "Test", class = "WARLOCK", profile = "novice" }))
+        local house = Match:HouseModel()
+        assert(house, "the house has an innkeeper")
+        Board:Open()
+        for _ = 1, 3 do tick() end
+        assert(Match:Load(), "resumes")          -- what a /reload does
+        Board:Open()
+        Board:Close()
+        assert(not Board:IsShown())
+        Board:Open()                              -- back to the table
+        for _ = 1, 3 do tick() end
+        Match:Concede()
+        Board:Refresh()                           -- the result screen
+        assert(#shown > 0)
+        for _, id in ipairs(shown) do
+            assert(id == house, ("round %d: innkeeper %d shown, %d expected"):format(round, id, house))
+        end
+        assert(Match:HouseModel() == house, "kept after the match")
+    end
+end
+
+-- A model whose load check runs while it is hidden (the table closed) is not taken for a missing creature.
+T.models_hidden_load_is_not_missing = function(TC)
+    setup(TC)
+    local timers = {}
+    C_Timer = { After = function(_, fn) timers[#timers + 1] = fn end }
+    local parent = CreateFrame("Frame")
+    local m = TC.Models:Create(parent)
+    assert(TC.Models:Show(m, "npc", 4242, 0.8, 1))
+    parent:Hide()
+    m:Hide()                 -- hidden with its parent before the client had the model
+    for _, fn in ipairs(timers) do fn() end
+    assert(TC.Models:Show(m, "npc", 4242, 0.8, 1), "still worth showing")
+    -- Visible and still nothing after the check: that creature is missing.
+    local fns = { unpack(timers) }
+    for _, fn in ipairs(fns) do fn() end
+    assert(not TC.Models:Show(m, "npc", 4242, 0.8, 1), "missing once seen to fail")
+end
+
 return T

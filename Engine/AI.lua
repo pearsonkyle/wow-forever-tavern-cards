@@ -27,7 +27,8 @@ local FOLLOW_UP = 0.9
 local MAX_PLAYS_PER_TURN = 15
 
 AI.PROFILES = {
-    novice = { noise = 1.5, skip = 0.15, second_ply = 0, rollout = 0, budget = 100 },
+    -- Novice: plays loosely, often ends its turn early, and misses lethal half the time.
+    novice = { noise = 3, skip = 0.25, second_ply = 0, rollout = 0, budget = 60, miss_lethal = 0.5 },
     regular = { noise = 0, skip = 0, second_ply = 2, rollout = 0, budget = 120 },
     skilled = { noise = 0, skip = 0, second_ply = 4, rollout = 0, budget = 160 },
     expert = { noise = 0, skip = 0, second_ply = 4, rollout = 3, budget = 320 },
@@ -403,14 +404,14 @@ function AI.choose(engine, profileName, rng)
     if me ~= 0 and me ~= 1 then return 1 end
     if n == 1 then return 1 end
     if actions[1].type == "mulligan" then return chooseMulligan(engine, actions, me) end
+    local style = AI.PROFILES[profileName] or AI.PROFILES.regular
     local lethal = lethalIndex(engine, actions, me)
-    if lethal then return lethal end
+    if lethal and not (style.miss_lethal and rng:nextDouble() < style.miss_lethal) then return lethal end
     if engine.state.pending.active and engine.state.pending.kind == "dredge" then
         return chooseDredge(engine, actions, me)
     end
     local endTurn = firstOf(actions, "end_turn")
     if endTurn and engine.state.players[me + 1].cards_played_this_turn >= MAX_PLAYS_PER_TURN then return endTurn end
-    local style = AI.PROFILES[profileName] or AI.PROFILES.regular
     if endTurn and style.skip > 0 and rng:nextDouble() < style.skip then return endTurn end
 
     local seedHi = rng:next()

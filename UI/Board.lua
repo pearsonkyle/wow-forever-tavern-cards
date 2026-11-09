@@ -70,7 +70,7 @@ end
 
 local setClassIcon
 
-local function setHeroPortrait(b, class, unit)
+local function setHeroPortrait(b, class, unit, house)
     local tex = b.portrait
     if unit and SetPortraitTexture and UnitExists and UnitExists(unit) then
         SetPortraitTexture(tex, unit)
@@ -84,16 +84,18 @@ local function setHeroPortrait(b, class, unit)
             setClassIcon(tex, class)
         end
     end
-    -- 3D on top when available: the unit, else (the house) an innkeeper chosen for this match.
-    local house = TC.HouseModels and #TC.HouseModels > 0 and not unit
-        and TC.HouseModels[(b.houseSeed or 0) % #TC.HouseModels + 1]
+    -- 3D on top when available: the unit, else (the house) the innkeeper chosen for this match. A friend
+    -- out of sight keeps their class portrait: an innkeeper would be the wrong face for them.
+    local shown
+    local function back() tex:SetAlpha(1) end
     if unit and UnitExists and UnitExists(unit) then
-        TC.Models:Show(b.model, "unit", unit, 0.85, 1)
+        shown = TC.Models:Show(b.model, "unit", unit, 0.85, 1, nil, back)
     elseif house then
-        TC.Models:Show(b.model, "npc", house, 0.85, 1)
+        shown = TC.Models:Show(b.model, "npc", house, 0.85, 1, nil, back)
     else
         TC.Models:Hide(b.model)
     end
+    tex:SetAlpha(shown and TC.Models:ArtAlpha(1) or 1)
     local badge = CLASS_BADGE[class] and Art:IconIfExists(CLASS_BADGE[class])
     b.badge:SetShown(badge ~= nil)
     if badge then b.badge.icon:SetTexture(badge) end
@@ -126,6 +128,65 @@ local function addGlow(f, scale)
     g:SetPoint("CENTER")
     g:SetSize(f:GetWidth() * (scale or 1.75), f:GetHeight() * (scale or 1.75))
     g:Hide()
+    f.glow = g
+    return g
+end
+
+-- A glowing frame around a whole card (the hand): a bright line on its edge and a soft halo outside it.
+-- Same interface as addGlow's texture (SetVertexColor, Show, Hide, SetAlpha).
+local function addBorderGlow(f, out)
+    out = out or 9
+    local g = CreateFrame("Frame", nil, f)
+    g:SetPoint("TOPLEFT", -out, out)
+    g:SetPoint("BOTTOMRIGHT", out, -out)
+    g:SetFrameLevel(f:GetFrameLevel() + 6)
+    g:EnableMouse(false)
+    local parts = {}
+    local function strip(layer, horizontal, a1, a2)
+        local t = g:CreateTexture(nil, layer)
+        t:SetTexture("Interface\\Buttons\\WHITE8x8")
+        t:SetBlendMode("ADD")
+        t.horizontal, t.a1, t.a2 = horizontal, a1, a2
+        parts[#parts + 1] = t
+        return t
+    end
+    local w = 3   -- the bright line, just inside the card's edge
+    local top = strip("OVERLAY", false, 1, 1)
+    top:SetPoint("TOPLEFT", f, "TOPLEFT", 0, 0) top:SetPoint("BOTTOMRIGHT", f, "TOPRIGHT", 0, -w)
+    local bottom = strip("OVERLAY", false, 1, 1)
+    bottom:SetPoint("TOPLEFT", f, "BOTTOMLEFT", 0, w) bottom:SetPoint("BOTTOMRIGHT", f, "BOTTOMRIGHT", 0, 0)
+    local left = strip("OVERLAY", true, 1, 1)
+    left:SetPoint("TOPLEFT", f, "TOPLEFT", 0, -w) left:SetPoint("BOTTOMRIGHT", f, "BOTTOMLEFT", w, w)
+    local right = strip("OVERLAY", true, 1, 1)
+    right:SetPoint("TOPLEFT", f, "TOPRIGHT", -w, -w) right:SetPoint("BOTTOMRIGHT", f, "BOTTOMRIGHT", 0, w)
+    -- The halo: strips fading outward (gradient from the card's edge to nothing).
+    local ht = strip("ARTWORK", false, 0, 0.75)    -- above: transparent at its top, bright at the card
+    ht:SetPoint("TOPLEFT", g, "TOPLEFT", out, 0) ht:SetPoint("BOTTOMRIGHT", f, "TOPRIGHT", 0, 0)
+    local hb = strip("ARTWORK", false, 0.75, 0)
+    hb:SetPoint("TOPLEFT", f, "BOTTOMLEFT", 0, 0) hb:SetPoint("BOTTOMRIGHT", g, "BOTTOMRIGHT", -out, 0)
+    local hl = strip("ARTWORK", true, 0, 0.75)     -- left: transparent far left, bright at the card
+    hl:SetPoint("TOPLEFT", g, "TOPLEFT", 0, -out) hl:SetPoint("BOTTOMRIGHT", f, "BOTTOMLEFT", 0, 0)
+    local hr = strip("ARTWORK", true, 0.75, 0)
+    hr:SetPoint("TOPLEFT", f, "TOPRIGHT", 0, 0) hr:SetPoint("BOTTOMRIGHT", g, "BOTTOMRIGHT", 0, out)
+    function g:SetVertexColor(r, gg, b)
+        for _, t in ipairs(parts) do
+            if t.a1 == t.a2 then
+                t:SetVertexColor(r, gg, b, t.a1)
+            elseif CreateColor and t.SetGradient then
+                -- VERTICAL runs bottom -> top; HORIZONTAL left -> right.
+                local c1, c2 = CreateColor(r, gg, b, t.a1), CreateColor(r, gg, b, t.a2)
+                if t.horizontal then
+                    t:SetGradient("HORIZONTAL", c1, c2)
+                else
+                    t:SetGradient("VERTICAL", c2, c1)
+                end
+            else
+                t:SetVertexColor(r, gg, b, 0.4)
+            end
+        end
+    end
+    g:Hide()
+    allGlows[#allGlows + 1] = g
     f.glow = g
     return g
 end
@@ -703,14 +764,14 @@ local function setMinion(b, e)
     local npc = TC.CardModels and TC.CardModels[e.card_id]
     if npc and card and card.type ~= "LOCATION" and TC.Models:Show(b.model, "npc", npc, 0.6, 1.05, nil,
         function() b.art:SetAlpha(1) end) then
-        b.art:SetAlpha(0.3)
+        b.art:SetAlpha(TC.Models:ArtAlpha(0.3))
     else
         TC.Models:Hide(b.model)
         b.art:SetAlpha(1)
     end
     b.name:SetText(card and card.name or (d and d.name) or e.card_id)
     local r, g, bl = Art:RarityColor(card and card.rarity or "FREE")
-    b:SetBackdropBorderColor(r, g, bl, 1)
+    b:SetBackdropBorderColor(0.9, 0.9, 0.9, 1)   -- rarity shows in the name's colour
     b.name:SetTextColor(r, g, bl)
     if card and card.type == "LOCATION" then
         -- Locations: uses left instead of attack/health, and a marker once used this turn.
@@ -1223,7 +1284,7 @@ local function build()
     f.hand.cards = {}
     for i = 1, 10 do
         local w = CardWidget:CreateGame(f.hand)
-        addGlow(w, 1.45)
+        addBorderGlow(w)
         -- Hovered cards lift above their neighbours so the whole card can be read.
         w.onEnter = function(self)
             self.hovered = true
@@ -1498,8 +1559,7 @@ local function refreshHero(side)
     elseif record and record.kind == "duel" and record.opponent then
         unit = unitForName(record.opponent.name)
     end
-    b.houseSeed = record and record.seed and record.seed[2] or 0
-    setHeroPortrait(b, classes[seat + 1], unit)
+    setHeroPortrait(b, classes[seat + 1], unit, seat ~= ME() and Match:HouseModel())
     if hero then
         b.entity = hero.id
         widgets[hero.id] = b
@@ -2401,6 +2461,10 @@ function Board:Open()
     end
     frame:Show()
     self:Refresh()
+end
+
+function Board:Close()
+    if frame then frame:Hide() end
 end
 
 -- The step of the half-made move ("choice", "position", "target"), or nil.

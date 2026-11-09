@@ -299,12 +299,12 @@ function CardWidget.SetCard(w, id)
     w:Show()
     local have = TC.Collection:Count(id)
     local r, g, b = Art:RarityColor(card.rarity)
-    w:SetBackdropBorderColor(r, g, b, 1)
+    w:SetBackdropBorderColor(0.9, 0.9, 0.9, 1)   -- rarity shows in the name's colour
 
     w.art:SetTexture(Art:Icon(id))
     local npc = w.model and TC.CardNamedNPC and TC.CardNamedNPC[id] and TC.CardModels and TC.CardModels[id]
     if npc and TC.Models:Show(w.model, "npc", npc, 0.85, 1, nil, function() w.art:SetAlpha(1) end) then
-        w.art:SetAlpha(0.25)
+        w.art:SetAlpha(TC.Models:ArtAlpha(0.25))
         w.model:SetAlpha((w.game or TC.Collection:Count(id) > 0) and 1 or 0.55)
     else
         if w.model then TC.Models:Hide(w.model) end

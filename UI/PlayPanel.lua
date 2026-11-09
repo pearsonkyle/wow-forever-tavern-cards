@@ -5,7 +5,7 @@ local TC = TavernCards_NS
 local Decks, Match = TC.Decks, TC.Match
 
 local DIFFICULTIES = {
-    { key = "novice", label = "Novice", title = "Apprentice", blurb = "Learning the rules; often passes the turn early." },
+    { key = "novice", label = "Novice", title = "Apprentice", blurb = "Learning the rules: plays loosely, ends turns early, misses lethal." },
     { key = "regular", label = "Regular", title = "Tavern Regular", blurb = "Plays sensibly and trades well." },
     { key = "skilled", label = "Skilled", title = "Card Shark", blurb = "Looks a few moves ahead." },
     { key = "expert", label = "Expert", title = "Grand Champion", blurb = "Thinks hard about every move." },

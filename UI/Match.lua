@@ -58,6 +58,18 @@ function Match:Record()
     return TC.char.match
 end
 
+-- The innkeeper who plays for the house this match (a creature id), steady from its seed, and kept after
+-- the match ends so the face doesn't change on the result screen. Nil in a duel.
+function Match:HouseModel()
+    local record = TC.char.match
+    if record then
+        local list = TC.HouseModels
+        self.lastHouse = record.kind ~= "duel" and list and #list > 0 and record.seed
+            and list[(record.seed[2] or 0) % #list + 1] or nil
+    end
+    return self.lastHouse
+end
+
 function Match:IsDuel()
     local record = TC.char.match
     return record ~= nil and record.kind == "duel"

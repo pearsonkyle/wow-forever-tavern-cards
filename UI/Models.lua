@@ -18,6 +18,11 @@ function Models:Enabled()
     return not (TC.db and TC.db.settings and TC.db.settings.noModels)
 end
 
+-- How much of the card's art shows behind its 3D creature: none, unless the player asked for it.
+function Models:ArtAlpha(full)
+    return (TC.db and TC.db.settings and TC.db.settings.artBehindModels) and (full or 0.3) or 0
+end
+
 local function applyCam(m)
     if not m.camZoom then return end
     if m.RefreshCamera then pcall(m.RefreshCamera, m) end
@@ -63,6 +68,12 @@ function Models:Load(m)
         if m.token ~= token or not m.GetModelFileID then return end
         local ok, fid = pcall(m.GetModelFileID, m)
         if ok and (not fid or fid == 0) then
+            -- Hidden (the board closed, a page turned) before the model arrived: that proves nothing,
+            -- so load it again the next time it shows rather than calling the creature missing.
+            if not m:IsVisible() then
+                m.loaded, m.pending = false, true
+                return
+            end
             if m.kind == "npc" and m.id then missing[m.id] = true end
             m.loaded, m.id = false, nil
             m:Hide()
@@ -84,7 +95,7 @@ function Models:Show(m, kind, id, zoom, dist, facing, onFail)
         applyCam(m)
         return true
     end
-    m.kind, m.id = kind, id
+    m.kind, m.id, m.pending = kind, id, nil
     m:Show()
     if not m:IsVisible() then
         m.pending = true   -- loads when the board shows
