@@ -23,6 +23,7 @@ Data\QuestMap.lua
 Data\QuestInfo.lua
 Data\Icons.lua
 Data\Models.lua
+Data\Sounds.lua
 
 Engine\Rng.lua
 Engine\Data\Programs.lua

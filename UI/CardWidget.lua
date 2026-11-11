@@ -315,7 +315,7 @@ function CardWidget.SetCard(w, id)
         elseif (portrait[4] or 0) > 0 then kind, npc = "display", portrait[4] else npc = portrait[1] end
     elseif w.model and TC.CardNamedNPC and TC.CardNamedNPC[id] then
         local prop = TC.CardProps and TC.CardProps[id]
-        local disp = TC.CardDisplays and TC.CardDisplays[id]
+        local disp = (TC.CardDisplays and TC.CardDisplays[id]) or (TC.CardModelDisplays and TC.CardModelDisplays[id])
         if prop then kind, npc, file, zoom = prop[1], prop[2], prop[3], 0
         elseif disp then kind, npc = "display", disp else npc = TC.CardModels and TC.CardModels[id] end
     end

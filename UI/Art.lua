@@ -309,6 +309,17 @@ function Art:Play(kit)
     end
 end
 
+-- A sound kit by id (creature and spell sounds of the client, Data/Sounds.lua): the sound toggle applies, and a
+-- kit plays at most once every 0.15s so a board clear doesn't stack a dozen death cries.
+local lastKit = {}
+function Art:PlayKit(id)
+    if not id or id == 0 or TC.db.settings.mute or not PlaySound then return false end
+    local now = GetTime()
+    if lastKit[id] and now - lastKit[id] < 0.15 then return true end
+    lastKit[id] = now
+    return pcall(PlaySound, id, "SFX")
+end
+
 -- Game sounds by moment. Each lists SOUNDKIT names in order of preference (clients differ in which they
 -- have); a moment plays at most once every 0.1s, so a board clear doesn't stack twenty sounds.
 local SFX = {

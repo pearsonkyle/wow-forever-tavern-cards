@@ -12,7 +12,11 @@ local Models = {}
 TC.Models = Models
 
 local missing = {}   -- creature ids without a model in this client (this session)
-local ANIM = { attack = { 16, 17, 18 }, hit = { 9, 8, 10 }, cast = { 52, 2 }, stand = { 0 } }
+-- Animation ids of the game (the first one a model has is played).
+local ANIM = { attack = { 17, 18, 16 }, hit = { 9, 8, 10 }, cast = { 52, 2 }, stand = { 0 },
+               block = { 24, 21, 22, 20, 36 },     -- shield block, parry (1H, 2H, unarmed), block
+               ready = { 26, 27, 25, 29 },         -- combat-ready stance (1H, 2H, unarmed, bow)
+               roar = { 53, 55 } }                 -- battle roar
 
 function Models:Enabled()
     return not (TC.db and TC.db.settings and TC.db.settings.noModels)
@@ -32,9 +36,11 @@ local function applyCam(m)
 end
 
 function Models:Create(parent)
-    local m = CreateFrame("PlayerModel", nil, parent)
+    -- A dress-up model when the client has one: it can hold items (weapons) as well as show creatures.
+    local ok, m = pcall(CreateFrame, "DressUpModel", nil, parent)
+    if not ok or not m then m = CreateFrame("PlayerModel", nil, parent) end
     m:EnableMouse(false)
-    pcall(m.HookScript, m, "OnModelLoaded", applyCam)
+    pcall(m.HookScript, m, "OnModelLoaded", function(self) applyCam(self) Models:Arm(self) end)
     pcall(m.HookScript, m, "OnSizeChanged", applyCam)
     pcall(m.HookScript, m, "OnShow", function(self)
         if self.pending then
@@ -70,6 +76,7 @@ function Models:Load(m)
     for _, d in ipairs({ 0, 0.15, 0.5 }) do
         C_Timer.After(d, function() if m.token == token then applyCam(m) end end)
     end
+    C_Timer.After(0.6, function() if m.token == token then Models:Arm(m) end end)
     -- No model after a second: this client doesn't have the creature.
     C_Timer.After(1.2, function()
         if m.token ~= token or not m.GetModelFileID then return end
@@ -134,7 +141,33 @@ function Models:Hide(m)
     end
 end
 
--- Plays an animation once (attack, hit, cast), then back to standing.
+-- Puts the model's weapons (m.weapons = {main hand item, off hand item}) in its hands: works on character-style
+-- models in a dress-up frame; anything else quietly keeps its own look.
+function Models:Arm(m)
+    if not m or not m.weapons or not m.TryOn then return end
+    for _, item in ipairs(m.weapons) do
+        if item and item > 0 then
+            if C_Item and C_Item.RequestLoadItemDataByID then pcall(C_Item.RequestLoadItemDataByID, item) end
+            pcall(m.TryOn, m, "item:" .. item)
+        end
+    end
+end
+
+-- Holds a looping stance ("ready") until called again without one (back to standing).
+function Models:Stance(m, what)
+    if not m or not m:IsShown() or not m.loaded or m.stance == what then return end
+    m.stance = what
+    m.animToken = (m.animToken or 0) + 1
+    local list = what and ANIM[what] or ANIM.stand
+    for _, anim in ipairs(list) do
+        if not m.HasAnimation or m:HasAnimation(anim) then
+            pcall(m.SetAnimation, m, anim)
+            return
+        end
+    end
+end
+
+-- Plays an animation once (attack, hit, cast, block, roar), then back to standing (or its stance).
 function Models:Animate(m, what)
     if not m or not m:IsShown() or not m.loaded then return end
     for _, anim in ipairs(ANIM[what] or {}) do
@@ -146,6 +179,11 @@ function Models:Animate(m, what)
     local token = (m.animToken or 0) + 1
     m.animToken = token
     C_Timer.After(1.1, function()
-        if m.animToken == token and m:IsShown() then pcall(m.SetAnimation, m, 0) end
+        if m.animToken == token and m:IsShown() then
+            local back = m.stance and ANIM[m.stance] or ANIM.stand
+            for _, anim in ipairs(back) do
+                if not m.HasAnimation or m:HasAnimation(anim) then pcall(m.SetAnimation, m, anim) break end
+            end
+        end
     end)
 end

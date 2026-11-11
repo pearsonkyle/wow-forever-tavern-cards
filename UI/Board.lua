@@ -91,7 +91,8 @@ local function setHeroPortrait(b, class, unit, house)
     if unit and UnitExists and UnitExists(unit) then
         shown = TC.Models:Show(b.model, "unit", unit, 0.85, 1, nil, back)
     elseif house then
-        shown = TC.Models:Show(b.model, "npc", house, 0.85, 1, nil, back)
+        local hd = TC.HouseDisplays and TC.HouseDisplays[house]
+        shown = TC.Models:Show(b.model, hd and "display" or "npc", hd or house, 0.85, 1, nil, back)
     else
         TC.Models:Hide(b.model)
     end
@@ -132,57 +133,37 @@ local function addGlow(f, scale)
     return g
 end
 
--- A glowing frame around a whole card (the hand): a bright line on its edge and a soft halo outside it.
--- Same interface as addGlow's texture (SetVertexColor, Show, Hide, SetAlpha).
+-- A glowing frame around a whole card (the hand): rounded like the card's own border, a bright line on its edge
+-- and a softer, wider one outside it. Same interface as addGlow's texture (SetVertexColor, Show, Hide, SetAlpha).
 local function addBorderGlow(f, out)
     out = out or 9
     local g = CreateFrame("Frame", nil, f)
-    g:SetPoint("TOPLEFT", -out, out)
-    g:SetPoint("BOTTOMRIGHT", out, -out)
+    g:SetAllPoints(f)
     g:SetFrameLevel(f:GetFrameLevel() + 6)
     g:EnableMouse(false)
-    local parts = {}
-    local function strip(layer, horizontal, a1, a2)
-        local t = g:CreateTexture(nil, layer)
-        t:SetTexture("Interface\\Buttons\\WHITE8x8")
-        t:SetBlendMode("ADD")
-        t.horizontal, t.a1, t.a2 = horizontal, a1, a2
-        parts[#parts + 1] = t
-        return t
-    end
-    local w = 3   -- the bright line, just inside the card's edge
-    local top = strip("OVERLAY", false, 1, 1)
-    top:SetPoint("TOPLEFT", f, "TOPLEFT", 0, 0) top:SetPoint("BOTTOMRIGHT", f, "TOPRIGHT", 0, -w)
-    local bottom = strip("OVERLAY", false, 1, 1)
-    bottom:SetPoint("TOPLEFT", f, "BOTTOMLEFT", 0, w) bottom:SetPoint("BOTTOMRIGHT", f, "BOTTOMRIGHT", 0, 0)
-    local left = strip("OVERLAY", true, 1, 1)
-    left:SetPoint("TOPLEFT", f, "TOPLEFT", 0, -w) left:SetPoint("BOTTOMRIGHT", f, "BOTTOMLEFT", w, w)
-    local right = strip("OVERLAY", true, 1, 1)
-    right:SetPoint("TOPLEFT", f, "TOPRIGHT", -w, -w) right:SetPoint("BOTTOMRIGHT", f, "BOTTOMRIGHT", 0, w)
-    -- The halo: strips fading outward (gradient from the card's edge to nothing).
-    local ht = strip("ARTWORK", false, 0, 0.75)    -- above: transparent at its top, bright at the card
-    ht:SetPoint("TOPLEFT", g, "TOPLEFT", out, 0) ht:SetPoint("BOTTOMRIGHT", f, "TOPRIGHT", 0, 0)
-    local hb = strip("ARTWORK", false, 0.75, 0)
-    hb:SetPoint("TOPLEFT", f, "BOTTOMLEFT", 0, 0) hb:SetPoint("BOTTOMRIGHT", g, "BOTTOMRIGHT", -out, 0)
-    local hl = strip("ARTWORK", true, 0, 0.75)     -- left: transparent far left, bright at the card
-    hl:SetPoint("TOPLEFT", g, "TOPLEFT", 0, -out) hl:SetPoint("BOTTOMRIGHT", f, "BOTTOMLEFT", 0, 0)
-    local hr = strip("ARTWORK", true, 0.75, 0)
-    hr:SetPoint("TOPLEFT", f, "TOPRIGHT", 0, 0) hr:SetPoint("BOTTOMRIGHT", g, "BOTTOMRIGHT", 0, out)
-    function g:SetVertexColor(r, gg, b)
-        for _, t in ipairs(parts) do
-            if t.a1 == t.a2 then
-                t:SetVertexColor(r, gg, b, t.a1)
-            elseif CreateColor and t.SetGradient then
-                -- VERTICAL runs bottom -> top; HORIZONTAL left -> right.
-                local c1, c2 = CreateColor(r, gg, b, t.a1), CreateColor(r, gg, b, t.a2)
-                if t.horizontal then
-                    t:SetGradient("HORIZONTAL", c1, c2)
-                else
-                    t:SetGradient("VERTICAL", c2, c1)
-                end
-            else
-                t:SetVertexColor(r, gg, b, 0.4)
+    local rings = {}
+    local function ring(inset, size, alpha)
+        local r = CreateFrame("Frame", nil, g, BackdropTemplateMixin and "BackdropTemplate" or nil)
+        r:SetPoint("TOPLEFT", f, "TOPLEFT", -inset, inset)
+        r:SetPoint("BOTTOMRIGHT", f, "BOTTOMRIGHT", inset, -inset)
+        if r.SetBackdrop then
+            r:SetBackdrop({ edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border", edgeSize = size })
+            -- Additive: the colour glows over the card instead of darkening it.
+            for _, t in ipairs({ r:GetRegions() }) do
+                if t.SetBlendMode then t:SetBlendMode("ADD") end
             end
+        end
+        r:EnableMouse(false)
+        r.alpha = alpha
+        rings[#rings + 1] = r
+        return r
+    end
+    ring(2, 18, 1)          -- the bright line, over the card's rounded edge
+    ring(5, 22, 0.8)        -- a second line just outside it
+    ring(out, 30, 0.5)      -- the soft halo
+    function g:SetVertexColor(r, gg, b)
+        for _, ring_ in ipairs(rings) do
+            if ring_.SetBackdropBorderColor then ring_:SetBackdropBorderColor(r, gg, b, ring_.alpha) end
         end
     end
     g:Hide()
@@ -193,7 +174,17 @@ end
 
 -- "green" = can act, "gold" = selected, "red" = a target of the move being made.
 local GLOW_COLORS = { green = { 0.2, 1, 0.2 }, gold = { 1, 0.85, 0.1 }, red = { 1, 0.25, 0.15 } }
+-- The creature sound of a minion (Data/Sounds.lua): which = 1 aggro, 2 attack, 3 wound, 4 death.
+local function creatureSound(e, which)
+    if not e or not TC.DisplaySounds then return nil end
+    local disp = (TC.CardDisplays and TC.CardDisplays[e.card_id]) or (TC.CardModelDisplays and TC.CardModelDisplays[e.card_id])
+    local kit = disp and TC.DisplaySounds[disp]
+    return kit and kit[which] ~= 0 and kit[which] or nil
+end
+
 local function setGlow(f, color)
+    -- A creature that may be the target of the move being made stands ready.
+    if f.model then TC.Models:Stance(f.model, color == "red" and "ready" or nil) end
     if not f.glow then return end
     local c = color and GLOW_COLORS[color]
     if c then
@@ -763,7 +754,10 @@ local function setMinion(b, e)
     b.art:SetTexture(Art:Icon(e.card_id))
     -- A prop (item or object), a creature by its model, or a creature.
     local prop = TC.CardProps and TC.CardProps[e.card_id]
-    local disp = not prop and TC.CardDisplays and TC.CardDisplays[e.card_id]
+    -- By model whenever it's known (needs only the client's files; a creature id needs the server to know it).
+    b.model.weapons = TC.CardWeapons and TC.CardWeapons[e.card_id]   -- legendaries hold their weapons
+    local disp = not prop and ((TC.CardDisplays and TC.CardDisplays[e.card_id])
+        or (TC.CardModelDisplays and TC.CardModelDisplays[e.card_id]))
     local kind = prop and prop[1] or (disp and "display" or "npc")
     local npc = prop and prop[2] or disp or (TC.CardModels and TC.CardModels[e.card_id])
     if npc and card and card.type ~= "LOCATION" and TC.Models:Show(b.model, kind, npc, prop and 0 or 0.6, 1.05, nil,
@@ -2167,7 +2161,7 @@ local function onMatch(what, seat, move)
                         tex = Art:Icon(e.card_id)
                     end
                     lunge(a, b, tex)
-                    Art:Sfx("attack")
+                    if not (e.zone ~= ZONE.HERO and Art:PlayKit(creatureSound(e, 2))) then Art:Sfx("attack") end
                     local aw = widgets[ev.subject]
                     if aw and aw.model then TC.Models:Animate(aw.model, "attack") end
                 end
@@ -2176,23 +2170,43 @@ local function onMatch(what, seat, move)
                 flash(widgets[ev.subject], 1, 0.15, 0.1)
                 local hit = widgets[ev.subject]
                 if hit and hit.model then TC.Models:Animate(hit.model, "hit") end
+                local hurt = eng:ent(ev.subject)
+                local woundKit = hurt and hurt.zone ~= ZONE.HERO and creatureSound(hurt, 3)
                 if hit and hit.place then
                     -- A short shake on the minion that took the hit.
                     hit.shake = 0.3
                     gliders[hit] = true
                 end
-                Art:Sfx("hit")
+                if not Art:PlayKit(woundKit) then Art:Sfx("hit") end
             elseif ev.kind == "SUMMONED" and widgets[ev.subject] then
+                Art:PlayKit(creatureSound(eng:ent(ev.subject), 1))
                 fadeIn(widgets[ev.subject], flownTo == ev.subject and FLY * 0.8 or 0)
+                -- A legendary arrives with a roar.
+                local w, e = widgets[ev.subject], eng:ent(ev.subject)
+                local card = e and TC.Cards[e.card_id]
+                if w.model and card and card.rarity == "LEGENDARY" then
+                    C_Timer.After(0.5, function() TC.Models:Animate(w.model, "roar") end)
+                end
+            elseif ev.kind == "PLAYED" then
+                -- A spell: its cast sound, then its impact (the WoW spell it's named after, else its school's).
+                local e = eng:ent(ev.subject)
+                local snd = e and TC.CardSpellSounds and TC.CardSpellSounds[e.card_id]
+                if snd then
+                    Art:PlayKit(snd[1])
+                    C_Timer.After(0.45, function() Art:PlayKit(snd[2]) end)
+                end
             elseif ev.kind == "HERO_POWER_USED" then
                 flash(frame.powers[sideOf(ev.seat)], 1, 0.85, 0.3, 0.6)
                 TC.Models:Animate(frame.heroes[sideOf(ev.seat)].model, "cast")
                 Art:Sfx("power")
             elseif ev.kind == "DAMAGE_PREVENTED" and at then
                 floatText(at[1], at[2], "Blocked", 1, 0.9, 0.4)
+                local w = widgets[ev.subject]
+                if w and w.model then TC.Models:Animate(w.model, "block") end
             elseif ev.kind == "DIED" and at then
                 floatText(at[1], at[2] - 24, "Died", 0.7, 0.7, 0.7)
                 local dead = eng:ent(ev.subject)
+                Art:PlayKit(creatureSound(dead, 4))
                 if dead and not after[ev.subject] then
                     lunge(at, at, Art:Icon(dead.card_id), "die")
                     Art:Sfx("death")
