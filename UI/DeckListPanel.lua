@@ -52,10 +52,17 @@ local function build(parent)
             if c ~= myClass then classes[#classes + 1] = c end
         end
         for _, class in ipairs(classes) do
-            root:CreateButton(className(class), function()
-                local deck = Decks:Create(class)
-                TC:EditDeck(deck)
-            end)
+            if Decks:IsUnlocked(class) then
+                root:CreateButton(className(class), function()
+                    local deck = Decks:Create(class)
+                    TC:EditDeck(deck)
+                end)
+            else
+                -- A hero class: shown, greyed, with the level that unlocks it.
+                local need = TC.Rewards and TC.Rewards:UnlockLevel(class) or 0
+                local b = root:CreateButton(("%s |cff808080(reach level %d)|r"):format(className(class), need), function() end)
+                if b and b.SetEnabled then b:SetEnabled(false) end
+            end
         end
     end)
 

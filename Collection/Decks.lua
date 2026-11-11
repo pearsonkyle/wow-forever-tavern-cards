@@ -13,6 +13,11 @@ Decks.SIZE = 30
 Decks.CLASSES = { "WARRIOR", "PALADIN", "HUNTER", "ROGUE", "PRIEST", "SHAMAN", "MAGE", "WARLOCK", "DRUID",
     "DEATHKNIGHT", "DEMONHUNTER" }
 
+-- Demon Hunter and Death Knight decks unlock when any character reaches level 20 and 40 (Sources/Rewards.lua).
+function Decks:IsUnlocked(class)
+    return not TC.Rewards or TC.Rewards:IsUnlocked(class)
+end
+
 local function list()
     TC.db.decks = TC.db.decks or {}
     return TC.db.decks
@@ -277,6 +282,7 @@ end
 function Decks:Import(code, name)
     local parsed, why = self:Decode(code)
     if not parsed then return nil, why end
+    if not self:IsUnlocked(parsed.class) then return nil, "locked" end
     local deck = self:Create(parsed.class, name and name ~= "" and name or nil)
     deck.cards = parsed.cards
     return deck
@@ -285,12 +291,16 @@ end
 local IMPORT_ERRORS = { format = "That is not a Tavern Cards deck code.", class = "That deck code names an unknown class.",
     unknown = "That deck has cards this version of Tavern Cards doesn't know.",
     size = "That deck code has more than 30 cards.",
+    locked = "That deck's class isn't unlocked yet: reach level 20 (Demon Hunter) or 40 (Death Knight) on any character.",
     illegal = "That deck breaks the deck rules (cards of another class, or too many copies)." }
 Decks.IMPORT_ERRORS = IMPORT_ERRORS
 
 -- A deck link was clicked in chat: confirm, then import and open it.
 function Decks:OfferImport(code, name)
     local parsed, why = self:Decode(code)
+    if parsed and not self:IsUnlocked(parsed.class) then
+        parsed, why = nil, "locked"
+    end
     if not parsed then
         TC:Print(IMPORT_ERRORS[why] or "That deck can't be imported.")
         return

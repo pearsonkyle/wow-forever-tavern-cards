@@ -160,7 +160,10 @@ end
 function Toast:ShowTooltip(owner)
     local e = owner.entry
     GameTooltip:SetOwner(owner, "ANCHOR_BOTTOM")
-    if e.id then
+    if e.notice then
+        GameTooltip:SetText(e.label, 1, 0.82, 0)
+        GameTooltip:AddLine(e.name, 1, 1, 1)
+    elseif e.id then
         TC:CardTooltip(e.id)
         if e.quest then
             TC.Quests:AddTooltipLines(GameTooltip, e.quest)
@@ -191,7 +194,13 @@ function Toast:Next()
     end
     frame = frame or build()
     frame.entry = e
-    if e.id then
+    if e.notice then
+        frame.line:SetText(e.label)
+        frame.name:SetText("|cffffffff" .. e.name .. "|r")
+        frame.icon:SetTexture(e.icon or "Interface\\Icons\\INV_Misc_Ticket_Tarot_Stack_01")
+        frame.cost:SetText("")
+        Art:Play("UI_LEGENDARY_LOOT_TOAST")
+    elseif e.id then
         local card = TC.Cards[e.id]
         frame.line:SetText(e.result == "dust" and "Duplicate Card" or e.result == "copy" and "Second Copy" or "Card Earned")
         frame.name:SetText(Art:ColoredName(e.id))
@@ -212,6 +221,12 @@ function Toast:Next()
     frame.intro:Play()
     frame.glowAnim:Play()
     frame.shineAnim:Play()
+end
+
+-- A toast that isn't a card: an unlocked deck class.
+function Toast:Notice(label, name, icon)
+    queue[#queue + 1] = { notice = true, label = label, name = name, icon = icon }
+    self:Next()
 end
 
 function Toast:Preview(id)

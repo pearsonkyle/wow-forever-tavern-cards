@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/pearsonkyle/wow-forever-tavern-cards/actions/workflows/ci.yml/badge.svg)](https://github.com/pearsonkyle/wow-forever-tavern-cards/actions/workflows/ci.yml)
 
-A collectible card game inside **WoW: Forever**. Finish quests to earn cards, build decks, and play at
+A collectible card game inside **WoW: Forever**. Quest, raid and explore to earn cards, build decks, and play at
 the tavern table against the house or your friends, all without leaving the game.
 
 ![A card earned from a quest](docs/screenshots/quest-reward-toast.jpg)
@@ -19,8 +19,12 @@ the tavern table against the house or your friends, all without leaving the game
 
 ## Play
 
-- **Collect**: every quest you complete earns a card; quests you already finished pay out on your first
-  login. Extra copies turn into dust automatically.
+- **Collect**: every quest, the first kill of every dungeon and raid boss, achievements and level
+  milestones each earn a card, and the harder the deed the rarer the card: raid bosses pay legendaries.
+  What you already did pays out on your first login, bosses included when the game remembers them (its
+  boss kill statistics, quests that needed the boss dead, this week's lockouts). Extra copies turn into dust automatically.
+- **Hero classes**: Demon Hunter decks unlock when any of your characters reaches level 20, Death Knight
+  decks at level 40; from then on their cards turn up among your rewards.
 - **Build decks**: 30 cards from one class plus Neutral, each with the card back of your choice. Craft
   missing cards with dust (Alt + Right-click a card) or disenchant spares (Ctrl + Right-click).
 - **Play**: in the **Play** tab, pick a deck and a difficulty and press Play. Click a card to play it,
@@ -80,13 +84,15 @@ house. Wins pay dust, and the day's first win brings a card. Challenge a friend 
 <td><img src="docs/screenshots/ledger.jpg" alt="The card ledger"></td>
 <td width="38%">
 <h3>The ledger</h3>
-Where every card came from: the quest, its giver and location, or the win that earned it.
+Where every card came from: the quest, its giver and location, the boss or achievement, or the win that
+earned it.
 </td>
 </tr>
 <tr>
 <td width="38%">
 <h3>Legendary finds</h3>
-Quests hide legendary cards too. A toast tells you what you earned and from where; click it to open the
+Raid bosses, epic quest chains and great feats pay legendary cards. A toast tells you what you earned and
+from where; click it to open the
 card in your book.
 </td>
 <td><img src="docs/screenshots/legendary-toast.jpg" alt="A legendary from a quest"></td>

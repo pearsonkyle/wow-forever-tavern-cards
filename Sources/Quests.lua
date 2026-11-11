@@ -13,7 +13,8 @@ local function buildPools(family)
     pools = { COMMON = {}, RARE = {}, EPIC = {}, LEGENDARY = {} }
     for _, id in ipairs(TC.CardOrder) do
         local card = TC.Cards[id]
-        if bit.band(card.flags, 8) ~= 0 and (card.family == family or card.family == "NEUTRAL") then
+        if bit.band(card.flags, 8) ~= 0 and (card.family == family or card.family == "NEUTRAL"
+                or (TC.HeroUnlock and TC.HeroUnlock[card.family])) then
             local rarity = card.rarity == "FREE" and "COMMON" or card.rarity
             table.insert(pools[rarity], id)
         end
@@ -35,19 +36,31 @@ function Quests:Canon(questID)
     return TC.QuestCanon and TC.QuestCanon[questID] or questID
 end
 
+-- A stable card of that rarity for a source the maps don't know (seeded by its id). Hero class cards only once
+-- their decks are unlocked.
+function Quests:Fallback(seed, rarity)
+    local pool = pools and pools[rarity]
+    if not pool or #pool == 0 then
+        return nil
+    end
+    local h = hash(seed)
+    for i = 0, 15 do
+        local id = pool[(h + i * 7919) % #pool + 1]
+        local family = TC.Cards[id].family
+        if not (TC.Rewards and TC.HeroUnlock and TC.HeroUnlock[family]) or TC.Rewards:IsUnlocked(family) then
+            return id
+        end
+    end
+end
+
 function Quests:CardFor(questID)
     questID = self:Canon(questID)
     local id = classMap and classMap[questID]
     if id then
         return id
     end
-    if not pools then
-        return nil
-    end
     local level = UnitLevel("player") or 1
-    local rarity = level < 20 and "COMMON" or level < 45 and "RARE" or "EPIC"
-    local pool = pools[rarity]
-    return pool[hash(questID) % #pool + 1]
+    return self:Fallback(questID, level < 20 and "COMMON" or level < 45 and "RARE" or "EPIC")
 end
 
 local function areaName(id)

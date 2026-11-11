@@ -21,6 +21,7 @@ Data\Cards.lua
 Data\Wave.lua
 Data\QuestMap.lua
 Data\QuestInfo.lua
+Data\Rewards.lua
 Data\Icons.lua
 Data\Models.lua
 Data\Sounds.lua
@@ -56,6 +57,7 @@ UI\Minimap.lua
 UI\Settings.lua
 
 Sources\Quests.lua
+Sources\Rewards.lua
 
 Social\Chat.lua
 Social\Channel.lua

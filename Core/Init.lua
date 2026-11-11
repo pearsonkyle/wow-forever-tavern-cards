@@ -18,6 +18,7 @@ local DB_DEFAULTS = {
     dust = 0,
     ledger = {},       -- { t, card, source }
     unseen = {},       -- cardId -> true until hovered in the book ("New")
+    unlocks = {},      -- hero class -> time a character first reached its level (TC.HeroUnlock)
     settings = { minimap = {}, mute = false, scale = 1 },
 }
 

@@ -140,6 +140,9 @@ local function build(parent)
         for _, c in ipairs(OPPONENT_CLASSES) do
             if c ~= myClass then classes[#classes + 1] = c end
         end
+        for _, class in ipairs({ "DEMONHUNTER", "DEATHKNIGHT" }) do   -- unlocked hero classes can be borrowed too
+            if TC.Decks:IsUnlocked(class) then classes[#classes + 1] = class end
+        end
         for _, class in ipairs(classes) do
             local key = "house:" .. class
             root:CreateRadio(className(class) .. " House Deck", function() return settings().deck == key end, function()
