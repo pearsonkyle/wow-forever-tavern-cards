@@ -761,9 +761,13 @@ local function setMinion(b, e)
     local card = TC.Cards[e.card_id]
     b.entity = e.id
     b.art:SetTexture(Art:Icon(e.card_id))
-    local npc = TC.CardModels and TC.CardModels[e.card_id]
-    if npc and card and card.type ~= "LOCATION" and TC.Models:Show(b.model, "npc", npc, 0.6, 1.05, nil,
-        function() b.art:SetAlpha(1) end) then
+    -- A prop (item or object), a creature by its model, or a creature.
+    local prop = TC.CardProps and TC.CardProps[e.card_id]
+    local disp = not prop and TC.CardDisplays and TC.CardDisplays[e.card_id]
+    local kind = prop and prop[1] or (disp and "display" or "npc")
+    local npc = prop and prop[2] or disp or (TC.CardModels and TC.CardModels[e.card_id])
+    if npc and card and card.type ~= "LOCATION" and TC.Models:Show(b.model, kind, npc, prop and 0 or 0.6, 1.05, nil,
+        function() b.art:SetAlpha(1) end, prop and prop[3]) then
         b.art:SetAlpha(TC.Models:ArtAlpha(0.3))
     else
         TC.Models:Hide(b.model)
@@ -1012,6 +1016,8 @@ end
 function Board:ShowChoice(title, options, pick, multi, confirmText, onConfirm)
     local c = frame.choice
     c.title:SetText(title)
+    -- A title over more lines makes room for itself (the cards move down).
+    local extra = select(2, title:gsub("\n", "")) * 20
     for _, w in ipairs(c.cards) do w:Hide() w.mark:Hide() end
     for _, b in ipairs(c.buttons) do b:Hide() end
     c.confirm:Hide()
@@ -1027,7 +1033,7 @@ function Board:ShowChoice(title, options, pick, multi, confirmText, onConfirm)
                 local row, col = math.floor((i - 1) / perRow), (i - 1) % perRow
                 local inRow = math.min(perRow, n - row * perRow)
                 w:ClearAllPoints()
-                w:SetPoint("CENTER", c, "CENTER", -(inRow - 1) * step / 2 + col * step, (rows - 1) * 75 - row * 150)
+                w:SetPoint("CENTER", c, "CENTER", -(inRow - 1) * step / 2 + col * step, (rows - 1) * 75 - row * 150 - extra / 2)
                 w.costNow = nil
                 w:SetCard(opt.card)
                 w.onClick = function(_, button)
@@ -1035,7 +1041,7 @@ function Board:ShowChoice(title, options, pick, multi, confirmText, onConfirm)
                 end
             end
         end
-        c:SetSize(math.max(360, perRow * step + 40), 250 + (rows - 1) * 150)
+        c:SetSize(math.max(360, perRow * step + 40), 250 + (rows - 1) * 150 + extra)
     else
         for i, opt in ipairs(options) do
             local b = c.buttons[i]
@@ -1790,7 +1796,7 @@ function Board:ShowMulligan()
     local replace = mulliganMarks.replace
     local options = {}
     for i, id in ipairs(ids) do options[i] = { card = eng:ent(id).card_id } end
-    self:ShowChoice("Your opening hand — click cards to replace them", options, function(i, w)
+    self:ShowChoice("Your opening hand\nClick the cards you want to replace", options, function(i, w)
         replace[i] = not replace[i]
         w.mark:SetShown(replace[i])
     end, true, "Keep", function()

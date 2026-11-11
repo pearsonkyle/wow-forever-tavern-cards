@@ -39,8 +39,8 @@ ones: `/tc` (card book), `/tc play` (back to your match), `/tc duel Name`, `/tc 
 <td width="38%">
 <h3>The card book</h3>
 Every card you earn goes into a two-page binder. Filter by class, rarity and mana cost, search by name,
-and hover any card for its full text with every keyword explained in a side tooltip. Cards named after
-a creature of the game show it in 3D.
+and hover any card for its full text with every keyword explained in a side tooltip. Every card wears a
+game icon chosen to fit it, and on the table each minion stands as a 3D creature of the game.
 </td>
 <td><img src="docs/screenshots/collection.jpg" alt="The card book"></td>
 </tr>

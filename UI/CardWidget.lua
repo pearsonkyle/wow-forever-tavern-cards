@@ -302,8 +302,25 @@ function CardWidget.SetCard(w, id)
     w:SetBackdropBorderColor(0.9, 0.9, 0.9, 1)   -- rarity shows in the name's colour
 
     w.art:SetTexture(Art:Icon(id))
-    local npc = w.model and TC.CardNamedNPC and TC.CardNamedNPC[id] and TC.CardModels and TC.CardModels[id]
-    if npc and TC.Models:Show(w.model, "npc", npc, 0.85, 1, nil, function() w.art:SetAlpha(1) end) then
+    -- A picked head shot (TC.CardPortraits, tools/picker), else the creature a card is named after. Portrait
+    -- zoom 1 is the head-and-shoulders shot the target frame shows; the pick turns it and pulls back.
+    -- A creature from outside Forever's world is shown by its model (display id).
+    -- A prop (item or object) shows whole rather than as a head shot.
+    local portrait = w.model and TC.CardPortraits and TC.CardPortraits[id]
+    local kind, npc, file, zoom = "npc", nil, nil, 1
+    if portrait then
+        local prop = portrait[5]
+        if type(prop) == "table" then
+            kind, npc, file, zoom = prop[1], prop[2], prop[3], 0
+        elseif (portrait[4] or 0) > 0 then kind, npc = "display", portrait[4] else npc = portrait[1] end
+    elseif w.model and TC.CardNamedNPC and TC.CardNamedNPC[id] then
+        local prop = TC.CardProps and TC.CardProps[id]
+        local disp = TC.CardDisplays and TC.CardDisplays[id]
+        if prop then kind, npc, file, zoom = prop[1], prop[2], prop[3], 0
+        elseif disp then kind, npc = "display", disp else npc = TC.CardModels and TC.CardModels[id] end
+    end
+    local facing, dist = portrait and portrait[2], portrait and portrait[3] or 1
+    if npc and TC.Models:Show(w.model, kind, npc, zoom, dist, facing, function() w.art:SetAlpha(1) end, file) then
         w.art:SetAlpha(TC.Models:ArtAlpha(0.25))
         w.model:SetAlpha((w.game or TC.Collection:Count(id) > 0) and 1 or 0.55)
     else

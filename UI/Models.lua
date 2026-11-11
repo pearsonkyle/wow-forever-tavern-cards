@@ -28,7 +28,7 @@ local function applyCam(m)
     if m.RefreshCamera then pcall(m.RefreshCamera, m) end
     pcall(m.SetPortraitZoom, m, m.camZoom)
     pcall(m.SetCamDistanceScale, m, m.camDist or 1)
-    if m.camFacing then pcall(m.SetFacing, m, m.camFacing) end
+    pcall(m.SetFacing, m, m.camFacing or 0)   -- reset too: a reused frame mustn't keep the last card's turn
 end
 
 function Models:Create(parent)
@@ -52,6 +52,13 @@ function Models:Load(m)
     if m.ClearModel then pcall(m.ClearModel, m) end
     if m.kind == "unit" then
         pcall(m.SetUnit, m, m.id)
+    elseif m.kind == "display" then
+        pcall(m.SetDisplayInfo, m, m.id)   -- a model the client has, of a creature it doesn't know
+    elseif m.kind == "item" then
+        -- An item (a weapon): by item when the frame can, else its model file.
+        if not (m.SetItem and pcall(m.SetItem, m, m.id)) and m.file then pcall(m.SetModel, m, m.file) end
+    elseif m.kind == "file" then
+        pcall(m.SetModel, m, m.id)   -- an object (a prop) by its model file
     else
         pcall(m.SetCreature, m, m.id)
     end
@@ -67,6 +74,11 @@ function Models:Load(m)
     C_Timer.After(1.2, function()
         if m.token ~= token or not m.GetModelFileID then return end
         local ok, fid = pcall(m.GetModelFileID, m)
+        if ok and (not fid or fid == 0) and m.kind == "item" and m.file and not m.triedFile then
+            m.triedFile = true   -- SetItem showed nothing: the item's model file instead
+            pcall(m.SetModel, m, m.file)
+            return
+        end
         if ok and (not fid or fid == 0) then
             -- Hidden (the board closed, a page turned) before the model arrived: that proves nothing,
             -- so load it again the next time it shows rather than calling the creature missing.
@@ -74,7 +86,15 @@ function Models:Load(m)
                 m.loaded, m.pending = false, true
                 return
             end
-            if m.kind == "npc" and m.id then missing[m.id] = true end
+            if m.kind ~= "npc" and m.kind ~= "unit" and m.id then missing[m.kind .. m.id] = true end
+            if m.kind == "npc" and m.id then
+                missing[m.id] = true
+                -- Remembered for tools/picker (it flags creatures this client can't show).
+                if TC.db then
+                    TC.db.missingModels = TC.db.missingModels or {}
+                    TC.db.missingModels[m.id] = true
+                end
+            end
             m.loaded, m.id = false, nil
             m:Hide()
             if m.onFail then TC:Safe("model fallback", m.onFail) end
@@ -82,10 +102,11 @@ function Models:Load(m)
     end)
 end
 
--- Shows a creature ("npc", id) or a unit ("unit", token). The same subject again only gets its camera
+-- Shows a creature ("npc", id), a creature model ("display", display id), a unit ("unit", token), an item
+-- ("item", item id; `file` its model file as a fallback) or an object ("file", model file). The same subject again only gets its camera
 -- back (reloading on every board refresh would make it flicker). Returns false when it can't show.
-function Models:Show(m, kind, id, zoom, dist, facing, onFail)
-    if not self:Enabled() or not id or (kind == "npc" and missing[id]) then
+function Models:Show(m, kind, id, zoom, dist, facing, onFail, file)
+    if not self:Enabled() or not id or (kind == "npc" and missing[id]) or (kind ~= "npc" and missing[kind .. id]) then
         m:Hide()
         return false
     end
@@ -95,7 +116,7 @@ function Models:Show(m, kind, id, zoom, dist, facing, onFail)
         applyCam(m)
         return true
     end
-    m.kind, m.id, m.pending = kind, id, nil
+    m.kind, m.id, m.pending, m.file, m.triedFile = kind, id, nil, file, nil
     m:Show()
     if not m:IsVisible() then
         m.pending = true   -- loads when the board shows
