@@ -31,7 +31,7 @@ T.playable_cards_have_programs = function(TC)
             assert(TC.Programs[id], "playable card without a program: " .. id)
         end
     end
-    assert(playable == 3001, "expected 3001 playable cards, got " .. playable)
+    assert(playable == 4569, "expected 4569 playable cards, got " .. playable)
 end
 
 T.known_cards = function(TC)
@@ -55,6 +55,17 @@ T.coin_is_exported = function(TC)
         end
     end
     assert(coin and coin.cost == 0 and TC.Programs[coin.id], "The Coin must be in the engine data")
+end
+
+-- Every minion stands on the board as something of the game: a creature (by id or model) or a prop.
+T.every_minion_has_a_model = function(TC)
+    local missing = {}
+    for _, id in ipairs(TC.CardOrder) do
+        if TC.Cards[id].type == "MINION" and not (TC.CardModels[id] or TC.CardDisplays[id] or TC.CardProps[id]) then
+            missing[#missing + 1] = id
+        end
+    end
+    assert(#missing == 0, #missing .. " minions without a model: " .. table.concat(missing, " ", 1, math.min(#missing, 10)))
 end
 
 return T

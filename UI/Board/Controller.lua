@@ -46,6 +46,13 @@ local function entityTooltip(owner, id)
             end
         end
         GameTooltip:AddLine(("Deck %d  ·  Hand %d"):format(#eng:deck_ids(e.owner), #eng:hand_ids(e.owner)), 0.7, 0.7, 0.7)
+        for _, q in ipairs(Match.QuestInfo(eng, e.owner)) do
+            GameTooltip:AddLine(("Quest: %s  %d / %d"):format(q.name, math.min(q.progress, q.goal), q.goal), 1, 0.82, 0.3)
+            if q.stages > 1 then
+                GameTooltip:AddLine(("  Stage %d of %d"):format(q.stage, q.stages), 0.7, 0.7, 0.7)
+            end
+            GameTooltip:AddLine("  " .. Art:RulesText(q.card), 0.85, 0.85, 0.85, true)
+        end
         if #p.secrets > 0 then
             GameTooltip:AddLine(("%d secret(s) in play"):format(#p.secrets), 0.8, 0.4, 1)
             if e.owner == ME() then
@@ -282,6 +289,9 @@ local function refreshHero(side)
         or (record and record.opponent and Ambiguate and Ambiguate(record.opponent.name, "short") or record and record.opponent and record.opponent.name) or "Opponent"
     b.name:SetText(name .. "  |cffaaaaaa" .. P.className(classes[seat + 1] or "") .. "|r")
     b.deck:SetText(("Deck %d   Fatigue %d"):format(#eng:deck_ids(seat), p.fatigue))
+    local quests = Match.QuestInfo(eng, seat)
+    b.quest:SetText(#quests > 0 and ("Quest: %s %d/%d"):format(quests[1].name, math.min(quests[1].progress, quests[1].goal),
+        quests[1].goal) or "")
     local pile = S.frame.piles[side]
     local left = #eng:deck_ids(seat)
     if pile.backId ~= backOf(seat) then pile:SetBack(backOf(seat)) end
@@ -290,9 +300,11 @@ local function refreshHero(side)
 
     local power = S.frame.powers[side]
     power.power = p.hero_power_id
+    power.info = Match.PowerInfo(eng, seat)
     power.costNow = eng:hero_power_cost(seat)
     power.cost.text:SetText(power.costNow)
-    power.icon:SetTexture(Art:SafeIcon(POWER_ICONS[p.hero_power_id] or "INV_Misc_QuestionMark"))
+    power.icon:SetTexture(power.info.card and Art:Icon(power.info.card)
+        or Art:SafeIcon(POWER_ICONS[p.hero_power_id] or "INV_Misc_QuestionMark"))
     local used = hero and (hero.flags.hero_power_used or p.hero_power_uses >= 1) and s.active == seat
     power.icon:SetDesaturated(used and true or false)
     power:SetShown(p.hero_power_id ~= 0)

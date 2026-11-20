@@ -140,4 +140,45 @@ T.bad_ai_move_falls_back = function(TC)
     assert(broken == 3 and Match:Engine():is_terminal(), "the opponent should play on after a refused move")
 end
 
+-- The run-16 mechanics as the board reads them: an Imbued Hero Power's name and growing text, and a quest's
+-- progress and errors.
+T.imbued_power_and_quest_read_for_the_board = function(TC)
+    local Match = setup(TC)
+    local E, D = TC.Engine, TC.EngineDefs
+    local eng = assert(E.create(TC.AI.buildDeck("PALADIN", 3, 3), TC.AI.buildDeck("MAGE", 4, 4), { 11, 22 }))
+    eng:set_class(0, "PALADIN")
+    eng:set_class(1, "MAGE")
+    while eng.state.phase == D.PHASE.MULLIGAN do
+        for i, m in ipairs(eng:legal_moves()) do
+            if m.desc == "Keep all cards" then assert(eng:apply_move(i)) break end
+        end
+    end
+    local seat = eng.state.active
+    local p = eng:player(seat)
+    p.hero_power_id, p.imbue_count = E.IMBUED_GOLEM, 2
+    local power = Match.PowerInfo(eng, seat)
+    assert(power.name == "Blessing of the Golem", power.name)
+    assert(power.text:find("2/2"), "the Golem should grow with the Imbues: " .. power.text)
+    assert(power.card and TC.Cards[power.card], "the Blessing should show its own card")
+
+    local quest = eng:create_entity(D.def("DRG_008"), seat, D.ZONE.HAND, -1)
+    p.mana = 10
+    local played = false
+    for i, m in ipairs(eng:legal_moves()) do
+        if m.action == "play" and m.raw.entity == quest then
+            assert(eng:apply_move(i), tostring(eng.last_error))
+            played = true
+            break
+        end
+    end
+    assert(played, "the quest should be playable")
+    local quests = Match.QuestInfo(eng, seat)
+    assert(#quests == 1 and quests[1].card == "DRG_008" and quests[1].goal == 5 and quests[1].progress == 0)
+    local again = eng:create_entity(D.def("DRG_008"), seat, D.ZONE.HAND, -1)
+    for _, m in ipairs(eng:legal_moves()) do
+        assert(not (m.action == "play" and m.raw.entity == again), "a second copy of a quest under way is refused")
+    end
+    assert(Match.ErrorText("E_QUEST_DUPLICATE") ~= Match.ErrorText("E_SOMETHING"))
+end
+
 return T

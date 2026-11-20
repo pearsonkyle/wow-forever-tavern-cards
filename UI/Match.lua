@@ -201,8 +201,9 @@ local function logInfo(engine, move, seat)
     if move.action == "hero_power" then
         local p = engine:player(seat)
         local E = TC.Engine
-        info.power = E.POWER_NAME and E.POWER_NAME[p.hero_power_id]
-        info.powerText = E.POWER_TEXT and E.POWER_TEXT[p.hero_power_id]
+        local power = Match.PowerInfo(engine, seat)
+        info.power, info.powerText = power.name, power.text
+        if power.card then info.card = power.card end
     end
     return info
 end
@@ -281,11 +282,44 @@ function Match:Log(line, info)
     notify("log", line, info)
 end
 
+-- What a seat's Hero Power is, read from the engine: a basic one, an Imbued one (its text grows with each
+-- Imbue) or a Hero Power card a quest gave. `card` is the card id the power shows, when it has one.
+function Match.PowerInfo(engine, seat)
+    local p = engine:player(seat)
+    local id = p.hero_power_id
+    local d = engine.card_power and engine:card_power(seat)
+    if d then
+        return { id = id, name = d.name, text = TC.Art and TC.Art:RulesText(d.id) or "", card = d.id }
+    end
+    local imbued = E.imbued_power and E.imbued_power(id)
+    if imbued then
+        return { id = id, name = imbued.name, text = E.power_words(p), card = TC.Cards[imbued.card_id] and imbued.card_id,
+            imbues = p.imbue_count }
+    end
+    return { id = id, name = E.POWER_NAME[id] or "Hero Power", text = E.POWER_TEXT[id] or "" }
+end
+
+-- The seat's quests under way: { card, name, progress, goal, stage, stages }, read from the engine.
+function Match.QuestInfo(engine, seat)
+    local out = {}
+    for _, q in ipairs(engine:player(seat).quests or {}) do
+        local qe = engine:ent(q.entity)
+        local d = qe and engine:def_of(q.entity)
+        local line = d and E.quest_line_of(d)
+        if line then
+            out[#out + 1] = { card = d.id, name = d.name, progress = q.progress, goal = E.quest_goal_target(line),
+                stage = q.stage, stages = q.stage + E.quest_stages_after(d.id) }
+        end
+    end
+    return out
+end
+
 local ERRORS = { E_COST = "Not enough mana.", E_BOARD_FULL = "Your board is full.", E_TARGET = "Invalid target.",
     E_NEEDS_TARGET = "Choose a target.", E_USED = "Already used this turn.", E_PHASE = "Not now.",
     E_NOT_YOUR_TURN = "It is not your turn.", E_PENDING = "Make your choice first.",
     E_SECRET_LIMIT = "You already have 5 secrets.", E_SECRET_DUPLICATE = "That secret is already in play.",
-    E_LOOP = "The rules got stuck in a loop; the match is a draw." }
+    E_LOOP = "The rules got stuck in a loop; the match is a draw.",
+    E_QUEST_LIMIT = "No room for that quest: one main quest and five quests in all.", E_QUEST_DUPLICATE = "That quest is already under way." }
 function Match.ErrorText(code)
     return ERRORS[code] or ("That can't be done (" .. tostring(code) .. ").")
 end

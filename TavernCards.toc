@@ -35,6 +35,7 @@ Engine\Defs.lua
 Engine\Engine.lua
 Engine\Effects.lua
 Engine\Ops.lua
+Engine\Imbue.lua
 Engine\Actions.lua
 Engine\AI.lua
 

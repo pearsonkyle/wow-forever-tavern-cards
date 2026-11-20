@@ -270,4 +270,46 @@ T.models_hidden_load_is_not_missing = function(TC)
     assert(not TC.Models:Show(m, "npc", 4242, 0.8, 1), "missing once seen to fail")
 end
 
+-- A whole game for every class, the new cards included: every minion that reaches the board is shown as a model
+-- (a creature, by id or model, or a prop), and every model asked for is a real kind and id.
+T.every_class_plays_with_models_on_the_board = function(TC)
+    local Match, Board, tick = setup(TC)
+    local shown, onBoard = 0, {}
+    local realShow = TC.Models.Show
+    TC.Models.Show = function(self, m, kind, id, ...)
+        assert(kind == "npc" or kind == "display" or kind == "item" or kind == "file", "model kind " .. tostring(kind))
+        assert(type(id) == "number" and id > 0, "model id " .. tostring(id))
+        shown = shown + 1
+        return realShow(self, m, kind, id, ...)
+    end
+    local classes = { "DRUID", "HUNTER", "MAGE", "PALADIN", "PRIEST", "ROGUE", "SHAMAN", "WARLOCK", "WARRIOR",
+        "DEMONHUNTER", "DEATHKNIGHT", "MAGE" }
+    for game, class in ipairs(classes) do
+        local cards = TC.AI.buildDeck(class, 100 + game * 7, 3)
+        local deck = { id = 1, class = class, name = "Test", cards = {} }
+        for _, id in ipairs(cards) do deck.cards[id] = (deck.cards[id] or 0) + 1 end
+        local foe = classes[(game % #classes) + 1]
+        assert(Match:StartPractice(deck, { name = "Test", class = foe, profile = "novice" }))
+        Board:Open()
+        playByClicks(TC, Match, Board, function()
+            tick()
+            local eng = Match:Engine()
+            for seat = 0, 1 do
+                for _, id in ipairs(eng:board_ids(seat)) do
+                    local e = eng:ent(id)
+                    if TC.Cards[e.card_id] and TC.Cards[e.card_id].type == "MINION" then onBoard[e.card_id] = true end
+                end
+            end
+        end, 30000)
+        assert(Match:Engine():is_terminal(), class .. " game should finish")
+    end
+    TC.Models.Show = realShow
+    local n = 0
+    for id in pairs(onBoard) do
+        n = n + 1
+        assert(TC.CardModels[id] or TC.CardDisplays[id] or TC.CardProps[id], id .. " stood on the board with no model")
+    end
+    assert(n > 40 and shown > n, ("%d minions on the board, %d models shown"):format(n, shown))
+end
+
 return T

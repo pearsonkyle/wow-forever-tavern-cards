@@ -138,7 +138,7 @@ function Art:SquareClassIcon(family)
 end
 
 -- Data/Icons.lua ranks up to three icons per card, cards in pick order. Resolved once: each card takes
--- its first choice this client has and no earlier card took. The misses are kept in
+-- its first choice this client has and no earlier card took ("=name" may be shared). The misses are kept in
 -- TavernCardsDB.missingIcons (tools/icons/catalog.py import-missing feeds them back).
 local cache = {}   -- card id -> icon path (Art:Icon)
 local resolved, missingList
@@ -150,10 +150,14 @@ local function resolveIcons()
         local cardName = TC.Cards[id] and TC.Cards[id].name or id
         for i = 2, #row do
             local name = row[i]
+            -- "=name": the card's shared fallback (every unique pick was taken), so another card may have it.
+            local shared = name:sub(1, 1) == "="
+            if shared then name = name:sub(2) end
             local path = icon(name)
             -- Cards that share a name (a card and its token) share an icon.
-            if path and (not used[name] or used[name] == cardName) then
-                used[name] = cardName
+            if path and (shared or not used[name] or used[name] == cardName) then
+                -- A shared fallback never claims the icon: the card that owns it outright keeps it, whatever the order.
+                if not shared then used[name] = used[name] or cardName end
                 resolved[id] = path
                 break
             elseif not path then

@@ -48,12 +48,10 @@ AI.PROFILES = {
 -- ---- search copies -----------------------------------------------------------------------------
 
 -- TcEngine::search_copy: the match as `viewer` could know it, rolling its own dice.
+-- TcEngine::search_copy: the match as `viewer` could know it, rolling its own dice. The copy is the whole engine
+-- (TcEngine's copy constructor: every member, not only the state), without the observer log.
 function E:search_copy(seedHi, seedLo, viewer)
-    local copy = setmetatable({}, E)
-    copy.state = E.deepCopy(self.state)
-    copy:resetTransient()
-    copy.last_effect_count, copy.last_excess = self.last_effect_count, self.last_excess
-    copy.scratch = true
+    local copy = self:probe_copy()
     copy.events = nil
     local s = copy.state
     s.rng = Rng.new(seedHi, seedLo)
@@ -124,6 +122,9 @@ local function clamp(x, lo, hi)
     return max(lo, min(hi, x))
 end
 
+local QUEST_STARTED = 4.5   -- a quest under way (run 16)...
+local QUEST_PROGRESS = 3.0  -- ...and the rest of its worth, earned as it gets nearer its goal
+
 local function sideWorth(engine, seat, me)
     local s = engine.state
     local p = s.players[seat + 1]
@@ -177,12 +178,38 @@ local function sideWorth(engine, seat, me)
     worth = worth + 1.0 * p.max_mana
     worth = worth - 0.6 * p.overload_next
     worth = worth + 1.5 * #p.secrets
+    -- Run 16: a quest under way is a reward to come, the nearer the better; a completed one keeps its full worth.
+    for _, q in ipairs(p.quests) do
+        local line = E.quest_line_of(engine:def_of(q.entity))
+        if line then
+            worth = worth + QUEST_STARTED + QUEST_PROGRESS * min(1.0, q.progress / E.quest_goal_target(line))
+        end
+    end
+    worth = worth + (QUEST_STARTED + QUEST_PROGRESS) * p.quests_completed
     worth = worth + 0.15 * p.corpses
     if p.starship_building then worth = worth + 0.4 * (p.starship_attack + p.starship_health) end
     for _, row in ipairs(s.persistent) do
         if row.owner == seat then worth = worth + 1.0 end
     end
     worth = worth + 1.0 * #p.delayed_effects
+    -- Imbue (run 16): each level of an Imbued Hero Power is worth about a card's play, the more the cheaper the power
+    -- is to use; an Emerald Portal in the deck is a free Dragon of that level to come. Without one the Imbues only
+    -- count.
+    if p.imbue_count > 0 then
+        local level = min(p.imbue_count, 6)
+        if E.imbued_power(p.hero_power_id) then
+            local cost = min(2, engine:hero_power_cost(p.seat))
+            worth = worth + (1.3 - 0.2 * cost) * level
+            for id = 1, s.next_entity_id - 1 do
+                local e = s.entities[id]
+                if e.zone == ZONE.DECK and e.owner == seat and e.card_id == E.IMBUE_PORTAL then
+                    worth = worth + 0.5 + 0.6 * level
+                end
+            end
+        else
+            worth = worth + 0.3 * min(level, 4)
+        end
+    end
     return worth
 end
 

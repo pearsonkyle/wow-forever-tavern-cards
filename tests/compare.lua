@@ -22,7 +22,8 @@ end
 
 -- Lua field name for a C++ JSON key, where they differ.
 local PLAYER_RENAME = { play_tribes = "play_tribes_this_turn", play_schools = "play_schools_this_turn" }
-local BUFF_RENAME = { fromAura = "from_aura", turnsRemaining = "turns_remaining" }
+local BUFF_RENAME = { fromAura = "from_aura", turnsRemaining = "turns_remaining", spellDamage = "spell_damage",
+    ticksOn = "ticks_on" }
 
 local function list(path, cpp, lua, fn)
     lua = lua or {}
@@ -73,6 +74,32 @@ local function mapAsStrings(path, cpp, lua)
     return list(path, cpp, converted, scalar)
 end
 
+-- played_history: C++ "CARD|PAID" strings plus parallel played_turns / played_targets; Lua {card, paid, turn,
+-- target_side} rows.
+local function playedRows(field)
+    return function(path, cpp, lua)
+        local converted = {}
+        for i, row in ipairs(lua or {}) do
+            if field == "row" then converted[i] = row.card .. "|" .. row.paid else converted[i] = row[field] end
+        end
+        return list(path, cpp, converted, scalar)
+    end
+end
+
+-- delayed_later: C++ "CARD:INDEX:TURNS"; Lua {card, index, turns}.
+local function laterAsStrings(path, cpp, lua)
+    local converted = {}
+    for i, d in ipairs(lua or {}) do converted[i] = d.card .. ":" .. d.index .. ":" .. d.turns end
+    return list(path, cpp, converted, scalar)
+end
+
+local function quests(path, cpp, lua)
+    return list(path, cpp, lua, function(qp, cq, lq)
+        if not lq then return qp .. ": missing" end
+        return object(qp, cq, lq)
+    end)
+end
+
 local function entity(path, c, l)
     if not l then return path .. ": missing in lua" end
     return object(path, c, l, nil, {
@@ -88,6 +115,11 @@ local function entity(path, c, l)
             for i, g in ipairs(lg or {}) do converted[i] = g.card_id .. ":" .. g.index end
             return list(p, cg, converted, scalar)
         end,
+        granted_seats = function(p, cs)
+            local converted = {}
+            for i, g in ipairs(l.granted or {}) do converted[i] = g.seat or -1 end
+            return list(p, cs, converted, scalar)
+        end,
     })
 end
 
@@ -95,6 +127,11 @@ local function player(path, c, l)
     return object(path, c, l, PLAYER_RENAME, {
         delayed_effects = pairsAsStrings,
         numbered_made = mapAsStrings,
+        played_history = function(p, cpp) return playedRows("row")(p, cpp, l.played_history) end,
+        played_turns = function(p, cpp) return playedRows("turn")(p, cpp, l.played_history) end,
+        played_targets = function(p, cpp) return playedRows("target_side")(p, cpp, l.played_history) end,
+        delayed_later = laterAsStrings,
+        quests = quests,
     })
 end
 
@@ -102,7 +139,8 @@ end
 function compare.state(cpp, engine)
     local s = engine.state
     local d
-    for _, k in ipairs({ "active", "phase", "turn", "v", "next_entity_id", "next_play_order", "loop_steps" }) do
+    for _, k in ipairs({ "active", "phase", "turn", "v", "next_entity_id", "next_play_order", "loop_steps",
+        "next_row_serial" }) do
         d = scalar(k, cpp[k], s[k])
         if d then return d end
     end
@@ -123,7 +161,7 @@ function compare.state(cpp, engine)
         cards = "card_options", cost = "cost_delta", guessCopy = "guess_copy", index = "effect_index",
         eventSubject = "event_subject", previous = "previous_targets", fromDeck = "from_deck",
         thenOnPlay = "then_on_play", resumeSame = "resume_same", othersToHand = "others_to_hand",
-        dark_gift = "dark_gift",
+        dark_gift = "dark_gift", fromDeckCopy = "from_deck_copy", chainSource = "chain_source",
     }, {
         trigger = function(p, c, l)
             return scalar(p, c, TavernCards_NS.TriggerNumbers[l])
@@ -136,7 +174,12 @@ function compare.state(cpp, engine)
     end
     d = list("persistent", cpp.persistent, s.persistent, function(p, c, l)
         if not l then return p .. ": missing" end
-        return object(p, c, l, { turns = "turns_remaining" })
+        return object(p, c, l, { turns = "turns_remaining", gameLong = "game_long" })
+    end)
+    if d then return d end
+    d = list("end_of_turn", cpp.end_of_turn or {}, s.end_of_turn, function(p, c, l)
+        if not l then return p .. ": missing" end
+        return object(p, c, l)
     end)
     if d then return d end
     for _, ce in ipairs(cpp.entities) do
