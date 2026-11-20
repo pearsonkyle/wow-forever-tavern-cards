@@ -7,7 +7,7 @@ the tavern table against the house or your friends, all without leaving the game
 
 ![The tavern table](docs/screenshots/match.jpg)
 
-> **Alpha.** Expect rough edges; bug reports are welcome in [Issues](../../issues).
+> **Beta.** Bug reports are welcome in [Issues](../../issues).
 
 ## Install
 
