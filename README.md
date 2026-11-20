@@ -5,8 +5,6 @@
 A collectible card game inside **WoW: Forever**. Quest, raid and explore to earn cards, build decks, and play at
 the tavern table against the house or your friends, all without leaving the game.
 
-![A card earned from a quest](docs/screenshots/quest-reward-toast.jpg)
-
 ![The tavern table](docs/screenshots/match.jpg)
 
 > **Alpha.** Expect rough edges; bug reports are welcome in [Issues](../../issues).
@@ -25,7 +23,7 @@ the tavern table against the house or your friends, all without leaving the game
   boss kill statistics, quests that needed the boss dead, this week's lockouts). Extra copies turn into dust automatically.
 - **Hero classes**: Demon Hunter decks unlock when any of your characters reaches level 20, Death Knight
   decks at level 40; from then on their cards turn up among your rewards.
-- **Build decks**: 30 cards from one class plus Neutral, each with the card back of your choice. Craft
+- **Build decks**: 30 cards from one class plus Neutral, each with a card back you've earned. Craft
   missing cards with dust (Alt + Right-click a card) or disenchant spares (Ctrl + Right-click).
 - **Play**: in the **Play** tab, pick a deck and a difficulty and press Play. Click a card to play it,
   click a glowing minion and then an enemy to attack, right-click to cancel.
@@ -58,18 +56,21 @@ them; the right page shows your list and mana curve. Auto-fill finishes a deck f
 </tr>
 <tr>
 <td width="38%">
-<h3>Pick your card back</h3>
-Dress each deck in one of dozens of card backs painted from the game's dungeons and raids, or your
-class and faction crest. Your opponents see it on your hand and deck during the match.
+<h3>Your decks and card backs</h3>
+Preview a deck at a glance, play it, share it in chat as a link or a code, or copy a friend's deck
+straight from theirs.
+Earn card backs as you adventure: finish a dungeon or raid for its painting, travel to a zone for its
+map, play a class or faction for its crest. The Card Backs gallery shows how to earn the rest. Your
+opponents see your back on your hand and deck during the match.
 </td>
 <td><img src="docs/screenshots/card-backs.jpg" alt="Choosing a card back"></td>
 </tr>
 <tr>
-<td><img src="docs/screenshots/decks.jpg" alt="Your decks"></td>
+<td><img src="docs/screenshots/card-tooltip.jpg" alt="A card's full text"></td>
 <td width="38%">
-<h3>Your decks</h3>
-Preview a deck at a glance, play it, share it in chat as a link or a code, or copy a friend's deck
-straight from theirs.
+<h3>Every card explained</h3>
+Hover any card for its full text, with each keyword explained in a side tooltip, how many you own, and
+how to craft or disenchant it.
 </td>
 </tr>
 <tr>
@@ -81,26 +82,25 @@ house. Wins pay dust, and the day's first win brings a card. Challenge a friend 
 <td><img src="docs/screenshots/play.jpg" alt="The Play tab"></td>
 </tr>
 <tr>
-<td><img src="docs/screenshots/ledger.jpg" alt="The card ledger"></td>
+<td><img src="docs/screenshots/match-attack.jpg" alt="Choosing a target at the table"></td>
 <td width="38%">
-<h3>The ledger</h3>
-Where every card came from: the quest, its giver and location, the boss or achievement, or the win that
-earned it.
+<h3>At the table</h3>
+Minions stand as 3D creatures of the game and square up when you pick them to attack. A targeting arrow
+shows what you can hit, and the match log tells the whole story: hover a line to see the card that was
+played.
 </td>
-</tr>
-<tr>
-<td width="38%">
-<h3>Legendary finds</h3>
-Raid bosses, epic quest chains and great feats pay legendary cards. A toast tells you what you earned and
-from where; click it to open the
-card in your book.
-</td>
-<td><img src="docs/screenshots/legendary-toast.jpg" alt="A legendary from a quest"></td>
 </tr>
 </table>
 
+Also in the book: **the ledger** shows where every card came from (the quest, its giver and location, the
+boss or achievement, or the win that earned it), and **legendary finds** from raid bosses, epic quest
+chains and great feats arrive with a toast you can click to open the card.
+
 ## Licence
 
-The addon's code is [MIT](LICENSE). Card names and text are the property of Blizzard Entertainment;
+The addon's code is licensed under the [GNU General Public License v3.0 or later](LICENSE). Anyone who
+redistributes it, modified or not, must do so under the same licence and share their source. Releases up to
+v0.1.0-alpha.7 were published under the MIT licence and remain MIT. Bundled libraries (`Libs/`) keep their
+own licences. Card names and text are the property of Blizzard Entertainment;
 game art is drawn from the client at run time. A non-commercial fan project, not affiliated with or
 endorsed by Blizzard Entertainment.

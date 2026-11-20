@@ -1,3 +1,6 @@
+-- SPDX-License-Identifier: GPL-3.0-or-later
+-- Copyright (C) 2026 Kyle Pearson. Part of Tavern Cards (https://github.com/pearsonkyle/wow-forever-tavern-cards).
+--
 -- A small yes/no dialog. Not StaticPopup: addon use of the shared StaticPopup frames taints them on
 -- Forever (seen breaking the gamepad UI), so this is our own frame in the same style.
 --   TC:Confirm(text, onAccept [, onDecline [, acceptText [, declineText [, timeout]]]])

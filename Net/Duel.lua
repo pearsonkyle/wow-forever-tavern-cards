@@ -1,3 +1,6 @@
+-- SPDX-License-Identifier: GPL-3.0-or-later
+-- Copyright (C) 2026 Kyle Pearson. Part of Tavern Cards (https://github.com/pearsonkyle/wow-forever-tavern-cards).
+--
 -- Duels between players: a handshake that agrees on decks and a fair seed, then lockstep play.
 --
 -- Both clients run the same deterministic engine. Nothing but move numbers travels: whoever decides

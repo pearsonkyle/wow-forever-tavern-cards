@@ -1,3 +1,6 @@
+-- SPDX-License-Identifier: GPL-3.0-or-later
+-- Copyright (C) 2026 Kyle Pearson. Part of Tavern Cards (https://github.com/pearsonkyle/wow-forever-tavern-cards).
+--
 -- The card book: a native portrait window with bottom tabs, sized around the spellbook page art.
 --   TC:ToggleWindow()          TC:ShowWindow("collection" | "decks" | "play" | "ledger")
 -- Panels register with TC:RegisterPanel(key, title, builder); builder(parent) returns a frame
@@ -6,7 +9,7 @@
 local TC = TavernCards_NS
 local Art = TC.Art
 
-local PAGE_HEIGHT = 530
+local PAGE_HEIGHT = 580
 local TOOLBAR = 64   -- title bar + toolbar above the pages
 local FOOTER = 42    -- paging + progress under the pages
 

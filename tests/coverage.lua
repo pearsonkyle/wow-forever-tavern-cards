@@ -1,3 +1,6 @@
+-- SPDX-License-Identifier: GPL-3.0-or-later
+-- Copyright (C) 2026 Kyle Pearson. Part of Tavern Cards (https://github.com/pearsonkyle/wow-forever-tavern-cards).
+--
 -- Line coverage for the headless test suite, with no dependencies (LuaJIT only):
 --   luajit tests/coverage.lua [--min-total N] [--min Engine=N ...] [--report FILE]
 --

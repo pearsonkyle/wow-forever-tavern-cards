@@ -1,3 +1,6 @@
+-- SPDX-License-Identifier: GPL-3.0-or-later
+-- Copyright (C) 2026 Kyle Pearson. Part of Tavern Cards (https://github.com/pearsonkyle/wow-forever-tavern-cards).
+--
 -- Duels end to end, headless: two complete clients (each its own copy of the addon) wired together by a
 -- fake addon-message transport with a virtual clock. They handshake (commit-reveal), then play whole
 -- games in lockstep, each side's "player" choosing with the AI. Both must end in the same state.

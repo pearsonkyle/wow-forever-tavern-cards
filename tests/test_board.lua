@@ -1,4 +1,7 @@
--- Smoke test for the board (UI/Board.lua) and the Play tab against a permissive frame mock: whole
+-- SPDX-License-Identifier: GPL-3.0-or-later
+-- Copyright (C) 2026 Kyle Pearson. Part of Tavern Cards (https://github.com/pearsonkyle/wow-forever-tavern-cards).
+--
+-- Smoke test for the board (UI/Board/*.lua) and the Play tab against a permissive frame mock: whole
 -- games are played by "clicking" (hand cards, gaps, targets, choices, End Turn), so every
 -- interaction path runs against real engine states. It checks the Lua logic, not the layout.
 local T = {}
@@ -91,7 +94,8 @@ local function setup(TC)
     TC.db = { collection = {}, dust = 0, ledger = {}, decks = {}, settings = { mute = true } }
     TC.char = { granted = {} }
     for _, file in ipairs({ "Collection/Collection.lua", "Collection/Decks.lua", "UI/Art.lua", "UI/CardWidget.lua", "UI/CardBacks.lua", "UI/Models.lua",
-        "UI/Match.lua", "UI/Board.lua", "UI/PlayPanel.lua" }) do
+        "UI/Match.lua", "UI/Board/Board.lua", "UI/Board/Widgets.lua", "UI/Board/Effects.lua",
+        "UI/Board/Layout.lua", "UI/Board/Controller.lua", "UI/Board/Table.lua", "UI/PlayPanel.lua" }) do
         dofile(file)
     end
     return TC.Match, TC.Board, function()

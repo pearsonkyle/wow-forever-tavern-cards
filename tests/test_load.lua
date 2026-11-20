@@ -1,3 +1,6 @@
+-- SPDX-License-Identifier: GPL-3.0-or-later
+-- Copyright (C) 2026 Kyle Pearson. Part of Tavern Cards (https://github.com/pearsonkyle/wow-forever-tavern-cards).
+--
 -- The whole addon, as the client loads it: every file in .toc order inside a permissive mock of the WoW
 -- API, then the login events, then every tab, a deck, a practice match on the board, and a few slash
 -- commands. Catches load-order mistakes, nil globals and errors on paths the unit tests don't take.

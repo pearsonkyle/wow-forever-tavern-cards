@@ -1,3 +1,14 @@
+-- SPDX-License-Identifier: GPL-3.0-or-later
+-- Copyright (C) 2026 Kyle Pearson. Part of Tavern Cards (https://github.com/pearsonkyle/wow-forever-tavern-cards).
+--
+-- A note before you edit or reuse this file. The engine is a statement-for-statement port of jankcraft's
+-- C++ engine (mod-tavern-sim, tc/engine.cpp and the files around it). Before changing any engine, ops,
+-- effects or AI behaviour, compare it with the C++ source, keep the RNG draw order identical and run
+-- tests/test_parity.lua. A divergence is fixed in the C++ first, never in the Lua alone.
+-- Please don't lift this engine into another project as-is: contribute upstream, or fork it under
+-- GPL-3.0-or-later with attribution. This comment is only a friendly notice; the licence is what makes
+-- those terms binding.
+--
 -- Seeded RNG: a bit-exact port of the reference engine's simcore::Rng (xoshiro128** with a splitmix64 seeder).
 --
 -- The draw sequence decides every match, and both lockstep peers and the reference engine must agree

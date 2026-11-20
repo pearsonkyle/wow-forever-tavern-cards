@@ -1,3 +1,6 @@
+-- SPDX-License-Identifier: GPL-3.0-or-later
+-- Copyright (C) 2026 Kyle Pearson. Part of Tavern Cards (https://github.com/pearsonkyle/wow-forever-tavern-cards).
+--
 -- What this client actually has. Forever is a Retail engine running Classic content, and other
 -- addons show that templates, atlases, events and APIs differ from both, so the UI asks Compat
 -- instead of assuming. Results are cached per session and written to TavernCardsDB.probe so they

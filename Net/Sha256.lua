@@ -1,3 +1,6 @@
+-- SPDX-License-Identifier: GPL-3.0-or-later
+-- Copyright (C) 2026 Kyle Pearson. Part of Tavern Cards (https://github.com/pearsonkyle/wow-forever-tavern-cards).
+--
 -- SHA-256 in plain Lua 5.1 with the bit library: the commitments of the duel handshake (Net/Duel.lua).
 -- Headless (tests/test_duel.lua checks the standard test vectors).
 

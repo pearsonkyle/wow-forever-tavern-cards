@@ -1,3 +1,6 @@
+-- SPDX-License-Identifier: GPL-3.0-or-later
+-- Copyright (C) 2026 Kyle Pearson. Part of Tavern Cards (https://github.com/pearsonkyle/wow-forever-tavern-cards).
+--
 -- The collection and every way a card enters it.
 --
 -- Rules from the reference engine (tc/collection.h, tc/economy.h): a player keeps at most as many copies as a

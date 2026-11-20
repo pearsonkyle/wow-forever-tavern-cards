@@ -1,3 +1,6 @@
+-- SPDX-License-Identifier: GPL-3.0-or-later
+-- Copyright (C) 2026 Kyle Pearson. Part of Tavern Cards (https://github.com/pearsonkyle/wow-forever-tavern-cards).
+--
 -- 3D models for the board: creatures for minions (Data/Models.lua), your own character and the house's
 -- innkeeper for heroes. A PlayerModel forgets its camera when the model (re)loads, shows or resizes, so
 -- the camera wanted is remembered and put back each time. A creature this client has no model for is

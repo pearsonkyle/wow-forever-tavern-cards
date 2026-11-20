@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Builds dist/TavernCards-<version>.zip with only what WoW loads: the .toc and the files it lists
-# (plus Libs/ licences). Usage: bash .github/package.sh [version]
+# Builds dist/TavernCards-<version>.zip with only what WoW loads: the .toc, the files it lists and
+# Textures/ (plus Libs/ licences). Usage: bash .github/package.sh [version]
 set -euo pipefail
 cd "$(dirname "$0")/.."
 version="${1:-$(sed -n 's/^## Version: *//p' TavernCards.toc)}"
@@ -12,6 +12,7 @@ grep -E '\.lua\s*$' TavernCards.toc | tr -d '\r' | sed 's#\\#/#g' | while read -
   mkdir -p "$stage/$(dirname "$f")"
   cp "$f" "$stage/$f"
 done
+mkdir -p "$stage/Textures" && cp Textures/*.tga "$stage/Textures/"
 find Libs -iname '*licen*' -o -iname 'README*' | while read -r f; do mkdir -p "$stage/$(dirname "$f")"; cp "$f" "$stage/$f"; done
 cp README.md "$stage/" 2>/dev/null || true
 [ -f LICENSE ] && cp LICENSE "$stage/"

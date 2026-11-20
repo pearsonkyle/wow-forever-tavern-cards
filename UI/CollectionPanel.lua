@@ -1,3 +1,6 @@
+-- SPDX-License-Identifier: GPL-3.0-or-later
+-- Copyright (C) 2026 Kyle Pearson. Part of Tavern Cards (https://github.com/pearsonkyle/wow-forever-tavern-cards).
+--
 -- Collection tab: a two-page binder on the spellbook page art, 3x3 cards a page, with a toolbar
 -- (search, Filter menu, mana-cost gems, dust) and a footer (paging, collected progress).
 
@@ -7,7 +10,7 @@ local CardWidget = TC.CardWidget
 
 local COLS, ROWS = 3, 3
 local PER_PAGE = COLS * ROWS
-local GAP_X, GAP_Y = 12, 12
+local GAP_X, GAP_Y = 12, 6
 local TOOLBAR_H = 34
 
 local CLASS_ORDER = { "WARRIOR", "PALADIN", "HUNTER", "ROGUE", "PRIEST", "SHAMAN", "MAGE", "WARLOCK", "DRUID",
@@ -56,7 +59,7 @@ local function build(parent)
     local gridW = COLS * CardWidget.WIDTH + (COLS - 1) * GAP_X
     local gridH = ROWS * CardWidget.HEIGHT + (ROWS - 1) * GAP_Y
     -- Room on all sides: the page art's parchment is narrower than the page frame at the top and bottom.
-    local scale = math.min(1, (pageW - 70) / gridW, (pageH - 84) / gridH)
+    local scale = math.min(1.3, (pageW - 64) / gridW, (pageH - 72) / gridH)
     local widgets, grids = {}, {}
     for i, p in ipairs(pages) do
         local grid = CreateFrame("Frame", nil, p)
@@ -173,6 +176,12 @@ local function build(parent)
 
     local dust = panel:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
     dust:SetPoint("TOPRIGHT", -14, -9)
+    -- The card back gallery: every back, and how to earn the ones you don't have.
+    local backsButton = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
+    backsButton:SetSize(96, 22)
+    backsButton:SetPoint("RIGHT", dust, "LEFT", -12, 0)
+    backsButton:SetText("Card Backs")
+    backsButton:SetScript("OnClick", function() TC.CardBacks:Gallery() end)
 
     -- ---- footer --------------------------------------------------------------------------------
     local footerY = -TOOLBAR_H - 4 - pageH - 6

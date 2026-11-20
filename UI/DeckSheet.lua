@@ -1,3 +1,6 @@
+-- SPDX-License-Identifier: GPL-3.0-or-later
+-- Copyright (C) 2026 Kyle Pearson. Part of Tavern Cards (https://github.com/pearsonkyle/wow-forever-tavern-cards).
+--
 -- The deck list written on the book's right page while a deck is edited: name, count, mana curve,
 -- the cards (click one to take it out), and Done / Auto-fill.
 

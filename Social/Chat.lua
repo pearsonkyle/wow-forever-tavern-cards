@@ -1,3 +1,6 @@
+-- SPDX-License-Identifier: GPL-3.0-or-later
+-- Copyright (C) 2026 Kyle Pearson. Part of Tavern Cards (https://github.com/pearsonkyle/wow-forever-tavern-cards).
+--
 -- Chat plumbing shared by the tavern channel, card links and deck codes.
 --
 -- WoW: Forever blocks addons from sending chat messages (ADDON_ACTION_BLOCKED, even from a click), so

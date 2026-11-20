@@ -1,3 +1,6 @@
+-- SPDX-License-Identifier: GPL-3.0-or-later
+-- Copyright (C) 2026 Kyle Pearson. Part of Tavern Cards (https://github.com/pearsonkyle/wow-forever-tavern-cards).
+--
 -- Scenario checks for cards the differential sweep (tests/sweep.py) can't reach in a real game:
 -- their cost is above the 10-mana cap unless something else lowers it. Each puts the card in hand with
 -- the mana it needs, plays it, and checks the printed effect.

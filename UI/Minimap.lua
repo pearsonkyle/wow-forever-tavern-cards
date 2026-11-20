@@ -1,3 +1,6 @@
+-- SPDX-License-Identifier: GPL-3.0-or-later
+-- Copyright (C) 2026 Kyle Pearson. Part of Tavern Cards (https://github.com/pearsonkyle/wow-forever-tavern-cards).
+--
 -- Minimap button. LibDataBroker + LibDBIcon when they work (so minimap button bags can collect it);
 -- otherwise a hand-made button on the minimap ring, dragged around the edge like any other.
 --   Left-click:  open / close the card book

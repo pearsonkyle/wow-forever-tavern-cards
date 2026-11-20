@@ -1,3 +1,6 @@
+-- SPDX-License-Identifier: GPL-3.0-or-later
+-- Copyright (C) 2026 Kyle Pearson. Part of Tavern Cards (https://github.com/pearsonkyle/wow-forever-tavern-cards).
+--
 -- Headless test runner (LuaJIT, run from the repo root):  luajit tests/run.lua [filter]
 --
 -- Loads Engine/ the way the .toc would, then runs every tests/test_*.lua whose name contains the

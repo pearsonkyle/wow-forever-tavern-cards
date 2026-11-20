@@ -1,3 +1,6 @@
+-- SPDX-License-Identifier: GPL-3.0-or-later
+-- Copyright (C) 2026 Kyle Pearson. Part of Tavern Cards (https://github.com/pearsonkyle/wow-forever-tavern-cards).
+--
 -- Card art without card art: rarity colors from WoW's own item qualities, and an icon picked from the
 -- game's icon set by the card's class, tribe, spell school or type. Every path is checked once with
 -- GetFileIDFromPath so a missing icon falls back instead of showing a green box.
@@ -228,6 +231,34 @@ function Art:Icon(id)
     end
     cache[id] = path or FALLBACK
     return cache[id]
+end
+
+-- Our own textures (Textures/, drawn by tools/textures/build.py). TC.TexLayout (Data/Textures.lua) says where
+-- things sit inside them.
+local TEX = "Interface\\AddOns\\TavernCards\\Textures\\"
+
+function Art:Tex(name)
+    return TEX .. name
+end
+
+-- Point a texture at one cell of an atlas: Art:Cell(tex, "gems", "mana").
+function Art:Cell(tex, atlas, cell)
+    local c = TC.TexLayout[atlas][cell]
+    tex:SetTexture(TEX .. atlas)
+    tex:SetTexCoord(c[1], c[2], c[3], c[4])
+end
+
+-- The card frame colour of a class (the stone body is greyscale and takes it as its vertex colour), a little
+-- darker than the class colour so the gold trim and white text stand out. Neutral is warm stone.
+local NEUTRAL_TINT = { 0.72, 0.62, 0.48 }
+local TINT_FIX = { PRIEST = { 0.86, 0.86, 0.8 }, ROGUE = { 0.62, 0.6, 0.55 } }   -- too bright / too yellow as is
+
+function Art:ClassTint(family)
+    local fix = TINT_FIX[family]
+    if fix then return fix[1], fix[2], fix[3] end
+    local c = family ~= "NEUTRAL" and RAID_CLASS_COLORS and RAID_CLASS_COLORS[family]
+    if not c then return NEUTRAL_TINT[1], NEUTRAL_TINT[2], NEUTRAL_TINT[3] end
+    return c.r * 0.85, c.g * 0.85, c.b * 0.85
 end
 
 function Art:RarityColor(rarity)

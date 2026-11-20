@@ -1,3 +1,6 @@
+-- SPDX-License-Identifier: GPL-3.0-or-later
+-- Copyright (C) 2026 Kyle Pearson. Part of Tavern Cards (https://github.com/pearsonkyle/wow-forever-tavern-cards).
+--
 -- A match in progress: the engine, the opponent's brain, and the record that lets a /reload resume.
 --
 -- Practice: the player is seat 0 and the AI seat 1. Duels (Net/Duel.lua): the challenger is seat 0, and
@@ -164,6 +167,46 @@ local function describe(engine, move, seat)
     return (seat == (Match.mySeat or 0) and "You: " or "Opponent: ") .. desc
 end
 
+-- What the log's hover shows for a move, read before the move resolves (a minion may die in it):
+--   { card = played or acting card id, target = target's name, targetCard = its card id, power = hero power
+--     name, powerText, seat, turn, action }
+-- Kept in memory only (the saved log stays plain lines, so a reload shows just the text).
+local function logInfo(engine, move, seat)
+    if not move or not move.raw then return nil end
+    local raw = move.raw
+    local mine = seat == (Match.mySeat or 0)
+    local info = { action = move.action, seat = seat, mine = mine,
+        turn = math.floor(((engine.state.turn or 1) + 1) / 2) }
+    local function cardOf(id)
+        local e = id and engine:ent(id)
+        return e and TC.Cards[e.card_id] and e.card_id or nil
+    end
+    local function nameOf(id)
+        if not id then return nil end
+        for s = 0, 1 do
+            local hero = engine:hero_of(s)
+            if hero and hero.id == id then return s == (Match.mySeat or 0) and "your hero" or "the opponent's hero" end
+        end
+        local d = engine:def_of(id)
+        return d and d.name
+    end
+    info.card = cardOf(raw.entity)
+    if not mine and move.action == "play" then
+        local d = engine:def_of(raw.entity)
+        if d and d.secret then info.card = nil end   -- the opponent's secrets stay secret
+    end
+    if raw.target then
+        info.target, info.targetCard = nameOf(raw.target), cardOf(raw.target)
+    end
+    if move.action == "hero_power" then
+        local p = engine:player(seat)
+        local E = TC.Engine
+        info.power = E.POWER_NAME and E.POWER_NAME[p.hero_power_id]
+        info.powerText = E.POWER_TEXT and E.POWER_TEXT[p.hero_power_id]
+    end
+    return info
+end
+
 -- The opponent's way out when a chosen move is refused or its search fails: end the turn, or take the
 -- first option of a pending choice, so the table never stalls.
 local function fallbackIndex(engine)
@@ -180,6 +223,7 @@ function Match:Apply(index, isFallback)
     if not engine or engine:is_terminal() then return false end
     local seat = engine:current_player()
     local moves = engine:legal_moves()
+    local info = logInfo(engine, moves[index], seat)
     local ok = engine:apply_move(index)
     if not ok then
         if engine:is_terminal() then
@@ -201,7 +245,7 @@ function Match:Apply(index, isFallback)
     record.moves[#record.moves + 1] = index
     local move = moves[index]
     if move and move.action ~= "mulligan" and move.action ~= "resolve" then
-        self:Log(describe(engine, move, seat))
+        self:Log(describe(engine, move, seat), info)
     end
     notify("move", seat, move)
     if engine:is_terminal() then
@@ -227,13 +271,14 @@ function Match:PlayerApply(index)
 end
 
 -- The last lines of the match log (kept with the record, so a reload keeps them).
-function Match:Log(line)
+-- info (optional): what the board's log shows on hover (logInfo); not saved.
+function Match:Log(line, info)
     local record = TC.char.match
     if not record then return end
     record.log = record.log or {}
     record.log[#record.log + 1] = line
     while #record.log > 60 do table.remove(record.log, 1) end
-    notify("log", line)
+    notify("log", line, info)
 end
 
 local ERRORS = { E_COST = "Not enough mana.", E_BOARD_FULL = "Your board is full.", E_TARGET = "Invalid target.",

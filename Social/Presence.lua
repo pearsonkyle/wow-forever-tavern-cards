@@ -1,3 +1,6 @@
+-- SPDX-License-Identifier: GPL-3.0-or-later
+-- Copyright (C) 2026 Kyle Pearson. Part of Tavern Cards (https://github.com/pearsonkyle/wow-forever-tavern-cards).
+--
 -- Who else has Tavern Cards, with no server: a hidden chat channel (not shown in any chat window) where
 -- every player with the addon says hello every few minutes, by addon message. A custom channel reaches
 -- one realm and faction, and WoW: Forever's servers are many connected realms, so the hello also goes to

@@ -1,3 +1,6 @@
+-- SPDX-License-Identifier: GPL-3.0-or-later
+-- Copyright (C) 2026 Kyle Pearson. Part of Tavern Cards (https://github.com/pearsonkyle/wow-forever-tavern-cards).
+--
 -- The rules engine against recorded reference matches (fixtures/traces): replaying each match, every
 -- list of legal moves and every game state must match the recording exactly.
 package.path = "./?.lua;./tests/?.lua;" .. package.path

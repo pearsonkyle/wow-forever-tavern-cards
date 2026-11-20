@@ -1,3 +1,6 @@
+-- SPDX-License-Identifier: GPL-3.0-or-later
+-- Copyright (C) 2026 Kyle Pearson. Part of Tavern Cards (https://github.com/pearsonkyle/wow-forever-tavern-cards).
+--
 -- Bosses, achievements, levels and the hero class unlocks (Sources/Rewards.lua over Data/Rewards.lua).
 local T = {}
 -- Init drops every class map but the player's: keep the generated tables for each test.

@@ -1,3 +1,6 @@
+-- SPDX-License-Identifier: GPL-3.0-or-later
+-- Copyright (C) 2026 Kyle Pearson. Part of Tavern Cards (https://github.com/pearsonkyle/wow-forever-tavern-cards).
+--
 -- "Card earned" toast, built like the game's own achievement alert (same atlases, layout and
 -- animations), with a plain backdrop fallback should an atlas be missing. Toasts queue: a burst of
 -- grants shows one after another, and a batch (the first-login journey) is a single toast.

@@ -1,3 +1,6 @@
+-- SPDX-License-Identifier: GPL-3.0-or-later
+-- Copyright (C) 2026 Kyle Pearson. Part of Tavern Cards (https://github.com/pearsonkyle/wow-forever-tavern-cards).
+--
 -- Quests pay cards: one per quest, per character, from the class's own map (Data/QuestMap.lua).
 -- A quest the map does not know (new Forever content) still pays, from a stable pick in the class pool.
 

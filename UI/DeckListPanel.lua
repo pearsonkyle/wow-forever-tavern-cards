@@ -1,3 +1,6 @@
+-- SPDX-License-Identifier: GPL-3.0-or-later
+-- Copyright (C) 2026 Kyle Pearson. Part of Tavern Cards (https://github.com/pearsonkyle/wow-forever-tavern-cards).
+--
 -- Decks tab: every deck as a tile (class, name, count, ready or what is missing). Click to edit,
 -- right-click for Duplicate / Delete; New Deck asks for a class.
 

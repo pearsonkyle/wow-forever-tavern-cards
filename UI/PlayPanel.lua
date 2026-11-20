@@ -1,3 +1,6 @@
+-- SPDX-License-Identifier: GPL-3.0-or-later
+-- Copyright (C) 2026 Kyle Pearson. Part of Tavern Cards (https://github.com/pearsonkyle/wow-forever-tavern-cards).
+--
 -- Play tab: pick one of your decks (or borrow a house deck), an opponent and a difficulty, and sit down
 -- at the tavern table against the AI. A match in progress can be resumed or conceded from here.
 

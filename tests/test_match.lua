@@ -1,3 +1,6 @@
+-- SPDX-License-Identifier: GPL-3.0-or-later
+-- Copyright (C) 2026 Kyle Pearson. Part of Tavern Cards (https://github.com/pearsonkyle/wow-forever-tavern-cards).
+--
 -- The match controller (UI/Match.lua) headless: the AI thinks over "frames", a whole game finishes,
 -- and a saved match rebuilds to the same state by replaying its moves.
 local T = {}

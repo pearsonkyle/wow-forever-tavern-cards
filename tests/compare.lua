@@ -1,3 +1,6 @@
+-- SPDX-License-Identifier: GPL-3.0-or-later
+-- Copyright (C) 2026 Kyle Pearson. Part of Tavern Cards (https://github.com/pearsonkyle/wow-forever-tavern-cards).
+--
 -- Compares a C++ snapshot (decoded snapshot_json) with a Lua engine state, field by field.
 -- Returns nil when equal, or a "path: cpp=X lua=Y" string for the first difference.
 

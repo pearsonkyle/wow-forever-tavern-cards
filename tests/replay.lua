@@ -1,3 +1,6 @@
+-- SPDX-License-Identifier: GPL-3.0-or-later
+-- Copyright (C) 2026 Kyle Pearson. Part of Tavern Cards (https://github.com/pearsonkyle/wow-forever-tavern-cards).
+--
 -- Replays tavern-trace recordings (C++ engine) through the Lua engine: same decks and seed, then per
 -- step the legal moves must match the C++ list and, after the recorded move, the full state must match
 -- the C++ snapshot. Used by tests/trace.lua (CLI) and tests/test_parity.lua (the committed fixtures).

@@ -1,3 +1,6 @@
+-- SPDX-License-Identifier: GPL-3.0-or-later
+-- Copyright (C) 2026 Kyle Pearson. Part of Tavern Cards (https://github.com/pearsonkyle/wow-forever-tavern-cards).
+--
 -- Everything but quests that pays a card, once per character: the first kill of each dungeon and raid boss,
 -- achievements, and level milestones (Data/Rewards.lua, per class: harder content pays rarer cards).
 -- Also the hero classes: no Forever character plays a Demon Hunter or a Death Knight, so their decks unlock for
@@ -50,6 +53,10 @@ end
 -- ---- paying ---------------------------------------------------------------------------------------
 
 local function pay(key, id, source, batch)
+    -- A dungeon's last boss earns its card back, even when the boss's card was paid long ago (the login
+    -- scans credit every past kill again, which is how backs reach bosses killed before backs existed).
+    local boss = key:match("^b:(%d+)$")
+    if boss and TC.Backs then TC.Backs:OnBoss(boss, batch ~= nil) end
     if not id or TC.Collection:HasGranted(key) then
         return
     end
@@ -210,6 +217,7 @@ function Rewards:CatchUp()
     self:PayLockouts(batch)
     self:PayStatistics(batch)
     self:PayQuestEvidence(batch)
+    if TC.Backs then TC.Backs:Announce() end
     if #batch.cards > 0 then
         TC.Collection:NotifyBatch(batch.cards, batch.dust, "Rewards for your adventures")
         TC:Print("Your levels, achievements and boss kills earned |cffffffff%d|r cards. Your collection: %s.",

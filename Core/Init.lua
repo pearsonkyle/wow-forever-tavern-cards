@@ -1,3 +1,6 @@
+-- SPDX-License-Identifier: GPL-3.0-or-later
+-- Copyright (C) 2026 Kyle Pearson. Part of Tavern Cards (https://github.com/pearsonkyle/wow-forever-tavern-cards).
+--
 -- Namespace and SavedVariables binding.
 --
 -- The namespace is also published as TavernCards_NS so Engine/ files (which must run headless,
@@ -19,6 +22,7 @@ local DB_DEFAULTS = {
     ledger = {},       -- { t, card, source }
     unseen = {},       -- cardId -> true until hovered in the book ("New")
     unlocks = {},      -- hero class -> time a character first reached its level (TC.HeroUnlock)
+    backs = {},        -- card back id -> time it was earned (Sources/Backs.lua, Data/CardBacks.lua)
     settings = { minimap = {}, mute = false, scale = 1 },
 }
 

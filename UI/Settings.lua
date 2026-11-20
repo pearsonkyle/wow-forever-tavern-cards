@@ -1,3 +1,6 @@
+-- SPDX-License-Identifier: GPL-3.0-or-later
+-- Copyright (C) 2026 Kyle Pearson. Part of Tavern Cards (https://github.com/pearsonkyle/wow-forever-tavern-cards).
+--
 -- Options > AddOns > Tavern Cards: every setting and command in one page (the same ones as /tc).
 -- Built with the game's Settings API (a canvas page), or the older InterfaceOptions where that's all
 -- the client has. TC:OpenSettings() opens it (minimap right-click > Settings, /tc settings).

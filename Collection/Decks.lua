@@ -1,3 +1,6 @@
+-- SPDX-License-Identifier: GPL-3.0-or-later
+-- Copyright (C) 2026 Kyle Pearson. Part of Tavern Cards (https://github.com/pearsonkyle/wow-forever-tavern-cards).
+--
 -- Decks: account-wide, any number, each bound to a class.
 --
 -- Rules from the reference engine (tc/ai/deck.cpp, TcEngine::build_match): exactly 30 cards, at most 2 copies

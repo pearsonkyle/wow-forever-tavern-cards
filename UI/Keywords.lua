@@ -1,3 +1,6 @@
+-- SPDX-License-Identifier: GPL-3.0-or-later
+-- Copyright (C) 2026 Kyle Pearson. Part of Tavern Cards (https://github.com/pearsonkyle/wow-forever-tavern-cards).
+--
 -- Keyword glossary: what Overload, Battlecry, Spell Damage... mean, for tooltips. A card's text is scanned
 -- for each keyword (case-sensitive, whole words) and the matches are explained under it.
 

@@ -1,5 +1,10 @@
--- The mini card shown in the binder: parchment face, rarity border, art window, cost gem, name, type
--- line, and attack / health (or durability) badges. Missing cards are shown faded and desaturated.
+-- SPDX-License-Identifier: GPL-3.0-or-later
+-- Copyright (C) 2026 Kyle Pearson. Part of Tavern Cards (https://github.com/pearsonkyle/wow-forever-tavern-cards).
+--
+-- A card, in the binder, the hand and the zoom: a classic card frame (Textures/, drawn by
+-- tools/textures/build.py) around the card's icon or 3D portrait. The frame's stone body takes the class
+-- colour; gems carry cost, attack and health; the rarity gem sits on the name banner. Missing cards are
+-- shown faded and desaturated.
 --
 --   local w = TC.CardWidget:Create(parent)
 --   w:SetCard(id)
@@ -12,34 +17,31 @@ TC.CardWidget = CardWidget
 
 CardWidget.WIDTH, CardWidget.HEIGHT = 100, 148
 
-local MASK = "Interface\\CharacterFrame\\TempPortraitAlphaMask"
-local PARCHMENT = "Interface\\AchievementFrame\\UI-Achievement-Parchment-Horizontal-Desaturated"
+local LAYOUT = TC.TexLayout
 
--- A round gem: a tinted disc clipped by the round portrait mask, a dark rim, and a number.
-local function gem(parent, size, r, g, b, font)
+-- Card text sizes are set on the font string itself (no global font objects): the client's standard font.
+local FONT = STANDARD_TEXT_FONT or "Fonts\\FRIZQT__.TTF"
+
+local function setFont(fs, size, flags)
+    if fs.SetFont then fs:SetFont(FONT, size, flags or "") end
+end
+CardWidget.SetFont = setFont
+
+-- A gem with a number on it: kind is a cell of Textures/gems ("mana", "attack", "health", "durability",
+-- "armor"). The number is bold white with an outline, sized to the gem, so it reads on any colour.
+local function gem(parent, size, kind)
     local f = CreateFrame("Frame", nil, parent)
     f:SetSize(size, size)
-    f.rim = f:CreateTexture(nil, "ARTWORK", nil, 1)
-    f.rim:SetAllPoints()
-    f.rim:SetColorTexture(0.08, 0.06, 0.04, 1)
-    local rimMask = f:CreateMaskTexture()
-    rimMask:SetTexture(MASK, "CLAMPTOBLACKADDITIVE", "CLAMPTOBLACKADDITIVE")
-    rimMask:SetAllPoints(f.rim)
-    f.rim:AddMaskTexture(rimMask)
-
-    f.disc = f:CreateTexture(nil, "ARTWORK", nil, 2)
-    f.disc:SetPoint("TOPLEFT", 2, -2)
-    f.disc:SetPoint("BOTTOMRIGHT", -2, 2)
-    f.disc:SetColorTexture(r, g, b, 1)
-    f.disc:SetGradient("VERTICAL", CreateColor(r * 0.55, g * 0.55, b * 0.55, 1), CreateColor(r, g, b, 1))
-    local mask = f:CreateMaskTexture()
-    mask:SetTexture(MASK, "CLAMPTOBLACKADDITIVE", "CLAMPTOBLACKADDITIVE")
-    mask:SetAllPoints(f.disc)
-    f.disc:AddMaskTexture(mask)
-
-    f.text = f:CreateFontString(nil, "OVERLAY", font or "GameFontHighlight")
-    f.text:SetPoint("CENTER", 0, 0)
+    f.tex = f:CreateTexture(nil, "ARTWORK")
+    f.tex:SetPoint("CENTER")
+    f.tex:SetSize(size * 1.12, size * 1.12)   -- the cell has a little margin around the gem
+    Art:Cell(f.tex, "gems", kind)
+    f.text = f:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
+    f.text:SetPoint("CENTER", 0, kind == "health" and -2 or 0)   -- the drop's body is below its middle
+    setFont(f.text, math.floor(size * 0.56 + 0.5), "OUTLINE")
     f.text:SetShadowOffset(1, -1)
+    f.text:SetShadowColor(0, 0, 0, 1)
+    function f:SetKind(k) Art:Cell(self.tex, "gems", k) end
     return f
 end
 
@@ -132,119 +134,120 @@ local function contextMenu(self)
     end)
 end
 
+local W, H = CardWidget.WIDTH, CardWidget.HEIGHT
+
+-- Anchor a region to a rectangle given in card fractions ({x0, y0, x1, y1}, 0..1 down the card).
+local function place(r, w, rect, grow)
+    grow = grow or 0
+    r:ClearAllPoints()
+    r:SetPoint("TOPLEFT", w, "TOPLEFT", rect[1] * W - grow, -rect[2] * H + grow)
+    r:SetPoint("BOTTOMRIGHT", w, "TOPLEFT", rect[3] * W + grow, -rect[4] * H - grow)
+end
+
+local function placeAt(r, w, pt)
+    r:ClearAllPoints()
+    r:SetPoint("CENTER", w, "TOPLEFT", pt[1] * W, -pt[2] * H)
+end
+
+-- Hovering lights the card's own shape. The button's highlight layer would sit under the frame.
+local function addHover(w)
+    w:HookScript("OnEnter", function(self) self.hover:Show() end)
+    w:HookScript("OnLeave", function(self) self.hover:Hide() end)
+end
+
 function CardWidget:Create(parent)
-    local w = CreateFrame("Button", nil, parent, "BackdropTemplate")
-    w:SetSize(self.WIDTH, self.HEIGHT)
-    w:SetBackdrop({ edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border", edgeSize = 12,
-        insets = { left = 3, right = 3, top = 3, bottom = 3 } })
+    local w = CreateFrame("Button", nil, parent)
+    w:SetSize(W, H)
+    local base = w:GetFrameLevel()
 
-    w.face = w:CreateTexture(nil, "BACKGROUND")
-    w.face:SetPoint("TOPLEFT", 3, -3)
-    w.face:SetPoint("BOTTOMRIGHT", -3, 3)
-    w.face:SetTexture(PARCHMENT)
-    w.face:SetTexCoord(0.05, 0.45, 0.05, 0.95)
-
-    -- Art window with a dark frame line.
-    w.artFrame = w:CreateTexture(nil, "BORDER")
-    -- The whole square icon, with an equal border on the top, left and right; name and type below.
-    w.artFrame:SetPoint("TOPLEFT", 7, -7)
-    w.artFrame:SetPoint("TOPRIGHT", -7, -7)
-    w.artFrame:SetHeight(CardWidget.WIDTH - 14)
-    w.artFrame:SetColorTexture(0.12, 0.09, 0.06, 1)
+    -- The portrait: the card's icon, and over it the creature in 3D when there is one (UI/Models.lua).
     w.art = w:CreateTexture(nil, "ARTWORK")
-    w.art:SetPoint("TOPLEFT", w.artFrame, 1, -1)
-    w.art:SetPoint("BOTTOMRIGHT", w.artFrame, -1, 1)
     w.art:SetTexCoord(0.07, 0.93, 0.07, 0.93)
-
-    -- Cards named after a creature of the game show it: its 3D portrait in the art window (UI/Models.lua).
     if TC.Models then
         w.model = TC.Models:Create(w)
-        w.model:SetPoint("TOPLEFT", w.art, "TOPLEFT")
-        w.model:SetPoint("BOTTOMRIGHT", w.art, "BOTTOMRIGHT")
-        w.model:SetFrameLevel(w:GetFrameLevel() + 1)
+        w.model:SetFrameLevel(base + 1)
     end
 
-    -- Dark banner behind the name so rarity colors read on parchment.
-    w.banner = w:CreateTexture(nil, "BORDER", nil, 1)
-    w.banner:SetPoint("TOPLEFT", w.artFrame, "BOTTOMLEFT", -5, -2)
-    w.banner:SetPoint("TOPRIGHT", w.artFrame, "BOTTOMRIGHT", 5, -2)
-    w.banner:SetHeight(25)
-    w.banner:SetColorTexture(0.06, 0.04, 0.03, 0.82)
+    -- The frame, above the portrait: the body is opaque around the window, so it clips a square model to
+    -- the window's shape.
+    w.dress = CreateFrame("Frame", nil, w)
+    w.dress:SetAllPoints()
+    w.dress:SetFrameLevel(base + 2)
+    w.body = w.dress:CreateTexture(nil, "BORDER")
+    w.body:SetAllPoints()
+    w.trim = w.dress:CreateTexture(nil, "ARTWORK")
+    w.trim:SetAllPoints()
+    w.wings = w.dress:CreateTexture(nil, "ARTWORK", nil, 2)
+    w.wings:SetTexture(Art:Tex("frame_legendary"))
+    local leg = LAYOUT.card.legendary
+    w.wings:SetPoint("TOPLEFT", w, "TOPLEFT", 0, -leg[1] * H)
+    w.wings:SetPoint("BOTTOMRIGHT", w, "TOPLEFT", W, -leg[2] * H)
+    w.hover = w.dress:CreateTexture(nil, "OVERLAY", nil, 7)
+    w.hover:SetAllPoints()
+    w.hover:SetBlendMode("ADD")
+    w.hover:SetAlpha(0.18)
+    w.hover:Hide()
 
-    w.name = w:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
-    w.name:SetPoint("TOPLEFT", w.artFrame, "BOTTOMLEFT", -3, -3)
-    w.name:SetPoint("TOPRIGHT", w.artFrame, "BOTTOMRIGHT", 3, -3)
-    w.name:SetHeight(24)
+    w.name = w.dress:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
+    setFont(w.name, 11, "OUTLINE")
+    w.name:SetJustifyH("CENTER")
     w.name:SetJustifyV("MIDDLE")
+    w.name:SetWordWrap(false)
+    w.name:SetShadowColor(0, 0, 0, 1)
     w.name:SetShadowOffset(1, -1)
-    if w.name.SetMaxLines then
-        w.name:SetMaxLines(2)
-    end
-
-    w.kind = w:CreateFontString(nil, "OVERLAY", "GameFontBlackTiny")
-    w.kind:SetPoint("TOP", w.name, "BOTTOM", 0, -1)
-    -- Light ink: the card body under the name banner is a dark parchment.
-    w.kind:SetTextColor(0.93, 0.86, 0.68)
+    w.rarity = w.dress:CreateTexture(nil, "OVERLAY", nil, 1)
+    w.rarity:SetSize(13, 13)
+    w.text = w.dress:CreateFontString(nil, "OVERLAY", "GameFontBlackTiny")
+    setFont(w.text, 9)
+    w.text:SetJustifyH("CENTER")
+    w.text:SetJustifyV("MIDDLE")
+    w.text:SetTextColor(0.16, 0.1, 0.05)
+    w.kind = w.dress:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
+    w.kind:SetTextColor(0.98, 0.92, 0.78)
     w.kind:SetShadowColor(0, 0, 0, 1)
     w.kind:SetShadowOffset(1, -1)
+    setFont(w.kind, 8)
 
-    w.cost = gem(w, 24, 0.15, 0.4, 0.95, "GameFontHighlight")
-    w.cost:SetPoint("TOPLEFT", -4, 4)
-    w.attack = gem(w, 22, 0.85, 0.65, 0.15, "GameFontHighlightSmall")
-    w.attack:SetPoint("BOTTOMLEFT", -3, -3)
-    w.health = gem(w, 22, 0.75, 0.12, 0.1, "GameFontHighlightSmall")
-    w.health:SetPoint("BOTTOMRIGHT", 3, -3)
+    w.cost = gem(w, 28, "mana")
+    w.attack = gem(w, 27, "attack")
+    w.health = gem(w, 27, "health")
+    for _, g in ipairs({ w.cost, w.attack, w.health }) do g:SetFrameLevel(base + 3) end
 
     w.count = w:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
-    w.count:SetPoint("BOTTOM", 0, 3)
+    w.count:SetPoint("TOP", w, "BOTTOM", 0, 1)
 
-    w.newGlow = w:CreateTexture(nil, "OVERLAY")
+    -- Whose card it is, besides the frame colour: the class icon in the top-right corner, as big as the
+    -- cost gem opposite (none for Neutral).
+    w.crest = CreateFrame("Frame", nil, w)
+    w.crest:SetSize(26, 26)
+    w.crest:SetPoint("CENTER", w, "TOPRIGHT", -LAYOUT.minion.cost[1] * W, -LAYOUT.minion.cost[2] * H)
+    w.crest:SetFrameLevel(base + 3)
+    w.crest.icon = w.crest:CreateTexture(nil, "ARTWORK")
+    w.crest.icon:SetAllPoints()
+    w.crest.round = w.crest:CreateMaskTexture()
+    w.crest.round:SetTexture(Art:Tex("mask_round"), "CLAMPTOBLACKADDITIVE", "CLAMPTOBLACKADDITIVE")
+    w.crest.round:SetAllPoints(w.crest.icon)
+    w.crest.icon:AddMaskTexture(w.crest.round)
+    w.crest.masked = true
+
+    -- Above everything: the New and later markers.
+    w.top = CreateFrame("Frame", nil, w)
+    w.top:SetAllPoints()
+    w.top:SetFrameLevel(base + 4)
+    w.newGlow = w.top:CreateTexture(nil, "OVERLAY")
     if TC.Compat:HasAtlas("collections-newglow") then
         w.newGlow:SetAtlas("collections-newglow")
     end
-    w.newGlow:SetPoint("CENTER", w.art, "TOPRIGHT", -6, 0)
+    w.newGlow:SetPoint("CENTER", w, "TOPRIGHT", -14, -30)
     w.newGlow:SetSize(50, 40)
-    w.newText = w:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
+    w.newText = w.top:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
     w.newText:SetPoint("CENTER", w.newGlow)
     w.newText:SetText(NEW or "New")
     w.newText:SetTextColor(0.1, 1, 0.1)
-
-    -- Whose card it is: the class crest in the top-right corner (none for Neutral).
-    w.crest = CreateFrame("Frame", nil, w)
-    w.crest:SetSize(22, 22)
-    w.crest:SetPoint("TOPRIGHT", 4, 4)
-    w.crest.rim = w.crest:CreateTexture(nil, "ARTWORK", nil, 1)
-    w.crest.rim:SetAllPoints()
-    w.crest.rim:SetColorTexture(0.08, 0.06, 0.04, 1)
-    local crestRimMask = w.crest:CreateMaskTexture()
-    crestRimMask:SetTexture(MASK, "CLAMPTOBLACKADDITIVE", "CLAMPTOBLACKADDITIVE")
-    crestRimMask:SetAllPoints(w.crest.rim)
-    w.crest.rim:AddMaskTexture(crestRimMask)
-    w.crest.icon = w.crest:CreateTexture(nil, "ARTWORK", nil, 2)
-    w.crest.icon:SetPoint("TOPLEFT", 2, -2)
-    w.crest.icon:SetPoint("BOTTOMRIGHT", -2, 2)
-    local crestMask = w.crest:CreateMaskTexture()
-    crestMask:SetTexture(MASK, "CLAMPTOBLACKADDITIVE", "CLAMPTOBLACKADDITIVE")
-    crestMask:SetAllPoints(w.crest.icon)
-    w.crest.icon:AddMaskTexture(crestMask)
-
-    w.later = w:CreateTexture(nil, "OVERLAY")
+    w.later = w.top:CreateTexture(nil, "OVERLAY")
     w.later:SetSize(14, 14)
-    w.later:SetPoint("TOPRIGHT", -6, -22)
+    w.later:SetPoint("TOPRIGHT", -6, -24)
     w.later:SetTexture("Interface\\Icons\\INV_Misc_PocketWatch_01")
-
-    -- Above a 3D portrait: gems, crest and the New / later markers.
-    if w.model then
-        w.top = CreateFrame("Frame", nil, w)
-        w.top:SetAllPoints()
-        w.top:SetFrameLevel(w:GetFrameLevel() + 2)
-        for _, r in ipairs({ w.newGlow, w.newText, w.later }) do r:SetParent(w.top) end
-        for _, f in ipairs({ w.cost, w.attack, w.health, w.crest }) do f:SetFrameLevel(w:GetFrameLevel() + 3) end
-    end
-    w:SetHighlightTexture("Interface\\Buttons\\ButtonHilight-Square", "ADD")
-    w:GetHighlightTexture():SetPoint("TOPLEFT", 3, -3)
-    w:GetHighlightTexture():SetPoint("BOTTOMRIGHT", -3, 3)
-    w:GetHighlightTexture():SetAlpha(0.35)
 
     w:RegisterForClicks("LeftButtonUp", "RightButtonUp")
     w:SetScript("OnEnter", onEnter)
@@ -264,6 +267,7 @@ function CardWidget:Create(parent)
             self.onLeftClick(self.id)
         end
     end)
+    addHover(w)
     w.SetCard = CardWidget.SetCard
     return w
 end
@@ -286,7 +290,41 @@ function CardWidget:CreateGame(parent)
     w:SetScript("OnClick", function(self, button)
         if self.onClick then self.onClick(self, button) end
     end)
+    addHover(w)   -- SetScript dropped the hooks
     return w
+end
+
+-- Card type -> frame (Textures/frame_<kind>[_body], TC.TexLayout[kind]).
+local FRAME_OF = { MINION = "minion", SPELL = "spell", WEAPON = "weapon", HERO = "hero", LOCATION = "spell" }
+local SCHOOLS = { arcane = "Arcane", fire = "Fire", frost = "Frost", nature = "Nature", holy = "Holy",
+    shadow = "Shadow", fel = "Fel" }
+
+-- Dress the frame for a card type: textures and where the window, banner, text and gems sit.
+local function setFrame(w, kind)
+    if w.frameKind == kind then return end
+    w.frameKind = kind
+    local L = LAYOUT[kind]
+    local bottom = LAYOUT.card.texBottom
+    w.body:SetTexture(Art:Tex("frame_" .. kind .. "_body"))
+    w.body:SetTexCoord(0, 1, 0, bottom)
+    w.trim:SetTexture(Art:Tex("frame_" .. kind))
+    w.trim:SetTexCoord(0, 1, 0, bottom)
+    w.hover:SetTexture(Art:Tex("frame_" .. kind .. "_body"))
+    w.hover:SetTexCoord(0, 1, 0, bottom)
+    place(w.art, w, L.window, 2)
+    if w.model then place(w.model, w, L.window, 1) end
+    place(w.name, w, L.name, -1)
+    place(w.text, w, L.text, -3)
+    placeAt(w.kind, w, L.plate)
+    placeAt(w.rarity, w, L.rarity)
+    placeAt(w.cost, w, L.cost)
+    if L.attack then placeAt(w.attack, w, L.attack) end
+    if L.health then placeAt(w.health, w, L.health) end
+end
+
+-- Rules text for the card face: dark ink on parchment, so the tooltip's white emphasis goes dark too.
+local function faceText(id)
+    return (Art:RulesText(id):gsub("|cffffffff", "|cff000000"))
 end
 
 function CardWidget.SetCard(w, id)
@@ -298,8 +336,8 @@ function CardWidget.SetCard(w, id)
     end
     w:Show()
     local have = TC.Collection:Count(id)
-    local r, g, b = Art:RarityColor(card.rarity)
-    w:SetBackdropBorderColor(0.9, 0.9, 0.9, 1)   -- rarity shows in the name's colour
+    setFrame(w, FRAME_OF[card.type] or "spell")
+    w.body:SetVertexColor(Art:ClassTint(card.family))
 
     w.art:SetTexture(Art:Icon(id))
     -- A picked head shot (TC.CardPortraits, tools/picker), else the creature a card is named after. Portrait
@@ -327,42 +365,73 @@ function CardWidget.SetCard(w, id)
         if w.model then TC.Models:Hide(w.model) end
         w.art:SetAlpha(1)
     end
+
     w.name:SetText(card.name)
-    w.name:SetTextColor(r, g, b)
+    if w.name.SetTextScale then
+        -- Long names shrink to fit the banner rather than run off it.
+        w.name:SetTextScale(1)
+        local room, need = w.name:GetWidth() or 0, w.name.GetUnboundedStringWidth and w.name:GetUnboundedStringWidth() or 0
+        if room > 0 and need > room then w.name:SetTextScale(math.max(0.82, room / need)) end
+    end
+    w.text:SetText(faceText(id))
     w.cost.text:SetText(card.cost)
 
-    local kind
+    local rarity = card.rarity ~= "FREE" and card.rarity:lower()
+    if rarity and LAYOUT.gems[rarity] then
+        Art:Cell(w.rarity, "gems", rarity)
+        w.rarity:Show()
+    else
+        w.rarity:Hide()
+    end
+    w.wings:SetShown(card.rarity == "LEGENDARY")
+
     if card.type == "MINION" then
-        kind = "Minion"
         w.attack.text:SetText(card.attack)
         w.health.text:SetText(card.health)
+        w.health:SetKind("health")
         w.attack:Show()
         w.health:Show()
     elseif card.type == "WEAPON" then
-        kind = "Weapon"
         w.attack.text:SetText(card.attack)
         w.health.text:SetText(card.durability)
+        w.health:SetKind("durability")
         w.attack:Show()
         w.health:Show()
     else
-        kind = card.type == "SPELL" and "Spell" or "Location"
         w.attack:Hide()
         w.health:Hide()
     end
-    local tribe = TC.TribeText and TC:TribeText(card.races)
-    if tribe and not tribe:find(",") then kind = kind .. " - " .. tribe end
-    w.kind:SetText(kind)
+    -- The plate under the text: the minion's tribe, or the spell's school.
+    local plate = TC.TribeText and TC:TribeText(card.races)
+    if plate and plate:find(",") then plate = "Multiple" end
+    if not plate or plate == "" then plate = SCHOOLS[card.school or ""] or (card.type == "LOCATION" and "Location" or "") end
+    w.kind:SetText(plate)
+    if w.kind.SetTextScale then
+        -- Long tribes ("Elemental", "Mechanical") shrink to fit the plate.
+        w.kind:SetTextScale(1)
+        local room = (LAYOUT.plateWidth or 0.44) * W
+        local need = w.kind.GetUnboundedStringWidth and w.kind:GetUnboundedStringWidth() or 0
+        if need > room then w.kind:SetTextScale(math.max(0.6, room / need)) end
+    end
+
     -- The old class sheet has no Death Knight / Demon Hunter cell even where the coordinate table lists them.
     local oldSheet = card.family ~= "DEATHKNIGHT" and card.family ~= "DEMONHUNTER"
     local coords = oldSheet and card.family ~= "NEUTRAL" and CLASS_ICON_TCOORDS and CLASS_ICON_TCOORDS[card.family]
-    local square = card.family ~= "NEUTRAL" and Art:SquareClassIcon(card.family)
-    if square then
-        w.crest.icon:SetTexture(square)
-        w.crest.icon:SetTexCoord(0.08, 0.92, 0.08, 0.92)
-        w.crest:Show()
-    elseif coords then
+    -- The round class emblem (transparent round it, so no box) first; the square icon only for classes the
+    -- emblem sheet lacks, and then clipped round.
+    local square = not coords and card.family ~= "NEUTRAL" and Art:SquareClassIcon(card.family)
+    local wantRound = not coords
+    if wantRound ~= w.crest.masked then   -- a mask can't be hidden, only removed
+        if wantRound then w.crest.icon:AddMaskTexture(w.crest.round) else w.crest.icon:RemoveMaskTexture(w.crest.round) end
+        w.crest.masked = wantRound
+    end
+    if coords then
         w.crest.icon:SetTexture("Interface\\GLUES\\CHARACTERCREATE\\UI-CHARACTERCREATE-CLASSES")
         w.crest.icon:SetTexCoord(unpack(coords))
+        w.crest:Show()
+    elseif square then
+        w.crest.icon:SetTexture(square)
+        w.crest.icon:SetTexCoord(0.08, 0.92, 0.08, 0.92)
         w.crest:Show()
     elseif card.family ~= "NEUTRAL" then
         w.crest.icon:SetTexture(Art:ClassIcon(card.family))
@@ -372,6 +441,10 @@ function CardWidget.SetCard(w, id)
         w.crest:Hide()
     end
 
+    local owned = w.game or have > 0
+    for _, t in ipairs({ w.art, w.body, w.trim, w.wings, w.rarity, w.cost.tex, w.attack.tex, w.health.tex }) do
+        t:SetDesaturated(not owned)
+    end
     if w.game then
         -- A card in a match: always "owned"; the cost shown is what it costs now.
         w.count:SetText("")
@@ -383,9 +456,6 @@ function CardWidget.SetCard(w, id)
         else
             w.cost.text:SetTextColor(1, 1, 1)
         end
-        w.art:SetDesaturated(false)
-        w.art:SetVertexColor(1, 1, 1)
-        w.face:SetVertexColor(1, 1, 1)
         w:SetAlpha(1)
         w.newGlow:Hide()
         w.newText:Hide()
@@ -393,11 +463,7 @@ function CardWidget.SetCard(w, id)
         return
     end
     w.count:SetText(have > 1 and ("x" .. have) or "")
-    local owned = have > 0
-    w.art:SetDesaturated(not owned)
-    w.art:SetVertexColor(owned and 1 or 0.7, owned and 1 or 0.7, owned and 1 or 0.7)
-    w.face:SetVertexColor(owned and 1 or 0.72, owned and 1 or 0.72, owned and 1 or 0.72)
-    w:SetAlpha(owned and 1 or 0.85)
+    w:SetAlpha(owned and 1 or 0.8)
 
     local unseen = owned and TC.db.unseen and TC.db.unseen[id]
     w.newGlow:SetShown(unseen and true or false)

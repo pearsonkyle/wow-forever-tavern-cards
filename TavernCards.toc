@@ -2,6 +2,7 @@
 ## Title: Tavern Cards
 ## Notes: Collect cards from your quests and adventures, build decks, and play other adventurers at the tavern table.
 ## Author: kpearson
+## X-License: GPL-3.0-or-later
 ## Version: 0.1.0
 ## SavedVariables: TavernCardsDB
 ## SavedVariablesPerCharacter: TavernCardsCharDB
@@ -19,6 +20,8 @@ Core\Compat.lua
 
 Data\Cards.lua
 Data\Wave.lua
+Data\Textures.lua
+Data\CardBacks.lua
 Data\QuestMap.lua
 Data\QuestInfo.lua
 Data\Rewards.lua
@@ -47,7 +50,12 @@ UI\Models.lua
 UI\Match.lua
 UI\Window.lua
 UI\Confirm.lua
-UI\Board.lua
+UI\Board\Board.lua
+UI\Board\Widgets.lua
+UI\Board\Effects.lua
+UI\Board\Layout.lua
+UI\Board\Controller.lua
+UI\Board\Table.lua
 UI\DeckSheet.lua
 UI\CollectionPanel.lua
 UI\DeckListPanel.lua
@@ -58,6 +66,7 @@ UI\Settings.lua
 
 Sources\Quests.lua
 Sources\Rewards.lua
+Sources\Backs.lua
 
 Social\Chat.lua
 Social\Channel.lua

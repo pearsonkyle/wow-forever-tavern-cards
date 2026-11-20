@@ -1,3 +1,6 @@
+-- SPDX-License-Identifier: GPL-3.0-or-later
+-- Copyright (C) 2026 Kyle Pearson. Part of Tavern Cards (https://github.com/pearsonkyle/wow-forever-tavern-cards).
+--
 -- The tavern channel: a normal chat channel for everyone with Tavern Cards, one per faction
 -- (TavernCardsA / TavernCardsH), shown in the main chat window. To talk shop, find opponents, and show
 -- off cards and decks (shares become links for players with the addon, Social/Chat.lua).

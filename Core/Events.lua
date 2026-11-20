@@ -1,3 +1,6 @@
+-- SPDX-License-Identifier: GPL-3.0-or-later
+-- Copyright (C) 2026 Kyle Pearson. Part of Tavern Cards (https://github.com/pearsonkyle/wow-forever-tavern-cards).
+--
 -- One event frame for the addon. Handlers register with TC:On(event, fn).
 --
 -- Forever dropped some Classic events, and registering an unknown one throws, so registration is
