@@ -53,8 +53,13 @@ function DeckSheet:Create(page, onDone)
         local label = sheet:CreateFontString(nil, "OVERLAY", "GameFontBlackSmall")
         label:SetPoint("TOP", bar, "BOTTOM", 0, -2)
         label:SetText(c == 7 and "7+" or c)
+        bar.n = sheet:CreateFontString(nil, "OVERLAY", "GameFontBlackSmall")   -- how many, above the column
+        bar.n:SetPoint("BOTTOM", bar, "TOP", 0, 1)
         sheet.bars[c] = bar
     end
+    -- What the deck is made of: "18 minions · 10 spells · 2 weapons".
+    sheet.kinds = sheet:CreateFontString(nil, "OVERLAY", "GameFontBlackSmall")
+    sheet.kinds:SetPoint("TOPLEFT", sheet, "TOPLEFT", 4, -104)
 
     sheet.problems = sheet:CreateFontString(nil, "OVERLAY", "GameFontBlackSmall")
     sheet.problems:SetPoint("TOPLEFT", 190, -50)
@@ -83,7 +88,7 @@ function DeckSheet:Create(page, onDone)
     sheet.problems:SetJustifyV("TOP")
 
     local box = CreateFrame("Frame", nil, sheet, "WowScrollBoxList")
-    box:SetPoint("TOPLEFT", 0, -112)
+    box:SetPoint("TOPLEFT", 0, -118)
     box:SetPoint("BOTTOMRIGHT", -16, 34)
     local scrollBar = CreateFrame("EventFrame", nil, sheet, "MinimalScrollBar")
     scrollBar:SetPoint("TOPLEFT", box, "TOPRIGHT", 4, 0)
@@ -199,7 +204,19 @@ function DeckSheet:Create(page, onDone)
         for c = 0, 7 do
             self.bars[c]:SetHeight(math.max(1, 40 * curve[c] / top))
             self.bars[c]:SetAlpha(curve[c] > 0 and 1 or 0.25)
+            self.bars[c].n:SetText(curve[c] > 0 and curve[c] or "")
         end
+        local kinds = { MINION = 0, SPELL = 0, WEAPON = 0, LOCATION = 0 }
+        for id, k in pairs(deck.cards) do
+            local card = TC.Cards[id]
+            if card and kinds[card.type] then kinds[card.type] = kinds[card.type] + k end
+        end
+        local parts = {}
+        for _, kind in ipairs({ { "MINION", "minion" }, { "SPELL", "spell" }, { "WEAPON", "weapon" }, { "LOCATION", "location" } }) do
+            local k = kinds[kind[1]]
+            if k > 0 then parts[#parts + 1] = ("%d %s%s"):format(k, kind[2], k == 1 and "" or "s") end
+        end
+        self.kinds:SetText(table.concat(parts, "  ·  "))
         local problems = Decks:Problems(deck)
         if #problems == 0 then
             self.problems:SetText("|cff1a6610Ready to play|r")

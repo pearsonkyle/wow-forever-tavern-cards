@@ -13,6 +13,11 @@ local METHODS = {
     GetLeft = function() return 0 end, GetBottom = function() return 0 end,
     GetCenter = function() return 50, 50 end, GetEffectiveScale = function() return 1 end,
     GetFrameLevel = function() return 1 end,
+    GetStringHeight = function() return 12 end,
+    Click = function(self)   -- as in the client: runs the button's OnClick
+        local s = scriptsOf[self]
+        if s and s.OnClick then s.OnClick(self, "LeftButton") end
+    end,
     IsShown = function(self) return rawget(self, "_shown") ~= false end,
     IsVisible = function(self) return rawget(self, "_shown") ~= false end,
     Show = function(self)
@@ -401,6 +406,106 @@ T.table_moves_and_sizes = function(TC)
         "the table stays where it was put")
     Board:ResetPlacement()
     assert(scale == fit and points[1][1] == "CENTER" and TC.db.settings.tableScale == nil, "Fit to screen")
+end
+
+-- The card book's filters: type, minion type, the search (tribes too) and Reset.
+T.collection_filters = function(TC)
+    local _, _, _, panels = setup(TC)
+    dofile("UI/CollectionPanel.lua")
+    local panel = panels.collection(mock())
+    local f = panel:Filter()
+    f.class = "all"
+    panel:Refresh()
+    local all = #panel:Shown()
+    assert(all > 4000, "every playable card: " .. all)
+    f.ctype = "WEAPON"
+    panel:Refresh()
+    for _, id in ipairs(panel:Shown()) do assert(TC.Cards[id].type == "WEAPON") end
+    f.ctype, f.tribe = "MINION", 128   -- murlocs
+    panel:Refresh()
+    local murlocs = #panel:Shown()
+    assert(murlocs > 20, "murlocs: " .. murlocs)
+    for _, id in ipairs(panel:Shown()) do assert(bit.band(TC.Cards[id].races, 128) ~= 0) end
+    f.ctype, f.tribe, f.text = nil, nil, "murloc"
+    panel:Refresh()
+    assert(#panel:Shown() >= murlocs, "the search finds the tribe too")
+    f.text, f.cost = "", 7
+    panel:Refresh()
+    for _, id in ipairs(panel:Shown()) do assert(TC.Cards[id].cost >= 7) end
+end
+
+-- The import dialog builds and opens (its preview logic is tested in test_rewards.lua).
+T.deck_code_dialog_opens = function(TC)
+    setup(TC)
+    dofile("UI/DeckCodeDialog.lua")
+    TC.DeckCode:Open("TCD1.MAGE.AAAA", "Test")
+    TC.DeckCode:Open()
+end
+
+-- A model the client can't show by model id is remembered in the saved variables too (tools/picker avoids it).
+T.missing_display_models_are_kept = function(TC)
+    setup(TC)
+    local timers = {}
+    C_Timer = { After = function(_, fn) timers[#timers + 1] = fn end }
+    local m = TC.Models:Create(CreateFrame("Frame"))
+    assert(TC.Models:Show(m, "display", 5151, 0.8, 1))
+    for _, fn in ipairs(timers) do fn() end
+    assert(TC.db.missingModels and TC.db.missingModels.display5151, "kept as display5151")
+    assert(not TC.Models:Show(m, "display", 5151, 0.8, 1), "and not tried again this session")
+end
+
+-- The card back window: the gallery greys what isn't earned; choosing for a deck takes only earned backs.
+T.card_back_window = function(TC)
+    setup(TC)
+    dofile("Data/CardBacks.lua")
+    dofile("Sources/Backs.lua")
+    TC.db.backs = {}
+    local list = TC.CardBacks:List()
+    local locked, earned
+    for _, b in ipairs(list) do
+        if TC.CardBacks:Unlocked(b.id) then earned = earned or b.id else locked = locked or b.id end
+    end
+    assert(earned and locked, "the default is earned, the rest still to earn")
+    TC.CardBacks:Gallery()
+    local chooser = _G.TavernCardsBackChooser
+    local function itemFor(id)
+        for _, it in ipairs(chooser.items) do if it.entry and it.entry.id == id then return it end end
+    end
+    assert(itemFor(locked).locked and not itemFor(earned).locked)
+    local deck, picked = { name = "Test", class = "MAGE", cards = {} }, nil
+    TC.CardBacks:Choose(deck, function(id) picked = id end)
+    click(itemFor(locked))
+    assert(deck.back == nil and picked == nil, "a back still to earn can't be chosen")
+    click(itemFor(earned))
+    assert(deck.back == earned and picked == earned, "an earned back is the deck's")
+    TC.db.backs[locked] = 1
+    TC.CardBacks:Choose(deck)
+    assert(not itemFor(locked).locked, "earned since: no longer greyed")
+end
+
+-- The dialogs (not StaticPopup): yes and no, a new question replacing an open one, the timeout, and the prompt.
+T.confirm_and_prompt_dialogs = function(TC)
+    setup(TC)
+    dofile("UI/Confirm.lua")
+    local said = {}
+    TC:Confirm("First?", function() said[#said + 1] = "yes1" end, function() said[#said + 1] = "no1" end)
+    local d = _G.TavernCardsConfirm
+    TC:Confirm("Second?", function() said[#said + 1] = "yes2" end)
+    assert(said[1] == "no1", "a new question declines the open one")
+    click(d.yes)
+    assert(said[2] == "yes2")
+    TC:Confirm("Timed", nil, function() said[#said + 1] = "timeout" end, nil, nil, 1)
+    scriptsOf[d].OnUpdate(d, 0.6)
+    scriptsOf[d].OnUpdate(d, 0.6)
+    assert(said[3] == "timeout", "no answer in time: declined")
+    local got
+    TC:Prompt("Paste a code:", "", function(text) got = text end, "Import")
+    local p = _G.TavernCardsPrompt
+    rawset(p.edit, "GetText", function() return "TCD1.MAGE.AAAA" end)
+    click(p.yes)
+    assert(got == "TCD1.MAGE.AAAA", "the prompt hands back what was typed")
+    TC:Prompt("Your deck code:", "TCD1.X")   -- copy only: a Close button
+    assert(rawget(p.yes, "_shown") == false, "copy only: no accept button")
 end
 
 return T

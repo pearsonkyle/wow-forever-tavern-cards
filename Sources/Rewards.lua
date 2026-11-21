@@ -148,19 +148,63 @@ local function questDone(questID)
     return C_QuestLog and C_QuestLog.IsQuestFlaggedCompleted and C_QuestLog.IsQuestFlaggedCompleted(questID)
 end
 
+local function payBoss(id, batch)
+    id = TC.BossCanon and TC.BossCanon[id] or id
+    pay("b:" .. id, map.b[id], bossLabel(id), batch)
+end
+
 function Rewards:PayQuestBosses(questID, batch)
-    local bosses = map and TC.BossQuests and TC.BossQuests[questID]
-    for _, id in ipairs(bosses or {}) do
-        pay("b:" .. id, map.b[id], bossLabel(id), batch)
+    if not map then return end
+    for _, list in ipairs({ TC.BossQuests, TC.BossQuestProof }) do   -- Data/Rewards.lua, Data/BossEvidence.lua
+        for _, id in ipairs(list and list[questID] or {}) do payBoss(id, batch) end
     end
 end
 
 function Rewards:PayQuestEvidence(batch)
-    if not (map and TC.BossQuests) then return end
-    for questID in pairs(TC.BossQuests) do
-        if questDone(questID) then
-            self:PayQuestBosses(questID, batch)
+    if not map then return end
+    for _, list in ipairs({ TC.BossQuests, TC.BossQuestProof }) do
+        for questID in pairs(list or {}) do
+            if questDone(questID) then self:PayQuestBosses(questID, batch) end
         end
+    end
+end
+
+-- ...and Bind on Pickup loot only that boss drops, owned by this character (Data/BossEvidence.lua): equipped and in
+-- the bags at every login, the bank while it is open. It can't be traded or bought, so it came from the kill.
+local function containerAPI()
+    local C = C_Container
+    return (C and C.GetContainerNumSlots) or GetContainerNumSlots, (C and C.GetContainerItemID) or GetContainerItemID
+end
+
+function Rewards:PayItemEvidence(batch, bank)
+    if not (map and TC.BossItems) then return end
+    local paid = {}
+    local function check(ok, itemID)
+        if not ok or secret(itemID) then return end
+        local boss = itemID and TC.BossItems[itemID]
+        if boss and not paid[boss] then
+            paid[boss] = true
+            payBoss(boss, batch)
+        end
+    end
+    if GetInventoryItemID then
+        for slot = 1, 19 do check(pcall(GetInventoryItemID, "player", slot)) end
+    end
+    local numSlots, itemAt = containerAPI()
+    if not (numSlots and itemAt) then return end
+    local bags = {}
+    if bank then
+        local index = Enum and Enum.BagIndex
+        bags[1] = index and index.Bank or BANK_CONTAINER or -1
+        -- Bank bags follow the backpack, the bags and (on clients that have one) the reagent bag.
+        local first = index and index.BankBag_1 or ((NUM_BAG_SLOTS or 4) + 1)
+        for b = first, first + (NUM_BANKBAGSLOTS or 7) - 1 do bags[#bags + 1] = b end
+    else
+        for b = 0, (NUM_BAG_SLOTS or 4) + 1 do bags[#bags + 1] = b end   -- the backpack, the bags, a reagent bag
+    end
+    for _, bag in ipairs(bags) do
+        local ok, n = pcall(numSlots, bag)
+        for s = 1, ok and tonumber(n) or 0 do check(pcall(itemAt, bag, s)) end
     end
 end
 
@@ -217,6 +261,7 @@ function Rewards:CatchUp()
     self:PayLockouts(batch)
     self:PayStatistics(batch)
     self:PayQuestEvidence(batch)
+    self:PayItemEvidence(batch)
     if TC.Backs then TC.Backs:Announce() end
     if #batch.cards > 0 then
         TC.Collection:NotifyBatch(batch.cards, batch.dust, "Rewards for your adventures")
@@ -232,6 +277,22 @@ function Rewards:Init()
 end
 
 -- What the ledger and toasts know about a source key ("b:663"): a tooltip line.
+-- The source key ("b:612", "a:46", "lvl:20") of a boss, achievement or level that pays this card on this character.
+local payingSource
+function Rewards:SourceFor(cardId)
+    if not map then return nil end
+    if not payingSource then
+        payingSource = {}
+        for kind, list in pairs(map) do
+            for id, card in pairs(list) do
+                local key = (kind == "l" and "lvl" or kind) .. ":" .. id   -- levels pay as "lvl:N" (PayLevels)
+                if not payingSource[card] or key < payingSource[card] then payingSource[card] = key end
+            end
+        end
+    end
+    return payingSource[cardId]
+end
+
 function Rewards:Describe(key)
     local kind, id = (key or ""):match("^(%a+):(%d+)$")
     id = tonumber(id)
@@ -266,6 +327,17 @@ end)
 
 TC:On("BOSS_KILL", function(encounterID, name)
     Rewards:OnBossKill(encounterID, name, IsInRaid and IsInRaid())
+end)
+
+-- The bank's boss loot pays while the bank is open (its contents can't be read otherwise).
+TC:On("BANKFRAME_OPENED", function()
+    if not map then return end
+    local batch = { cards = {}, dust = 0 }
+    TC:Safe("bank boss loot", Rewards.PayItemEvidence, Rewards, batch, true)
+    if #batch.cards > 0 then
+        TC.Collection:NotifyBatch(batch.cards, batch.dust, "Boss loot in your bank")
+        TC:Print("Boss loot in your bank earned |cffffffff%d|r cards for the bosses it came from.", #batch.cards)
+    end
 end)
 
 -- A turned-in quest that needed a boss dead pays that boss too (if its kill went unseen).

@@ -3,7 +3,7 @@
 ## Notes: Collect cards from your quests and adventures, build decks, and play other adventurers at the tavern table.
 ## Author: kpearson
 ## X-License: GPL-3.0-or-later
-## Version: 0.2.0
+## Version: 0.2.1
 ## SavedVariables: TavernCardsDB
 ## SavedVariablesPerCharacter: TavernCardsCharDB
 ## IconTexture: Interface\Icons\INV_Misc_Ticket_Tarot_Stack_01
@@ -25,6 +25,7 @@ Data\CardBacks.lua
 Data\QuestMap.lua
 Data\QuestInfo.lua
 Data\Rewards.lua
+Data\BossEvidence.lua
 Data\Icons.lua
 Data\Models.lua
 Data\Sounds.lua
@@ -51,6 +52,7 @@ UI\Models.lua
 UI\Match.lua
 UI\Window.lua
 UI\Confirm.lua
+UI\DeckCodeDialog.lua
 UI\Board\Board.lua
 UI\Board\Widgets.lua
 UI\Board\Effects.lua

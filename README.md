@@ -19,18 +19,22 @@ the tavern table against the house or your friends, all without leaving the game
 
 - **Collect**: every quest, the first kill of every dungeon and raid boss, achievements and level
   milestones each earn a card, and the harder the deed the rarer the card: raid bosses pay legendaries.
-  What you already did pays out on your first login, bosses included when the game remembers them (its
-  boss kill statistics, quests that needed the boss dead, this week's lockouts). Extra copies turn into dust automatically.
+  What you already did pays out on your first login, bosses included whenever there is proof of the kill:
+  the game's boss kill statistics, quests that needed the boss dead, this week's lockouts, and boss-only
+  Bind on Pickup loot you own (equipped, in your bags, or in your bank when you open it). Extra copies
+  turn into dust automatically.
 - **Hero classes**: Demon Hunter decks unlock when any of your characters reaches level 20, Death Knight
   decks at level 40; from then on their cards turn up among your rewards.
 - **Build decks**: 30 cards from one class plus Neutral, each with a card back you've earned. Craft
   missing cards with dust (Alt + Right-click a card) or disenchant spares (Ctrl + Right-click).
 - **Play**: in the **Play** tab, pick a deck and a difficulty and press Play. Click a card to play it,
-  click a glowing minion and then an enemy to attack, right-click to cancel. Drag the table to move it and
-  its corner grip to resize it (Options: Fit to screen).
+  click a glowing minion and then an enemy to attack, right-click to cancel. Each minion wears an icon for
+  every ability it has (Taunt first). Drag the table to move it and its corner grip to resize it
+  (Options: Fit to screen).
 - **Duel a friend** who has the addon: **Challenge...** in the Play tab, or `/tc duel Name`.
   Friends on another realm need to be in your party.
-- **Share** cards and decks: Shift-click a card into chat, or right-click a deck for its code.
+- **Share** cards and decks: Shift-click a card into chat, or right-click a deck for its code. **Import
+  Deck** (or a deck link in chat) shows the deck first: what you own and where to earn the rest.
 
 All settings and commands are in **Options → AddOns → Tavern Cards** (or `/tc settings`); the most used
 ones: `/tc` (card book), `/tc play` (back to your match), `/tc duel Name`, `/tc help`.

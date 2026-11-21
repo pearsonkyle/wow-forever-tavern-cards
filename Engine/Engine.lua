@@ -2484,6 +2484,11 @@ end
 
 -- The card a cast card's drawer draws in its place: an ordinary draw from the top, whatever filter the draw had.
 function E:draw_replacement(seat)
+    -- A drawer whose hero is dead draws nothing more: the game ends at the next death check. A deck of Corrupted
+    -- Blood otherwise cast, shuffled two and drew again forever, past the hero's death, until E_LOOP
+    -- (jankcraft 94067d016).
+    local hero = self:hero_of(seat)
+    if not hero or hero.health <= 0 then return end
     local bottom, secret, trait, pick, bounds = self.draw_from_bottom, self.draw_secret_only, self.draw_trait,
         self.draw_pick_cost, self.draw_fx
     self.draw_from_bottom, self.draw_secret_only, self.draw_trait, self.draw_pick_cost, self.draw_fx =

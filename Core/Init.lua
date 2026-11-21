@@ -8,6 +8,7 @@
 
 local ADDON, TC = ...
 TC = TC or {}
+TC.loadStart = debugprofilestop and debugprofilestop() or nil   -- /tc perf: how long the addon's files took
 TavernCards_NS = TC
 _G.TavernCards = TC
 

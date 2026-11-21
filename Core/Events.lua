@@ -69,6 +69,7 @@ TC:On("ADDON_LOADED", function(name)
     if name ~= TC.ADDON then
         return
     end
+    if TC.loadStart and debugprofilestop then TC.loadMs = debugprofilestop() - TC.loadStart end
     TC:BindSavedVariables()
     TC:OnLoadedEngineCheck()
     if TC.OnLoaded then

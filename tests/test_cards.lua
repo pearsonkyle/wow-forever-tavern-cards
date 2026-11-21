@@ -5,6 +5,7 @@
 -- their cost is above the 10-mana cap unless something else lowers it. Each puts the card in hand with
 -- the mana it needs, plays it, and checks the printed effect.
 local T = {}
+local band = bit.band
 
 local function newGame(TC, classA, classB)
     local E, D = TC.Engine, TC.EngineDefs
@@ -76,6 +77,85 @@ T.playhouse_giant_costs_less_per_card_drawn = function(TC)
     assert(play(eng, giant), "Playhouse Giant should be playable at 8 after 17 draws")
     local e = eng:ent(giant)
     assert(e.zone == D.ZONE.BOARD and e.attack == 8 and e.health == 8)
+end
+
+-- Cards the differential sweep never saw played (tests/sweep.py --never): checked against their text here.
+T.divination_destroys_a_wisp_to_draw_three = function(TC)
+    local eng, D = newGame(TC, "MAGE", "WARRIOR")
+    local seat = eng.state.active
+    local wisp = eng:summon_token("CS2_231", seat, -1, false)
+    local spell = give(eng, D, seat, "EDR_804")
+    eng:player(seat).mana = 10
+    local hand = #eng:hand_ids(seat)
+    assert(play(eng, spell), "Divination should be castable on a friendly Wisp")
+    if eng.state.pending.active then
+        for i, m in ipairs(eng:legal_moves()) do if m.raw.target == wisp or m.raw.chosen == wisp then eng:apply_move(i) break end end
+    end
+    assert(eng:ent(wisp).zone ~= D.ZONE.BOARD, "the Wisp is destroyed")
+    assert(#eng:hand_ids(seat) == hand - 1 + 3, "three cards drawn")
+end
+
+T.mothership_gets_two_protoss_minions_twice = function(TC)
+    local eng, D = newGame(TC, "PRIEST", "WARRIOR")
+    local seat = eng.state.active
+    local ship = give(eng, D, seat, "SC_762")
+    eng:player(seat).mana, eng:player(seat).max_mana = 12, 10
+    local before = {}
+    for _, id in ipairs(eng:hand_ids(seat)) do before[id] = true end
+    assert(play(eng, ship), "Mothership should be playable with 12 mana")
+    local function protossGained()
+        local n = 0
+        for _, id in ipairs(eng:hand_ids(seat)) do
+            local d = eng:def_of(id)
+            if not before[id] and d and d.type == "MINION" and D.cardIsNamed(d, "Protoss", true) then n = n + 1 end
+            before[id] = true
+        end
+        return n
+    end
+    assert(protossGained() == 2, "Battlecry: two Protoss minions")
+    assert(band(eng:ent(ship).keywords, D.KW.TAUNT) ~= 0, "Taunt")
+    eng:deal_damage(ship, 99, 0, false)
+    eng:resolve_deaths()
+    assert(protossGained() == 2, "Deathrattle: two more")
+end
+
+T.ultragigasaur_is_a_fourteen_twenty_eight = function(TC)
+    local eng, D = newGame(TC, "HUNTER", "WARRIOR")
+    local seat = eng.state.active
+    local saur = give(eng, D, seat, "TLC_248")
+    eng:player(seat).mana = 11
+    assert(eng:card_cost(seat, saur) == 11)
+    assert(play(eng, saur))
+    local e = eng:ent(saur)
+    assert(e.zone == D.ZONE.BOARD and e.attack == 14 and e.health == 28)
+end
+
+T.shirvallah_costs_less_for_mana_spent_on_spells = function(TC)
+    local eng, D = newGame(TC, "PALADIN", "WARRIOR")
+    local seat = eng.state.active
+    local tiger = give(eng, D, seat, "TRL_300")
+    local start = eng:card_cost(seat, tiger)
+    local spell = give(eng, D, seat, "CS2_092")   -- Blessing of Kings, (4)
+    eng:player(seat).mana = 10
+    eng:summon_token("CS2_231", seat, -1, false)   -- a minion for the Blessing
+    assert(play(eng, spell), "a spell to spend mana on")
+    if eng.state.pending.active then eng:apply_move(1) end
+    assert(eng:card_cost(seat, tiger) == start - 4, ("4 mana on a spell takes 4 off: %d -> %d"):format(start,
+        eng:card_cost(seat, tiger)))
+end
+
+-- A deck down to Corrupted Blood (casts when drawn, 3 damage to its owner, shuffles two copies in) ends the game
+-- when its drawer dies, instead of drawing forever until E_LOOP (jankcraft 94067d016, draw_replacement).
+T.corrupted_blood_ends_the_game_instead_of_looping = function(TC)
+    local eng, D = newGame(TC, "WARRIOR", "WARRIOR")
+    local seat = eng.state.active
+    local foe = 1 - seat
+    for _, id in ipairs(eng:deck_ids(foe)) do eng:relocate(id, D.ZONE.GRAVEYARD, -1) end
+    eng:create_entity(D.def("TRL_541t"), foe, D.ZONE.DECK, -1)
+    eng:hero_of(foe).health = 10
+    assert(endTurn(eng), "ending the turn is no longer refused: " .. tostring(eng.last_error))
+    assert(eng:is_terminal(), "the Corrupted Blood player dies, and the game is over")
+    assert(eng.state.result.winner == seat, "they are the one beaten")
 end
 
 return T

@@ -170,6 +170,19 @@ function Quests:Retro()
     end
 end
 
+-- The first quest that pays this card on this character, or nil (the deck import preview: "earned by ...").
+local payingQuest
+function Quests:SourceFor(cardId)
+    if not classMap then return nil end
+    if not payingQuest then
+        payingQuest = {}
+        for questID, id in pairs(classMap) do
+            if not payingQuest[id] or questID < payingQuest[id] then payingQuest[id] = questID end
+        end
+    end
+    return payingQuest[cardId]
+end
+
 function Quests:Init()
     local _, family = UnitClass("player")
     classMap = TC.QuestMap and TC.QuestMap[family]

@@ -73,18 +73,9 @@ local function build(parent)
     import:SetSize(110, 24)
     import:SetPoint("RIGHT", newDeck, "LEFT", -8, 0)
     import:SetText("Import Deck")
+    -- The import dialog (UI/DeckCodeDialog.lua) shows the deck, what you own of it and where to earn the rest.
     import:SetScript("OnClick", function()
-        TC:Prompt("Paste a Tavern Cards deck code (Ctrl+V):", "", function(text)
-            local name = text:match("%[Tavern Deck: ([^%]]+)%]")
-            local code = text:match("(TCD%d%.%u+%.[%w%+/]+)") or text
-            local deck, why = Decks:Import(code, name)
-            if deck then
-                TC:Print("Deck \"%s\" imported.", deck.name)
-                panel:Refresh()
-            else
-                TC:Print(Decks.IMPORT_ERRORS[why] or "That deck can't be imported.")
-            end
-        end, "Import")
+        TC.DeckCode:Open(nil, nil, function() panel:Refresh() end)
     end)
 
     local tiles = {}
