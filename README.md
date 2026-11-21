@@ -2,42 +2,33 @@
 
 [![CI](https://github.com/pearsonkyle/wow-forever-tavern-cards/actions/workflows/ci.yml/badge.svg)](https://github.com/pearsonkyle/wow-forever-tavern-cards/actions/workflows/ci.yml)
 
-A collectible card game inside **WoW: Forever**. Quest, raid and explore to earn cards, build decks, and play at
-the tavern table against the house or your friends, all without leaving the game.
+A card game inside **WoW: Forever**. Quest, raid and explore to earn cards, build decks, and play the house or
+your friends without leaving the game.
+
+**[Get it on CurseForge](https://www.curseforge.com/wow/addons/tavern-cards-tcg-hearthstone-simulator)** or from
+[Releases](../../releases).
 
 ![The tavern table](docs/screenshots/match.jpg)
 
-> **Beta.** Bug reports are welcome in [Issues](../../issues).
+> **Beta.** Found a bug? Open an [issue](../../issues).
 
 ## Install
 
-1. Download `TavernCards-<version>.zip` from [Releases](../../releases).
-2. Unzip it into `World of Warcraft/_forever_/Interface/AddOns/` so you have `AddOns/TavernCards`.
-3. Restart the game and open the card book with `/tc` or the minimap button.
+1. Download `TavernCards-<version>.zip` from [CurseForge](https://www.curseforge.com/wow/addons/tavern-cards-tcg-hearthstone-simulator) or [Releases](../../releases).
+2. Unzip it into `World of Warcraft/_forever_/Interface/AddOns/`, so you have `AddOns/TavernCards`.
+3. Restart the game. Open the card book with `/tc` or the minimap button.
 
-## Play
+## How it works
 
-- **Collect**: every quest, the first kill of every dungeon and raid boss, achievements and level
-  milestones each earn a card, and the harder the deed the rarer the card: raid bosses pay legendaries.
-  What you already did pays out on your first login, bosses included whenever there is proof of the kill:
-  the game's boss kill statistics, quests that needed the boss dead, this week's lockouts, and boss-only
-  Bind on Pickup loot you own (equipped, in your bags, or in your bank when you open it). Extra copies
-  turn into dust automatically.
-- **Hero classes**: Demon Hunter decks unlock when any of your characters reaches level 20, Death Knight
-  decks at level 40; from then on their cards turn up among your rewards.
-- **Build decks**: 30 cards from one class plus Neutral, each with a card back you've earned. Craft
-  missing cards with dust (Alt + Right-click a card) or disenchant spares (Ctrl + Right-click).
-- **Play**: in the **Play** tab, pick a deck and a difficulty and press Play. Click a card to play it,
-  click a glowing minion and then an enemy to attack, right-click to cancel. A Taunt minion wears a shield
-  icon (attack it first). Drag the table to move it and its corner grip to resize it
-  (Options: Fit to screen).
-- **Duel a friend** who has the addon: **Challenge...** in the Play tab, or `/tc duel Name`.
-  Friends on another realm need to be in your party.
-- **Share** cards and decks: Shift-click a card into chat, or right-click a deck for its code. **Import
-  Deck** (or a deck link in chat) shows the deck first: what you own and where to earn the rest.
+- **Earn cards** from quests, first boss kills, achievements and level milestones. Harder deeds pay rarer
+  cards; raid bosses pay legendaries.
+- **Already played a lot?** Past quests, achievements and boss kills pay out on your first login.
+- **Build decks** of 30 cards: one class plus Neutral. Craft missing cards with dust.
+- **Play** the house at four difficulties, or **duel a friend** (`/tc duel Name`).
+- **Share** decks as a chat link or code. Importing one shows what you own and where to earn the rest.
+- **Hero classes**: Demon Hunter unlocks at level 20, Death Knight at 40, on any character.
 
-All settings and commands are in **Options → AddOns → Tavern Cards** (or `/tc settings`); the most used
-ones: `/tc` (card book), `/tc play` (back to your match), `/tc duel Name`, `/tc help`.
+Settings and commands: **Options → AddOns → Tavern Cards**, or `/tc help`.
 
 ## A closer look
 
@@ -45,9 +36,8 @@ ones: `/tc` (card book), `/tc play` (back to your match), `/tc duel Name`, `/tc 
 <tr>
 <td width="38%">
 <h3>The card book</h3>
-Every card you earn goes into a two-page binder. Filter by class, rarity and mana cost, search by name,
-and hover any card for its full text with every keyword explained in a side tooltip. Every card wears a
-game icon chosen to fit it, and on the table each minion stands as a 3D creature of the game.
+Every card you earn, in a two-page binder. Filter by class, type, rarity and cost, or search. Hover a card
+for its full text.
 </td>
 <td><img src="docs/screenshots/collection.jpg" alt="The card book"></td>
 </tr>
@@ -55,18 +45,14 @@ game icon chosen to fit it, and on the table each minion stands as a 3D creature
 <td><img src="docs/screenshots/deck-builder.jpg" alt="Building a deck"></td>
 <td width="38%">
 <h3>Build decks</h3>
-30 cards from one class plus Neutral, as many decks as you like. Click cards on the left page to add
-them; the right page shows your list and mana curve. Auto-fill finishes a deck for you.
+Click cards to add them. The right page shows your list and mana curve; Auto-fill finishes a deck.
 </td>
 </tr>
 <tr>
 <td width="38%">
-<h3>Your decks and card backs</h3>
-Preview a deck at a glance, play it, share it in chat as a link or a code, or copy a friend's deck
-straight from theirs.
-Earn card backs as you adventure: finish a dungeon or raid for its painting, travel to a zone for its
-map, play a class or faction for its crest. The Card Backs gallery shows how to earn the rest. Your
-opponents see your back on your hand and deck during the match.
+<h3>Card backs</h3>
+Earned as you adventure: a dungeon's painting, a zone's map, your class or faction crest. The gallery shows
+how to earn the rest.
 </td>
 <td><img src="docs/screenshots/card-backs.jpg" alt="Choosing a card back"></td>
 </tr>
@@ -74,15 +60,13 @@ opponents see your back on your hand and deck during the match.
 <td><img src="docs/screenshots/card-tooltip.jpg" alt="A card's full text"></td>
 <td width="38%">
 <h3>Every card explained</h3>
-Hover any card for its full text, with each keyword explained in a side tooltip, how many you own, and
-how to craft or disenchant it.
+Full text, keywords explained, how many you own, and the dust to craft it.
 </td>
 </tr>
 <tr>
 <td width="38%">
 <h3>The Play tab</h3>
-Choose a deck, an opponent class, a difficulty and the table you play on, then sit down against the
-house. Wins pay dust, and the day's first win brings a card. Challenge a friend from here too.
+Pick a deck, an opponent and a difficulty. Wins pay dust; the day's first win pays a card.
 </td>
 <td><img src="docs/screenshots/play.jpg" alt="The Play tab"></td>
 </tr>
@@ -90,22 +74,15 @@ house. Wins pay dust, and the day's first win brings a card. Challenge a friend 
 <td><img src="docs/screenshots/match-attack.jpg" alt="Choosing a target at the table"></td>
 <td width="38%">
 <h3>At the table</h3>
-Minions stand as 3D creatures of the game and square up when you pick them to attack. A targeting arrow
-shows what you can hit, and the match log tells the whole story: hover a line to see the card that was
-played.
+Minions stand as 3D creatures from the game. Taunt minions wear a shield. Hover the match log to see any
+card played. Drag the table to move it; pull its corner to resize.
 </td>
 </tr>
 </table>
 
-Also in the book: **the ledger** shows where every card came from (the quest, its giver and location, the
-boss or achievement, or the win that earned it), and **legendary finds** from raid bosses, epic quest
-chains and great feats arrive with a toast you can click to open the card.
-
 ## Licence
 
-The addon's code is licensed under the [GNU General Public License v3.0 or later](LICENSE). Anyone who
-redistributes it, modified or not, must do so under the same licence and share their source. Releases up to
-v0.1.0-alpha.7 were published under the MIT licence and remain MIT. Bundled libraries (`Libs/`) keep their
-own licences. Card names and text are the property of Blizzard Entertainment;
-game art is drawn from the client at run time. A non-commercial fan project, not affiliated with or
-endorsed by Blizzard Entertainment.
+The code is [GPL-3.0-or-later](LICENSE): share changes under the same licence. Releases up to v0.1.0-alpha.7
+stay MIT. Bundled libraries (`Libs/`) keep their own licences. Card names and text belong to Blizzard
+Entertainment; game art comes from the client at run time. A non-commercial fan project, not affiliated with
+or endorsed by Blizzard Entertainment.
