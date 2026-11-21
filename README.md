@@ -26,7 +26,8 @@ the tavern table against the house or your friends, all without leaving the game
 - **Build decks**: 30 cards from one class plus Neutral, each with a card back you've earned. Craft
   missing cards with dust (Alt + Right-click a card) or disenchant spares (Ctrl + Right-click).
 - **Play**: in the **Play** tab, pick a deck and a difficulty and press Play. Click a card to play it,
-  click a glowing minion and then an enemy to attack, right-click to cancel.
+  click a glowing minion and then an enemy to attack, right-click to cancel. Drag the table to move it and
+  its corner grip to resize it (Options: Fit to screen).
 - **Duel a friend** who has the addon: **Challenge...** in the Play tab, or `/tc duel Name`.
   Friends on another realm need to be in your party.
 - **Share** cards and decks: Shift-click a card into chat, or right-click a deck for its code.

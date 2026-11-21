@@ -370,4 +370,37 @@ T.raised_cost_is_white = function(TC)
     assert(color[1] < 1 and color[2] == 1, "lowered cost: green")
 end
 
+-- The table can be moved and sized like the other windows: what the player chose is kept, never larger than the
+-- screen, and Fit to screen brings back the default.
+T.table_moves_and_sizes = function(TC)
+    setup(TC)
+    local Board, S = TC.Board, TC.Board._S
+    rawset(UIParent, "GetWidth", function() return 2000 end)
+    rawset(UIParent, "GetHeight", function() return 1200 end)
+    TC.Board._P.build()
+    local f = S.frame
+    local scale, points = 1, {}
+    rawset(f, "SetScale", function(_, s) scale = s end)
+    rawset(f, "GetScale", function() return scale end)
+    rawset(f, "ClearAllPoints", function() points = {} end)
+    rawset(f, "SetPoint", function(_, ...) points[#points + 1] = { ... } end)
+    local fit = Board:FitScale()
+    Board:FitScreen()
+    assert(scale == fit and points[1][1] == "CENTER" and points[1][2] == UIParent, "default: fills the screen, centred")
+    Board:SetTableScale(0.7)
+    assert(math.abs(scale - 0.7) < 1e-9, "a chosen size is used")
+    Board:SetTableScale(99)
+    assert(scale == fit, "never larger than the screen")
+    -- A drag: the centre in UIParent units is kept and survives a size change.
+    rawset(f, "GetCenter", function() return 500 / scale, 400 / scale end)
+    Board:SavePlacement()
+    assert(math.abs(TC.db.settings.tableX - 500) < 1e-6 and math.abs(TC.db.settings.tableY - 400) < 1e-6)
+    Board:SetTableScale(0.8)
+    local p = points[1]
+    assert(p[3] == "BOTTOMLEFT" and math.abs(p[4] * 0.8 - 500) < 1e-6 and math.abs(p[5] * 0.8 - 400) < 1e-6,
+        "the table stays where it was put")
+    Board:ResetPlacement()
+    assert(scale == fit and points[1][1] == "CENTER" and TC.db.settings.tableScale == nil, "Fit to screen")
+end
+
 return T

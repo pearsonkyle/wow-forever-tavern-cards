@@ -125,12 +125,40 @@ local function build()
     smaller:SetPoint("LEFT", sizeLabel, "LEFT", 200, 0)
     local bigger = button(p, "Bigger", "Enlarge the card book window: cards, text and pages.", function() step(1) end, 80)
     bigger:SetPoint("LEFT", smaller, "RIGHT", 6, 0)
-    p:HookScript("OnShow", showSize)
+    -- Tavern table size (its corner grip does the same by dragging; dragging the table moves it).
+    local tableLabel = p:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
+    tableLabel:SetPoint("TOPLEFT", sizeLabel, "BOTTOMLEFT", 0, -16)
+    local function showTable()
+        local scale, fitted = TC.Board:TableScale()
+        tableLabel:SetText(fitted and "Tavern table size: fits the screen"
+            or ("Tavern table size: %d%%"):format(math.floor(scale * 100 + 0.5)))
+    end
+    local function stepTable(dir)
+        local cur, list = TC.Board:TableScale(), TC.TABLE_SCALES
+        local best = 1
+        for i, v in ipairs(list) do
+            if math.abs(v - cur) < math.abs(list[best] - cur) then best = i end
+        end
+        TC.Board:SetTableScale(list[math.max(1, math.min(#list, best + dir))])
+        showTable()
+    end
+    local tSmaller = button(p, "Smaller", "Shrink the tavern table.", function() stepTable(-1) end, 80)
+    tSmaller:SetPoint("LEFT", tableLabel, "LEFT", 200, 0)
+    local tBigger = button(p, "Bigger", "Enlarge the tavern table (up to what fits on your screen).",
+        function() stepTable(1) end, 80)
+    tBigger:SetPoint("LEFT", tSmaller, "RIGHT", 6, 0)
+    local tFit = button(p, "Fit to screen", "The table fills the screen again, centred.", function()
+        TC.Board:ResetPlacement()
+        showTable()
+    end, 110)
+    tFit:SetPoint("LEFT", tBigger, "RIGHT", 6, 0)
+    p:HookScript("OnShow", function() showSize() showTable() end)
     showSize()
+    showTable()
 
     -- Play.
     local h2 = heading(p, "Play", channel, -18)
-    h2:SetPoint("TOPLEFT", sizeLabel, "BOTTOMLEFT", -2, -20)
+    h2:SetPoint("TOPLEFT", tableLabel, "BOTTOMLEFT", -2, -20)
     local col1 = {
         button(p, "Open the card book", "Your collection, decks, the Play tab and the ledger.  (/tc)",
             function() TC:ShowWindow("collection") end),

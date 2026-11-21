@@ -55,16 +55,64 @@ end
 local function sideOf(seat)
     return seat == ME() and 0 or 1
 end
--- The table is the one thing on screen while it's open: as large as the screen allows (a little margin),
--- centred. Recomputed on open and when the screen or UI scale changes.
+-- The table's size and place. Until the player moves or sizes it, it fills the screen (a little margin), centred.
+-- Dragging its background moves it, the corner grip and Options size it, and both are kept in
+-- TavernCardsDB.settings (tableScale, tableX/tableY: its centre in UIParent units). Never larger than the screen.
+TC.TABLE_SCALES = { 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.25, 1.4, 1.6 }
+local MIN_TABLE_SCALE = 0.4
+
+function Board:FitScale()
+    local sw, sh = UIParent:GetWidth(), UIParent:GetHeight()
+    if not sw or sw <= 0 or not sh or sh <= 0 then return 1 end
+    return math.max(0.6, math.min(sw * 0.97 / W, sh * 0.95 / H))
+end
+
+-- The scale in use: the player's, clamped to what fits, else the fitted one.
+function Board:TableScale()
+    local s = TC.db and TC.db.settings or {}
+    local fit = self:FitScale()
+    if type(s.tableScale) == "number" then return math.max(MIN_TABLE_SCALE, math.min(fit, s.tableScale)), false end
+    return fit, true
+end
+
 function Board:FitScreen()
     local f = S.frame
     if not f or not UIParent then return end
-    local sw, sh = UIParent:GetWidth(), UIParent:GetHeight()
-    if not sw or sw <= 0 or not sh or sh <= 0 then return end
-    f:SetScale(math.max(0.6, math.min(sw * 0.97 / W, sh * 0.95 / H)))
+    local scale = self:TableScale()
+    f:SetScale(scale)
     f:ClearAllPoints()
-    f:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
+    local s = TC.db and TC.db.settings or {}
+    if type(s.tableX) == "number" and type(s.tableY) == "number" then
+        -- SetPoint offsets are in the table's own (scaled) units.
+        f:SetPoint("CENTER", UIParent, "BOTTOMLEFT", s.tableX / scale, s.tableY / scale)
+    else
+        f:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
+    end
+end
+
+-- Keeps where the table is now (after a drag or a resize).
+function Board:SavePlacement()
+    local f = S.frame
+    if not f or not TC.db then return end
+    local x, y = f:GetCenter()
+    if not x then return end
+    local scale = f:GetScale()
+    TC.db.settings.tableX, TC.db.settings.tableY = x * scale, y * scale
+    if f.SetUserPlaced then f:SetUserPlaced(false) end   -- ours to keep, not the client's layout cache
+end
+
+function Board:SetTableScale(scale)
+    if TC.db then TC.db.settings.tableScale = scale end
+    self:FitScreen()
+end
+
+-- Back to filling the screen, centred.
+function Board:ResetPlacement()
+    if TC.db then
+        local s = TC.db.settings
+        s.tableScale, s.tableX, s.tableY = nil, nil, nil
+    end
+    self:FitScreen()
 end
 
 function Board:Open()

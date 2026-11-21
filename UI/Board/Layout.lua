@@ -20,7 +20,15 @@ local function build()
     f:SetFrameStrata("DIALOG")
     f:SetToplevel(true)
     f:SetClampedToScreen(true)
-    f:EnableMouse(true)   -- stationary: the table fills the screen (Board:FitScreen) and doesn't move
+    f:EnableMouse(true)
+    -- Moved by dragging its background, like the card book; where it stands is kept (Board:SavePlacement).
+    f:SetMovable(true)
+    f:RegisterForDrag("LeftButton")
+    f:SetScript("OnDragStart", function(self) self:StartMoving() end)
+    f:SetScript("OnDragStop", function(self)
+        self:StopMovingOrSizing()
+        Board:SavePlacement()
+    end)
     f:Hide()
     tinsert(UISpecialFrames, "TavernCardsBoard")
     -- The window's gold border round the table, on its own layer above the table art.
@@ -28,6 +36,46 @@ local function build()
     f.edge:SetAllPoints()
     f.edge:SetFrameLevel(f:GetFrameLevel() + 1)
     f.edge:EnableMouse(false)
+    -- A size grip in the corner, as on the game's resizable windows: drag to scale the table, its top-left corner
+    -- staying put; never past what fits on screen. Options > Tavern table size has Fit to screen.
+    local grip = CreateFrame("Button", nil, f)
+    f.grip = grip
+    grip:SetSize(18, 18)
+    grip:SetPoint("BOTTOMRIGHT", -7, 7)
+    grip:SetFrameLevel(f:GetFrameLevel() + 30)
+    grip:SetNormalTexture("Interface\\ChatFrame\\UI-ChatIM-SizeGrabber-Up")
+    grip:SetHighlightTexture("Interface\\ChatFrame\\UI-ChatIM-SizeGrabber-Highlight")
+    grip:SetPushedTexture("Interface\\ChatFrame\\UI-ChatIM-SizeGrabber-Down")
+    grip:SetScript("OnMouseDown", function(self, button)
+        if button ~= "LeftButton" then return end
+        local scale = f:GetScale()
+        local left, top = f:GetLeft(), f:GetTop()
+        if not left then return end
+        left, top = left * scale, top * scale   -- UIParent units
+        local ui = UIParent:GetEffectiveScale()
+        self:SetScript("OnUpdate", function()
+            local cx = GetCursorPosition() / ui
+            local s = math.max(0.4, math.min(Board:FitScale(), (cx - left) / W))
+            f:SetScale(s)
+            f:ClearAllPoints()
+            f:SetPoint("TOPLEFT", UIParent, "BOTTOMLEFT", left / s, top / s)
+        end)
+    end)
+    grip:SetScript("OnMouseUp", function(self)
+        if not self:GetScript("OnUpdate") then return end
+        self:SetScript("OnUpdate", nil)
+        if TC.db then TC.db.settings.tableScale = f:GetScale() end
+        Board:SavePlacement()
+        Board:FitScreen()
+    end)
+    grip:SetScript("OnEnter", function(self)
+        GameTooltip:SetOwner(self, "ANCHOR_TOPLEFT")
+        GameTooltip:SetText("Resize the table", 1, 0.82, 0)
+        GameTooltip:AddLine("Drag to make it bigger or smaller. Drag the table itself to move it.", 1, 1, 1, true)
+        GameTooltip:AddLine("Options > AddOns > Tavern Cards: Fit to screen.", 0.7, 0.7, 0.7, true)
+        GameTooltip:Show()
+    end)
+    grip:SetScript("OnLeave", function() GameTooltip:Hide() end)
     f.edge:SetBackdrop({ edgeFile = "Interface\\DialogFrame\\UI-DialogBox-Gold-Border", edgeSize = 32 })
 
     -- The table: wooden planks with a stone play surface inlaid where the minions stand, ringed in brass
