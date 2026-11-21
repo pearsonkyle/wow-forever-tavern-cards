@@ -336,11 +336,38 @@ function Art:RulesText(id, keepLines)
     return text
 end
 
+-- Every sound the addon starts is tracked and ends on its own. Some kits the board borrows from the game loop
+-- until stopped (a spell's channel, a creature's idle): played and forgotten, they went on forever. Each is
+-- faded out after MAX_SOUND seconds at the latest, and Art:StopSounds ends whatever is still playing (the table
+-- closing, a match ending, the sound toggle).
+local MAX_SOUND = 3
+local playing = {}   -- sound handle -> true
+
+local function track(ok, willPlay, handle)
+    if not (ok and willPlay and handle) then return ok and willPlay or false end
+    playing[handle] = true
+    if C_Timer and StopSound then
+        C_Timer.After(MAX_SOUND, function()
+            if playing[handle] then
+                playing[handle] = nil
+                pcall(StopSound, handle, 400)
+            end
+        end)
+    end
+    return true
+end
+
+function Art:StopSounds()
+    if not StopSound then return end
+    for handle in pairs(playing) do pcall(StopSound, handle, 200) end
+    wipe(playing)
+end
+
 -- One shared sound helper: SOUNDKIT names vary by client, so look them up defensively.
 function Art:Play(kit)
     local id = SOUNDKIT and SOUNDKIT[kit]
-    if id and not TC.db.settings.mute then
-        PlaySound(id)
+    if id and not TC.db.settings.mute and PlaySound then
+        track(pcall(PlaySound, id, "SFX"))
     end
 end
 
@@ -352,7 +379,7 @@ function Art:PlayKit(id)
     local now = GetTime()
     if lastKit[id] and now - lastKit[id] < 0.15 then return true end
     lastKit[id] = now
-    return pcall(PlaySound, id, "SFX")
+    return track(pcall(PlaySound, id, "SFX"))
 end
 
 -- Game sounds by moment. Each lists SOUNDKIT names in order of preference (clients differ in which they

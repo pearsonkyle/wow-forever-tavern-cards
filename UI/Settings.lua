@@ -75,7 +75,10 @@ local function build()
     local h1 = heading(p, "Settings", blurb, -18)
     local s = TC.db.settings
     local sound = checkbox(p, "Sound effects", "Card plays, attacks, hits and the turn chime.",
-        function() return not s.mute end, function(on) s.mute = not on end)
+        function() return not s.mute end, function(on)
+            s.mute = not on
+            if s.mute and TC.Art then TC.Art:StopSounds() end
+        end)
     sound:SetPoint("TOPLEFT", h1, "BOTTOMLEFT", -2, -8)
     local models = checkbox(p, "3D creatures and heroes",
         "Creatures on the battlefield, your character as your hero, and named creatures on card faces. Turn off on slower machines.",

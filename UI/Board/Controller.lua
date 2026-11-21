@@ -992,6 +992,7 @@ local function onMatch(what, seat, move)
         return
     end
     if what == "end" then
+        Art:StopSounds()   -- the match's last cries and casts end with it
         Art:Sfx(Match.result == "win" and "win" or "lose")
         Board:Refresh()
     end

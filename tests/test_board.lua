@@ -312,4 +312,62 @@ T.every_class_plays_with_models_on_the_board = function(TC)
     assert(n > 40 and shown > n, ("%d minions on the board, %d models shown"):format(n, shown))
 end
 
+-- Every ability a minion has shows as its own icon (Taunt first); a Silenced minion shows none.
+T.minion_abilities_show_as_icons = function(TC)
+    setup(TC)
+    local P, KW = TC.Board._P, TC.EngineDefs.KW
+    local b = P.minionWidget(mock())
+    local e = { id = 7, card_id = "CS2_179", attack = 3, health = 5, max_health = 5, durability = 0,
+        keywords = bit.bor(KW.TAUNT, KW.DEATHRATTLE),
+        flags = { divine_shield = true, stealth = false, silenced = false, frozen = false, dormant_turns = 0 } }
+    local function shown()
+        local n = 0
+        for _, f in ipairs(b.keywords) do if rawget(f, "_shown") then n = n + 1 end end
+        return n
+    end
+    P.setMinion(b, e, { effects = {} })
+    assert(shown() == 3, "taunt, divine shield and deathrattle: " .. shown())
+    P.setMinion(b, e, { effects = { { trigger = "END_TURN", inHand = 0 } } })
+    assert(shown() == 4, "an end-of-turn effect adds the trigger icon")
+    P.setMinion(b, e, { effects = { { trigger = "BATTLECRY", inHand = 0 } } })
+    assert(shown() == 3, "a Battlecry is no ongoing effect")
+    e.flags.silenced = true
+    P.setMinion(b, e, { effects = {} })
+    assert(shown() == 0, "silenced: no abilities")
+end
+
+-- No sound the board plays can go on forever: each is stopped after a few seconds, and StopSounds ends them all.
+T.sounds_always_end = function(TC)
+    setup(TC)
+    local timers, stopped, handle = {}, {}, 0
+    C_Timer = { After = function(_, fn) timers[#timers + 1] = fn end }
+    PlaySound = function() handle = handle + 1 return true, handle end
+    StopSound = function(h) stopped[h] = true end
+    SOUNDKIT = { IG_QUEST_LIST_SELECT = 1 }
+    TC.db.settings.mute = false
+    TC.Art:PlayKit(5001)
+    TC.Art:PlayKit(5002)
+    TC.Art:Play("IG_QUEST_LIST_SELECT")
+    assert(#timers == 3, "every sound gets its stop timer")
+    for _, fn in ipairs(timers) do fn() end
+    assert(stopped[1] and stopped[2] and stopped[3], "each sound is stopped when its time is up")
+    TC.Art:PlayKit(5003)
+    TC.Art:StopSounds()
+    assert(stopped[4], "StopSounds ends what is still playing")
+end
+
+-- A card that costs more than printed shows its cost in white (red read as "can't cast"); cheaper is green.
+T.raised_cost_is_white = function(TC)
+    setup(TC)
+    local w = TC.CardWidget:Create(mock())
+    local color
+    rawset(w.cost.text, "SetTextColor", function(_, r, g, b2) color = { r, g, b2 } end)
+    w.game, w.costNow = true, 9
+    w:SetCard("CS2_029")   -- Fireball, printed (4)
+    assert(color[1] == 1 and color[2] == 1 and color[3] == 1, "raised cost: white")
+    w.costNow = 2
+    w:SetCard("CS2_029")
+    assert(color[1] < 1 and color[2] == 1, "lowered cost: green")
+end
+
 return T

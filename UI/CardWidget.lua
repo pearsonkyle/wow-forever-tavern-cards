@@ -375,6 +375,7 @@ function CardWidget.SetCard(w, id)
     end
     w.text:SetText(faceText(id))
     w.cost.text:SetText(card.cost)
+    w.cost.text:SetTextColor(1, 1, 1)   -- a recycled widget keeps no colour from the match it was in
 
     local rarity = card.rarity ~= "FREE" and card.rarity:lower()
     if rarity and LAYOUT.gems[rarity] then
@@ -449,10 +450,10 @@ function CardWidget.SetCard(w, id)
         -- A card in a match: always "owned"; the cost shown is what it costs now.
         w.count:SetText("")
         w.cost.text:SetText(w.costNow or card.cost)
+        -- Green when something made it cheaper; otherwise white. A raised cost was red, which read as "you
+        -- can't cast this": whether a card can be played is what its glow says.
         if w.costNow and w.costNow < card.cost then
             w.cost.text:SetTextColor(0.3, 1, 0.3)
-        elseif w.costNow and w.costNow > card.cost then
-            w.cost.text:SetTextColor(1, 0.3, 0.3)
         else
             w.cost.text:SetTextColor(1, 1, 1)
         end

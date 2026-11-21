@@ -492,6 +492,7 @@ local function build()
     end)
     f:SetScript("OnShow", function() Art:Play("IG_MAINMENU_OPEN") Board:Refresh() end)
     f:SetScript("OnHide", function()
+        Art:StopSounds()   -- nothing the table started outlives it
         P.finishEffects()
         Board:Cancel(true)
         GameTooltip:Hide()

@@ -198,10 +198,6 @@ local function onEntityClick(self, button)
     end
 end
 
--- Overlay cells (Textures/overlays) for what a minion carries; the first that applies shows as its badge.
-local BADGES = { { KW.DEATHRATTLE, "deathrattle" }, { KW.POISONOUS, "poisonous" }, { KW.LIFESTEAL, "lifesteal" },
-    { KW.WINDFURY, "windfury" } }
-
 local function overlay(parent, layer, cell, w, h, sub)
     local t = parent:CreateTexture(nil, layer, nil, sub)
     t:SetSize(w, h)
@@ -209,6 +205,66 @@ local function overlay(parent, layer, cell, w, h, sub)
     Art:Cell(t, "overlays", cell)
     t:Hide()
     return t
+end
+
+-- What a minion has, as a column of small round game icons down its left side (then its right): Taunt first, so a
+-- wall is seen at a glance, then its other keywords, its Deathrattle and an ongoing effect ("whenever...",
+-- auras). The tooltip names them all. Classic-era icons the client surely has, each with a second choice.
+local KEYWORD_ICONS = {
+    { "taunt", "Ability_Defend", "INV_Shield_06" },
+    { "divine", "Spell_Holy_DivineIntervention", "Spell_Holy_SealOfProtection" },
+    { "stealth", "Ability_Stealth", "Ability_Ambush" },
+    { "immune", "Spell_Holy_SealOfProtection", "Spell_Holy_DivineIntervention" },
+    { "charge", "Ability_Warrior_Charge", "Ability_Rogue_Sprint" },
+    { "rush", "Ability_Rogue_Sprint", "Ability_Warrior_Charge" },
+    { "windfury", "Spell_Nature_Cyclone", "Spell_Nature_Windfury" },
+    { "lifesteal", "Spell_Shadow_LifeDrain02", "Spell_Shadow_LifeDrain" },
+    { "poisonous", "Ability_PoisonSting", "Ability_Rogue_DualWeild" },
+    { "reborn", "Spell_Nature_Reincarnation", "Spell_Holy_Resurrection" },
+    { "elusive", "Spell_Nature_Invisibilty", "Spell_Magic_LesserInvisibilty" },
+    { "spell_damage", "Spell_Holy_MagicalSentry", "Spell_Fire_SoulBurn" },
+    { "deathrattle", "INV_Misc_Bone_HumanSkull_01", "Spell_Shadow_RaiseDead" },
+    { "trigger", "Spell_Nature_LightningShield", "Spell_Nature_Lightning" },
+}
+local KEYWORD_BIT = { taunt = KW.TAUNT, charge = KW.CHARGE, rush = KW.RUSH, windfury = KW.WINDFURY,
+    lifesteal = KW.LIFESTEAL, poisonous = KW.POISONOUS, reborn = KW.REBORN, elusive = KW.ELUSIVE,
+    spell_damage = KW.SPELL_DAMAGE, deathrattle = KW.DEATHRATTLE, immune = KW.IMMUNE }
+-- Triggers that don't act while the minion stands on the board (they ran as it came, or run elsewhere).
+local ONE_OFF = { ON_PLAY = true, BATTLECRY = true, DEATHRATTLE = true, CORRUPT = true, FORGED = true,
+    CAST_WHEN_DRAWN = true, IN_HAND_TURN_START = true, START_OF_GAME = true, WHEN_AWAKENS = true }
+local ICON_SIZE, ICON_STEP, ICON_COLUMN = 19, 20, 4   -- four down the left side, the rest down the right
+
+local function keywordIcon(parent)
+    local f = CreateFrame("Frame", nil, parent)
+    f:SetSize(ICON_SIZE, ICON_SIZE)
+    f:EnableMouse(false)   -- clicks and hovers go to the minion (its tooltip lists every keyword)
+    f.icon = maskedPortrait(f, "round", 1)
+    f.rim = f:CreateTexture(nil, "OVERLAY")
+    f.rim:SetPoint("TOPLEFT", -2, 2)
+    f.rim:SetPoint("BOTTOMRIGHT", 2, -2)
+    f.rim:SetTexture(Art:Tex("hero_power"))
+    f:Hide()
+    return f
+end
+
+-- The icons a minion shows now, in KEYWORD_ICONS order (none while Silenced).
+local function minionKeywords(e, d)
+    local out = {}
+    if e.flags.silenced then return out end
+    local ongoing = false
+    for _, fx in ipairs(d and d.effects or {}) do
+        if not ONE_OFF[fx.trigger] and (fx.inHand or 0) == 0 then ongoing = true break end
+    end
+    for _, row in ipairs(KEYWORD_ICONS) do
+        local key = row[1]
+        local on
+        if key == "divine" then on = e.flags.divine_shield
+        elseif key == "stealth" then on = e.flags.stealth
+        elseif key == "trigger" then on = ongoing
+        else on = band(e.keywords, KEYWORD_BIT[key]) ~= 0 end
+        if on then out[#out + 1] = row end
+    end
+    return out
 end
 
 -- A minion on the board: its portrait in a narrow rounded-square frame, attack and health gems, and
@@ -253,6 +309,16 @@ local function minionWidget(parent)
     b.badge = overlay(b.top, "OVERLAY", "deathrattle", 24, 24, 3)
     b.badge:ClearAllPoints()
     b.badge:SetPoint("BOTTOM", 0, -4)
+    b.keywords = {}
+    for i = 1, ICON_COLUMN * 2 - 1 do
+        local f = keywordIcon(b)
+        f:SetFrameLevel(base + 5)
+        local right = i > ICON_COLUMN
+        local row = right and (i - ICON_COLUMN) or i
+        -- Down the left edge from the top; down the right edge below the sleep mark.
+        f:SetPoint("TOP", b, right and "TOPRIGHT" or "TOPLEFT", right and 2 or -2, -(right and 30 or 6) - (row - 1) * ICON_STEP)
+        b.keywords[i] = f
+    end
     b.attack = gem(b, 30, "attack")
     b.attack:SetPoint("BOTTOMLEFT", -7, -5)
     b.attack:SetFrameLevel(base + 4)
@@ -313,6 +379,7 @@ local function setMinion(b, e, d)
         b.health.text:SetTextColor(1, 1, 1)
         b.taunt:Hide()
         b.shield:Hide()
+        for _, f in ipairs(b.keywords) do f:Hide() end
         b.baseAlpha = 1
         if not P.fading[b] then b:SetAlpha(1) end
         b.art:SetVertexColor(e.flags.has_attacked and 0.5 or 1, e.flags.has_attacked and 0.5 or 1, e.flags.has_attacked and 0.5 or 1)
@@ -337,13 +404,15 @@ local function setMinion(b, e, d)
     b.shield:SetShown(e.flags.divine_shield)
     b.stealth:SetShown(e.flags.stealth and true or false)
     b.silence:SetShown(silenced and true or false)
-    if not silenced then
-        for _, kb in ipairs(BADGES) do
-            if band(e.keywords, kb[1]) ~= 0 then
-                Art:Cell(b.badge, "overlays", kb[2])
-                b.badge:Show()
-                break
-            end
+    -- One icon per ability (the single overlay badge it replaces showed only the first).
+    local shown = minionKeywords(e, d)
+    for i, f in ipairs(b.keywords) do
+        local row = shown[i]
+        if row then
+            f.icon:SetTexture(Art:SafeIcon(row[2], Art:IconIfExists(row[3])))
+            f:Show()
+        else
+            f:Hide()
         end
     end
     b.baseAlpha = e.flags.stealth and 0.75 or 1
