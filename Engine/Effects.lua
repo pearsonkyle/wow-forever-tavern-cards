@@ -3059,12 +3059,34 @@ end
 
 -- ---- target questions for plays ----------------------------------------------------------------
 
+-- Conditions a minion's own play can't change and that roll nothing (condition_known_before_play in the C++):
+-- card_choose_targets_for reads them up front.
+local KNOWN_BEFORE_PLAY = { CONTROL_OTHER_RACE = true, CONTROL_SECRET = true, HAS_WEAPON = true,
+    OTHER_MINIONS_AT_LEAST = true, OVERLOADED = true, HERO_HEALTH_CHANGED_THIS_TURN = true,
+    HERO_TOOK_DAMAGE_THIS_TURN = true, HERO_ATTACKED_THIS_TURN = true, HERO_POWER_USED_THIS_TURN = true,
+    FRIENDLY_RACE_DIED_THIS_TURN = true, PLAYED_RACE_LAST_TURN = true, SPELLS_CAST_AT_LEAST = true,
+    DECK_NO_COST = true, DECK_NO_NEUTRAL = true, DECK_ONLY_PARITY = true, EXCAVATED = true }
+
 function E:card_choose_targets_for(card, effects, trigger, controller, source)
     local out = {}
     for _, fx in ipairs(effects) do
         local relevant = fx.trigger == trigger
         if trigger == "ON_PLAY" and fx.trigger == "BATTLECRY" then relevant = true end
         if trigger == "ON_PLAY" and card.type == "SPELL" and fx.trigger == "START_TURN" and fx.prompt then relevant = true end
+        -- "Battlecry: If you control another Murloc, deal 2 damage", "Combo: Deal 3 damage" ask for a target only when
+        -- they would do something (jankcraft card_choose_targets_for): a condition the play can't change is read now.
+        -- Combo, before the play, is "at least one card played" (once played, the card counts itself); a spell counts
+        -- itself among the spells cast, so that one isn't read up front for spells.
+        if relevant and fx.target.kind == "CHOOSE" then
+            if fx.condition == "COMBO" then
+                if self:player(controller).cards_played_this_turn < 1 then relevant = false end
+            elseif (card.type == "MINION" or card.type == "SPELL") and fx.condition ~= "NONE"
+                and KNOWN_BEFORE_PLAY[fx.condition]
+                and not (card.type == "SPELL" and fx.condition == "SPELLS_CAST_AT_LEAST")
+                and not self:condition_holds(fx, controller, source, 0) then
+                relevant = false
+            end
+        end
         if relevant and fx.target.kind == "CHOOSE" then
             for _, t in ipairs(self:choose_targets(fx.target.side, controller, source)) do
                 if self:target_matches_filters(t, fx, source)

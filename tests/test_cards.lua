@@ -158,4 +158,52 @@ T.corrupted_blood_ends_the_game_instead_of_looping = function(TC)
     assert(eng.state.result.winner == seat, "they are the one beaten")
 end
 
+-- "Battlecry: If you control another Murloc, deal 2 damage" (South Coast Chieftain) asks for a target only when
+-- the player controls another Murloc (jankcraft: card_choose_targets_for).
+T.south_coast_chieftain_targets_only_with_another_murloc = function(TC)
+    local eng, D = newGame(TC, "SHAMAN", "WARRIOR")
+    local seat = eng.state.active
+    for _, id in ipairs(eng:board_ids(seat)) do eng:relocate(id, D.ZONE.GRAVEYARD, -1) end
+    local chief = give(eng, D, seat, "BAR_040")
+    eng:player(seat).mana = 10
+    local function targeted()
+        local any, aimed = false, false
+        for _, m in ipairs(eng:legal_moves()) do
+            if m.action == "play" and m.raw.entity == chief then
+                any = true
+                aimed = aimed or (m.raw.target or 0) ~= 0
+            end
+        end
+        assert(any, "the Chieftain is playable")
+        return aimed
+    end
+    assert(not targeted(), "no other Murloc: played without a target")
+    eng:summon_token("CS2_168", seat, -1, false)   -- Murloc Raider
+    assert(targeted(), "another Murloc: it asks for a target")
+end
+
+-- "Combo: Deal 3 damage" (Rite of Twilight) asks for a target only once a card was played earlier this turn.
+T.combo_spell_targets_only_after_another_card = function(TC)
+    local eng, D = newGame(TC, "ROGUE", "WARRIOR")
+    local seat = eng.state.active
+    local rite = give(eng, D, seat, "CATA_785")
+    local wisp = give(eng, D, seat, "CS2_231")
+    eng:player(seat).mana = 10
+    eng:player(seat).cards_played_this_turn = 0
+    local function targeted()
+        local any, aimed = false, false
+        for _, m in ipairs(eng:legal_moves()) do
+            if m.action == "play" and m.raw.entity == rite then
+                any = true
+                aimed = aimed or (m.raw.target or 0) ~= 0
+            end
+        end
+        assert(any, "Rite of Twilight is castable")
+        return aimed
+    end
+    assert(not targeted(), "first card of the turn: no Combo, no target")
+    assert(play(eng, wisp), "a card first")
+    assert(targeted(), "Combo now: it asks for a target")
+end
+
 return T

@@ -317,8 +317,9 @@ T.every_class_plays_with_models_on_the_board = function(TC)
     assert(n > 40 and shown > n, ("%d minions on the board, %d models shown"):format(n, shown))
 end
 
--- Every ability a minion has shows as its own icon (Taunt first); a Silenced minion shows none.
-T.minion_abilities_show_as_icons = function(TC)
+-- A Taunt minion wears the Taunt icon (the one ability the board marks: it must be attacked first); a minion
+-- without Taunt, or Silenced, wears none. Divine Shield and the rest show as overlays, not icons.
+T.taunt_shows_as_an_icon = function(TC)
     setup(TC)
     local P, KW = TC.Board._P, TC.EngineDefs.KW
     local b = P.minionWidget(mock())
@@ -330,15 +331,14 @@ T.minion_abilities_show_as_icons = function(TC)
         for _, f in ipairs(b.keywords) do if rawget(f, "_shown") then n = n + 1 end end
         return n
     end
-    P.setMinion(b, e, { effects = {} })
-    assert(shown() == 3, "taunt, divine shield and deathrattle: " .. shown())
     P.setMinion(b, e, { effects = { { trigger = "END_TURN", inHand = 0 } } })
-    assert(shown() == 4, "an end-of-turn effect adds the trigger icon")
-    P.setMinion(b, e, { effects = { { trigger = "BATTLECRY", inHand = 0 } } })
-    assert(shown() == 3, "a Battlecry is no ongoing effect")
-    e.flags.silenced = true
+    assert(shown() == 1, "Taunt only (no Deathrattle, Divine Shield or ongoing-effect icons): " .. shown())
+    e.keywords = KW.DEATHRATTLE
     P.setMinion(b, e, { effects = {} })
-    assert(shown() == 0, "silenced: no abilities")
+    assert(shown() == 0, "no Taunt, no icon")
+    e.keywords, e.flags.silenced = KW.TAUNT, true
+    P.setMinion(b, e, { effects = {} })
+    assert(shown() == 0, "silenced: no icon")
 end
 
 -- No sound the board plays can go on forever: each is stopped after a few seconds, and StopSounds ends them all.
