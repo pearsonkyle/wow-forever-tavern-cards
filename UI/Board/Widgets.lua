@@ -207,32 +207,14 @@ local function overlay(parent, layer, cell, w, h, sub)
     return t
 end
 
--- What a minion has, as a column of small round game icons down its left side (then its right): Taunt first, so a
--- wall is seen at a glance, then its other keywords, its Deathrattle and an ongoing effect ("whenever...",
--- auras). The tooltip names them all. Classic-era icons the client surely has, each with a second choice.
+-- A small round icon on a minion for what must be dealt with: Taunt (enemies have to attack it first). Divine
+-- Shield, Stealth, Frozen, Silence and sleep have their own overlays. More keyword icons (an ongoing-effect bolt
+-- among them) read as noise and are left to the tooltip, which names everything.
 local KEYWORD_ICONS = {
     { "taunt", "Ability_Defend", "INV_Shield_06" },
-    { "divine", "Spell_Holy_DivineIntervention", "Spell_Holy_SealOfProtection" },
-    { "stealth", "Ability_Stealth", "Ability_Ambush" },
-    { "immune", "Spell_Holy_SealOfProtection", "Spell_Holy_DivineIntervention" },
-    { "charge", "Ability_Warrior_Charge", "Ability_Rogue_Sprint" },
-    { "rush", "Ability_Rogue_Sprint", "Ability_Warrior_Charge" },
-    { "windfury", "Spell_Nature_Cyclone", "Spell_Nature_Windfury" },
-    { "lifesteal", "Spell_Shadow_LifeDrain02", "Spell_Shadow_LifeDrain" },
-    { "poisonous", "Ability_PoisonSting", "Ability_Rogue_DualWeild" },
-    { "reborn", "Spell_Nature_Reincarnation", "Spell_Holy_Resurrection" },
-    { "elusive", "Spell_Nature_Invisibilty", "Spell_Magic_LesserInvisibilty" },
-    { "spell_damage", "Spell_Holy_MagicalSentry", "Spell_Fire_SoulBurn" },
-    { "deathrattle", "INV_Misc_Bone_HumanSkull_01", "Spell_Shadow_RaiseDead" },
-    { "trigger", "Spell_Nature_LightningShield", "Spell_Nature_Lightning" },
 }
-local KEYWORD_BIT = { taunt = KW.TAUNT, charge = KW.CHARGE, rush = KW.RUSH, windfury = KW.WINDFURY,
-    lifesteal = KW.LIFESTEAL, poisonous = KW.POISONOUS, reborn = KW.REBORN, elusive = KW.ELUSIVE,
-    spell_damage = KW.SPELL_DAMAGE, deathrattle = KW.DEATHRATTLE, immune = KW.IMMUNE }
--- Triggers that don't act while the minion stands on the board (they ran as it came, or run elsewhere).
-local ONE_OFF = { ON_PLAY = true, BATTLECRY = true, DEATHRATTLE = true, CORRUPT = true, FORGED = true,
-    CAST_WHEN_DRAWN = true, IN_HAND_TURN_START = true, START_OF_GAME = true, WHEN_AWAKENS = true }
-local ICON_SIZE, ICON_STEP, ICON_COLUMN = 19, 20, 4   -- four down the left side, the rest down the right
+local KEYWORD_BIT = { taunt = KW.TAUNT }
+local ICON_SIZE, ICON_STEP, ICON_COLUMN = 19, 20, 1   -- one, at the top left
 
 local function keywordIcon(parent)
     local f = CreateFrame("Frame", nil, parent)
@@ -248,21 +230,11 @@ local function keywordIcon(parent)
 end
 
 -- The icons a minion shows now, in KEYWORD_ICONS order (none while Silenced).
-local function minionKeywords(e, d)
+local function minionKeywords(e)
     local out = {}
     if e.flags.silenced then return out end
-    local ongoing = false
-    for _, fx in ipairs(d and d.effects or {}) do
-        if not ONE_OFF[fx.trigger] and (fx.inHand or 0) == 0 then ongoing = true break end
-    end
     for _, row in ipairs(KEYWORD_ICONS) do
-        local key = row[1]
-        local on
-        if key == "divine" then on = e.flags.divine_shield
-        elseif key == "stealth" then on = e.flags.stealth
-        elseif key == "trigger" then on = ongoing
-        else on = band(e.keywords, KEYWORD_BIT[key]) ~= 0 end
-        if on then out[#out + 1] = row end
+        if band(e.keywords, KEYWORD_BIT[row[1]]) ~= 0 then out[#out + 1] = row end
     end
     return out
 end
@@ -404,8 +376,8 @@ local function setMinion(b, e, d)
     b.shield:SetShown(e.flags.divine_shield)
     b.stealth:SetShown(e.flags.stealth and true or false)
     b.silence:SetShown(silenced and true or false)
-    -- One icon per ability (the single overlay badge it replaces showed only the first).
-    local shown = minionKeywords(e, d)
+    -- The Taunt icon (KEYWORD_ICONS).
+    local shown = minionKeywords(e)
     for i, f in ipairs(b.keywords) do
         local row = shown[i]
         if row then
