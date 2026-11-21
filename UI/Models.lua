@@ -96,7 +96,14 @@ function Models:Load(m)
                 m.loaded, m.pending = false, true
                 return
             end
-            if m.kind ~= "npc" and m.kind ~= "unit" and m.id then missing[m.kind .. m.id] = true end
+            if m.kind ~= "npc" and m.kind ~= "unit" and m.id then
+                missing[m.kind .. m.id] = true
+                -- Kept too ("display1234", "item99", "file5678"), so tools/picker avoids models this client lacks.
+                if TC.db then
+                    TC.db.missingModels = TC.db.missingModels or {}
+                    TC.db.missingModels[m.kind .. m.id] = true
+                end
+            end
             if m.kind == "npc" and m.id then
                 missing[m.id] = true
                 -- Remembered for tools/picker (it flags creatures this client can't show).

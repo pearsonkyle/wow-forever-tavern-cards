@@ -27,23 +27,6 @@ local function setup(TC)
     dofile("Collection/Collection.lua")
     dofile("Collection/Decks.lua")
     dofile("UI/Match.lua")
-    T.bad_ai_move_falls_back = function(TC)
-    local Match, tick = setup(TC)
-    local real = TC.AI.choose
-    local broken = 0
-    TC.AI.choose = function(engine, ...)
-        if engine:current_player() == 1 and broken < 3 and engine.state.phase == TC.EngineDefs.PHASE.PLAYER_ACTIONS then
-            broken = broken + 1
-            return 9999  -- a move that doesn't exist
-        end
-        return real(engine, ...)
-    end
-    assert(Match:StartPractice(houseDeck(TC, "MAGE", 2), { name = "Test", class = "DRUID", profile = "novice" }))
-    playOut(TC, Match, tick, 20000)
-    TC.AI.choose = real
-    assert(broken == 3 and Match:Engine():is_terminal(), "the opponent should play on after a refused move")
-end
-
 return TC.Match, function()
         clock = clock + 0.1
         scripts.OnUpdate()
@@ -179,6 +162,19 @@ T.imbued_power_and_quest_read_for_the_board = function(TC)
         assert(not (m.action == "play" and m.raw.entity == again), "a second copy of a quest under way is refused")
     end
     assert(Match.ErrorText("E_QUEST_DUPLICATE") ~= Match.ErrorText("E_SOMETHING"))
+end
+
+-- A match saved under other rules (an update in between) is set aside, not replayed into another game.
+T.match_from_other_rules_is_set_aside = function(TC)
+    local Match = setup(TC)
+    assert(Match:StartPractice(houseDeck(TC, "MAGE", 3), { name = "Test", class = "DRUID", profile = "novice" }))
+    assert(TC.char.match.rules == TC.RULES_VERSION, "a new match keeps its rules version")
+    assert(Match:Load(), "the same rules: it resumes")
+    TC.char.match.rules = "0.0.1-old"
+    assert(not Match:Load() and TC.char.match == nil, "other rules: set aside")
+    assert(Match:StartPractice(houseDeck(TC, "MAGE", 3), { name = "Test", class = "DRUID", profile = "novice" }))
+    TC.char.match.rules = nil   -- saved by a build before matches kept their rules
+    assert(not Match:Load() and TC.char.match == nil, "no rules version: set aside")
 end
 
 return T

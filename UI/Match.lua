@@ -99,7 +99,7 @@ end
 
 -- A duel agreed by both sides (Net/Duel.lua): decks, classes and the shared seed are settled.
 function Match:StartDuel(record)
-    record.kind, record.moves, record.started = "duel", {}, time()
+    record.kind, record.moves, record.started, record.rules = "duel", {}, time(), TC.RULES_VERSION
     TC.char.match = record
     return self:Load()
 end
@@ -122,6 +122,7 @@ function Match:StartPractice(deck, opponent, setup)
         setup = setup,
         seed = { hi, lo }, decks = { cards, oppDeck }, classes = { deck.class, opponent.class },
         opponent = opponent, deckName = deck.name, moves = {}, started = time(),
+        rules = TC.RULES_VERSION,   -- the rules the moves were made under (Match:Load)
     }
     return self:Load()
 end
@@ -130,6 +131,13 @@ end
 function Match:Load()
     local record = TC.char.match
     if not record then return false end
+    -- A match is its moves replayed: under other rules (an update in between) they would make another game, which
+    -- may even look legal. Set it aside instead (a record from before matches kept their rules version too).
+    if record.rules ~= TC.RULES_VERSION then
+        TC:Print("Your saved match was played under another version of Tavern Cards, so it was set aside. Start a new one from the Play tab.")
+        TC.char.match = nil
+        return false
+    end
     local engine = build(record)
     if not engine then
         TC:Print("The saved match could not be restored.")

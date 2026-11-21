@@ -13,6 +13,11 @@ local METHODS = {
     GetLeft = function() return 0 end, GetBottom = function() return 0 end,
     GetCenter = function() return 50, 50 end, GetEffectiveScale = function() return 1 end,
     GetFrameLevel = function() return 1 end,
+    GetStringHeight = function() return 12 end,
+    Click = function(self)   -- as in the client: runs the button's OnClick
+        local s = scriptsOf[self]
+        if s and s.OnClick then s.OnClick(self, "LeftButton") end
+    end,
     IsShown = function(self) return rawget(self, "_shown") ~= false end,
     IsVisible = function(self) return rawget(self, "_shown") ~= false end,
     Show = function(self)
@@ -310,6 +315,197 @@ T.every_class_plays_with_models_on_the_board = function(TC)
         assert(TC.CardModels[id] or TC.CardDisplays[id] or TC.CardProps[id], id .. " stood on the board with no model")
     end
     assert(n > 40 and shown > n, ("%d minions on the board, %d models shown"):format(n, shown))
+end
+
+-- Every ability a minion has shows as its own icon (Taunt first); a Silenced minion shows none.
+T.minion_abilities_show_as_icons = function(TC)
+    setup(TC)
+    local P, KW = TC.Board._P, TC.EngineDefs.KW
+    local b = P.minionWidget(mock())
+    local e = { id = 7, card_id = "CS2_179", attack = 3, health = 5, max_health = 5, durability = 0,
+        keywords = bit.bor(KW.TAUNT, KW.DEATHRATTLE),
+        flags = { divine_shield = true, stealth = false, silenced = false, frozen = false, dormant_turns = 0 } }
+    local function shown()
+        local n = 0
+        for _, f in ipairs(b.keywords) do if rawget(f, "_shown") then n = n + 1 end end
+        return n
+    end
+    P.setMinion(b, e, { effects = {} })
+    assert(shown() == 3, "taunt, divine shield and deathrattle: " .. shown())
+    P.setMinion(b, e, { effects = { { trigger = "END_TURN", inHand = 0 } } })
+    assert(shown() == 4, "an end-of-turn effect adds the trigger icon")
+    P.setMinion(b, e, { effects = { { trigger = "BATTLECRY", inHand = 0 } } })
+    assert(shown() == 3, "a Battlecry is no ongoing effect")
+    e.flags.silenced = true
+    P.setMinion(b, e, { effects = {} })
+    assert(shown() == 0, "silenced: no abilities")
+end
+
+-- No sound the board plays can go on forever: each is stopped after a few seconds, and StopSounds ends them all.
+T.sounds_always_end = function(TC)
+    setup(TC)
+    local timers, stopped, handle = {}, {}, 0
+    C_Timer = { After = function(_, fn) timers[#timers + 1] = fn end }
+    PlaySound = function() handle = handle + 1 return true, handle end
+    StopSound = function(h) stopped[h] = true end
+    SOUNDKIT = { IG_QUEST_LIST_SELECT = 1 }
+    TC.db.settings.mute = false
+    TC.Art:PlayKit(5001)
+    TC.Art:PlayKit(5002)
+    TC.Art:Play("IG_QUEST_LIST_SELECT")
+    assert(#timers == 3, "every sound gets its stop timer")
+    for _, fn in ipairs(timers) do fn() end
+    assert(stopped[1] and stopped[2] and stopped[3], "each sound is stopped when its time is up")
+    TC.Art:PlayKit(5003)
+    TC.Art:StopSounds()
+    assert(stopped[4], "StopSounds ends what is still playing")
+end
+
+-- A card that costs more than printed shows its cost in white (red read as "can't cast"); cheaper is green.
+T.raised_cost_is_white = function(TC)
+    setup(TC)
+    local w = TC.CardWidget:Create(mock())
+    local color
+    rawset(w.cost.text, "SetTextColor", function(_, r, g, b2) color = { r, g, b2 } end)
+    w.game, w.costNow = true, 9
+    w:SetCard("CS2_029")   -- Fireball, printed (4)
+    assert(color[1] == 1 and color[2] == 1 and color[3] == 1, "raised cost: white")
+    w.costNow = 2
+    w:SetCard("CS2_029")
+    assert(color[1] < 1 and color[2] == 1, "lowered cost: green")
+end
+
+-- The table can be moved and sized like the other windows: what the player chose is kept, never larger than the
+-- screen, and Fit to screen brings back the default.
+T.table_moves_and_sizes = function(TC)
+    setup(TC)
+    local Board, S = TC.Board, TC.Board._S
+    rawset(UIParent, "GetWidth", function() return 2000 end)
+    rawset(UIParent, "GetHeight", function() return 1200 end)
+    TC.Board._P.build()
+    local f = S.frame
+    local scale, points = 1, {}
+    rawset(f, "SetScale", function(_, s) scale = s end)
+    rawset(f, "GetScale", function() return scale end)
+    rawset(f, "ClearAllPoints", function() points = {} end)
+    rawset(f, "SetPoint", function(_, ...) points[#points + 1] = { ... } end)
+    local fit = Board:FitScale()
+    Board:FitScreen()
+    assert(scale == fit and points[1][1] == "CENTER" and points[1][2] == UIParent, "default: fills the screen, centred")
+    Board:SetTableScale(0.7)
+    assert(math.abs(scale - 0.7) < 1e-9, "a chosen size is used")
+    Board:SetTableScale(99)
+    assert(scale == fit, "never larger than the screen")
+    -- A drag: the centre in UIParent units is kept and survives a size change.
+    rawset(f, "GetCenter", function() return 500 / scale, 400 / scale end)
+    Board:SavePlacement()
+    assert(math.abs(TC.db.settings.tableX - 500) < 1e-6 and math.abs(TC.db.settings.tableY - 400) < 1e-6)
+    Board:SetTableScale(0.8)
+    local p = points[1]
+    assert(p[3] == "BOTTOMLEFT" and math.abs(p[4] * 0.8 - 500) < 1e-6 and math.abs(p[5] * 0.8 - 400) < 1e-6,
+        "the table stays where it was put")
+    Board:ResetPlacement()
+    assert(scale == fit and points[1][1] == "CENTER" and TC.db.settings.tableScale == nil, "Fit to screen")
+end
+
+-- The card book's filters: type, minion type, the search (tribes too) and Reset.
+T.collection_filters = function(TC)
+    local _, _, _, panels = setup(TC)
+    dofile("UI/CollectionPanel.lua")
+    local panel = panels.collection(mock())
+    local f = panel:Filter()
+    f.class = "all"
+    panel:Refresh()
+    local all = #panel:Shown()
+    assert(all > 4000, "every playable card: " .. all)
+    f.ctype = "WEAPON"
+    panel:Refresh()
+    for _, id in ipairs(panel:Shown()) do assert(TC.Cards[id].type == "WEAPON") end
+    f.ctype, f.tribe = "MINION", 128   -- murlocs
+    panel:Refresh()
+    local murlocs = #panel:Shown()
+    assert(murlocs > 20, "murlocs: " .. murlocs)
+    for _, id in ipairs(panel:Shown()) do assert(bit.band(TC.Cards[id].races, 128) ~= 0) end
+    f.ctype, f.tribe, f.text = nil, nil, "murloc"
+    panel:Refresh()
+    assert(#panel:Shown() >= murlocs, "the search finds the tribe too")
+    f.text, f.cost = "", 7
+    panel:Refresh()
+    for _, id in ipairs(panel:Shown()) do assert(TC.Cards[id].cost >= 7) end
+end
+
+-- The import dialog builds and opens (its preview logic is tested in test_rewards.lua).
+T.deck_code_dialog_opens = function(TC)
+    setup(TC)
+    dofile("UI/DeckCodeDialog.lua")
+    TC.DeckCode:Open("TCD1.MAGE.AAAA", "Test")
+    TC.DeckCode:Open()
+end
+
+-- A model the client can't show by model id is remembered in the saved variables too (tools/picker avoids it).
+T.missing_display_models_are_kept = function(TC)
+    setup(TC)
+    local timers = {}
+    C_Timer = { After = function(_, fn) timers[#timers + 1] = fn end }
+    local m = TC.Models:Create(CreateFrame("Frame"))
+    assert(TC.Models:Show(m, "display", 5151, 0.8, 1))
+    for _, fn in ipairs(timers) do fn() end
+    assert(TC.db.missingModels and TC.db.missingModels.display5151, "kept as display5151")
+    assert(not TC.Models:Show(m, "display", 5151, 0.8, 1), "and not tried again this session")
+end
+
+-- The card back window: the gallery greys what isn't earned; choosing for a deck takes only earned backs.
+T.card_back_window = function(TC)
+    setup(TC)
+    dofile("Data/CardBacks.lua")
+    dofile("Sources/Backs.lua")
+    TC.db.backs = {}
+    local list = TC.CardBacks:List()
+    local locked, earned
+    for _, b in ipairs(list) do
+        if TC.CardBacks:Unlocked(b.id) then earned = earned or b.id else locked = locked or b.id end
+    end
+    assert(earned and locked, "the default is earned, the rest still to earn")
+    TC.CardBacks:Gallery()
+    local chooser = _G.TavernCardsBackChooser
+    local function itemFor(id)
+        for _, it in ipairs(chooser.items) do if it.entry and it.entry.id == id then return it end end
+    end
+    assert(itemFor(locked).locked and not itemFor(earned).locked)
+    local deck, picked = { name = "Test", class = "MAGE", cards = {} }, nil
+    TC.CardBacks:Choose(deck, function(id) picked = id end)
+    click(itemFor(locked))
+    assert(deck.back == nil and picked == nil, "a back still to earn can't be chosen")
+    click(itemFor(earned))
+    assert(deck.back == earned and picked == earned, "an earned back is the deck's")
+    TC.db.backs[locked] = 1
+    TC.CardBacks:Choose(deck)
+    assert(not itemFor(locked).locked, "earned since: no longer greyed")
+end
+
+-- The dialogs (not StaticPopup): yes and no, a new question replacing an open one, the timeout, and the prompt.
+T.confirm_and_prompt_dialogs = function(TC)
+    setup(TC)
+    dofile("UI/Confirm.lua")
+    local said = {}
+    TC:Confirm("First?", function() said[#said + 1] = "yes1" end, function() said[#said + 1] = "no1" end)
+    local d = _G.TavernCardsConfirm
+    TC:Confirm("Second?", function() said[#said + 1] = "yes2" end)
+    assert(said[1] == "no1", "a new question declines the open one")
+    click(d.yes)
+    assert(said[2] == "yes2")
+    TC:Confirm("Timed", nil, function() said[#said + 1] = "timeout" end, nil, nil, 1)
+    scriptsOf[d].OnUpdate(d, 0.6)
+    scriptsOf[d].OnUpdate(d, 0.6)
+    assert(said[3] == "timeout", "no answer in time: declined")
+    local got
+    TC:Prompt("Paste a code:", "", function(text) got = text end, "Import")
+    local p = _G.TavernCardsPrompt
+    rawset(p.edit, "GetText", function() return "TCD1.MAGE.AAAA" end)
+    click(p.yes)
+    assert(got == "TCD1.MAGE.AAAA", "the prompt hands back what was typed")
+    TC:Prompt("Your deck code:", "TCD1.X")   -- copy only: a Close button
+    assert(rawget(p.yes, "_shown") == false, "copy only: no accept button")
 end
 
 return T

@@ -19,6 +19,7 @@ local HELP = {
     "/tc collection - collection progress and dust",
     "/tc preview [cardId] - show a card toast without granting anything",
     "/tc reset  - start the collection over (asks to confirm)",
+    "/tc perf   - how long the addon takes to load and draw, and the memory it uses",
 }
 
 local commands = {}
@@ -140,6 +141,35 @@ function commands.collection()
     for i = math.max(1, #ledger - 4), #ledger do
         local e = ledger[i]
         DEFAULT_CHAT_FRAME:AddMessage(("  %s  %s"):format(TC.Art:ColoredName(e.c), TC.Collection:EntrySource(e)))
+    end
+end
+
+-- Load time, memory, and how long the card book and the table take to redraw (both opened if need be).
+function commands.perf()
+    local function ms(fn)
+        if not debugprofilestop then return nil end
+        local t = debugprofilestop()
+        TC:Safe("perf", fn)
+        return debugprofilestop() - t
+    end
+    local mem
+    if UpdateAddOnMemoryUsage and GetAddOnMemoryUsage then
+        UpdateAddOnMemoryUsage()
+        mem = GetAddOnMemoryUsage(TC.ADDON)
+    end
+    TC:Print("Loaded in |cffffffff%s|r ms; memory |cffffffff%s|r MB; %d cards.",
+        TC.loadMs and ("%.0f"):format(TC.loadMs) or "?", mem and ("%.1f"):format(mem / 1024) or "?", #TC.CardOrder)
+    local book = ms(function()
+        TC:ShowWindow("collection")
+        TC:RefreshWindow()
+    end)
+    TC:Print("Card book page: |cffffffff%s|r ms.", book and ("%.1f"):format(book) or "?")
+    if TC.Match and TC.Match:Engine() and TC.Board then
+        local board = ms(function()
+            TC.Board:Open()
+            TC.Board:Refresh()
+        end)
+        TC:Print("Tavern table redraw: |cffffffff%s|r ms.", board and ("%.1f"):format(board) or "?")
     end
 end
 

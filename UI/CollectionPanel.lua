@@ -10,6 +10,32 @@ local CardWidget = TC.CardWidget
 
 local COLS, ROWS = 3, 3
 local PER_PAGE = COLS * ROWS
+
+-- The Type and Minion type filters. Tribe bits as Engine/Defs.lua RACE_NAMES (Data/Cards.lua races).
+local TYPES = { "MINION", "SPELL", "WEAPON", "LOCATION" }
+local TYPE_LABEL = { MINION = "Minions", SPELL = "Spells", WEAPON = "Weapons", LOCATION = "Locations" }
+local TRIBE_BITS = { beast = 1, undead = 2, elemental = 4, mechanical = 8, dragon = 16, demon = 32, pirate = 64,
+    murloc = 128, draenei = 256, naga = 512, totem = 1024, quilboar = 2048 }
+local TRIBES = {}
+for _, name in ipairs({ "beast", "demon", "dragon", "draenei", "elemental", "mechanical", "murloc", "naga", "pirate",
+    "quilboar", "totem", "undead" }) do
+    TRIBES[#TRIBES + 1] = { TRIBE_BITS[name], name == "mechanical" and "Mech" or (name:gsub("^%l", string.upper)) }
+end
+
+-- What the search box matches: name, rules text, tribes, type and spell school (lower case, built once per card).
+local searchCache = {}
+local function searchText(card)
+    local s = searchCache[card.id]
+    if not s then
+        local tribes = {}
+        for name, b in pairs(TRIBE_BITS) do
+            if bit.band(card.races or 0, b) ~= 0 then tribes[#tribes + 1] = name == "mechanical" and "mech mechanical" or name end
+        end
+        s = table.concat({ card.name, card.text or "", table.concat(tribes, " "), card.type or "", card.school or "" }, " "):lower()
+        searchCache[card.id] = s
+    end
+    return s
+end
 local GAP_X, GAP_Y = 12, 6
 local TOOLBAR_H = 34
 
@@ -28,10 +54,13 @@ end
 local function build(parent)
     local panel = CreateFrame("Frame", nil, parent)
     local _, myClass = UnitClass("player")
-    local filter = {
-        text = "", class = "mine", owned = "all", cost = nil, playable = false,
-        rarity = { FREE = true, COMMON = true, RARE = true, EPIC = true, LEGENDARY = true },
-    }
+    local function freshFilter()
+        return {
+            text = "", class = "mine", owned = "all", cost = nil, playable = false, ctype = nil, tribe = nil,
+            rarity = { FREE = true, COMMON = true, RARE = true, EPIC = true, LEGENDARY = true },
+        }
+    end
+    local filter = freshFilter()
     local list, page = {}, 1
     local editing           -- the deck being edited, if any: left page cards, right page the deck
     local function perSpread()
@@ -126,6 +155,20 @@ local function build(parent)
                 function() filter.rarity[rarity] = not filter.rarity[rarity]; changed() end)
         end
 
+        -- Card type and minion tribe (one each, or any).
+        local typeMenu = root:CreateButton(TYPE or "Type")
+        typeMenu:CreateRadio("Any type", function() return filter.ctype == nil end, function() filter.ctype = nil; changed() end)
+        for _, kind in ipairs(TYPES) do
+            typeMenu:CreateRadio(TYPE_LABEL[kind], function() return filter.ctype == kind end,
+                function() filter.ctype = kind; changed() end)
+        end
+        local tribeMenu = root:CreateButton("Minion type")
+        tribeMenu:CreateRadio("Any", function() return filter.tribe == nil end, function() filter.tribe = nil; changed() end)
+        for _, tribe in ipairs(TRIBES) do
+            tribeMenu:CreateRadio(tribe[2], function() return filter.tribe == tribe[1] end,
+                function() filter.tribe = tribe[1]; changed() end)
+        end
+
         root:CreateDivider()
         root:CreateRadio("All cards", function() return filter.owned == "all" end,
             function() filter.owned = "all"; changed() end)
@@ -138,6 +181,12 @@ local function build(parent)
             root:CreateCheckbox("Playable now only", function() return filter.playable end,
                 function() filter.playable = not filter.playable; changed() end)
         end
+        root:CreateDivider()
+        root:CreateButton("Reset filters", function()
+            filter = freshFilter()
+            search:SetText("")
+            changed()
+        end)
     end)
 
     -- Mana-cost gems: 0..6 and 7+; click again to clear.
@@ -245,6 +294,8 @@ local function build(parent)
             return false
         end
         if not filter.rarity[card.rarity] then return false end
+        if filter.ctype and card.type ~= filter.ctype then return false end
+        if filter.tribe and bit.band(card.races or 0, filter.tribe) == 0 then return false end
         if filter.cost and (filter.cost == 7 and card.cost < 7 or filter.cost < 7 and card.cost ~= filter.cost) then
             return false
         end
@@ -252,7 +303,7 @@ local function build(parent)
         if filter.owned == "owned" and have == 0 or filter.owned == "missing" and have > 0 then return false end
         if filter.playable and TC.EngineReady and not TC.PlayableNow[id] then return false end
         if filter.text ~= "" then
-            local hay = (card.name .. " " .. (card.text or "")):lower()
+            local hay = searchText(card)
             if not hay:find(filter.text, 1, true) then return false end
         end
         return true
@@ -280,6 +331,10 @@ local function build(parent)
         end)
         return owned
     end
+
+    -- The filter in use and the cards it lets through (the Filter menu changes them; tests read them).
+    function panel:Filter() return filter end
+    function panel:Shown() return list end
 
     function panel:Pages()
         return math.max(1, math.ceil(#list / perSpread()))
@@ -311,6 +366,11 @@ local function build(parent)
 
     function panel:Refresh()
         rebuild()
+        -- The cost gem in use stands out; the others are dimmed while one is chosen.
+        for cost, g in pairs(gems) do
+            local on = filter.cost == cost
+            g.disc:SetColorTexture(on and 0.35 or 0.15, on and 0.65 or 0.4, 1, (filter.cost and not on) and 0.45 or 1)
+        end
         page = math.min(page, self:Pages())
         -- The same account-wide number as the minimap and the ledger, whatever the filter shows.
         local collected, total = TC.Collection:Stats()

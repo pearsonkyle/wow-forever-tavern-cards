@@ -298,8 +298,12 @@ local IMPORT_ERRORS = { format = "That is not a Tavern Cards deck code.", class 
     illegal = "That deck breaks the deck rules (cards of another class, or too many copies)." }
 Decks.IMPORT_ERRORS = IMPORT_ERRORS
 
--- A deck link was clicked in chat: confirm, then import and open it.
+-- A deck link was clicked in chat: the import dialog shows it (UI/DeckCodeDialog.lua); without it, a confirm.
 function Decks:OfferImport(code, name)
+    if TC.DeckCode and TC.DeckCode.Open and CreateFrame then
+        TC.DeckCode:Open(code, name)
+        return
+    end
     local parsed, why = self:Decode(code)
     if parsed and not self:IsUnlocked(parsed.class) then
         parsed, why = nil, "locked"

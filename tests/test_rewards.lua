@@ -153,4 +153,70 @@ T.locked_hero_decks_cannot_be_imported = function(TC)
     assert(TC.Decks:Import(code), "unlocked: imports")
 end
 
+-- Boss-only Bind on Pickup loot the character owns proves the kill (Data/BossEvidence.lua): equipped and in the bags
+-- at login, the bank while it is open; so do the extra quests that can't be done without the boss.
+T.past_kills_pay_from_owned_boss_loot_and_more_quests = function(TC)
+    load(TC)
+    local R = setup(TC)
+    local byBoss = {}
+    for item, boss in pairs(TC.BossItems) do
+        local id = TC.BossCanon and TC.BossCanon[boss] or boss
+        if REWARDS.WARRIOR.b[id] and not byBoss[id] then byBoss[id] = item end
+    end
+    local picks = {}
+    for id, item in pairs(byBoss) do picks[#picks + 1] = { id, item } if #picks == 3 then break end end
+    assert(#picks == 3, "three bosses with boss-only loot")
+    local worn, bagged, banked = picks[1], picks[2], picks[3]
+    GetInventoryItemID = function(_, slot) return slot == 16 and worn[2] or nil end
+    C_Container = {
+        GetContainerNumSlots = function(bag) return (bag == 2 or bag == -1) and 16 or 0 end,
+        GetContainerItemID = function(bag, slot)
+            if bag == 2 and slot == 5 then return bagged[2] end
+            if bag == -1 and slot == 1 then return banked[2] end
+        end,
+    }
+    local quest, bosses = next(TC.BossQuestProof)
+    C_QuestLog = { IsQuestFlaggedCompleted = function(q) return q == quest end }
+    R:CatchUp()
+    assert(TC.Collection:HasGranted("b:" .. worn[1]), "an equipped boss-only item pays its boss")
+    assert(TC.Collection:HasGranted("b:" .. bagged[1]), "one in the bags too")
+    assert(not TC.Collection:HasGranted("b:" .. banked[1]), "the bank is only read while it is open")
+    for _, b in ipairs(bosses) do
+        local id = TC.BossCanon and TC.BossCanon[b] or b
+        if REWARDS.WARRIOR.b[id] then assert(TC.Collection:HasGranted("b:" .. id), "a quest that proves the kill") end
+    end
+    TC.handlers.BANKFRAME_OPENED()
+    assert(TC.Collection:HasGranted("b:" .. banked[1]), "an item in the bank pays when the bank opens")
+    GetInventoryItemID, C_Container, C_QuestLog = nil, nil, nil
+end
+
+-- The import dialog's preview: a pasted code shows its deck, what you own of it and where each missing card comes from.
+T.deck_code_preview_says_where_missing_cards_come_from = function(TC)
+    load(TC)
+    setup(TC)
+    dofile("UI/DeckCodeDialog.lua")
+    local cards = TC.AI.buildDeck("WARRIOR", 7, 3)
+    local deck = { class = "WARRIOR", cards = {} }
+    for _, id in ipairs(cards) do deck.cards[id] = (deck.cards[id] or 0) + 1 end
+    local code = TC.Decks:Encode(deck)
+    local p = TC.DeckCode:Preview("look at my deck [Tavern Deck: Smash] " .. code)
+    assert(p.deck and not p.why and p.name == "Smash", "decoded from a chat line, name and all")
+    assert(p.total == 30 and p.owned < p.total and #p.rows > 0, "basic cards are owned from the start, the rest not yet")
+    local sourced = 0
+    for _, row in ipairs(p.rows) do
+        if row.card.rarity ~= "FREE" then
+            assert(row.source, row.id .. " says where it comes from")
+            if not row.source:find("^Craft") then sourced = sourced + 1 end
+        end
+    end
+    assert(sourced > 0, "some missing cards are earned by a quest or a boss on this character")
+    local before = p.owned
+    for _, row in ipairs(p.rows) do
+        if row.have < row.n then TC.Collection:Grant("test:1", row.id, "test", true) break end
+    end
+    assert(TC.DeckCode:Preview(code).owned == before + 1, "an owned card counts")
+    assert(TC.DeckCode:Preview("hello").why == "format", "not a code")
+    assert(TC.DeckCode:Preview("").deck == nil, "empty: nothing yet")
+end
+
 return T
